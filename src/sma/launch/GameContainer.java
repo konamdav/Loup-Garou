@@ -9,7 +9,7 @@ import sma.model.GameSettings;
 
 public class GameContainer {
 	private int gameid;
-	public static String MAIN_PROPERTIES_FILE = "resources\\sma\\gamecontainer.properties";
+	public static String MAIN_PROPERTIES_FILE = "resources/sma/gamecontainer.properties";
 	private AgentContainer container;
 	private GameSettings gameSettings;
 	

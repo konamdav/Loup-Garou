@@ -15,7 +15,7 @@ public class GameControllerAgent extends Agent{
 	@Override
 	protected void setup() {
 		Object[] args = this.getArguments();
-		this.gameid = (int) args[0];
+		this.gameid = (Integer)args[0];
 		this.gameSettings = (GameSettings) args[1];
 		
 		this.addBehaviour(new InitBehaviour(this));

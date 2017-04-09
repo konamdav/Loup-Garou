@@ -25,7 +25,7 @@ public class PlayerAgent extends Agent implements IVotingAgent{
 		
 	}
 	
-	@Override
+	//@Override
 	public List<String> getVotingBehaviours() {
 		return this.votingBehaviours;
 	}

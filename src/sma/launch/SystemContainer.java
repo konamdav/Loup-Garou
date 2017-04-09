@@ -8,7 +8,7 @@ import jade.wrapper.AgentController;
 
 public class SystemContainer {
 
-	public static String MAIN_PROPERTIES_FILE = "resources\\sma\\systemcontainer.properties";
+	public static String MAIN_PROPERTIES_FILE = "resources/sma/systemcontainer.properties";
 	public static void main(String[] args)
 	{
 		Runtime rt = Runtime.instance();

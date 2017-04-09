@@ -75,7 +75,7 @@ public class WerewolfAgent extends Agent implements IVotingAgent{
 
 
 
-	@Override
+	//@Override
 	public List<String> getVotingBehaviours() {
 		return this.votingBehaviours;
 	}

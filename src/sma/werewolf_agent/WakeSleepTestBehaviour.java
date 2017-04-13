@@ -8,13 +8,17 @@ import org.codehaus.jackson.map.ObjectMapper;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import sma.model.DFServices;
 import sma.model.ScoreResults;
 import sma.model.VoteRequest;
 import sma.player_agent.IVotingAgent;
 
 public class WakeSleepTestBehaviour extends SimpleBehaviour{
-	public WakeSleepTestBehaviour(IVotingAgent agent) {
+	private WerewolfAgent playerAgent ;
+
+	public WakeSleepTestBehaviour(WerewolfAgent agent) {
 		super();
+		this.playerAgent = agent;
 	}
 
 	@Override
@@ -27,6 +31,9 @@ public class WakeSleepTestBehaviour extends SimpleBehaviour{
 		if (message != null) 
 		{
 			System.out.println("I WAKE ");
+			
+			DFServices.setStatusAgent("WAKE", this.playerAgent, this.playerAgent.getGameid());
+			
 			ACLMessage reply = new ACLMessage(ACLMessage.CONFIRM);
 			reply.setConversationId("WAKE_PLAYER");
 			reply.setSender(this.myAgent.getAID());
@@ -44,6 +51,8 @@ public class WakeSleepTestBehaviour extends SimpleBehaviour{
 			if (message != null) 
 			{
 				System.out.println("I SLEEP ");
+				DFServices.setStatusAgent("SLEEP", this.playerAgent, this.playerAgent.getGameid());
+				
 				ACLMessage reply = new ACLMessage(ACLMessage.CONFIRM);
 				reply.setConversationId("SLEEP_PLAYER");
 				reply.setSender(this.myAgent.getAID());

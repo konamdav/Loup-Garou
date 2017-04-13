@@ -288,6 +288,7 @@ public class SynchronousVoteBehaviour extends Behaviour {
 			message.setSender(this.myAgent.getAID());
 			message.addReceiver(this.agentSender);
 			message.setConversationId("VOTE_RESULTS");
+			message.setContent(this.finalResults.get(0));
 			this.myAgent.send(message);
 						
 			this.nextStep = STATE_INIT;

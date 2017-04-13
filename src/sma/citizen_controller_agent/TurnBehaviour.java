@@ -130,22 +130,38 @@ public class TurnBehaviour extends Behaviour {
 		/** etat envoi requete pour tuer les  victimes désignées durant la nuit **/
 		else if(this.step.equals(STATE_SEND_KILL_VICTIMS_REQUEST))
 		{
-			this.nextStep = STATE_RECEIVE_KILL_VICTIMS_REQUEST;
+			if(!this.previousVictims && this.ctrlAgent.getVictims().isEmpty())
+			{
+				this.nextStep = STATE_SEND_ELECTION_REQUEST;
+			}
+			else
+			{
+				this.ctrlAgent.addBehaviour(new KillVictimsBehaviour(this.ctrlAgent));
+				this.nextStep = STATE_RECEIVE_KILL_VICTIMS_REQUEST;
+			}
+
 
 		}
 		/** etat pour recevoir la confirmation de la mort des victimes **/
 		else if(this.step.equals(STATE_RECEIVE_KILL_VICTIMS_REQUEST))
 		{
-			if(!this.previousVictims)
+			/** le behaviour kill victims a terminé son travail **/
+			if(this.ctrlAgent.getVictims().isEmpty())
 			{
-				this.previousVictims = true;
-				this.nextStep = STATE_SEND_CHECK_ENDGAME;
+				if(!this.previousVictims)
+				{
+					this.previousVictims = true;
+					this.nextStep = STATE_SEND_CHECK_ENDGAME;
+				}
+				else
+				{
+					this.nextStep = STATE_SEND_SLEEP_ALL;
+				}
 			}
 			else
 			{
-				this.nextStep = STATE_SEND_SLEEP_ALL;
+				this.nextStep = STATE_RECEIVE_KILL_VICTIMS_REQUEST;
 			}
-
 		}
 		/** etat envoi requete pour connaître l'etat de jeu **/
 		else if(this.step.equals(STATE_SEND_CHECK_ENDGAME))
@@ -162,7 +178,7 @@ public class TurnBehaviour extends Behaviour {
 		else if(this.step.equals(STATE_SEND_ELECTION_REQUEST))
 		{
 
-			/*	List<String> choices = new ArrayList<String>();
+			List<String> choices = new ArrayList<String>();
 			for(AID aid : DFServices.findGameAgent("PLAYER", "CITIZEN", this.ctrlAgent, this.ctrlAgent.getGameid()))
 			{
 				choices.add(aid.getName());
@@ -171,12 +187,12 @@ public class TurnBehaviour extends Behaviour {
 			VoteRequest request = new VoteRequest();
 			request.setRequest("ELECTION");
 			request.setChoices(choices);
-			request.setVoters(DFServices.findGameAgent("PLAYER", "CITIZEN", this.ctrlAgent, this.ctrlAgent.getGameid()));
+			request.setVoters(choices);
 
 			ObjectMapper mapper = new ObjectMapper();
 			String json = "";
 			try {
-				 json = mapper.writeValueAsString(json);
+				json = mapper.writeValueAsString(request);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -187,7 +203,7 @@ public class TurnBehaviour extends Behaviour {
 			messageRequest.setConversationId("VOTE_REQUEST");
 			messageRequest.setContent(json);
 			this.ctrlAgent.send(messageRequest);
-			 */
+
 
 			this.nextStep = STATE_RECEIVE_ELECTION_REQUEST;
 		}
@@ -255,6 +271,10 @@ public class TurnBehaviour extends Behaviour {
 			ACLMessage message = this.myAgent.receive(mt);
 			if(message != null)
 			{
+				String victim = message.getContent();
+				AID aidVictim = new AID(victim);
+				this.ctrlAgent.getVictims().push(aidVictim);
+
 				this.nextStep = STATE_SEND_KILL_VICTIMS_REQUEST;
 			}
 			else
@@ -267,7 +287,6 @@ public class TurnBehaviour extends Behaviour {
 		/** etat envoi des requêtes de sommeil **/
 		else if(this.step.equals(STATE_SEND_SLEEP_ALL))
 		{
-
 			for(AID aid : DFServices.findGameAgent("PLAYER", "CITIZEN", this.ctrlAgent, this.ctrlAgent.getGameid()))
 			{
 				ACLMessage messageRequest = new ACLMessage(ACLMessage.REQUEST);

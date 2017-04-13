@@ -50,18 +50,22 @@ public class WerewolfAgent extends Agent implements IVotingAgent{
 		this.gameid = (int) args[0];
 		
 		DFServices.registerGameAgent("PLAYER", "CITIZEN", this, this.gameid);
-		System.out.println("AJOUT "+this.getId());
 
 		this.addBehaviour(new AbstractVoteBehaviour(this));
 		
 		//roles
 		this.addBehaviour(new WerewolfVoteBehaviour(this));
 		this.addBehaviour(new LoverVoteBehaviour(this));
-		
+
 		this.addBehaviour(new WakeSleepTestBehaviour(this));
 		
 	}
 
+
+
+	public int getGameid() {
+		return gameid;
+	}
 
 
 	//@Override

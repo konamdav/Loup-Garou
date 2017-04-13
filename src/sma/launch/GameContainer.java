@@ -37,17 +37,17 @@ public class GameContainer {
 			for(int i = 0; i<2; ++i)
 			{
 				ac = container.createNewAgent(
-						"WEREWOLF_AGENT_"+i, "sma.werewolf_agent.WerewolfAgent", null);
+						"WEREWOLF_AGENT_"+i, "sma.werewolf_agent.WerewolfAgent", objects);
 				ac.start();
 			}
 			
 			
 			ac = container.createNewAgent(
-					"ENVIRONMENT_AGENT", "sma.environment_agent.EnvironmentAgent", null);
+					"ENVIRONMENT_AGENT", "sma.environment_agent.EnvironmentAgent", objects);
 			ac.start();
 			
 			ac = container.createNewAgent(
-					"CitizenControllerAgent", "sma.citizen_controller_agent.CitizenControllerAgent", null);
+					"CitizenControllerAgent", "sma.citizen_controller_agent.CitizenControllerAgent", objects);
 			ac.start();
 			
 		}

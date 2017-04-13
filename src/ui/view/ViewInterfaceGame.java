@@ -28,10 +28,10 @@ public class ViewInterfaceGame implements Screen{
 
 
 	public void show() {
-		stage=new Stage();
+		/*stage=new Stage();
 
 		graphique_monstres=new ViewPlayers(((SpriteBatch)stage.getBatch()));
-		terrain=new ViewTerrain((SpriteBatch) stage.getBatch(), ctrlTerrain);
+			terrain=new ViewTerrain((SpriteBatch) stage.getBatch(), ctrlTerrain);
 
 		ViewPlayer player;
 
@@ -87,7 +87,7 @@ public class ViewInterfaceGame implements Screen{
 			}
 
 		}
-
+		 */
 		textureNight = new Texture(Gdx.files.internal("resources/sprites/night.png"));
 
 	}
@@ -124,7 +124,7 @@ public class ViewInterfaceGame implements Screen{
 			iii = 0;
 			this.graphique_monstres.wake();
 		}
-		
+
 		graphique_monstres.drawPlayersWake();
 
 

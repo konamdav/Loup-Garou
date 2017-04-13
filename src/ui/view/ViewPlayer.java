@@ -6,6 +6,11 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
+import javafx.scene.Group;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.util.Duration;
+
 /**
  * Vue de monstre
  * @author Davy
@@ -15,171 +20,89 @@ public class ViewPlayer extends ViewEntity{
 	private final static String LEFT = "LEFT";
 	private final static String RIGHT = "RIGHT";
 	private final static String UP = "UP";
-	/* Constante de frame */
-	private static final int NB_FRAME = 2;         
-	private static final int NB_DIRECTION = 4;
 
 	private String direction;
 	private int[] position;
 	
 	private ViewRoles roles;
 
-	/*Le batch qui dessine le sprite*/
-	private SpriteBatch spriteBatch;
+	private Image imPlayerWake;
+	private Image imPlayerSleep;
+	private ImageView imgView;
 	
-	private Animation animationUpWake; 
-	private Animation animationDownWake;
-	private Animation animationLeftWake;
-	private Animation animationRightWake;
-	private Texture sheetWake;             
-	private TextureRegion[] framesUpWake;
-	private TextureRegion[] framesDownWake;
-	private TextureRegion[] framesLeftWake;
-	private TextureRegion[] framesRightWake;
-	private TextureRegion[][] tmp;
-	private TextureRegion couranteFrame;           
+	private SpriteAnimation animation;
+	private String status;
+	private Group group;    
 
-	private float stateAnimation;
-	private Texture sheetSleep;
-	private TextureRegion[] framesUpSleep;
-	private Animation animationUpSleep;
-	private Animation animationRightSleep;
-	private TextureRegion[] framesRightSleep;
-	private Animation animationLeftSleep;
-	private TextureRegion[] framesLeftSleep;
-	private TextureRegion[] framesDownSleep;
-	private Animation animationDownSleep;
-	private String status;    
-
-
-	public ViewPlayer(int x, int y, String status, String direction, SpriteBatch batch)
+	public int getOffSetXSprite(String s)
+	{
+		System.out.println(s);
+		if(s.equals("UP"))
+		{
+			return 192;
+		}
+		else if(s.equals("LEFT"))
+		{
+			return 64;
+		}
+		else if(s.equals("RIGHT"))
+		{
+			System.out.println(s);
+			return 128;
+		}
+		else
+		{
+			System.out.println("000");
+			return 0;
+		}
+	}
+	
+	public ViewPlayer(int x, int y, String status, String direction, Group group)
 	{
 		this.status = status;
-		this.spriteBatch = batch;
+		this.group = group;
+		
 		this.position = new int[2];
 		this.position[0] = x * 64;
 		this.position[1] = y * 64;
 		this.direction = direction;
 		
-		this.roles = new ViewRoles(this);
+		this.imPlayerWake = new Image("resources/sprites/playerWake.png");
+		this.imPlayerSleep = new Image("resources/sprites/playerSleep.png");
 		
-
-		sheetWake=new Texture(Gdx.files.internal("resources/sprites/PlayerWake.png"));
-		/*On découpe la texture */
-		tmp = TextureRegion.split(sheetWake, sheetWake.getWidth()/NB_FRAME, sheetWake.getHeight()/NB_DIRECTION);              // #10
-		framesUpWake = new TextureRegion[NB_FRAME];
-		framesDownWake = new TextureRegion[NB_FRAME];
-		framesRightWake = new TextureRegion[NB_FRAME];
-		framesLeftWake = new TextureRegion[NB_FRAME];
-		stateAnimation = 0;
 		
-		/*Création des différentes animations*/
-		/*animation bas*/
-		int index = 0;
-		for (int i = 0; i < NB_FRAME; i++) {
-
-			framesDownWake[index++] = tmp[0][i];
-
-		}
-		animationDownWake= new Animation(0.25f, framesDownWake); 
-
-		/*animation gauche*/
-		index = 0;
-		for (int i = 0; i < NB_FRAME; i++) {
-
-			framesLeftWake[index++] = tmp[1][i];
-
-		}
-		animationLeftWake= new Animation(0.25f, framesLeftWake); 
-
-		/*animation droite*/
-		index = 0;
-		for (int i = 0; i < NB_FRAME; i++) {
-
-			framesRightWake[index++] = tmp[2][i];
-
-		}
-		animationRightWake= new Animation(0.25f, framesRightWake); 
-
-		/*animation haut*/
-		index = 0;
-		for (int i = 0; i < NB_FRAME; i++) {
-
-			framesUpWake[index++] = tmp[3][i];
-
-		}
-		animationUpWake= new Animation(0.25f, framesUpWake); 
-
-	
-		sheetSleep=new Texture(Gdx.files.internal("resources/sprites/PlayerSleep.png"));
-		/*On découpe la texture */
-		tmp = TextureRegion.split(sheetSleep, sheetSleep.getWidth()/NB_FRAME, sheetSleep.getHeight()/NB_DIRECTION);              // #10
-		framesUpSleep = new TextureRegion[NB_FRAME];
-		framesDownSleep = new TextureRegion[NB_FRAME];
-		framesRightSleep = new TextureRegion[NB_FRAME];
-		framesLeftSleep = new TextureRegion[NB_FRAME];
-		
-		/*Création des différentes animations*/
-		/*animation bas*/
-		index = 0;
-		for (int i = 0; i < NB_FRAME; i++) {
-
-			framesDownSleep[index++] = tmp[0][i];
-
-		}
-		animationDownSleep= new Animation(0.25f, framesDownSleep); 
-
-		/*animation gauche*/
-		index = 0;
-		for (int i = 0; i < NB_FRAME; i++) {
-
-			framesLeftSleep[index++] = tmp[1][i];
-
-		}
-		animationLeftSleep= new Animation(0.25f, framesLeftSleep); 
-
-		/*animation droite*/
-		index = 0;
-		for (int i = 0; i < NB_FRAME; i++) {
-
-			framesRightSleep[index++] = tmp[2][i];
-
-		}
-		animationRightSleep= new Animation(0.25f, framesRightSleep); 
-
-		/*animation haut*/
-		index = 0;
-		for (int i = 0; i < NB_FRAME; i++) {
-
-			framesUpSleep[index++] = tmp[3][i];
-
-		}
-		animationUpSleep= new Animation(0.25f, framesUpSleep); 
-	
-	}
-
-
-	public void updateWake()
-	{
-		Animation animation_courante;
-		if(direction.equals(LEFT))
-		{
-			animation_courante=animationLeftWake;
-		}
-		else if(direction.equals(UP))
-		{
-			animation_courante=animationUpWake;
-		}
-		else if(direction.equals(RIGHT))
-		{
-			animation_courante=animationRightWake;
+		if(status.equals("WAKE")){
+			this.imgView = new ImageView(this.imPlayerWake);
 		}
 		else
 		{
-			animation_courante=animationDownWake;
+			this.imgView = new ImageView(this.imPlayerSleep);
 		}
+		
+		this.imgView.setX(this.position[0]);
+		this.imgView.setY(this.position[1]);
+		this.group.getChildren().add(this.imgView);
+		
+		this.animation = new SpriteAnimation(
+                this.imgView,
+                Duration.millis(1000),
+                2, 1,
+                getOffSetXSprite(direction), 0,
+                64, 64
+        );
+		
+		
+		this.roles = new ViewRoles(this);
+	}
 
-		this.couranteFrame = animation_courante.getKeyFrame(stateAnimation, true); 
+
+	public Group getGroup() {
+		return group;
+	}
+
+	public void updateWake()
+	{
+		this.animation.getImageView().setImage(this.imPlayerWake);
 	}
 	
 	public void update()
@@ -193,11 +116,6 @@ public class ViewPlayer extends ViewEntity{
 			this.updateWake();
 		}
 		
-		this.stateAnimation += Gdx.graphics.getDeltaTime();
-		this.position[0]=position[0];
-		this.position[1]=position[1];
-
-		spriteBatch.draw(couranteFrame, this.position[0], this.position[1]);
 		this.roles.update();
 	}
 	public String getStatus() {
@@ -212,26 +130,7 @@ public class ViewPlayer extends ViewEntity{
 
 	public void updateSleep()
 	{
-		//System.out.println("SLEEP");
-		Animation animation_courante;
-		if(direction.equals(LEFT))
-		{
-			animation_courante=animationLeftSleep;
-		}
-		else if(direction.equals(UP))
-		{
-			animation_courante=animationUpSleep;
-		}
-		else if(direction.equals(RIGHT))
-		{
-			animation_courante=animationRightSleep;
-		}
-		else
-		{
-			animation_courante=animationDownSleep;
-		}
-		
-		this.couranteFrame = animation_courante.getKeyFrame(stateAnimation, true); 
+		this.animation.getImageView().setImage(this.imPlayerSleep);
 	}
 	
 
@@ -240,9 +139,7 @@ public class ViewPlayer extends ViewEntity{
 	}
 
 
-	public SpriteBatch getSpriteBatch() {
-		return spriteBatch;
-	}
+	
 
 
 	public int[] getPosition() {

@@ -8,6 +8,8 @@ import jade.core.Agent;
 
 public class PlayerAgent extends Agent implements IVotingAgent{
 	private List<String> votingBehaviours;
+	private int gameid;
+	
 	public PlayerAgent() {
 		super();
 	}
@@ -15,8 +17,9 @@ public class PlayerAgent extends Agent implements IVotingAgent{
 	@Override
 	protected void setup() {
 		Object[] args = this.getArguments();
-		this.votingBehaviours = new ArrayList<String>();
+		this.gameid = (int) args[0];
 		
+		this.votingBehaviours = new ArrayList<String>();
 		this.addBehaviour(new AbstractVoteBehaviour(this));
 		
 		//roles

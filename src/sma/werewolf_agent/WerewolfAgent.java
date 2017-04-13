@@ -9,6 +9,7 @@ import jade.domain.FIPAException;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import sma.lover_behaviour.LoverVoteBehaviour;
+import sma.model.DFServices;
 import sma.player_agent.AbstractVoteBehaviour;
 import sma.player_agent.IVotingAgent;
 
@@ -24,6 +25,7 @@ public class WerewolfAgent extends Agent implements IVotingAgent{
 	private static int cptWerewolf = 0;
 	private int id;
 	
+	private int gameid;
 	public WerewolfAgent() {
 		super();
 		this.votingBehaviours = new ArrayList<String>();
@@ -32,6 +34,7 @@ public class WerewolfAgent extends Agent implements IVotingAgent{
 		
 		this.id = WerewolfAgent.cptWerewolf++;
 	
+		
 	}
 	
 	
@@ -43,33 +46,19 @@ public class WerewolfAgent extends Agent implements IVotingAgent{
 	@Override
 	protected void setup() {
 		
-		DFAgentDescription dfad = new DFAgentDescription();
-		dfad.setName(getAID());
+		Object[] args = this.getArguments();
+		this.gameid = (int) args[0];
 		
-		ServiceDescription sd = new ServiceDescription();
-		sd.setType("WEREWOLF");
-		sd.setName("WEREWOLF");		
-		dfad.addServices(sd);
-		
-		sd = new ServiceDescription();
-		sd.setType("CITIZEN");
-		sd.setName("CITIZEN");
-		dfad.addServices(sd);
-		
+		DFServices.registerGameAgent("PLAYER", "CITIZEN", this, this.gameid);
 		System.out.println("AJOUT "+this.getId());
-		
-		try {
-			DFService.register(this, dfad);
-		}
-		catch (FIPAException fe) {
-			fe.printStackTrace();
-		}
 
 		this.addBehaviour(new AbstractVoteBehaviour(this));
 		
 		//roles
 		this.addBehaviour(new WerewolfVoteBehaviour(this));
 		this.addBehaviour(new LoverVoteBehaviour(this));
+		
+		this.addBehaviour(new WakeSleepTestBehaviour(this));
 		
 	}
 

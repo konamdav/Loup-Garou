@@ -100,6 +100,9 @@ public class DFServices {
 		DFServices.registerGameAgent("PLAYER", status, agent, gameid);
 	}
 
+	public static boolean containsGameAgent(AID agent,String type, String name, Agent searcher, int gameid){
+		return DFServices.findGameAgent(type, name, searcher, gameid).contains(agent);
+	}
 	public static List<AID> findGameAgent(String type, String name, Agent agent, int gameid){
 		DFAgentDescription template = new DFAgentDescription();
 		ServiceDescription sd = new ServiceDescription();

@@ -7,6 +7,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 import jade.core.AID;
 import jade.core.behaviours.Behaviour;
+import jade.core.behaviours.SimpleBehaviour;
 import jade.domain.DFService;
 import jade.domain.FIPAException;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
@@ -17,7 +18,7 @@ import sma.model.DFServices;
 import sma.model.VoteRequest;
 import sma.model.VoteResults;
 
-public class TurnBehaviour extends Behaviour {
+public class TurnBehaviour extends SimpleBehaviour {
 	private final static String STATE_INIT = "INIT";
 	private final static String STATE_WAITING_START = "WAITING_START";
 	private final static String STATE_END_TURN = "END_TURN";
@@ -130,15 +131,11 @@ public class TurnBehaviour extends Behaviour {
 		/** etat envoi requete pour tuer les  victimes désignées durant la nuit **/
 		else if(this.step.equals(STATE_SEND_KILL_VICTIMS_REQUEST))
 		{
-			if(!this.previousVictims && this.ctrlAgent.getVictims().isEmpty())
-			{
-				this.nextStep = STATE_SEND_ELECTION_REQUEST;
-			}
-			else
-			{
-				this.ctrlAgent.addBehaviour(new KillVictimsBehaviour(this.ctrlAgent));
-				this.nextStep = STATE_RECEIVE_KILL_VICTIMS_REQUEST;
-			}
+			System.err.println("... kill ... "+this.previousVictims);
+
+			this.ctrlAgent.addBehaviour(new KillVictimsBehaviour(this.ctrlAgent));
+			this.nextStep = STATE_RECEIVE_KILL_VICTIMS_REQUEST;
+
 
 
 		}
@@ -146,17 +143,10 @@ public class TurnBehaviour extends Behaviour {
 		else if(this.step.equals(STATE_RECEIVE_KILL_VICTIMS_REQUEST))
 		{
 			/** le behaviour kill victims a terminé son travail **/
-			if(this.ctrlAgent.getVictims().isEmpty())
+			if(this.ctrlAgent.isFlag_victims() && this.ctrlAgent.getVictims().isEmpty())
 			{
-				if(!this.previousVictims)
-				{
-					this.previousVictims = true;
-					this.nextStep = STATE_SEND_CHECK_ENDGAME;
-				}
-				else
-				{
-					this.nextStep = STATE_SEND_SLEEP_ALL;
-				}
+				this.ctrlAgent.setFlag_victims(false);
+				this.nextStep = STATE_SEND_CHECK_ENDGAME;
 			}
 			else
 			{
@@ -166,13 +156,65 @@ public class TurnBehaviour extends Behaviour {
 		/** etat envoi requete pour connaître l'etat de jeu **/
 		else if(this.step.equals(STATE_SEND_CHECK_ENDGAME))
 		{
-			this.nextStep = STATE_RECEIVE_CHECK_ENDGAME;
+			System.err.println("... check ... "+this.previousVictims);
+			List<AID> agents = DFServices.findGameAgent("CONTROLLER", "GAME", this.ctrlAgent, this.ctrlAgent.getGameid());
+			if(!agents.isEmpty())
+			{
+				//System.out.println("=> "+agents.get(0).getLocalName());
+				ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
+				message.setSender(this.ctrlAgent.getAID());
+				message.addReceiver(agents.get(0));
+				message.setConversationId("CHECK_END_GAME");
+				this.ctrlAgent.send(message);
+
+				this.nextStep = STATE_RECEIVE_CHECK_ENDGAME;
+			}
+			else
+			{
+				this.nextStep = STATE_SEND_CHECK_ENDGAME;
+			}
 		}
 		/** etat reception de l'état de jeu **/
 		else if(this.step.equals(STATE_RECEIVE_CHECK_ENDGAME))
 		{
+			/*** reception demande de vote **/
+			MessageTemplate mt = MessageTemplate.and(
+					MessageTemplate.MatchPerformative(ACLMessage.INFORM),
+					MessageTemplate.MatchConversationId("CONTINUE_GAME"));
 
-			this.nextStep = STATE_SEND_ELECTION_REQUEST;
+			ACLMessage message = this.myAgent.receive(mt);
+
+			if(message != null)
+			{
+				System.err.println("... receive ...");
+				if(!this.previousVictims)
+				{
+					this.previousVictims = true;
+					this.nextStep = STATE_SEND_ELECTION_REQUEST;
+				}
+				else
+				{
+					this.nextStep = STATE_SEND_SLEEP_ALL;
+				}
+			}
+			else
+			{
+				mt = MessageTemplate.and(
+						MessageTemplate.MatchPerformative(ACLMessage.INFORM),
+						MessageTemplate.MatchConversationId("END_GAME"));
+
+				message = this.myAgent.receive(mt);
+
+				if(message != null)
+				{
+					System.err.println("... receive ...");
+					this.nextStep = STATE_END_TURN;
+				}
+				else
+				{
+					block();
+				}
+			}
 		}
 		/** etat envoi de la requete de vote de l'election de maire **/
 		else if(this.step.equals(STATE_SEND_ELECTION_REQUEST))
@@ -207,6 +249,7 @@ public class TurnBehaviour extends Behaviour {
 
 			this.nextStep = STATE_RECEIVE_ELECTION_REQUEST;
 		}
+
 		/** etat reception du resultat de l'election **/
 		else if(this.step.equals(STATE_RECEIVE_ELECTION_REQUEST))
 		{
@@ -237,7 +280,7 @@ public class TurnBehaviour extends Behaviour {
 			}
 
 			VoteRequest request = new VoteRequest();
-			request.setRequest("VOTE");
+			request.setRequest("CITIZEN_VOTE");
 			request.setChoices(choices);
 			request.setVoters(choices);
 

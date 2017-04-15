@@ -16,13 +16,13 @@ public class KillVictimsBehaviour extends SimpleBehaviour
 	private final static String STATE_END = "END";
 	private String step;
 	private String nextStep;
-	
+
 	private AID currentVictim;
-	
+
 	public KillVictimsBehaviour(CitizenControllerAgent citizenControllerAgent) {
 		super();
 		this.citizenControllerAgent = citizenControllerAgent;
-		
+
 		this.currentVictim = null;
 		this.step = STATE_INIT;
 		this.nextStep ="";
@@ -30,19 +30,26 @@ public class KillVictimsBehaviour extends SimpleBehaviour
 
 	@Override
 	public void action() {
-		
+
 		System.out.println("STATE KILL VICTIMS "+this.step);
-		
-		
+
+
 		if(this.step.equals(STATE_INIT))
 		{
 			this.currentVictim = null;
-			
+
 			/** pop la victime **/
-			this.currentVictim = this.citizenControllerAgent.getVictims().pop();
-			System.out.println("CURRENT VICTIM "+this.currentVictim.getLocalName());
-			
-			this.nextStep =STATE_SEND_GET_ROLE;
+			if(this.citizenControllerAgent.getVictims().isEmpty())
+			{
+				this.nextStep =STATE_END;
+			}
+			else
+			{
+				this.currentVictim = this.citizenControllerAgent.getVictims().pop();
+				System.out.println("CURRENT VICTIM "+this.currentVictim.getLocalName());
+
+				this.nextStep =STATE_SEND_GET_ROLE;
+			}
 		}
 		else if(this.step.equals(STATE_SEND_GET_ROLE))
 		{
@@ -70,15 +77,15 @@ public class KillVictimsBehaviour extends SimpleBehaviour
 			{
 				this.nextStep = STATE_INIT;
 			}
-			
+
 		}
 		else if(this.step.equals(STATE_END))
 		{
-			
+			this.citizenControllerAgent.setFlag_victims(true);
 			flag = true;
 		}
-		
-		
+
+
 		if(!this.nextStep.isEmpty())
 		{
 			this.step = this.nextStep;

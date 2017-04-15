@@ -47,7 +47,7 @@ public class GameContainer {
 			ac.start();
 			
 			ac = container.createNewAgent(
-					"CitizenControllerAgent", "sma.citizen_controller_agent.CitizenControllerAgent", objects);
+					"CITIZEN_CONTROLLER_AGENT", "sma.citizen_controller_agent.CitizenControllerAgent", objects);
 			ac.start();
 			
 		}

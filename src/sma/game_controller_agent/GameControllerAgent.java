@@ -1,15 +1,26 @@
 package sma.game_controller_agent;
 
+import generic.agent.IController;
 import jade.core.Agent;
+import sma.model.DFServices;
 import sma.model.GameSettings;
 
-public class GameControllerAgent extends Agent{
+public class GameControllerAgent extends Agent implements IController{
 	private GameSettings gameSettings;
 	private int gameid;
+	private boolean checkEndGame;
 	
 	public GameControllerAgent() {
 		super();
-	
+		this.checkEndGame = false; /** var indiquant fin de jeu **/
+	}
+
+	public boolean isCheckEndGame() {
+		return checkEndGame;
+	}
+
+	public void setCheckEndGame(boolean checkEndGame) {
+		this.checkEndGame = checkEndGame;
 	}
 
 	@Override
@@ -18,8 +29,11 @@ public class GameControllerAgent extends Agent{
 		this.gameid = (Integer)args[0];
 		this.gameSettings = (GameSettings) args[1];
 		
-		this.addBehaviour(new InitBehaviour(this));
-	
+		DFServices.registerGameAgent("CONTROLLER", "GAME", this, gameid);
+		
+		//this.addBehaviour(new InitBehaviour(this));
+		this.addBehaviour(new CheckEndGameBehaviour(this));
+		this.addBehaviour(new TurnsBehaviour(this));
 	}
 
 	public GameSettings getGameSettings() {

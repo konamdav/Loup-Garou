@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.codehaus.jackson.map.ObjectMapper;
 
+import generic.agent.IController;
 import jade.core.AID;
 import jade.core.behaviours.Behaviour;
 import jade.domain.DFService;
@@ -42,12 +43,10 @@ public class SynchronousVoteBehaviour extends Behaviour {
 	private String nextStep;
 	
 	private VoteRequest request;
-	private CitizenControllerAgent ctrl;
+	private IController controllerAgent;
 
-	public SynchronousVoteBehaviour(CitizenControllerAgent citizenControllerAgent) {
-		super(citizenControllerAgent);
-		
-		this.ctrl = citizenControllerAgent;
+	public SynchronousVoteBehaviour(IController controllerAgent) {		
+		this.controllerAgent = controllerAgent;
 		
 		this.nbVoters = 0;
 		this.results = new VoteResults();
@@ -200,9 +199,20 @@ public class SynchronousVoteBehaviour extends Behaviour {
 				{
 					e.printStackTrace();
 				}
+				
+				AID aidPlayer = message.getSender();
+				
 				this.results.add(res);
 				this.globalResults.add(res);
-
+				
+				if(this.request.getRequest().equals("CITIZEN_VOTE")&&
+						DFServices.containsGameAgent(aidPlayer, "PLAYER", "MAYOR", this.myAgent, this.controllerAgent.getGameid()))
+				{
+					/** poids double **/
+					this.results.add(res);
+					this.globalResults.add(res);
+				}
+				
 				if(this.nbVoters>= this.request.getAIDVoters().size())
 				{
 					this.nextStep = STATE_RESULTS;

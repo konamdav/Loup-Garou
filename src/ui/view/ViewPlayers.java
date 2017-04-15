@@ -4,20 +4,18 @@ package ui.view;
 
 import java.util.HashMap;
 import java.util.Map.Entry;
-
-import javafx.scene.Group;
-
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class ViewPlayers {
 	private HashMap<String,ViewPlayer> viewPlayers;
-	private Group group;
+	private SpriteBatch batch;
 
-	public ViewPlayers(Group group) {
+	public ViewPlayers(SpriteBatch batch) {
 		this.viewPlayers = new HashMap<String,ViewPlayer>();
-		this.group=group;
+		this.batch=batch;
 	}
 
-
+	
 	public void drawPlayersSleep()
 	{
 		for(Entry<String, ViewPlayer> entry : this.viewPlayers.entrySet())
@@ -28,7 +26,7 @@ public class ViewPlayers {
 			}
 		}
 	}
-
+	
 	public void drawPlayersWake()
 	{
 		for(Entry<String, ViewPlayer> entry : this.viewPlayers.entrySet())
@@ -39,7 +37,7 @@ public class ViewPlayers {
 			}
 		}
 	}
-
+	
 	public void drawPlayersDead()
 	{
 		for(Entry<String, ViewPlayer> entry : this.viewPlayers.entrySet())
@@ -50,15 +48,15 @@ public class ViewPlayers {
 			}
 		}
 	}
-
+	
 	public ViewPlayer newPlayer(String name, String status, String dir, int x, int y)
 	{
-		ViewPlayer player = new ViewPlayer(x, y, status, dir, this.group);
+		ViewPlayer player = new ViewPlayer(x, y, status, dir, this.batch);
 		this.viewPlayers.put(name, player);
 		return player;
 	}
 
-
+	
 	public void wake()
 	{
 		for(Entry<String, ViewPlayer> entry : this.viewPlayers.entrySet())
@@ -66,14 +64,18 @@ public class ViewPlayers {
 			entry.getValue().setStatus("WAKE");
 		}
 	}
-
+	
 	public void sleep()
 	{
 		for(Entry<String, ViewPlayer> entry : this.viewPlayers.entrySet())
 		{
-
-			entry.getValue().setStatus("SLEEP");
-			entry.getValue().updateSleep();
+			if((int)(Math.random()*3) != 1){
+				entry.getValue().setStatus("SLEEP");
+			}
+			else
+			{
+				entry.getValue().setStatus("WAKE");
+			}
 		}
 	}
 

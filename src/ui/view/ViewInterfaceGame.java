@@ -11,14 +11,12 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import ui.control.Controleur_Terrain;
 
 
-
-
 public class ViewInterfaceGame implements Screen{
 
 	private Stage stage;
 	private ViewTerrain terrain;
 	private Controleur_Terrain ctrlTerrain;
-	private ViewPlayers graphique_monstres;
+	private ViewPlayers viewPlayers;
 	private int iii;
 	private Texture textureNight;
 
@@ -30,63 +28,12 @@ public class ViewInterfaceGame implements Screen{
 	public void show() {
 		stage=new Stage();
 
-		graphique_monstres=new ViewPlayers(((SpriteBatch)stage.getBatch()));
+		viewPlayers=new ViewPlayers(((SpriteBatch)stage.getBatch()));
 		terrain=new ViewTerrain((SpriteBatch) stage.getBatch(), ctrlTerrain);
 
 		ViewPlayer player;
 
-
-		for(int i = 3; i<5; ++i)
-		{
-			player = graphique_monstres.newPlayer("player 3"+i,"WAKE", "RIGHT", 2, i);
-			if((int)(Math.random()*3) == 1){
-				player.getRoles().addNewRole("WEREWOLF");
-			}
-			else
-			{
-				player.getRoles().addNewRole("CITIZEN");
-			}
-
-		}
-
-		for(int i = 3; i<5; ++i)
-		{
-			player = graphique_monstres.newPlayer("player 4"+i,"WAKE", "LEFT", 12, i);
-			if((int)(Math.random()*3) == 1){
-				player.getRoles().addNewRole("WEREWOLF");
-			}
-			else
-			{
-				player.getRoles().addNewRole("CITIZEN");
-			}
-		}
-
-		for(int i = 3; i<12; ++i)
-		{
-			player = graphique_monstres.newPlayer("player 1"+i,"WAKE", "DOWN", i, 5);
-			if((int)(Math.random()*3) == 1){
-				player.getRoles().addNewRole("WEREWOLF");
-			}
-			else
-			{
-				player.getRoles().addNewRole("CITIZEN");
-			}
-
-		}
-
-
-		for(int i = 3; i<12; ++i)
-		{
-			player = graphique_monstres.newPlayer("player 2"+i, "WAKE","UP", i, 2);
-			if((int)(Math.random()*3) == 1){
-				player.getRoles().addNewRole("WEREWOLF");
-			}
-			else
-			{
-				player.getRoles().addNewRole("CITIZEN");
-			}
-
-		}
+		initPlayers(19);
 
 		textureNight = new Texture(Gdx.files.internal("resources/sprites/night.png"));
 
@@ -107,13 +54,13 @@ public class ViewInterfaceGame implements Screen{
 		stage.getBatch().begin();
 
 		terrain.update();		
-		graphique_monstres.drawPlayersDead();
-		graphique_monstres.drawPlayersSleep();
+		viewPlayers.drawPlayersDead();
+		viewPlayers.drawPlayersSleep();
 
 		if(iii > 100)
 		{
 			stage.getBatch().draw(textureNight,0,0);
-			if(iii == 101) 	this.graphique_monstres.sleep();
+			if(iii == 101) 	this.viewPlayers.sleep();
 
 		}
 
@@ -122,10 +69,11 @@ public class ViewInterfaceGame implements Screen{
 		if(iii> 200)
 		{
 			iii = 0;
-			this.graphique_monstres.wake();
+			this.viewPlayers.wake();
+			this.viewPlayers.dead();
 		}
-		
-		graphique_monstres.drawPlayersWake();
+
+		viewPlayers.drawPlayersWake();
 
 
 		//stage.getBatch().draw(style.getBackground(), 0, 0,Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -151,6 +99,104 @@ public class ViewInterfaceGame implements Screen{
 
 	}
 
+
+	public void initPlayers(int nb)
+	{
+		int n_rows = 0;
+		int n_cols = 0 ;
+
+		n_rows  = nb % 4;
+		n_cols = nb / 4;
+
+		System.out.println("NC "+n_cols+" NR "+n_rows);
+
+		if(n_cols+n_rows >= 2)
+		{
+			if(nb>4)
+			{
+				n_cols = (nb-4)/2 + (nb-4)%2;
+				//n_cols+= n_cols-2+n_rows;
+				n_rows = 2;
+			}
+		}
+		else
+		{
+			n_rows = n_cols;
+		}
+
+		System.out.println("NC "+n_cols+" NR "+n_rows);
+
+		int ind_x = 6;
+		int ind_y = 4;
+		ViewPlayer player;
+		for(int i = 0; i<n_rows; ++i)
+		{
+			player = viewPlayers.newPlayer("player 3"+i,"WAKE", "RIGHT", ind_x-n_cols/2, ind_y-i );
+			if((int)(Math.random()*3) == 1){
+				player.getRoles().addNewRole("WEREWOLF");
+			}
+			else
+			{
+				player.getRoles().addNewRole("CITIZEN");
+			}
+
+		}
+
+		if(nb >= 2) {
+			int ret = 0;
+			if(n_cols%2!=0)
+			{
+				ret = 1;
+			}
+
+			for(int i = 0; i<n_rows; ++i)
+			{
+				player = viewPlayers.newPlayer("player iii"+i,"WAKE", "LEFT", ind_x+1+ret+n_cols/2, ind_y-i );
+				if((int)(Math.random()*3) == 1){
+					player.getRoles().addNewRole("WEREWOLF");
+				}
+				else
+				{
+					player.getRoles().addNewRole("CITIZEN");
+				}
+
+			}
+
+			if(nb >= 3){
+
+				for(int i = 0; i<n_cols; ++i)
+				{
+					player = viewPlayers.newPlayer("player 1"+i,"WAKE", "DOWN", ind_x+1+i-n_cols/2, ind_y+1);
+					if((int)(Math.random()*3) == 1){
+						player.getRoles().addNewRole("WEREWOLF");
+					}
+					else
+					{
+						player.getRoles().addNewRole("CITIZEN");
+					}
+
+				}
+
+				if(nb >= 4){
+					int reste = nb - (n_cols+2*n_rows);
+					System.out.println("reste "+reste);
+					for(int i = 0; i<reste; ++i)
+					{
+						player = viewPlayers.newPlayer("player 1oo"+i,"WAKE", "UP", ind_x+1+i-n_cols/2, ind_y-1-n_rows/2);
+						if((int)(Math.random()*3) == 1){
+							player.getRoles().addNewRole("WEREWOLF");
+						}
+						else
+						{
+							player.getRoles().addNewRole("CITIZEN");
+						}
+
+					}
+				}
+			}
+		}
+
+	}
 
 	public void resume() {
 		// TODO Auto-generated method stub

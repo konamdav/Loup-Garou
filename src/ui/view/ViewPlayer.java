@@ -49,6 +49,17 @@ public class ViewPlayer extends ViewEntity{
 	private TextureRegion[] framesLeftSleep;
 	private TextureRegion[] framesDownSleep;
 	private Animation animationDownSleep;
+	
+	private Texture sheetDead;
+	private TextureRegion[] framesUpDead;
+	private Animation animationUpDead;
+	private Animation animationRightDead;
+	private TextureRegion[] framesRightDead;
+	private Animation animationLeftDead;
+	private TextureRegion[] framesLeftDead;
+	private TextureRegion[] framesDownDead;
+	private Animation animationDownDead;
+	
 	private String status;    
 
 
@@ -156,6 +167,54 @@ public class ViewPlayer extends ViewEntity{
 		}
 		animationUpSleep= new Animation(0.25f, framesUpSleep); 
 	
+		//dead
+		
+		sheetDead=new Texture(Gdx.files.internal("resources/sprites/PlayerDead.png"));
+		/*On découpe la texture */
+		tmp = TextureRegion.split(sheetDead, sheetDead.getWidth()/NB_FRAME, sheetDead.getHeight()/NB_DIRECTION);              // #10
+		framesUpDead = new TextureRegion[NB_FRAME];
+		framesDownDead = new TextureRegion[NB_FRAME];
+		framesRightDead = new TextureRegion[NB_FRAME];
+		framesLeftDead = new TextureRegion[NB_FRAME];
+		
+		/*Création des différentes animations*/
+		/*animation bas*/
+		index = 0;
+		for (int i = 0; i < NB_FRAME; i++) {
+
+			framesDownDead[index++] = tmp[0][i];
+
+		}
+		animationDownDead= new Animation(0.25f, framesDownDead); 
+
+		/*animation gauche*/
+		index = 0;
+		for (int i = 0; i < NB_FRAME; i++) {
+
+			framesLeftDead[index++] = tmp[1][i];
+
+		}
+		animationLeftDead= new Animation(0.25f, framesLeftDead); 
+
+		/*animation droite*/
+		index = 0;
+		for (int i = 0; i < NB_FRAME; i++) {
+
+			framesRightDead[index++] = tmp[2][i];
+
+		}
+		animationRightDead= new Animation(0.25f, framesRightDead); 
+
+		/*animation haut*/
+		index = 0;
+		for (int i = 0; i < NB_FRAME; i++) {
+
+			framesUpDead[index++] = tmp[3][i];
+
+		}
+		animationUpDead= new Animation(0.25f, framesUpDead); 
+		
+		
 	}
 
 
@@ -192,6 +251,10 @@ public class ViewPlayer extends ViewEntity{
 		{
 			this.updateWake();
 		}
+		else if(this.status.equals("DEAD"))
+		{
+			this.updateDead();
+		}
 		
 		this.stateAnimation += Gdx.graphics.getDeltaTime();
 		this.position[0]=position[0];
@@ -206,6 +269,7 @@ public class ViewPlayer extends ViewEntity{
 
 
 	public void setStatus(String status) {
+		if(!this.status.equals("DEAD"))
 		this.status = status;
 	}
 
@@ -229,6 +293,30 @@ public class ViewPlayer extends ViewEntity{
 		else
 		{
 			animation_courante=animationDownSleep;
+		}
+		
+		this.couranteFrame = animation_courante.getKeyFrame(stateAnimation, true); 
+	}
+	
+	public void updateDead()
+	{
+		//System.out.println("Dead");
+		Animation animation_courante;
+		if(direction.equals(LEFT))
+		{
+			animation_courante=animationLeftDead;
+		}
+		else if(direction.equals(UP))
+		{
+			animation_courante=animationUpDead;
+		}
+		else if(direction.equals(RIGHT))
+		{
+			animation_courante=animationRightDead;
+		}
+		else
+		{
+			animation_courante=animationDownDead;
 		}
 		
 		this.couranteFrame = animation_courante.getKeyFrame(stateAnimation, true); 

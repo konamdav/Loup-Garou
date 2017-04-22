@@ -26,14 +26,6 @@ public class SystemControllerAgent extends Agent{
 		message.setSender(this.getAID());
 		message.addReceiver(this.getAID());
 		this.send(message);
-
-		//test init 
-		 message = new ACLMessage(ACLMessage.REQUEST);
-		message.setConversationId("CREATE_GAME_REQUEST");
-		message.setSender(this.getAID());
-		message.addReceiver(this.getAID());
-		this.send(message);
-
 	}
 
 	public List<GameContainer> getContainers() {

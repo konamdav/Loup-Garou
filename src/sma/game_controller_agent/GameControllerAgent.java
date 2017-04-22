@@ -31,9 +31,8 @@ public class GameControllerAgent extends Agent implements IController{
 		
 		DFServices.registerGameAgent("CONTROLLER", "GAME", this, gameid);
 		
-		//this.addBehaviour(new InitBehaviour(this));
-		this.addBehaviour(new CheckEndGameBehaviour(this));
-		this.addBehaviour(new TurnsBehaviour(this));
+		this.addBehaviour(new InitBehaviour(this));
+		
 	}
 
 	public GameSettings getGameSettings() {

@@ -33,7 +33,7 @@ public class ViewInterfaceGame implements Screen{
 
 		ViewPlayer player;
 
-		initPlayers(19);
+		initPlayers((int) (2+Math.random()*20));
 
 		textureNight = new Texture(Gdx.files.internal("resources/sprites/night.png"));
 

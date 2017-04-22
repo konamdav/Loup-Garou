@@ -15,6 +15,7 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import sma.model.DFServices;
+import sma.model.Functions;
 import sma.model.VoteRequest;
 import sma.model.VoteResults;
 
@@ -80,6 +81,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 			ACLMessage message = this.myAgent.receive(mt);
 			if(message != null)
 			{
+				Functions.updateDayState("DAY", ctrlAgent, ctrlAgent.getGameid());
 				this.nextStep = STATE_SEND_WAKE_ALL;
 			}
 			else
@@ -357,6 +359,8 @@ public class TurnBehaviour extends SimpleBehaviour {
 				{
 					this.cptCitizens = 0;
 					this.nextStep = STATE_END_TURN;
+					
+					Functions.updateDayState("NIGHT", ctrlAgent, ctrlAgent.getGameid());
 				}
 				else
 				{
@@ -367,8 +371,6 @@ public class TurnBehaviour extends SimpleBehaviour {
 			{
 				block();
 			}
-
-			this.nextStep = STATE_END_TURN;
 		}
 		/** etat fin de tour **/
 		else if(this.step.equals(STATE_END_TURN))

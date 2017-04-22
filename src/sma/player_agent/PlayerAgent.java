@@ -5,6 +5,7 @@ import java.util.List;
 
 
 import jade.core.Agent;
+import sma.model.DFServices;
 
 public class PlayerAgent extends Agent implements IVotingAgent{
 	private List<String> votingBehaviours;
@@ -21,6 +22,8 @@ public class PlayerAgent extends Agent implements IVotingAgent{
 		
 		this.votingBehaviours = new ArrayList<String>();
 		this.addBehaviour(new AbstractVoteBehaviour(this));
+		
+		DFServices.registerGameAgent("PLAYER", "CITIZEN", this, this.gameid);
 		
 		//roles
 		//this.addBehaviour(new WerewolfVoteBehaviour(this));

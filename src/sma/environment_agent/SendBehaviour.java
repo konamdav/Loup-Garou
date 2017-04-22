@@ -8,10 +8,10 @@ import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 
 public class SendBehaviour extends OneShotBehaviour {
-	
+
 	private EnvironmentAgent envAgent;
 	private ACLMessage message;
-	
+
 
 	public SendBehaviour(EnvironmentAgent envAgent, ACLMessage message) {
 		super();
@@ -23,22 +23,35 @@ public class SendBehaviour extends OneShotBehaviour {
 	@Override
 	public void action() {
 		System.out.println("SEND DATA");
-		
+
 		ACLMessage reply = message.createReply();
 		ObjectMapper mapper = new ObjectMapper();
-		String json = "";
+		String contentString = "";
 		if(message.getConversationId().equals("GLOBAL_VOTE_RESULTS"))
 		{
 			try {
-				json = mapper.writeValueAsString(this.envAgent.getGlobalResults());
+				contentString = mapper.writeValueAsString(this.envAgent.getGlobalResults());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
-		reply.setContent(json);
+		else if(message.getConversationId().equals("DAY_STATE"))
+		{
+			contentString = this.envAgent.getDayState();	
+		}
+		else if(message.getConversationId().equals("ACTION_LOGS"))
+		{
+			try {
+				contentString = mapper.writeValueAsString(this.envAgent.getActionLogs());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		reply.setContent(contentString);
 		this.envAgent.send(reply);
 	}
 
-	
+
 
 }

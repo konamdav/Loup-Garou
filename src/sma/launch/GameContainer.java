@@ -31,23 +31,22 @@ public class GameContainer {
 			objects[1] = this.gameSettings;
 			
 			AgentController ac = container.createNewAgent(
+					"ENVIRONMENT_AGENT_"+gameid, "sma.environment_agent.EnvironmentAgent", objects);
+			ac.start();
+			
+			ac = container.createNewAgent(
 					"GAME_CONTROLLER_AGENT_"+gameid, "sma.game_controller_agent.GameControllerAgent", objects);
 			ac.start();
 
-			for(int i = 0; i<2; ++i)
+			/*for(int i = 0; i<2; ++i)
 			{
 				ac = container.createNewAgent(
 						"WEREWOLF_AGENT_"+i, "sma.werewolf_agent.WerewolfAgent", objects);
 				ac.start();
-			}
-			
-			
+			}*/
+						
 			ac = container.createNewAgent(
-					"ENVIRONMENT_AGENT", "sma.environment_agent.EnvironmentAgent", objects);
-			ac.start();
-			
-			ac = container.createNewAgent(
-					"CITIZEN_CONTROLLER_AGENT", "sma.citizen_controller_agent.CitizenControllerAgent", objects);
+					"CITIZEN_CONTROLLER_AGENT_"+gameid, "sma.citizen_controller_agent.CitizenControllerAgent", objects);
 			ac.start();
 			
 		}

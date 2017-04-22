@@ -42,6 +42,14 @@ public class ReceiveBehaviour extends OneShotBehaviour {
 				e.printStackTrace();
 			}
 		}
+		else if(message.getConversationId().equals("DAY_STATE"))
+		{
+			this.envAgent.setDayState(message.getContent());
+		}
+		else if(message.getConversationId().equals("ACTION_LOG"))
+		{
+			this.envAgent.getActionLogs().add(message.getContent());
+		}
 	}
 
 	

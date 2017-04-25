@@ -36,6 +36,11 @@ public class TurnBehaviour extends SimpleBehaviour {
 	private final static String STATE_SEND_SLEEP_ALL = "SEND_SLEEP_ALL";
 	private final static String STATE_RECEIVE_SLEEP_ALL = "RECEIVE_SLEEP_ALL";
 
+	
+	private final static String STATE_DAY = "DAY";
+	private final static String STATE_NIGHT = "NIGHT";
+
+	
 	private String step;
 	private String nextStep;
 	private boolean previousVictims;
@@ -81,19 +86,22 @@ public class TurnBehaviour extends SimpleBehaviour {
 			ACLMessage message = this.myAgent.receive(mt);
 			if(message != null)
 			{
-				Functions.updateDayState("DAY", ctrlAgent, ctrlAgent.getGameid());
-				this.nextStep = STATE_SEND_WAKE_ALL;
+				this.nextStep = STATE_DAY;
 			}
 			else
 			{
 				block();
 			}
 
+		}else if(this.step.equals(STATE_DAY))
+		{
+			Functions.updateDayState("DAY", ctrlAgent, ctrlAgent.getGameid());
+			this.nextStep = STATE_SEND_WAKE_ALL;
 		}
 		/** etat envoi des requêtes de reveil pour tout les joueurs**/
 		else if(this.step.equals(STATE_SEND_WAKE_ALL))
 		{
-			for(AID aid : DFServices.findGameAgent("PLAYER", "CITIZEN", this.ctrlAgent, this.ctrlAgent.getGameid()))
+			for(AID aid : DFServices.findGamePlayerAgent( "CITIZEN", this.ctrlAgent, this.ctrlAgent.getGameid()))
 			{
 				ACLMessage messageRequest = new ACLMessage(ACLMessage.REQUEST);
 				messageRequest.setSender(this.ctrlAgent.getAID());
@@ -115,7 +123,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 			if(message != null)
 			{
 				++this.cptCitizens;
-				if(this.cptCitizens == DFServices.findGameAgent("PLAYER", "CITIZEN", this.myAgent, this.ctrlAgent.getGameid()).size())
+				if(this.cptCitizens == DFServices.findGamePlayerAgent( "CITIZEN", this.myAgent, this.ctrlAgent.getGameid()).size())
 				{
 					this.cptCitizens = 0;
 					this.nextStep = STATE_SEND_KILL_VICTIMS_REQUEST;
@@ -159,7 +167,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 		else if(this.step.equals(STATE_SEND_CHECK_ENDGAME))
 		{
 			System.err.println("... check ... "+this.previousVictims);
-			List<AID> agents = DFServices.findGameAgent("CONTROLLER", "GAME", this.ctrlAgent, this.ctrlAgent.getGameid());
+			List<AID> agents = DFServices.findGameControllerAgent("GAME", this.ctrlAgent, this.ctrlAgent.getGameid());
 			if(!agents.isEmpty())
 			{
 				//System.out.println("=> "+agents.get(0).getLocalName());
@@ -223,7 +231,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 		{
 
 			List<String> choices = new ArrayList<String>();
-			for(AID aid : DFServices.findGameAgent("PLAYER", "CITIZEN", this.ctrlAgent, this.ctrlAgent.getGameid()))
+			for(AID aid : DFServices.findGamePlayerAgent( "CITIZEN", this.ctrlAgent, this.ctrlAgent.getGameid()))
 			{
 				choices.add(aid.getName());
 			}
@@ -276,7 +284,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 		else if(this.step.equals(STATE_SEND_VOTE_REQUEST))
 		{
 			List<String> choices = new ArrayList<String>();
-			for(AID aid : DFServices.findGameAgent("PLAYER", "CITIZEN", this.ctrlAgent, this.ctrlAgent.getGameid()))
+			for(AID aid : DFServices.findGamePlayerAgent( "CITIZEN", this.ctrlAgent, this.ctrlAgent.getGameid()))
 			{
 				choices.add(aid.getName());
 			}
@@ -332,7 +340,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 		/** etat envoi des requêtes de sommeil **/
 		else if(this.step.equals(STATE_SEND_SLEEP_ALL))
 		{
-			for(AID aid : DFServices.findGameAgent("PLAYER", "CITIZEN", this.ctrlAgent, this.ctrlAgent.getGameid()))
+			for(AID aid : DFServices.findGamePlayerAgent( "CITIZEN", this.ctrlAgent, this.ctrlAgent.getGameid()))
 			{
 				ACLMessage messageRequest = new ACLMessage(ACLMessage.REQUEST);
 				messageRequest.setSender(this.ctrlAgent.getAID());
@@ -355,7 +363,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 			if(message != null)
 			{
 				++this.cptCitizens;
-				if(this.cptCitizens == DFServices.findGameAgent("PLAYER", "CITIZEN", this.myAgent, this.ctrlAgent.getGameid()).size())
+				if(this.cptCitizens == DFServices.findGamePlayerAgent( "CITIZEN", this.myAgent, this.ctrlAgent.getGameid()).size())
 				{
 					this.cptCitizens = 0;
 					this.nextStep = STATE_END_TURN;
@@ -375,7 +383,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 		/** etat fin de tour **/
 		else if(this.step.equals(STATE_END_TURN))
 		{
-			List<AID> agents = DFServices.findGameAgent("CONTROLLER", "GAME", this.ctrlAgent, this.ctrlAgent.getGameid());
+			List<AID> agents = DFServices.findGameControllerAgent("GAME", this.ctrlAgent, this.ctrlAgent.getGameid());
 			if(!agents.isEmpty())
 			{
 				ACLMessage  message = new ACLMessage(ACLMessage.INFORM);

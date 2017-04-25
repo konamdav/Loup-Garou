@@ -29,7 +29,7 @@ public class GameControllerAgent extends Agent implements IController{
 		this.gameid = (Integer)args[0];
 		this.gameSettings = (GameSettings) args[1];
 		
-		DFServices.registerGameAgent("CONTROLLER", "GAME", this, gameid);
+		DFServices.registerGameControllerAgent("GAME", this, gameid);
 		
 		this.addBehaviour(new InitBehaviour(this));
 		

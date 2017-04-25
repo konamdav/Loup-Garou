@@ -32,7 +32,7 @@ public class WakeSleepTestBehaviour extends SimpleBehaviour{
 		{
 			System.out.println("I WAKE ");
 			
-			DFServices.setStatusAgent("WAKE", this.playerAgent, this.playerAgent.getGameid());
+			DFServices.setStatusPlayerAgent("WAKE", this.playerAgent, this.playerAgent.getGameid());
 			
 			ACLMessage reply = new ACLMessage(ACLMessage.CONFIRM);
 			reply.setConversationId("WAKE_PLAYER");
@@ -51,7 +51,7 @@ public class WakeSleepTestBehaviour extends SimpleBehaviour{
 			if (message != null) 
 			{
 				System.out.println("I SLEEP ");
-				DFServices.setStatusAgent("SLEEP", this.playerAgent, this.playerAgent.getGameid());
+				DFServices.setStatusPlayerAgent("SLEEP", this.playerAgent, this.playerAgent.getGameid());
 				
 				ACLMessage reply = new ACLMessage(ACLMessage.CONFIRM);
 				reply.setConversationId("SLEEP_PLAYER");

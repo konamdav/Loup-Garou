@@ -61,7 +61,7 @@ public class InitBehaviour extends Behaviour {
 		else if(step.equals(STATE_ATTR))
 		{
 			
-			List<AID> agents = DFServices.findGameAgent("PLAYER", "CITIZEN", this.gameControllerAgent, this.gameControllerAgent.getGameid());
+			List<AID> agents = DFServices.findGamePlayerAgent( "CITIZEN", this.gameControllerAgent, this.gameControllerAgent.getGameid());
 			Collections.shuffle(agents);
 			
 			GameSettings gameSettings = this.gameControllerAgent.getGameSettings();
@@ -101,6 +101,9 @@ public class InitBehaviour extends Behaviour {
 		else if(step.equals(STATE_START_GAME))
 		{
 			System.out.println("START GAME");
+			
+			System.out.println("PROFILES");
+			DFServices.getPlayerProfiles(this.gameControllerAgent, this.gameControllerAgent.getGameid());
 			//this.gameControllerAgent.addBehaviour(new TurnsBehaviour(this.gameControllerAgent));
 			//this.gameControllerAgent.addBehaviour(new CheckEndGameBehaviour(this.gameControllerAgent));
 			

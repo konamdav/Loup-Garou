@@ -49,7 +49,7 @@ public class WerewolfAgent extends Agent implements IVotingAgent{
 		Object[] args = this.getArguments();
 		this.gameid = (int) args[0];
 		
-		DFServices.registerGameAgent("PLAYER", "CITIZEN", this, this.gameid);
+		DFServices.registerPlayerAgent("CITIZEN", this, this.gameid);
 
 		this.addBehaviour(new AbstractVoteBehaviour(this));
 		

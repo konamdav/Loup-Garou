@@ -14,7 +14,7 @@ public class Functions {
 		msg.setConversationId("ACTION_LOG");
 		msg.setContent(action);
 		
-		List<AID> agents = DFServices.findGameAgent("GAME", "ENVIRONMENT", a, gameid);
+		List<AID> agents = DFServices.findGameControllerAgent("ENVIRONMENT", a, gameid);
 		if(!agents.isEmpty())
 		{
 			msg.addReceiver(agents.get(0));
@@ -29,7 +29,7 @@ public class Functions {
 		msg.setConversationId("DAY_STATE");
 		msg.setContent(state);
 		
-		List<AID> agents = DFServices.findGameAgent("GAME", "ENVIRONMENT", a, gameid);
+		List<AID> agents = DFServices.findGameControllerAgent("ENVIRONMENT", a, gameid);
 		if(!agents.isEmpty())
 		{
 			msg.addReceiver(agents.get(0));

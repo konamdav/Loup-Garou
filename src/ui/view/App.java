@@ -24,6 +24,7 @@ public class App extends Game {
 	}
 
 	public void create() {
+		
 		this.setScreen(new ViewInterfaceGame(this));
 	}
 	

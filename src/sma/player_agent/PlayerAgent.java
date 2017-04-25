@@ -23,7 +23,9 @@ public class PlayerAgent extends Agent implements IVotingAgent{
 		this.votingBehaviours = new ArrayList<String>();
 		this.addBehaviour(new AbstractVoteBehaviour(this));
 		
-		DFServices.registerGameAgent("PLAYER", "CITIZEN", this, this.gameid);
+		String[] tmp = {"CITIZEN"};
+		DFServices.registerPlayerAgent(tmp, this, this.gameid);
+		DFServices.setStatusPlayerAgent("SLEEP", this, this.gameid);
 		
 		//roles
 		//this.addBehaviour(new WerewolfVoteBehaviour(this));

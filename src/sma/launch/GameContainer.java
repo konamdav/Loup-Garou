@@ -8,6 +8,11 @@ import jade.wrapper.AgentController;
 import sma.model.GameSettings;
 
 //Conteneur de jeu
+/***
+ * Conteneur de jeu
+ * @author Davy
+ *
+ */
 public class GameContainer {
 	private int gameid;
 	public static String MAIN_PROPERTIES_FILE = "resources/sma/gamecontainer.properties";

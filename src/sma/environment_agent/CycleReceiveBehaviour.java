@@ -4,6 +4,11 @@ import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 
+/***
+ * Behaviour d'envoi de données
+ * @author Davy
+ *
+ */
 public class CycleReceiveBehaviour extends CyclicBehaviour{
 	private EnvironmentAgent envAgent;
 	
@@ -14,9 +19,7 @@ public class CycleReceiveBehaviour extends CyclicBehaviour{
 
 	@Override
 	public void action() {
-		MessageTemplate mt = MessageTemplate.and(
-				MessageTemplate.MatchPerformative(ACLMessage.AGREE),
-				MessageTemplate.MatchConversationId("CURRENT_VOTE_RESULTS"));
+		MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.AGREE);
 		ACLMessage message = this.myAgent.receive(mt);
 		if(message != null)
 		{

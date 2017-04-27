@@ -19,6 +19,13 @@ import sma.model.DFServices;
 import sma.model.VoteRequest;
 import sma.model.VoteResults;
 
+
+/***
+ * Vote synchrone
+ * Attente qu'un joueur finisse de voter pour demander au suivant
+ * @author Davy
+ *
+ */
 public class SynchronousVoteBehaviour extends Behaviour {
 	private int nbVoters;
 	private VoteResults results;

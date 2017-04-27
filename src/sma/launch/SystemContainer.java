@@ -6,6 +6,12 @@ import jade.core.Runtime;
 import jade.wrapper.AgentContainer;
 import jade.wrapper.AgentController;
 
+/**
+ * Serveur de partie
+ * Conteneur système de la plateforme
+ * @author Davy
+ *
+ */
 public class SystemContainer {
 
 	public static String MAIN_PROPERTIES_FILE = "resources/sma/systemcontainer.properties";

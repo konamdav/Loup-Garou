@@ -11,6 +11,12 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import sma.model.DFServices;
 
+
+/***
+ * Coordonne les tours
+ * @author Davy
+ *
+ */
 public class TurnsBehaviour extends SimpleBehaviour {
 	private IController controllerAgent;
 	private final static String STATE_INIT = "INIT";

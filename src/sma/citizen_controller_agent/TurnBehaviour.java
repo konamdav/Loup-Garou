@@ -19,6 +19,11 @@ import sma.model.Functions;
 import sma.model.VoteRequest;
 import sma.model.VoteResults;
 
+/***
+ * Behaviour de gestion du tour des citizens
+ * @author Davy
+ *
+ */
 public class TurnBehaviour extends SimpleBehaviour {
 	private final static String STATE_INIT = "INIT";
 	private final static String STATE_WAITING_START = "WAITING_START";

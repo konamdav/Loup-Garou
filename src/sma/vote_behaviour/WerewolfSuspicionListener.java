@@ -18,6 +18,11 @@ import sma.model.VoteRequest;
 import sma.model.VoteResults;
 import sma.player_agent.PlayerAgent;
 
+/**
+ * 	Listener de mouvement pour loup garou
+ * @author Davy
+ *
+ */
 public class WerewolfSuspicionListener extends Behaviour{
 	private PlayerAgent playerAgent;
 	private String name_behaviour;

@@ -17,6 +17,11 @@ import sma.citizen_controller_agent.CitizenControllerAgent;
 import sma.model.VoteRequest;
 import sma.model.VoteResults;
 
+/** 
+ * Vote asynchrone (les players répondent sans attendre les autres)
+ * @author Davy
+ *
+ */
 public class AsyncrhonousVoteBehaviour extends Behaviour {
 	private int nbVoters;
 	private VoteResults results;

@@ -39,6 +39,10 @@ public class NewMainRoleBehaviour extends CyclicBehaviour{
 		MessageTemplate mt = MessageTemplate.and(
 				MessageTemplate.MatchPerformative(ACLMessage.REQUEST),
 				MessageTemplate.MatchConversationId("ATTRIBUTION_ROLE"));
+		
+		//TODO CEDRIC Renvoyer a la fin au game controller un msg INFORM de conversation id ATTRIBUTION_ROLE
+		// pour prévenir de la fin de l'attribution du role
+		
 		ACLMessage message = this.myAgent.receive(mt);
 		if(message != null)
 		{

@@ -4,7 +4,11 @@ import jade.core.AID;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
-
+/**
+ * Behaviour pour ajouter une victime de jeu
+ * @author Davy
+ *
+ */
 public class AddVictimBehaviour extends CyclicBehaviour{
 	private CitizenControllerAgent citizenController;
 	

@@ -7,7 +7,13 @@ import sma.model.GameSettings;
 //il a un gamesetting qui contient la conf de la partie (roles autorisés + nombre par role)
 //C'est le game controlleur qui créé les joueurs + donne un role
 
-
+/***
+ * Gestionnaire de jeu 
+ *** Cr�ation des players
+ *** Gestion des tours
+ * @author Davy
+ *
+ */
 public class GameControllerAgent extends Agent implements IController{
 	private GameSettings gameSettings;
 	private int gameid;

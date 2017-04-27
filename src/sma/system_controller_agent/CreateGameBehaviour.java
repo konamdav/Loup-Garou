@@ -5,6 +5,11 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import sma.launch.GameContainer;
 
+/***
+ * Création d'un jeu via une configuration de partie
+ * @author Davy
+ *
+ */
 public class CreateGameBehaviour extends CyclicBehaviour {
 	private SystemControllerAgent systemControllerAgent;
 

@@ -14,7 +14,7 @@ import ui.control.Controleur_Terrain;
 public class ViewInterfaceGame implements Screen{
 
 	private Stage stage;
-	private ViewTerrain terrain;
+	private ViewMap terrain;
 	private Controleur_Terrain ctrlTerrain;
 	private ViewPlayers viewPlayers;
 	private int iii;
@@ -29,7 +29,7 @@ public class ViewInterfaceGame implements Screen{
 		stage=new Stage();
 
 		viewPlayers=new ViewPlayers(((SpriteBatch)stage.getBatch()));
-		terrain=new ViewTerrain((SpriteBatch) stage.getBatch(), ctrlTerrain);
+		terrain=new ViewMap((SpriteBatch) stage.getBatch(), ctrlTerrain);
 
 		ViewPlayer player;
 

@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 import jade.core.AID;
 import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
+import jade.lang.acl.MessageTemplate;
 import jade.wrapper.AgentController;
 import sma.model.DFServices;
 import sma.model.GameSettings;
@@ -16,11 +17,19 @@ import sma.model.GameSettings;
 //Crée les agents 
 //Puis attribue les roles 
 //Enfin start le game
+/***
+ * Creation des players 
+ * puis attribution des roles
+ * lancement du jeu
+ * @author Davy
+ *
+ */
 public class InitBehaviour extends Behaviour {
 	private GameControllerAgent gameControllerAgent;	
 	private boolean flag;
 	private String step;
 	private String nextStep;
+	private int cpt;
 
 	private final static String STATE_INIT ="STATE_INIT";
 	private final static String STATE_RECEIVE_INIT ="STATE_RECEIVE_INIT";
@@ -32,7 +41,7 @@ public class InitBehaviour extends Behaviour {
 		super();
 		this.gameControllerAgent = gameControllerAgent;
 		this.flag = false;
-		
+		this.cpt = 0;
 		this.step = STATE_INIT;
 		this.nextStep = "";
 
@@ -45,6 +54,8 @@ public class InitBehaviour extends Behaviour {
 			try{
 				int nb = this.gameControllerAgent.getGameSettings().getPlayersCount();
 				int gameid = this.gameControllerAgent.getGameid();
+				this.cpt = 0;
+
 
 				Object[] args = {gameid};
 				for(int i = 0; i<nb; ++i)
@@ -53,7 +64,7 @@ public class InitBehaviour extends Behaviour {
 					AgentController ac = this.gameControllerAgent.getContainerController().createNewAgent(
 							playerName, "sma.player_agent.PlayerAgent", args);
 					ac.start();
-					
+
 					System.out.println("CREATION AGENT PLAYER");
 				}
 
@@ -62,56 +73,93 @@ public class InitBehaviour extends Behaviour {
 			{
 				e.printStackTrace();
 			}
-			
-			this.nextStep = STATE_SEND_ATTR;
+
+			this.nextStep = STATE_RECEIVE_INIT;
 		}
-		else if(step.equals(STATE_SEND_ATTR))
+		else if(step.equals(STATE_RECEIVE_INIT))
 		{
-			
-			List<AID> agents = DFServices.findGamePlayerAgent( "CITIZEN", this.gameControllerAgent, this.gameControllerAgent.getGameid());
-			Collections.shuffle(agents);
-			
-			GameSettings gameSettings = this.gameControllerAgent.getGameSettings();
-			if(agents.size()!= gameSettings.getPlayersCount())
+			MessageTemplate mt = MessageTemplate.and(
+					MessageTemplate.MatchPerformative(ACLMessage.SUBSCRIBE),
+					MessageTemplate.MatchConversationId("INIT_PLAYER"));
+
+			ACLMessage message = this.myAgent.receive(mt);
+			if(message != null)
 			{
-				System.out.println("GAMEID "+this.gameControllerAgent.getGameid()+" | "+agents.size()+" == "+gameSettings.getPlayersCount()+" ?");
-				this.nextStep = STATE_SEND_ATTR;
+				this.cpt++;
+				if(cpt == this.gameControllerAgent.getGameSettings().getPlayersCount())
+				{
+					this.nextStep = STATE_SEND_ATTR;
+					this.cpt = 0;
+				}
 			}
 			else
 			{
-				int indexPlayer = 0;
-				//Récupère tous les Roles du RolesSettings
-				for(Entry<String, Integer> entry : gameSettings.getRolesSettings().entrySet())
-				{
-					if(entry.getValue()>0)
-					{
-						//Attribue le nombre de joueurs de ce role
-						for(int i = 0; i<entry.getValue(); ++i)
-						{
-							/** msg attribution role **/
-							ACLMessage messageRequest = new ACLMessage(ACLMessage.REQUEST);
-							messageRequest.setSender(this.gameControllerAgent.getAID());
-							messageRequest.addReceiver(agents.get(indexPlayer));
-							
-							messageRequest.setConversationId("ATTRIBUTION_ROLE");
-							messageRequest.setContent(entry.getKey());
+				this.nextStep = STATE_RECEIVE_INIT;
+				block();
+			}
+		}
+		else if(step.equals(STATE_SEND_ATTR))
+		{
+			List<AID> agents = DFServices.findGamePlayerAgent( "CITIZEN", this.gameControllerAgent, this.gameControllerAgent.getGameid());
+			Collections.shuffle(agents);
 
-							this.gameControllerAgent.send(messageRequest);
-							
-							System.out.println("ATTRIBUTION ROLE "+entry.getKey()+" => "+agents.get(indexPlayer).getLocalName());
-							indexPlayer++;
-						}
+			GameSettings gameSettings = this.gameControllerAgent.getGameSettings();
+
+			int indexPlayer = 0;
+			//Récupère tous les Roles du RolesSettings
+			for(Entry<String, Integer> entry : gameSettings.getRolesSettings().entrySet())
+			{
+				if(entry.getValue()>0)
+				{
+					//Attribue le nombre de joueurs de ce role
+					for(int i = 0; i<entry.getValue(); ++i)
+					{
+						/** msg attribution role **/
+						ACLMessage messageRequest = new ACLMessage(ACLMessage.REQUEST);
+						messageRequest.setSender(this.gameControllerAgent.getAID());
+						messageRequest.addReceiver(agents.get(indexPlayer));
+
+						messageRequest.setConversationId("ATTRIBUTION_ROLE");
+						messageRequest.setContent(entry.getKey());
+
+						this.gameControllerAgent.send(messageRequest);
+
+						System.out.println("ATTRIBUTION ROLE "+entry.getKey()+" => "+agents.get(indexPlayer).getLocalName());
+						indexPlayer++;
 					}
 				}
-				
-				this.nextStep = STATE_START_GAME;
 			}
-			
+
+			this.nextStep = STATE_RECEIVE_ATTR;
+
+
+		}
+		else if(step.equals(STATE_RECEIVE_ATTR))
+		{
+			MessageTemplate mt = MessageTemplate.and(
+					MessageTemplate.MatchPerformative(ACLMessage.INFORM),
+					MessageTemplate.MatchConversationId("ATTRIBUTION_ROLE"));
+
+			ACLMessage message = this.myAgent.receive(mt);
+			if(message != null)
+			{
+				this.cpt++;
+				if(cpt == this.gameControllerAgent.getGameSettings().getPlayersCount())
+				{
+					this.nextStep = STATE_START_GAME;
+					this.cpt = 0;
+				}
+			}
+			else
+			{
+				this.nextStep = STATE_RECEIVE_ATTR;
+				block();
+			}
 		}
 		else if(step.equals(STATE_START_GAME))
 		{
 			System.out.println("START GAME");
-			
+
 			System.out.println("PROFILES");
 			DFServices.getPlayerProfiles(this.gameControllerAgent, this.gameControllerAgent.getGameid());
 			//this.gameControllerAgent.addBehaviour(new TurnsBehaviour(this.gameControllerAgent));

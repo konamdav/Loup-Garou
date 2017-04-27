@@ -1,5 +1,10 @@
 package sma.data;
 
+/***
+ * Données de scoring
+ * @author Davy
+ *
+ */
 public class ScoreFactor {
 	public static int SCORE_MIN = Integer.MIN_VALUE/10;
 	public static int SCORE_MAX = Integer.MAX_VALUE /10;

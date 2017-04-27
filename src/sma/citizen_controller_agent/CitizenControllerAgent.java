@@ -9,6 +9,11 @@ import jade.lang.acl.ACLMessage;
 import sma.generic.behaviour.SynchronousVoteBehaviour;
 import sma.model.DFServices;
 
+/**
+ * Controlleur gestion du tour citizen
+ * @author Davy
+ *
+ */
 public class CitizenControllerAgent extends Agent implements IController {
 	private int gameid;
 	private Stack<AID> victims;

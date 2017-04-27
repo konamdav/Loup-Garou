@@ -8,17 +8,17 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import ui.control.Controleur_Terrain;
-import ui.model.Case_Terrain;
+import ui.model.Case;
 import ui.model.Const;
 
-public class ViewTerrain {
+public class ViewMap {
 
 	private SpriteBatch batch;    
 	private Texture case_constructible;
 	
 	private Controleur_Terrain ctrlTerrain;
 
-	public ViewTerrain(SpriteBatch batch, Controleur_Terrain ctrlTerrain)
+	public ViewMap(SpriteBatch batch, Controleur_Terrain ctrlTerrain)
 	{
 		this.ctrlTerrain=ctrlTerrain;
 		this.batch=batch;
@@ -32,7 +32,7 @@ public class ViewTerrain {
 		{
 			for(int j = 0 ; j<Const.COLONNE ; j++)
 			{
-				if(ctrlTerrain.getSonTerrain().getMap()[i][j] instanceof Case_Terrain)
+				if(ctrlTerrain.getSonTerrain().getMap()[i][j] instanceof Case)
 				{
 					batch.draw(this.case_constructible,j*64,i*64);  
 				}  

@@ -22,7 +22,7 @@ import ui.control.Controleur_Terrain;
 public class ViewInterfaceGame2 implements Screen
 {
 	private Stage stage;
-	private ViewTerrain terrain;
+	private ViewMap terrain;
 	private Controleur_Terrain ctrlTerrain;
 	private ViewPlayers graphique_monstres;
 	private int iii;

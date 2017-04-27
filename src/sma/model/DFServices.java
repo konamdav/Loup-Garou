@@ -326,6 +326,7 @@ public class DFServices {
 		{
 			PlayerProfile profile = tmp.get(werewolf.getLocalName());
 			profile.getRoles().add("WEREWOLF");
+			profile.getRoles().remove("CITIZEN");
 		}
 
 		//get profiles joueurs wake

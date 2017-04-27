@@ -2,17 +2,17 @@ package ui.model;
 import java.io.InputStream;
 import java.util.Scanner;
 
-public class Terrain{
+public class Map{
 	/***map**/
-	private Case_Terrain[][] map;
+	private Case[][] map;
 
-	public Case_Terrain[][] getMap() {
+	public Case[][] getMap() {
 		return map;
 	}
 
-	public Terrain()
+	public Map()
 	{
-		map = new Case_Terrain[Const.LIGNE][Const.COLONNE];
+		map = new Case[Const.LIGNE][Const.COLONNE];
 		
 	}
 	
@@ -29,7 +29,7 @@ public class Terrain{
 			{
 				for(int j=0; j<Const.COLONNE;j++)
 				{
-					map[i][j]=new Case_Terrain(i, j);	
+					map[i][j]=new Case(i, j);	
 				}
 
 			}

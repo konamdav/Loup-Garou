@@ -15,6 +15,11 @@ import sma.model.VoteRequest;
 import sma.model.VoteResults;
 import sma.player_agent.PlayerAgent;
 
+/***
+ * Algo de scoring pour tous les joueurs 
+ * @author Davy
+ *
+ */
 public class CitizenScoreBehaviour extends Behaviour{
 	private PlayerAgent playerAgent;
 	private String name_behaviour;

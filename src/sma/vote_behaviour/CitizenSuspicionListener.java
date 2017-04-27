@@ -18,6 +18,11 @@ import sma.model.VoteRequest;
 import sma.model.VoteResults;
 import sma.player_agent.PlayerAgent;
 
+/**
+ * Listener de mouvements pour les citizens
+ * @author Davy
+ *
+ */
 public class CitizenSuspicionListener extends Behaviour{
 	private PlayerAgent playerAgent;
 	private String name_behaviour;
@@ -69,10 +74,10 @@ public class CitizenSuspicionListener extends Behaviour{
 		}
 		else if(step.equals(STATE_SEND_SUSPICIONS))
 		{
+			//liste des voisins que l'on soupçonne
 			List<AID> neighbors = DFServices.findNeighborsBySide(this.side, this.playerAgent.getAID(), playerAgent, this.playerAgent.getGameid());
 			
 			//envoi a la suspicion citizen
-			
 			//TODO Cédric
 			
 			this.nextStep =  STATE_INIT;

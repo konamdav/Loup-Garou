@@ -18,6 +18,11 @@ import sma.model.ScoreResults;
 import sma.model.VoteRequest;
 import sma.model.VoteResults;
 
+/**
+ * Interface de vote du player
+ * Fait le lien entre l'extérieur (controlleur) et les behaviours de scoring
+ * @author Davy
+ */
 public class AbstractVoteBehaviour extends SimpleBehaviour{
 	private IVotingAgent agent;
 	private int nbVoters;

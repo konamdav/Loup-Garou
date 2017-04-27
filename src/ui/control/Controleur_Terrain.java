@@ -2,16 +2,16 @@ package ui.control;
 
 import java.util.Random;
 
-import ui.model.Case_Terrain;
+import ui.model.Case;
 import ui.model.Const;
-import ui.model.Terrain;
+import ui.model.Map;
 /***
  * Controleur Terrain
  * @author Davy
  *Gere tout ce qui est relatif au terrain
  */
 public class Controleur_Terrain {
-	private Terrain sonTerrain;
+	private Map sonTerrain;
 	private static int ii = 0;
 
 	public  Controleur_Terrain() {
@@ -20,7 +20,7 @@ public class Controleur_Terrain {
 	}
 	
 	
-	public Case_Terrain getCase(double x, double y)
+	public Case getCase(double x, double y)
 	{
 		int i=(int) (x/Const.TAILLE_CASE);
 		int j=(int) (y/Const.TAILLE_CASE);
@@ -36,7 +36,7 @@ public class Controleur_Terrain {
 		}
 	}
 	
-	public Case_Terrain getCaseByXY(int i, int j)
+	public Case getCaseByXY(int i, int j)
 	{	
 		if(i>=0&&j>=0&&i<Const.COLONNE&&j<Const.LIGNE)
 		{
@@ -49,13 +49,13 @@ public class Controleur_Terrain {
 		}
 	}
 	
-	public Terrain getSonTerrain() {
+	public Map getSonTerrain() {
 		return sonTerrain;
 	}
 
 	public void preparerTerrain()
 	{
-		sonTerrain=new Terrain();
+		sonTerrain=new Map();
 		new Random();
 		int fichier=++ii %Const.NB_TERRAIN;
 		sonTerrain.chargerCarte();

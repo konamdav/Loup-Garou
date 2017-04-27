@@ -15,7 +15,11 @@ import jade.core.behaviours.Behaviour;
 import sma.model.DFServices;
 
 
-
+/**
+ * Structure générique du player
+ * @author Davy
+ *
+ */
 public class PlayerAgent extends Agent implements IVotingAgent{
 	
 	private ArrayList<String> votingBehaviours; //All behaviour for vote to execute. Treeat them with string to send 
@@ -66,6 +70,9 @@ public class PlayerAgent extends Agent implements IVotingAgent{
 		this.votingBehaviours = new ArrayList<String>();
 		this.main_role = null;
 		
+		//TODO CEDRIC
+		//envoi msg au game controller de type subscribe (conversation id = INIT_PLAYER)
+		// pour le prévenir que l'agent a bien été créer
 
 		
 		//this.addBehaviour(new RegisterAgentBehaviour(this));

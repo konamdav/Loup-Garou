@@ -1,11 +1,12 @@
 package ui.model;
-public  class Case_Terrain 
+
+public  class Case 
 {
 	protected int x;
 	protected int y;
 	
 
-	public Case_Terrain(int x, int y)
+	public Case(int x, int y)
 	{
 		this.x=x;
 		this.y=y;

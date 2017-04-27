@@ -13,6 +13,11 @@ import sma.model.DFServices;
 import sma.model.Roles;
 import sma.model.Status;
 
+/**
+ * Behaviour qui prévient la fin de jeu
+ * @author Davy
+ *
+ */
 public class CheckEndGameBehaviour extends CyclicBehaviour {
 	private GameControllerAgent gameControllerAgent;
 	private final static String STATE_INIT = "INIT";
@@ -84,6 +89,7 @@ public class CheckEndGameBehaviour extends CyclicBehaviour {
 				this.gameControllerAgent.setCheckEndGame(true);
 				message.setConversationId("END_GAME");
 				this.nextStep = STATE_NOTIFY_END_GAME;
+				
 			}
 			else if(citizens.isEmpty()) 
 			{

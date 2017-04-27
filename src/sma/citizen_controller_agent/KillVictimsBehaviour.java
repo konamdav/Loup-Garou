@@ -3,6 +3,11 @@ package sma.citizen_controller_agent;
 import jade.core.AID;
 import jade.core.behaviours.SimpleBehaviour;
 
+/**
+ * Behaviour tuant les joueurs désignés comme victimes
+ * @author Davy
+ *
+ */
 public class KillVictimsBehaviour extends SimpleBehaviour
 {
 	private CitizenControllerAgent citizenControllerAgent;

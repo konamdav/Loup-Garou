@@ -11,6 +11,10 @@ import jade.wrapper.AgentController;
 import sma.model.DFServices;
 import sma.model.GameSettings;
 
+//Behaviour à machine à état 
+//Crée les agents 
+//Puis attribue les roles 
+//Enfin start le game
 public class InitBehaviour extends Behaviour {
 	private GameControllerAgent gameControllerAgent;	
 	private boolean flag;
@@ -73,10 +77,12 @@ public class InitBehaviour extends Behaviour {
 			else
 			{
 				int indexPlayer = 0;
+				//Récupère tous les Roles du RolesSettings
 				for(Entry<String, Integer> entry : gameSettings.getRolesSettings().entrySet())
 				{
 					if(entry.getValue()>0)
 					{
+						//Attribue le nombre de joueurs de ce role
 						for(int i = 0; i<entry.getValue(); ++i)
 						{
 							/** msg attribution role **/
@@ -85,7 +91,8 @@ public class InitBehaviour extends Behaviour {
 							messageRequest.addReceiver(agents.get(indexPlayer));
 							
 							messageRequest.setConversationId("ATTRIBUTION_ROLE");
-							
+							messageRequest.setContent(entry.getKey());
+
 							this.gameControllerAgent.send(messageRequest);
 							
 							System.out.println("ATTRIBUTION ROLE "+entry.getKey()+" => "+agents.get(indexPlayer).getLocalName());
@@ -106,7 +113,7 @@ public class InitBehaviour extends Behaviour {
 			DFServices.getPlayerProfiles(this.gameControllerAgent, this.gameControllerAgent.getGameid());
 			//this.gameControllerAgent.addBehaviour(new TurnsBehaviour(this.gameControllerAgent));
 			//this.gameControllerAgent.addBehaviour(new CheckEndGameBehaviour(this.gameControllerAgent));
-			
+
 			this.flag = true;
 		}
 

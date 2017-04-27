@@ -37,7 +37,7 @@ public class CitizenControllerAgent extends Agent implements IController {
 	protected void setup() {
 		
 		Object[] args = this.getArguments();
-		this.gameid = (int) args[0];
+		this.gameid = (Integer) args[0];
 		
 		DFServices.registerGameControllerAgent("CITIZEN", this, this.gameid);		
 		this.addBehaviour(new SynchronousVoteBehaviour(this));

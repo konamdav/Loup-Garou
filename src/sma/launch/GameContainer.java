@@ -7,6 +7,7 @@ import jade.wrapper.AgentContainer;
 import jade.wrapper.AgentController;
 import sma.model.GameSettings;
 
+//Conteneur de jeu
 public class GameContainer {
 	private int gameid;
 	public static String MAIN_PROPERTIES_FILE = "resources/sma/gamecontainer.properties";
@@ -37,14 +38,7 @@ public class GameContainer {
 			ac = container.createNewAgent(
 					"GAME_CONTROLLER_AGENT_"+gameid, "sma.game_controller_agent.GameControllerAgent", objects);
 			ac.start();
-
-			/*for(int i = 0; i<2; ++i)
-			{
-				ac = container.createNewAgent(
-						"WEREWOLF_AGENT_"+i, "sma.werewolf_agent.WerewolfAgent", objects);
-				ac.start();
-			}*/
-						
+	
 			ac = container.createNewAgent(
 					"CITIZEN_CONTROLLER_AGENT_"+gameid, "sma.citizen_controller_agent.CitizenControllerAgent", objects);
 			ac.start();

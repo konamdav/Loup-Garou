@@ -9,6 +9,7 @@ public class GameSettings {
 	public GameSettings() {
 		super();
 		
+		//Liste role 
 		this.rolesSettings = new HashMap<String, Integer>();
 		this.rolesSettings.put(Roles.CITIZEN, 3);
 		this.rolesSettings.put(Roles.WEREWOLF, 3);

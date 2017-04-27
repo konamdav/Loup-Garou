@@ -4,6 +4,9 @@ import generic.agent.IController;
 import jade.core.Agent;
 import sma.model.DFServices;
 import sma.model.GameSettings;
+//il a un gamesetting qui contient la conf de la partie (roles autorisés + nombre par role)
+//C'est le game controlleur qui créé les joueurs + donne un role
+
 
 public class GameControllerAgent extends Agent implements IController{
 	private GameSettings gameSettings;

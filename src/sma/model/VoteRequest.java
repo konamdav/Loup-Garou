@@ -15,9 +15,9 @@ public class VoteRequest {
 	
 	public VoteRequest() {
 		super();
-		this.choices = new ArrayList<String>();
-		this.voters = new ArrayList<String>();
-		this.globalVoteResults = new VoteResults();
+		this.choices = new ArrayList<String>(); //String convert to aid later
+		this.voters = new ArrayList<String>();//String convert to aid later
+		this.globalVoteResults = new VoteResults();// Archive des votes previously on AMC WALKING DEAD
 		this.request="UNKNOWN_REQUEST";
 	}
 	

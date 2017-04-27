@@ -38,18 +38,25 @@ public class DFServices {
 		DFServices.registerGameAgent("PLAYER", name, agent, gameid);
 	}
 
-	public static void registerPlayerAgent(String[] names, Agent agent,  int gameid){
+	public static void registerPlayerAgent(ArrayList<String> names, Agent agent,  int gameid){
 		for(String name  : names)
 		{
 			DFServices.registerPlayerAgent(name, agent, gameid);
 		}
+	}
+	
+	public static void modifyPlayerAgent(String old_name, String new_name, Agent agent,  int gameid){
+		//TODO Mayebe do a proper way, find this agent, and obtain this dfd and modifiy it
+
+		DFServices.deregisterGameAgent("PLAYER", old_name, agent, gameid);
+		DFServices.registerGameAgent("PLAYER", new_name, agent, gameid);
 	}
 
 	public static void deregisterPlayerAgent(String name, Agent agent,  int gameid){
 		DFServices.deregisterGameAgent("PLAYER", name, agent, gameid);
 	}
 
-	public static void deregisterPlayerAgent(String[] names, Agent agent,  int gameid){
+	public static void deregisterPlayerAgent(ArrayList<String> names, Agent agent,  int gameid){
 		for(String name  : names)
 		{
 			DFServices.deregisterPlayerAgent(name, agent, gameid);

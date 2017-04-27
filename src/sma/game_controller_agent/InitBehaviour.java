@@ -1,5 +1,6 @@
 package sma.game_controller_agent;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map.Entry;
@@ -22,15 +23,16 @@ public class InitBehaviour extends Behaviour {
 	private String nextStep;
 
 	private final static String STATE_INIT ="STATE_INIT";
-	private final static String STATE_ATTR ="STATE_ATTR";
+	private final static String STATE_RECEIVE_INIT ="STATE_RECEIVE_INIT";
+	private final static String STATE_SEND_ATTR ="STATE_ATTR";
+	private final static String STATE_RECEIVE_ATTR ="STATE_RECEIVE_ATTR";
 	private final static String STATE_START_GAME ="STATE_START_GAME";
 
 	public InitBehaviour(GameControllerAgent gameControllerAgent) {
 		super();
 		this.gameControllerAgent = gameControllerAgent;
 		this.flag = false;
-
-
+		
 		this.step = STATE_INIT;
 		this.nextStep = "";
 
@@ -47,8 +49,9 @@ public class InitBehaviour extends Behaviour {
 				Object[] args = {gameid};
 				for(int i = 0; i<nb; ++i)
 				{
+					String playerName = "PLAYER_"+gameid+""+i;
 					AgentController ac = this.gameControllerAgent.getContainerController().createNewAgent(
-							"PLAYER_"+gameid+""+i, "sma.player_agent.PlayerAgent", args);
+							playerName, "sma.player_agent.PlayerAgent", args);
 					ac.start();
 					
 					System.out.println("CREATION AGENT PLAYER");
@@ -60,9 +63,9 @@ public class InitBehaviour extends Behaviour {
 				e.printStackTrace();
 			}
 			
-			this.nextStep = STATE_ATTR;
+			this.nextStep = STATE_SEND_ATTR;
 		}
-		else if(step.equals(STATE_ATTR))
+		else if(step.equals(STATE_SEND_ATTR))
 		{
 			
 			List<AID> agents = DFServices.findGamePlayerAgent( "CITIZEN", this.gameControllerAgent, this.gameControllerAgent.getGameid());
@@ -72,7 +75,7 @@ public class InitBehaviour extends Behaviour {
 			if(agents.size()!= gameSettings.getPlayersCount())
 			{
 				System.out.println("GAMEID "+this.gameControllerAgent.getGameid()+" | "+agents.size()+" == "+gameSettings.getPlayersCount()+" ?");
-				this.nextStep = STATE_ATTR;
+				this.nextStep = STATE_SEND_ATTR;
 			}
 			else
 			{

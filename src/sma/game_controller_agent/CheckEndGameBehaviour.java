@@ -1,5 +1,7 @@
 package sma.game_controller_agent;
 
+import java.util.List;
+
 import jade.core.AID;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.core.behaviours.SimpleBehaviour;
@@ -7,6 +9,9 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.wrapper.AgentController;
 import jade.wrapper.StaleProxyException;
+import sma.model.DFServices;
+import sma.model.Roles;
+import sma.model.Status;
 
 public class CheckEndGameBehaviour extends CyclicBehaviour {
 	private GameControllerAgent gameControllerAgent;
@@ -67,19 +72,31 @@ public class CheckEndGameBehaviour extends CyclicBehaviour {
 			message.setSender(this.gameControllerAgent.getAID());
 			message.addReceiver(this.sender);
 			
-			int i = 0;
-			if(i == 0) 
-			{
-				System.out.println("CHECK ? GAME CONTINUES");
-				message.setConversationId("CONTINUE_GAME");
-				this.nextStep = STATE_END;
-			}
-			else
+			String[] services1 = {Roles.WEREWOLF, Status.WAKE};
+			List<AID> werewolves = DFServices.findGamePlayerAgent(services1, this.gameControllerAgent, this.gameControllerAgent.getGameid());
+			
+			String[] services2 = {Roles.CITIZEN, Status.WAKE};
+			List<AID> citizens = DFServices.findGamePlayerAgent(services2, this.gameControllerAgent, this.gameControllerAgent.getGameid());
+
+			if( werewolves.isEmpty()) 
 			{
 				System.out.println("CHECK ? GAME ENDS");
 				this.gameControllerAgent.setCheckEndGame(true);
 				message.setConversationId("END_GAME");
 				this.nextStep = STATE_NOTIFY_END_GAME;
+			}
+			else if(citizens.isEmpty()) 
+			{
+				System.out.println("CHECK ? GAME ENDS");
+				this.gameControllerAgent.setCheckEndGame(true);
+				message.setConversationId("END_GAME");
+				this.nextStep = STATE_NOTIFY_END_GAME;
+			}			
+			else
+			{
+				System.out.println("CHECK ? GAME CONTINUES");
+				message.setConversationId("CONTINUE_GAME");
+				this.nextStep = STATE_END;
 			}
 			
 			this.gameControllerAgent.send(message);

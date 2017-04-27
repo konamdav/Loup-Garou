@@ -85,8 +85,6 @@ public class ViewInterfaceGame implements Screen{
 
 
 	public void hide() {
-		// TODO Auto-generated method stub
-
 	}
 
 
@@ -199,7 +197,6 @@ public class ViewInterfaceGame implements Screen{
 	}
 
 	public void resume() {
-		// TODO Auto-generated method stub
 
 	}
 }

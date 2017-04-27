@@ -65,6 +65,15 @@ public class VoteResults {
 		return Collections.frequency(this.voteResults.get(voted), voter);
 	}
 	
+	public int getDifferenceVote(String voted, String voter)
+	{
+		int nbVoted = this.voteResults.get(voted).size();
+		int nbVoter = this.voteResults.get(voter).size();
+		
+		return nbVoter - nbVoted;
+	}
+	
+	/*** get finalists **/
 	public List<String> getFinalResults()
 	{
 		ArrayList<String> finalResults = new ArrayList<String>();

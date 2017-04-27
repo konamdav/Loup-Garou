@@ -101,4 +101,10 @@ public class PlayerAgent extends Agent implements IVotingAgent{
 		return deathBehaviours;
 	}
 
+	public String getPlayerName()
+	{
+		return this.getAID().getLocalName();
+	}
+	
+	
 }

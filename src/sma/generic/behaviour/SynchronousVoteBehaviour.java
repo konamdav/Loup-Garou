@@ -101,6 +101,7 @@ public class SynchronousVoteBehaviour extends Behaviour {
 				ObjectMapper mapper = new ObjectMapper();
 				try {
 					this.request = mapper.readValue(message.getContent(), VoteRequest.class);
+					this.request.setLocalVoteResults(this.results);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -257,6 +258,7 @@ public class SynchronousVoteBehaviour extends Behaviour {
 					this.request.setChoices(this.finalResults);
 					
 					this.results = new VoteResults();
+					this.request.setLocalVoteResults(this.results);
 					this.lastResults = this.finalResults;
 					this.nbVoters = 0;
 

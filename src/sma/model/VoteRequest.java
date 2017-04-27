@@ -12,12 +12,14 @@ public class VoteRequest {
 	private List<String> choices;
 	private List<String> voters;
 	private VoteResults globalVoteResults;
+	private VoteResults localVoteResults;
 	
 	public VoteRequest() {
 		super();
 		this.choices = new ArrayList<String>(); //String convert to aid later
 		this.voters = new ArrayList<String>();//String convert to aid later
 		this.globalVoteResults = new VoteResults();// Archive des votes previously on AMC WALKING DEAD
+		this.localVoteResults = new VoteResults();
 		this.request="UNKNOWN_REQUEST";
 	}
 	
@@ -33,6 +35,22 @@ public class VoteRequest {
 		super();
 		this.choices = choices;
 		this.globalVoteResults = results;
+		this.localVoteResults = new VoteResults();
+	}
+	
+	public VoteRequest(List<String> choices , VoteResults gresults, VoteResults lresults) {
+		super();
+		this.choices = choices;
+		this.globalVoteResults = gresults;
+		this.localVoteResults = lresults;
+	}
+
+	public VoteResults getLocalVoteResults() {
+		return localVoteResults;
+	}
+
+	public void setLocalVoteResults(VoteResults localVoteResults) {
+		this.localVoteResults = localVoteResults;
 	}
 
 	public List<String> getChoices() {
@@ -72,6 +90,18 @@ public class VoteRequest {
 		
 		List<AID>  list = new ArrayList<AID>();
 		for(String s : voters)
+		{
+			list.add(new AID(s));
+		}
+				
+		return list;
+	}
+	
+	@JsonIgnore
+	public List<AID> getAIDChoices() {
+		
+		List<AID>  list = new ArrayList<AID>();
+		for(String s : choices)
 		{
 			list.add(new AID(s));
 		}

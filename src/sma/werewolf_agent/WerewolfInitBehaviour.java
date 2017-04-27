@@ -30,14 +30,14 @@ public class WerewolfInitBehaviour extends OneShotBehaviour{
 		System.out.println("WerewolfInitBehaviour THIS PLAYER "+this.agent.getName());
 		
 		HashMap<String, ArrayList<Behaviour>> map_behaviour = this.agent.getMap_role_behaviours();
-		ArrayList<Behaviour> list_vote_behaviour = this.agent.getVotingBehaviours();
+		/*ArrayList<Behaviour> list_vote_behaviour = this.agent.getVotingBehaviours();
 
 		ArrayList<Behaviour> list_all_behaviour = new ArrayList<Behaviour>(); 
 		
 		Behaviour vote = new WerewolfVoteBehaviour(this.agent);
 		list_all_behaviour.add(vote);
 		
-		map_behaviour.put(Roles.WEREWOLF, )
+		map_behaviour.put(Roles.WEREWOLF, )*/
 
 
 	}

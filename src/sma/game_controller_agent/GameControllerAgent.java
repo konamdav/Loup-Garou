@@ -1,6 +1,6 @@
 package sma.game_controller_agent;
 
-import generic.agent.IController;
+import generic.interfaces.IController;
 import jade.core.Agent;
 import sma.model.DFServices;
 import sma.model.GameSettings;

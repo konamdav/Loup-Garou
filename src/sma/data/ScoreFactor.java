@@ -14,4 +14,10 @@ public class ScoreFactor {
 	public static int SCORE_FACTOR_LOCAL_VOTE = 500;
 	public static int SCORE_FACTOR_DIFFERENCE_LOCAL_VOTE = 250;
 	
+	public static int SCORE_FACTOR_SUSPICION_MAX = 100000;
+	public static int SCORE_FACTOR_SUSPICION_WEREWOLF = 500;
+	public static int SCORE_FACTOR_SUSPICION_LITTLE_GIRL = 500;
+	public static int SCORE_FACTOR_SUSPICION_DEFAULT = 300;
+	public static int SCORE_FACTOR_SUSPICION_MIN = -100000;
+	
 }

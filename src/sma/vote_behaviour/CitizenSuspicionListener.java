@@ -14,6 +14,7 @@ import jade.lang.acl.MessageTemplate;
 import sma.data.ScoreFactor;
 import sma.model.DFServices;
 import sma.model.ScoreResults;
+import sma.model.SuspicionScore;
 import sma.model.VoteRequest;
 import sma.model.VoteResults;
 import sma.player_agent.PlayerAgent;
@@ -34,12 +35,15 @@ public class CitizenSuspicionListener extends Behaviour{
 	private String step;
 	private String nextStep;
 	
+	private SuspicionScore suspicionScore;
 	private String side;
 	
 	public CitizenSuspicionListener(PlayerAgent playerAgent) {
 		super();
 		this.playerAgent = playerAgent;
 		this.name_behaviour = "CITIZEN_SUSPICION";
+		
+		this.suspicionScore = this.playerAgent.getSuspicionScore();
 		
 		this.step = STATE_INIT;
 		this.nextStep ="";
@@ -50,7 +54,6 @@ public class CitizenSuspicionListener extends Behaviour{
 
 		if(step.equals(STATE_INIT))
 		{
-			
 			this.side = "";
 			this.nextStep = STATE_RECEIVE_INFORM;
 		}
@@ -77,11 +80,13 @@ public class CitizenSuspicionListener extends Behaviour{
 			//liste des voisins que l'on soupçonne
 			List<AID> neighbors = DFServices.findNeighborsBySide(this.side, this.playerAgent.getAID(), playerAgent, this.playerAgent.getGameid());
 			
-			//envoi a la suspicion citizen
-			//TODO Cédric
+			//maj grid
+			for(AID aid : neighbors)
+			{
+				this.suspicionScore.addScore(aid.getLocalName(), ScoreFactor.SCORE_FACTOR_SUSPICION_WEREWOLF);
+			}
 			
 			this.nextStep =  STATE_INIT;
-
 		}
 		
 		

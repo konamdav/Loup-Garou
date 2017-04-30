@@ -1,4 +1,4 @@
-package generic.agent;
+package generic.interfaces;
 
 import jade.core.Agent;
 

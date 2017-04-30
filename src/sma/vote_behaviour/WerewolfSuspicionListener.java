@@ -14,6 +14,7 @@ import jade.lang.acl.MessageTemplate;
 import sma.data.ScoreFactor;
 import sma.model.DFServices;
 import sma.model.ScoreResults;
+import sma.model.SuspicionScore;
 import sma.model.VoteRequest;
 import sma.model.VoteResults;
 import sma.player_agent.PlayerAgent;
@@ -26,21 +27,25 @@ import sma.player_agent.PlayerAgent;
 public class WerewolfSuspicionListener extends Behaviour{
 	private PlayerAgent playerAgent;
 	private String name_behaviour;
-	
+
 	private final static String STATE_INIT = "INIT";
 	private final static String STATE_RECEIVE_INFORM = "RECEIVE_INFORM";
-	private final static String STATE_SEND_SUSPICIONS = "SEND_NEIHBORS";
-	
+	private final static String STATE_SUSPICION_LITTLE_GIRL = "SUSPICION_LITTLE_GIRL";
+	private final static String STATE_SUSPICION_WITCH = "SUSPICION_WITCH";
+	private final static String STATE_SUSPICION_MEDIUM = "SUSPICION_MEDIUM";
+
 	private String step;
 	private String nextStep;
-	
+
+	private SuspicionScore suspicionScore;
 	private String side;
-	
+
 	public WerewolfSuspicionListener(PlayerAgent playerAgent) {
 		super();
 		this.playerAgent = playerAgent;
 		this.name_behaviour = "WEREWOLF_SUSPICION";
-		
+
+		this.suspicionScore = this.playerAgent.getSuspicionScore();
 		this.step = STATE_INIT;
 		this.nextStep ="";
 	}
@@ -50,7 +55,7 @@ public class WerewolfSuspicionListener extends Behaviour{
 
 		if(step.equals(STATE_INIT))
 		{
-			
+
 			this.side = "";
 			this.nextStep = STATE_RECEIVE_INFORM;
 		}
@@ -58,34 +63,89 @@ public class WerewolfSuspicionListener extends Behaviour{
 		{
 			/** alerte mouvement d'un citizen durant la nuit (role important)**/
 			MessageTemplate mt = MessageTemplate.and(
-					MessageTemplate.MatchPerformative(ACLMessage.REQUEST),
-					MessageTemplate.MatchConversationId("MOVE_CITIZEN"));
+					MessageTemplate.MatchPerformative(ACLMessage.INFORM),
+					MessageTemplate.MatchConversationId("MOVE_LITTLE_GIRL"));
 
 			ACLMessage message = this.myAgent.receive(mt);
 			if (message != null) 
 			{
 				this.side = message.getContent();
-				this.nextStep = STATE_SEND_SUSPICIONS;
+				this.nextStep = STATE_SUSPICION_LITTLE_GIRL;
 			}
 			else
 			{
-				this.nextStep = STATE_RECEIVE_INFORM;
-				block();
+				/** alerte mouvement d'un citizen durant la nuit (role important)**/
+				mt = MessageTemplate.and(
+						MessageTemplate.MatchPerformative(ACLMessage.INFORM),
+						MessageTemplate.MatchConversationId("MOVE_WITCH"));
+
+				message = this.myAgent.receive(mt);
+				if (message != null) 
+				{
+					this.side = message.getContent();
+					this.nextStep = STATE_SUSPICION_WITCH;
+				}
+				else
+				{
+					/** alerte mouvement d'un citizen durant la nuit (role important)**/
+					mt = MessageTemplate.and(
+							MessageTemplate.MatchPerformative(ACLMessage.INFORM),
+							MessageTemplate.MatchConversationId("MOVE_MEDIUM"));
+
+					message = this.myAgent.receive(mt);
+					if (message != null) 
+					{
+						this.side = message.getContent();
+						this.nextStep = STATE_SUSPICION_MEDIUM;
+					}
+					else
+					{
+						this.nextStep = STATE_RECEIVE_INFORM;
+						block();
+					}
+				}
 			}		
 		}
-		else if(step.equals(STATE_SEND_SUSPICIONS))
+		else if(step.equals(STATE_SUSPICION_LITTLE_GIRL))
 		{
 			List<AID> neighbors = DFServices.findNeighborsBySide(this.side, this.playerAgent.getAID(), playerAgent, this.playerAgent.getGameid());
-			
+
 			//envoi a la suspicion citizen
-			
-			//TODO Cédric
-			
+			//maj grid
+			for(AID aid : neighbors)
+			{
+				this.suspicionScore.addScore(aid.getLocalName(), ScoreFactor.SCORE_FACTOR_SUSPICION_WEREWOLF);
+			}
+
+
 			this.nextStep =  STATE_INIT;
 
 		}
-		
-		
+		else if(step.equals(STATE_SUSPICION_WITCH))
+		{
+			List<AID> neighbors = DFServices.findNeighborsBySide(this.side, this.playerAgent.getAID(), playerAgent, this.playerAgent.getGameid());
+			//envoi a la suspicion citizen
+			//maj grid
+			for(AID aid : neighbors)
+			{
+				this.suspicionScore.addScore(aid.getLocalName(), ScoreFactor.SCORE_FACTOR_SUSPICION_DEFAULT);
+			}
+			
+			this.nextStep =  STATE_INIT;
+		}
+		else if(step.equals(STATE_SUSPICION_MEDIUM))
+		{
+			List<AID> neighbors = DFServices.findNeighborsBySide(this.side, this.playerAgent.getAID(), playerAgent, this.playerAgent.getGameid());
+			//envoi a la suspicion citizen
+			//maj grid
+			for(AID aid : neighbors)
+			{
+				this.suspicionScore.addScore(aid.getLocalName(), ScoreFactor.SCORE_FACTOR_SUSPICION_DEFAULT);
+			}
+
+			this.nextStep =  STATE_INIT;
+		}
+
 		if(!this.nextStep.isEmpty())
 		{
 			this.step = this.nextStep;
@@ -98,12 +158,12 @@ public class WerewolfSuspicionListener extends Behaviour{
 		return false;
 	}
 
-	
+
 	private int score(AID player,  VoteRequest request)
 	{
 		VoteResults globalResults = request.getGlobalVoteResults();
 		VoteResults localResults = request.getLocalVoteResults();
-		
+
 		int score = 0;
 		// joueur analysé = joueur 
 		if(player.getLocalName().equals(this.playerAgent.getPlayerName()))
@@ -115,14 +175,14 @@ public class WerewolfSuspicionListener extends Behaviour{
 			// regles de scoring
 			score+= globalResults.getVoteCount(player.getLocalName(), this.playerAgent.getPlayerName()) * ScoreFactor.SCORE_FACTOR_GLOBAL_VOTE; 
 			score+= globalResults.getVoteCount(player.getLocalName(), this.playerAgent.getPlayerName()) * ScoreFactor.SCORE_FACTOR_GLOBAL_VOTE; 
-			
+
 			score+= localResults.getVoteCount(player.getLocalName(), this.playerAgent.getPlayerName()) * ScoreFactor.SCORE_FACTOR_LOCAL_VOTE; 
 			score+= localResults.getVoteCount(player.getLocalName(), this.playerAgent.getPlayerName()) * ScoreFactor.SCORE_FACTOR_LOCAL_VOTE; 
-		
+
 		}
-		
+
 		return score;
-		
-		
+
+
 	}
 }

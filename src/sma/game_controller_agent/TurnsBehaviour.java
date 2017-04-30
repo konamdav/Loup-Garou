@@ -2,7 +2,7 @@ package sma.game_controller_agent;
 
 import java.util.List;
 
-import generic.agent.IController;
+import generic.interfaces.IController;
 import jade.core.AID;
 import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.CyclicBehaviour;

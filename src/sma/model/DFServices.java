@@ -14,6 +14,7 @@ import jade.domain.FIPAException;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.Property;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
+import sma.data.Data;
 
 public class DFServices {
 	private static HashMap<AID, DFAgentDescription> registered = new HashMap<AID, DFAgentDescription>();

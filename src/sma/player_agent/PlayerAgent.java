@@ -8,8 +8,7 @@ import sma.generic_agent.AbstractDeathBehaviour;
 import sma.generic_agent.FactoryInitBehaviour;
 import sma.generic_agent.NewMainRoleBehaviour;
 import sma.model.Roles;
-
-
+import sma.model.SuspicionScore;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
 import sma.model.DFServices;
@@ -25,6 +24,8 @@ public class PlayerAgent extends Agent implements IVotingAgent{
 	private ArrayList<String> votingBehaviours; //All behaviour for vote to execute. Treeat them with string to send 
 	private ArrayList<String> deathBehaviours;//All behaviour for death to execute
 
+	private SuspicionScore suspicionScore; //grille de suspicion
+	
 	private int gameid;
 	private String statut;
 	private String main_role;
@@ -70,6 +71,9 @@ public class PlayerAgent extends Agent implements IVotingAgent{
 		this.votingBehaviours = new ArrayList<String>();
 		this.main_role = null;
 		
+		
+		this.suspicionScore = new SuspicionScore(); //new suspicion grid
+		
 		//TODO CEDRIC
 		//envoi msg au game controller de type subscribe (conversation id = INIT_PLAYER)
 		// pour le prévenir que l'agent a bien été créer
@@ -99,6 +103,10 @@ public class PlayerAgent extends Agent implements IVotingAgent{
 		
 	}
 	
+	public SuspicionScore getSuspicionScore() {
+		return suspicionScore;
+	}
+
 	public ArrayList<String> getVotingBehaviours() {
 		return this.votingBehaviours;
 	}

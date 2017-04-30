@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.codehaus.jackson.map.ObjectMapper;
 
-import generic.agent.IController;
+import generic.interfaces.IController;
 import jade.core.AID;
 import jade.core.behaviours.Behaviour;
 import jade.domain.DFService;

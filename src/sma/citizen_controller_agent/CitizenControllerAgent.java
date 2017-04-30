@@ -2,7 +2,7 @@ package sma.citizen_controller_agent;
 
 import java.util.Stack;
 
-import generic.agent.IController;
+import generic.interfaces.IController;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;

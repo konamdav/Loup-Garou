@@ -83,6 +83,10 @@ public class CheckEndGameBehaviour extends CyclicBehaviour {
 			String[] services2 = {Roles.CITIZEN, Status.WAKE};
 			List<AID> citizens = DFServices.findGamePlayerAgent(services2, this.gameControllerAgent, this.gameControllerAgent.getGameid());
 
+			String[] services3 = {Roles.LOVER, Status.WAKE};
+			List<AID> lovers = DFServices.findGamePlayerAgent(services3, this.gameControllerAgent, this.gameControllerAgent.getGameid());
+
+			
 			if( werewolves.isEmpty()) 
 			{
 				System.out.println("CHECK ? GAME ENDS");
@@ -91,13 +95,20 @@ public class CheckEndGameBehaviour extends CyclicBehaviour {
 				this.nextStep = STATE_NOTIFY_END_GAME;
 				
 			}
-			else if(citizens.isEmpty()) 
+			else if(werewolves.size() == citizens.size()) 
 			{
 				System.out.println("CHECK ? GAME ENDS");
 				this.gameControllerAgent.setCheckEndGame(true);
 				message.setConversationId("END_GAME");
 				this.nextStep = STATE_NOTIFY_END_GAME;
-			}			
+			}
+			else if(lovers.size() == citizens.size()) 
+			{
+				System.out.println("CHECK ? GAME ENDS");
+				this.gameControllerAgent.setCheckEndGame(true);
+				message.setConversationId("END_GAME");
+				this.nextStep = STATE_NOTIFY_END_GAME;
+			}	
 			else
 			{
 				System.out.println("CHECK ? GAME CONTINUES");

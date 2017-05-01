@@ -40,7 +40,7 @@ public class GenericSuspicionBehaviour extends Behaviour{
 	public GenericSuspicionBehaviour(PlayerAgent playerAgent) {
 		super();
 		this.playerAgent = playerAgent;
-		this.name_behaviour = "CITIZEN_SUSPICION_SCORE";
+		this.name_behaviour = "GENERIC_SUSPICION_SCORE";
 		this.suspicionScore = this.playerAgent.getSuspicionScore();
 		
 		this.step = STATE_INIT;
@@ -61,7 +61,7 @@ public class GenericSuspicionBehaviour extends Behaviour{
 		{
 			MessageTemplate mt = MessageTemplate.and(
 					MessageTemplate.MatchPerformative(ACLMessage.REQUEST),
-					MessageTemplate.MatchConversationId("VOTE_"+this.name_behaviour));
+					MessageTemplate.MatchConversationId("VOTE_TO_"+this.name_behaviour+"_REQUEST"));
 
 			ACLMessage message = this.myAgent.receive(mt);
 			if (message != null) 
@@ -136,6 +136,16 @@ public class GenericSuspicionBehaviour extends Behaviour{
 	{
 		int score = 0;
 		score = this.suspicionScore.getScore(player.getLocalName());
+		if(!request.isVoteAgainst())
+		{
+			score = score * -1;
+		}
+		
 		return score;	
+	}
+	
+
+	public String getName_behaviour() {
+		return name_behaviour;
 	}
 }

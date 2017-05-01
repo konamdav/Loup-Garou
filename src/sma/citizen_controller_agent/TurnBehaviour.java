@@ -16,6 +16,8 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import sma.model.DFServices;
 import sma.model.Functions;
+import sma.model.Roles;
+import sma.model.Status;
 import sma.model.VoteRequest;
 import sma.model.VoteResults;
 
@@ -41,18 +43,17 @@ public class TurnBehaviour extends SimpleBehaviour {
 	private final static String STATE_SEND_SLEEP_ALL = "SEND_SLEEP_ALL";
 	private final static String STATE_RECEIVE_SLEEP_ALL = "RECEIVE_SLEEP_ALL";
 
-	
+
 	private final static String STATE_DAY = "DAY";
 	private final static String STATE_NIGHT = "NIGHT";
 
-	
 	private String step;
 	private String nextStep;
 	private boolean previousVictims;
 	private int cptCitizens;
 
-
 	private CitizenControllerAgent ctrlAgent;
+	private int nbPlayers;
 
 	public TurnBehaviour(CitizenControllerAgent citizenControllerAgent) {
 		super(citizenControllerAgent);
@@ -75,6 +76,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 			System.out.println("*******************************************");
 			System.out.println("*******************************************");
 			System.out.println("*******************************************");
+			this.nbPlayers = 0;
 			previousVictims = false;
 			cptCitizens = 0;
 
@@ -106,7 +108,11 @@ public class TurnBehaviour extends SimpleBehaviour {
 		/** etat envoi des requêtes de reveil pour tout les joueurs**/
 		else if(this.step.equals(STATE_SEND_WAKE_ALL))
 		{
-			for(AID aid : DFServices.findGamePlayerAgent( "CITIZEN", this.ctrlAgent, this.ctrlAgent.getGameid()))
+			String[] args ={Status.SLEEP, Roles.CITIZEN};
+			List<AID> agents = DFServices.findGamePlayerAgent( args , this.ctrlAgent, this.ctrlAgent.getGameid());
+
+			this.nbPlayers = agents.size();
+			for(AID aid : agents)
 			{
 				ACLMessage messageRequest = new ACLMessage(ACLMessage.REQUEST);
 				messageRequest.setSender(this.ctrlAgent.getAID());
@@ -128,7 +134,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 			if(message != null)
 			{
 				++this.cptCitizens;
-				if(this.cptCitizens == DFServices.findGamePlayerAgent( "CITIZEN", this.myAgent, this.ctrlAgent.getGameid()).size())
+				if(this.cptCitizens == this.nbPlayers)
 				{
 					this.cptCitizens = 0;
 					this.nextStep = STATE_SEND_KILL_VICTIMS_REQUEST;
@@ -146,13 +152,8 @@ public class TurnBehaviour extends SimpleBehaviour {
 		/** etat envoi requete pour tuer les  victimes désignées durant la nuit **/
 		else if(this.step.equals(STATE_SEND_KILL_VICTIMS_REQUEST))
 		{
-			System.err.println("... kill ... "+this.previousVictims);
-
 			this.ctrlAgent.addBehaviour(new KillVictimsBehaviour(this.ctrlAgent));
 			this.nextStep = STATE_RECEIVE_KILL_VICTIMS_REQUEST;
-
-
-
 		}
 		/** etat pour recevoir la confirmation de la mort des victimes **/
 		else if(this.step.equals(STATE_RECEIVE_KILL_VICTIMS_REQUEST))
@@ -234,35 +235,48 @@ public class TurnBehaviour extends SimpleBehaviour {
 		/** etat envoi de la requete de vote de l'election de maire **/
 		else if(this.step.equals(STATE_SEND_ELECTION_REQUEST))
 		{
+			String [] args = {Roles.CITIZEN, Roles.MAYOR, Status.WAKE};
+			List<AID> agents = DFServices.findGamePlayerAgent(args, this.ctrlAgent, this.ctrlAgent.getGameid());
 
-			List<String> choices = new ArrayList<String>();
-			for(AID aid : DFServices.findGamePlayerAgent( "CITIZEN", this.ctrlAgent, this.ctrlAgent.getGameid()))
+			if(agents.isEmpty())
 			{
-				choices.add(aid.getName());
+				List<String> choices = new ArrayList<String>();
+				String [] argsDF = {Roles.CITIZEN, Status.WAKE};
+				agents = DFServices.findGamePlayerAgent(argsDF, this.ctrlAgent, this.ctrlAgent.getGameid());
+				this.nbPlayers = agents.size();
+
+				for(AID aid : agents)
+				{
+					choices.add(aid.getName());
+				}
+
+				VoteRequest request = new VoteRequest();
+				request.setRequest("ELECTION");
+				request.setVoteAgainst(false);
+				request.setChoices(choices);
+				request.setVoters(choices);
+
+				ObjectMapper mapper = new ObjectMapper();
+				String json = "";
+				try {
+					json = mapper.writeValueAsString(request);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+				ACLMessage messageRequest = new ACLMessage(ACLMessage.REQUEST);
+				messageRequest.setSender(this.ctrlAgent.getAID());
+				messageRequest.addReceiver(this.ctrlAgent.getAID());
+				messageRequest.setConversationId("VOTE_REQUEST");
+				messageRequest.setContent(json);
+				this.ctrlAgent.send(messageRequest);
+
+				this.nextStep = STATE_RECEIVE_ELECTION_REQUEST;
 			}
-
-			VoteRequest request = new VoteRequest();
-			request.setRequest("ELECTION");
-			request.setChoices(choices);
-			request.setVoters(choices);
-
-			ObjectMapper mapper = new ObjectMapper();
-			String json = "";
-			try {
-				json = mapper.writeValueAsString(request);
-			} catch (IOException e) {
-				e.printStackTrace();
+			else
+			{
+				this.nextStep = STATE_SEND_VOTE_REQUEST;
 			}
-
-			ACLMessage messageRequest = new ACLMessage(ACLMessage.REQUEST);
-			messageRequest.setSender(this.ctrlAgent.getAID());
-			messageRequest.addReceiver(this.ctrlAgent.getAID());
-			messageRequest.setConversationId("VOTE_REQUEST");
-			messageRequest.setContent(json);
-			this.ctrlAgent.send(messageRequest);
-
-
-			this.nextStep = STATE_RECEIVE_ELECTION_REQUEST;
 		}
 
 		/** etat reception du resultat de l'election **/
@@ -275,26 +289,42 @@ public class TurnBehaviour extends SimpleBehaviour {
 			ACLMessage message = this.myAgent.receive(mt);
 			if(message != null)
 			{
+				/** récupération vote mayor **/		
+				AID aid = new AID(message.getContent());
+
+				/** msg attribution role **/
+				ACLMessage messageRequest = new ACLMessage(ACLMessage.REQUEST);
+				messageRequest.setSender(this.ctrlAgent.getAID());
+				messageRequest.addReceiver(aid);
+
+				messageRequest.setConversationId("ATTRIBUTION_ROLE");
+				messageRequest.setContent("MAYOR");
+				this.ctrlAgent.send(messageRequest);
+
 				this.nextStep = STATE_SEND_VOTE_REQUEST;
 			}
 			else
 			{
 				block();
 			}
-
-
-			//this.nextStep = STATE_SEND_VOTE_REQUEST;
 		}
 		/** etat envoi requete demande de vote **/
 		else if(this.step.equals(STATE_SEND_VOTE_REQUEST))
 		{
 			List<String> choices = new ArrayList<String>();
-			for(AID aid : DFServices.findGamePlayerAgent( "CITIZEN", this.ctrlAgent, this.ctrlAgent.getGameid()))
+
+			String [] args = {Roles.CITIZEN, Status.WAKE};
+			List<AID> agents = DFServices.findGamePlayerAgent(args, this.ctrlAgent, this.ctrlAgent.getGameid());
+
+			this.nbPlayers = agents.size();
+
+			for(AID aid : agents)
 			{
 				choices.add(aid.getName());
 			}
 
 			VoteRequest request = new VoteRequest();
+			request.setVoteAgainst(true);
 			request.setRequest("CITIZEN_VOTE");
 			request.setChoices(choices);
 			request.setVoters(choices);
@@ -339,13 +369,15 @@ public class TurnBehaviour extends SimpleBehaviour {
 			{
 				block();
 			}
-
-			//this.nextStep = STATE_SEND_KILL_VICTIMS_REQUEST;
 		}
 		/** etat envoi des requêtes de sommeil **/
 		else if(this.step.equals(STATE_SEND_SLEEP_ALL))
 		{
-			for(AID aid : DFServices.findGamePlayerAgent( "CITIZEN", this.ctrlAgent, this.ctrlAgent.getGameid()))
+			String [] args = {Roles.CITIZEN, Status.WAKE};
+			List<AID> agents = DFServices.findGamePlayerAgent( args , this.ctrlAgent, this.ctrlAgent.getGameid());
+			this.nbPlayers = agents.size();
+
+			for(AID aid : agents)
 			{
 				ACLMessage messageRequest = new ACLMessage(ACLMessage.REQUEST);
 				messageRequest.setSender(this.ctrlAgent.getAID());
@@ -368,11 +400,11 @@ public class TurnBehaviour extends SimpleBehaviour {
 			if(message != null)
 			{
 				++this.cptCitizens;
-				if(this.cptCitizens == DFServices.findGamePlayerAgent( "CITIZEN", this.myAgent, this.ctrlAgent.getGameid()).size())
+				if(this.cptCitizens == this.nbPlayers)
 				{
 					this.cptCitizens = 0;
 					this.nextStep = STATE_END_TURN;
-					
+
 					Functions.updateDayState("NIGHT", ctrlAgent, ctrlAgent.getGameid());
 				}
 				else
@@ -412,5 +444,4 @@ public class TurnBehaviour extends SimpleBehaviour {
 	public boolean done() {
 		return false;
 	}
-
 }

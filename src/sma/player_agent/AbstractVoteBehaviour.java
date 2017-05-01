@@ -128,7 +128,7 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 				ACLMessage messageRequest = new ACLMessage(ACLMessage.REQUEST);
 				messageRequest.setSender(this.myAgent.getAID());
 				messageRequest.addReceiver(this.myAgent.getAID());
-				messageRequest.setConversationId("VOTE_"+s+"_REQUEST");
+				messageRequest.setConversationId("VOTE_TO_"+s+"_REQUEST");
 
 				ObjectMapper mapper = new ObjectMapper();
 				String json ="";

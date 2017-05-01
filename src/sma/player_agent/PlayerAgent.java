@@ -28,7 +28,9 @@ public class PlayerAgent extends Agent implements IVotingAgent{
 	
 	private int gameid;
 	private String statut;
-	private String main_role;
+	private String main_role; //role given by game controller
+	
+	//map containing specific behaviours 
 	private HashMap<String,ArrayList<Behaviour>> map_role_behaviours;
 
 	public HashMap<String, ArrayList<Behaviour>> getMap_role_behaviours() {
@@ -88,18 +90,17 @@ public class PlayerAgent extends Agent implements IVotingAgent{
 		this.addBehaviour(new NewMainRoleBehaviour(this));
 		
 		
+		
+		
 		//TODO DO it in a init 
+		//TODO CEDRIC 
+		//don't forget to create wake/sleep behaviour like @WakeSleepTestBehaviour
 		this.addBehaviour(new FactoryInitBehaviour(this));
 		this.addBehaviour(new AbstractVoteBehaviour(this));
 		this.addBehaviour(new AbstractDeathBehaviour(this));
 
 		DFServices.registerPlayerAgent(Roles.CITIZEN, this, this.gameid);
-		
 		DFServices.setStatusPlayerAgent("SLEEP", this, this.gameid);
-
-		//roles
-		//this.addBehaviour(new WerewolfVoteBehaviour(this));
-		//this.addBehaviour(new LoverVoteBehaviour(this));
 		
 	}
 	

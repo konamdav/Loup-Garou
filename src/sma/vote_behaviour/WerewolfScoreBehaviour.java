@@ -2,6 +2,7 @@ package sma.vote_behaviour;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
@@ -10,7 +11,10 @@ import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import sma.data.ScoreFactor;
+import sma.model.DFServices;
+import sma.model.Roles;
 import sma.model.ScoreResults;
+import sma.model.Status;
 import sma.model.VoteRequest;
 import sma.model.VoteResults;
 import sma.player_agent.PlayerAgent;
@@ -20,7 +24,7 @@ import sma.player_agent.PlayerAgent;
  * @author Davy
  *
  */
-public class CitizenScoreBehaviour extends Behaviour{
+public class WerewolfScoreBehaviour extends Behaviour{
 	private PlayerAgent playerAgent;
 	private String name_behaviour;
 
@@ -35,10 +39,10 @@ public class CitizenScoreBehaviour extends Behaviour{
 	private VoteRequest request;
 	private ScoreResults scoreResults;
 
-	public CitizenScoreBehaviour(PlayerAgent playerAgent) {
+	public WerewolfScoreBehaviour(PlayerAgent playerAgent) {
 		super();
 		this.playerAgent = playerAgent;
-		this.name_behaviour = "CITIZEN_SCORE";
+		this.name_behaviour = "WEREWOLF_SCORE";
 
 		this.step = STATE_INIT;
 		this.nextStep ="";
@@ -87,9 +91,12 @@ public class CitizenScoreBehaviour extends Behaviour{
 			HashMap<String, Integer> scores = new HashMap<String, Integer>();
 			scoreResults = new ScoreResults(scores);
 
+			String [] args = {Roles.WEREWOLF, Status.WAKE};
+			List<AID> agents = DFServices.findGamePlayerAgent(args, this.playerAgent, this.playerAgent.getGameid());
+			
 			for(AID player : this.request.getAIDChoices())
 			{
-				scores.put(player.getLocalName(), this.score(player, request));
+				scores.put(player.getLocalName(), this.score(player, request, agents));
 			}
 
 			this.nextStep =  STATE_SEND_SCORE;
@@ -129,7 +136,7 @@ public class CitizenScoreBehaviour extends Behaviour{
 	}
 
 
-	private int score(AID player,  VoteRequest request)
+	private int score(AID player,  VoteRequest request, List<AID> werewolves)
 	{
 		VoteResults globalResults = request.getGlobalVoteResults();
 		VoteResults localResults = request.getLocalVoteResults();
@@ -144,10 +151,25 @@ public class CitizenScoreBehaviour extends Behaviour{
 			else
 			{
 				// regles de scoring
-				score+= globalResults.getVoteCount(player.getLocalName(), this.playerAgent.getPlayerName()) * ScoreFactor.SCORE_FACTOR_GLOBAL_VOTE; 
-				score+= localResults.getVoteCount(player.getLocalName(), this.playerAgent.getPlayerName()) * ScoreFactor.SCORE_FACTOR_LOCAL_VOTE; 
-				score+= localResults.getVoteCount(player.getLocalName()) * ScoreFactor.SCORE_FACTOR_LOCAL_NB_VOTE; 
-				score+= localResults.getDifferenceVote(player.getLocalName(), this.playerAgent.getPlayerName()) * ScoreFactor.SCORE_FACTOR_DIFFERENCE_LOCAL_VOTE; 
+				score += localResults.getVoteCount(player.getLocalName(), werewolves) *ScoreFactor.SCORE_FACTOR_WEREWOLF_VOTE;
+				
+				boolean isWerewolf = false;
+				for(AID aid : werewolves)
+				{
+					if(player.getLocalName().equals(aid.getLocalName()))
+					{
+						isWerewolf = true;
+					}
+				}
+		
+				if(isWerewolf  && localResults.getVoteCount(player.getLocalName())!=0)
+				{
+					score+= globalResults.getVoteCount(player.getLocalName()) * ScoreFactor.SCORE_FACTOR_GLOBAL_VOTE; 
+					score+= localResults.getVoteCount(player.getLocalName(), this.playerAgent.getPlayerName()) * ScoreFactor.SCORE_FACTOR_LOCAL_VOTE;
+					score+= localResults.getVoteCount(player.getLocalName()) * ScoreFactor.SCORE_FACTOR_LOCAL_NB_VOTE;
+					score+= localResults.getDifferenceVote(player.getLocalName(), this.playerAgent.getPlayerName()) * ScoreFactor.SCORE_FACTOR_DIFFERENCE_LOCAL_VOTE;
+
+				}
 
 			}
 		}
@@ -160,21 +182,18 @@ public class CitizenScoreBehaviour extends Behaviour{
 			}
 			else
 			{
-				// ici global  =  resultat global du vote d'élimination ("contre")
-				// local = vote "pour" en cours
-				score+= globalResults.getVoteCount(player.getLocalName(), this.playerAgent.getPlayerName()) * ScoreFactor.SCORE_FACTOR_GLOBAL_VOTE *-1; 
-				score+= localResults.getVoteCount(player.getLocalName(), this.playerAgent.getPlayerName()) * ScoreFactor.SCORE_FACTOR_LOCAL_VOTE;  
-
+				// regles de scoring
+				score += localResults.getVoteCount(player.getLocalName(), werewolves) *ScoreFactor.SCORE_FACTOR_WEREWOLF_VOTE;
+				score+= localResults.getVoteCount(player.getLocalName()) * ScoreFactor.SCORE_FACTOR_LOCAL_NB_VOTE;
 			}
 		}
 		return score;
 
 
 	}
+	
 
 	public String getName_behaviour() {
 		return name_behaviour;
 	}
-	
-	
 }

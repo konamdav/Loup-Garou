@@ -9,6 +9,8 @@ import java.util.Map.Entry;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 
+import jade.core.AID;
+
 public class VoteResults {
 
 	private Map<String, List<String>> voteResults;
@@ -63,6 +65,30 @@ public class VoteResults {
 		if(!this.voteResults.containsKey(voted)) return 0;
 		
 		return Collections.frequency(this.voteResults.get(voted), voter);
+	}
+	
+	public int getVoteCount(String voted, List<AID> voters)
+	{
+		if(!this.voteResults.containsKey(voted)) return 0;
+		int occ = 0;
+		
+		for(AID aid : voters)
+		{
+			if(this.voteResults.get(voted).contains(aid.getLocalName()))
+			{
+				occ++;
+			}
+		}
+		
+		return occ;
+	
+	}
+	
+	public int getVoteCount(String voted)
+	{
+		if(!this.voteResults.containsKey(voted)) return 0;
+		return this.voteResults.get(voted).size();
+	
 	}
 	
 	public int getDifferenceVote(String voted, String voter)

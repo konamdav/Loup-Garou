@@ -9,6 +9,7 @@ import jade.core.AID;
 
 public class VoteRequest {
 	private String request;
+	private boolean voteAgainst;
 	private List<String> choices;
 	private List<String> voters;
 	private VoteResults globalVoteResults;
@@ -21,6 +22,7 @@ public class VoteRequest {
 		this.globalVoteResults = new VoteResults();// Archive des votes previously on AMC WALKING DEAD
 		this.localVoteResults = new VoteResults();
 		this.request="UNKNOWN_REQUEST";
+		this.voteAgainst = true;
 	}
 	
 	public VoteRequest(List<String> choices) {
@@ -29,6 +31,7 @@ public class VoteRequest {
 		this.voters = new ArrayList<String>();
 		this.request="UNKNOWN_REQUEST";
 		this.globalVoteResults = new VoteResults();
+		this.voteAgainst = true;
 	}
 	
 	public VoteRequest(List<String> choices , VoteResults results) {
@@ -36,6 +39,7 @@ public class VoteRequest {
 		this.choices = choices;
 		this.globalVoteResults = results;
 		this.localVoteResults = new VoteResults();
+		this.voteAgainst = true;
 	}
 	
 	public VoteRequest(List<String> choices , VoteResults gresults, VoteResults lresults) {
@@ -43,6 +47,15 @@ public class VoteRequest {
 		this.choices = choices;
 		this.globalVoteResults = gresults;
 		this.localVoteResults = lresults;
+		this.voteAgainst = true;
+	}
+
+	public boolean isVoteAgainst() {
+		return voteAgainst;
+	}
+
+	public void setVoteAgainst(boolean voteAgainst) {
+		this.voteAgainst = voteAgainst;
 	}
 
 	public VoteResults getLocalVoteResults() {

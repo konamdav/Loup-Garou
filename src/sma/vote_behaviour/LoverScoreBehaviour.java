@@ -2,6 +2,7 @@ package sma.vote_behaviour;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
@@ -10,7 +11,10 @@ import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import sma.data.ScoreFactor;
+import sma.model.DFServices;
+import sma.model.Roles;
 import sma.model.ScoreResults;
+import sma.model.Status;
 import sma.model.VoteRequest;
 import sma.model.VoteResults;
 import sma.player_agent.PlayerAgent;
@@ -20,7 +24,7 @@ import sma.player_agent.PlayerAgent;
  * @author Davy
  *
  */
-public class CitizenScoreBehaviour extends Behaviour{
+public class LoverScoreBehaviour extends Behaviour{
 	private PlayerAgent playerAgent;
 	private String name_behaviour;
 
@@ -35,10 +39,10 @@ public class CitizenScoreBehaviour extends Behaviour{
 	private VoteRequest request;
 	private ScoreResults scoreResults;
 
-	public CitizenScoreBehaviour(PlayerAgent playerAgent) {
+	public LoverScoreBehaviour(PlayerAgent playerAgent) {
 		super();
 		this.playerAgent = playerAgent;
-		this.name_behaviour = "CITIZEN_SCORE";
+		this.name_behaviour = "LOVER_SCORE";
 
 		this.step = STATE_INIT;
 		this.nextStep ="";
@@ -87,9 +91,24 @@ public class CitizenScoreBehaviour extends Behaviour{
 			HashMap<String, Integer> scores = new HashMap<String, Integer>();
 			scoreResults = new ScoreResults(scores);
 
+			String [] args = {Roles.LOVER, Status.WAKE};
+			List<AID> agents = DFServices.findGamePlayerAgent(args, this.playerAgent, this.playerAgent.getGameid());
+			
+			String[] args2 = {Roles.LOVER, Status.SLEEP};
+			agents.addAll(DFServices.findGamePlayerAgent(args2, this.playerAgent, this.playerAgent.getGameid()));
+			AID lover = null;
+			for(AID aid : agents)
+			{
+				if(!aid.getLocalName().equals(this.playerAgent.getPlayerName()))
+				{
+					lover = aid;
+				}
+			}
+			
+			
 			for(AID player : this.request.getAIDChoices())
 			{
-				scores.put(player.getLocalName(), this.score(player, request));
+				scores.put(player.getLocalName(), this.score(player, request, lover));
 			}
 
 			this.nextStep =  STATE_SEND_SCORE;
@@ -129,7 +148,7 @@ public class CitizenScoreBehaviour extends Behaviour{
 	}
 
 
-	private int score(AID player,  VoteRequest request)
+	private int score(AID player,  VoteRequest request, AID lover)
 	{
 		VoteResults globalResults = request.getGlobalVoteResults();
 		VoteResults localResults = request.getLocalVoteResults();
@@ -143,27 +162,45 @@ public class CitizenScoreBehaviour extends Behaviour{
 			}
 			else
 			{
-				// regles de scoring
-				score+= globalResults.getVoteCount(player.getLocalName(), this.playerAgent.getPlayerName()) * ScoreFactor.SCORE_FACTOR_GLOBAL_VOTE; 
-				score+= localResults.getVoteCount(player.getLocalName(), this.playerAgent.getPlayerName()) * ScoreFactor.SCORE_FACTOR_LOCAL_VOTE; 
-				score+= localResults.getVoteCount(player.getLocalName()) * ScoreFactor.SCORE_FACTOR_LOCAL_NB_VOTE; 
-				score+= localResults.getDifferenceVote(player.getLocalName(), this.playerAgent.getPlayerName()) * ScoreFactor.SCORE_FACTOR_DIFFERENCE_LOCAL_VOTE; 
+				//lover
+				if(player.getLocalName().equals(lover.getLocalName()))
+				{
+					score = ScoreFactor.SCORE_MIN;
+				}
+				else
+				{
+					// regles de scoring
+					score+= globalResults.getVoteCount(player.getLocalName(), lover.getLocalName()) * ScoreFactor.SCORE_FACTOR_GLOBAL_VOTE; 
+					score+= localResults.getVoteCount(player.getLocalName(), lover.getLocalName()) * ScoreFactor.SCORE_FACTOR_LOCAL_VOTE; 
+					score+= localResults.getVoteCount(player.getLocalName()) * ScoreFactor.SCORE_FACTOR_LOCAL_NB_VOTE; 
+					score+= localResults.getDifferenceVote(player.getLocalName(),lover.getLocalName()) * ScoreFactor.SCORE_FACTOR_DIFFERENCE_LOCAL_VOTE; 
+				}
+				
 
 			}
 		}
 		else
 		{
+			
 			// joueur analysé = joueur 
 			if(player.getLocalName().equals(this.playerAgent.getPlayerName()))
 			{
 				score = 0;
 			}
+			
 			else
 			{
-				// ici global  =  resultat global du vote d'élimination ("contre")
-				// local = vote "pour" en cours
-				score+= globalResults.getVoteCount(player.getLocalName(), this.playerAgent.getPlayerName()) * ScoreFactor.SCORE_FACTOR_GLOBAL_VOTE *-1; 
-				score+= localResults.getVoteCount(player.getLocalName(), this.playerAgent.getPlayerName()) * ScoreFactor.SCORE_FACTOR_LOCAL_VOTE;  
+				//lover ?
+				if(player.getLocalName().equals(lover.getLocalName()))
+				{
+					score+=250;
+				}
+				
+				// regles de scoring
+				//lover a déjà voté pour lui
+				score += localResults.getVoteCount(player.getLocalName(), lover.getLocalName()) *ScoreFactor.SCORE_FACTOR_LOVER_VOTE; 
+				//nb de voix qu'il a déjà
+				score += localResults.getVoteCount(player.getLocalName()) *ScoreFactor.SCORE_FACTOR_LOCAL_NB_VOTE;
 
 			}
 		}
@@ -171,10 +208,9 @@ public class CitizenScoreBehaviour extends Behaviour{
 
 
 	}
+	
 
 	public String getName_behaviour() {
 		return name_behaviour;
 	}
-	
-	
 }

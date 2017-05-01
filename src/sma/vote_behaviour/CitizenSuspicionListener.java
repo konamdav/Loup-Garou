@@ -129,4 +129,9 @@ public class CitizenSuspicionListener extends Behaviour{
 		
 		
 	}
+	
+
+	public String getName_behaviour() {
+		return name_behaviour;
+	}
 }

@@ -53,7 +53,6 @@ public class TurnsBehaviour extends SimpleBehaviour {
 			List<AID> agents = DFServices.findGameControllerAgent("CITIZEN", this.myAgent, this.controllerAgent.getGameid());
 			if(agents.isEmpty())
 			{
-				this.nextStep = STATE_START_CITIZEN_TURN;
 			}
 			else {
 				

@@ -66,7 +66,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 	@Override
 	public void action() {
 
-		System.out.println("STATE = "+this.step);
+		//System.out.println("STATE = "+this.step);
 
 		/** etat initial **/
 		if(this.step.equals(STATE_INIT))
@@ -85,7 +85,6 @@ public class TurnBehaviour extends SimpleBehaviour {
 		/** etat d'attente de début de tour **/
 		else if(this.step.equals(STATE_WAITING_START))
 		{
-			/*** reception demande de vote **/
 			MessageTemplate mt = MessageTemplate.and(
 					MessageTemplate.MatchPerformative(ACLMessage.REQUEST),
 					MessageTemplate.MatchConversationId("START_TURN"));
@@ -113,7 +112,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 
 			this.nbPlayers = agents.size();
 			for(AID aid : agents)
-			{
+			{			
 				ACLMessage messageRequest = new ACLMessage(ACLMessage.REQUEST);
 				messageRequest.setSender(this.ctrlAgent.getAID());
 				messageRequest.addReceiver(aid);
@@ -172,7 +171,6 @@ public class TurnBehaviour extends SimpleBehaviour {
 		/** etat envoi requete pour connaître l'etat de jeu **/
 		else if(this.step.equals(STATE_SEND_CHECK_ENDGAME))
 		{
-			System.err.println("... check ... "+this.previousVictims);
 			List<AID> agents = DFServices.findGameControllerAgent("GAME", this.ctrlAgent, this.ctrlAgent.getGameid());
 			if(!agents.isEmpty())
 			{

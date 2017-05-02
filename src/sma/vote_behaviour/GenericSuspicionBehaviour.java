@@ -92,7 +92,7 @@ public class GenericSuspicionBehaviour extends Behaviour{
 
 			for(AID player : this.request.getAIDChoices())
 			{
-				scores.put(player.getLocalName(), this.score(player, request));
+				scores.put(player.getName(), this.score(player, request));
 			}
 			
 			this.nextStep =  STATE_SEND_SCORE;
@@ -135,7 +135,7 @@ public class GenericSuspicionBehaviour extends Behaviour{
 	private int score(AID player,  VoteRequest request)
 	{
 		int score = 0;
-		score = this.suspicionScore.getScore(player.getLocalName());
+		score = this.suspicionScore.getScore(player.getName());
 		if(!request.isVoteAgainst())
 		{
 			score = score * -1;

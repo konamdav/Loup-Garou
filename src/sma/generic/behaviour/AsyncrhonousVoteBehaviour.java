@@ -79,7 +79,7 @@ public class AsyncrhonousVoteBehaviour extends Behaviour {
 	@Override
 	public void action() {
 
-		System.out.println("STATE = "+this.step);
+		//System.out.println("STATE = "+this.step);
 
 		if(this.step.equals(STATE_INIT))
 		{

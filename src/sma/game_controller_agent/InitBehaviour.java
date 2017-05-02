@@ -64,10 +64,8 @@ public class InitBehaviour extends Behaviour {
 					AgentController ac = this.gameControllerAgent.getContainerController().createNewAgent(
 							playerName, "sma.player_agent.PlayerAgent", args);
 					ac.start();
-
 					System.out.println("CREATION AGENT PLAYER");
 				}
-
 			}
 			catch(Exception e)
 			{
@@ -124,7 +122,7 @@ public class InitBehaviour extends Behaviour {
 
 						this.gameControllerAgent.send(messageRequest);
 
-						System.out.println("ATTRIBUTION ROLE "+entry.getKey()+" => "+agents.get(indexPlayer).getLocalName());
+						System.out.println("ATTRIBUTION ROLE "+entry.getKey()+" => "+agents.get(indexPlayer).getName());
 						indexPlayer++;
 					}
 				}
@@ -136,6 +134,7 @@ public class InitBehaviour extends Behaviour {
 		}
 		else if(step.equals(STATE_RECEIVE_ATTR))
 		{
+			System.out.println("WAITING ATTRIBUTION");
 			MessageTemplate mt = MessageTemplate.and(
 					MessageTemplate.MatchPerformative(ACLMessage.INFORM),
 					MessageTemplate.MatchConversationId("ATTRIBUTION_ROLE"));
@@ -144,6 +143,10 @@ public class InitBehaviour extends Behaviour {
 			if(message != null)
 			{
 				this.cpt++;
+				System.out.println("RECEIVE ATTRIBUTION "+this.cpt+"/"+this.gameControllerAgent.getGameSettings().getPlayersCount());
+				
+				
+				
 				if(cpt == this.gameControllerAgent.getGameSettings().getPlayersCount())
 				{
 					this.nextStep = STATE_START_GAME;
@@ -160,10 +163,10 @@ public class InitBehaviour extends Behaviour {
 		{
 			System.out.println("START GAME");
 
-			System.out.println("PROFILES");
-			DFServices.getPlayerProfiles(this.gameControllerAgent, this.gameControllerAgent.getGameid());
-			//this.gameControllerAgent.addBehaviour(new TurnsBehaviour(this.gameControllerAgent));
-			//this.gameControllerAgent.addBehaviour(new CheckEndGameBehaviour(this.gameControllerAgent));
+			//System.out.println("PROFILES");
+			//DFServices.getPlayerProfiles(this.gameControllerAgent, this.gameControllerAgent.getGameid());
+			this.gameControllerAgent.addBehaviour(new TurnsBehaviour(this.gameControllerAgent));
+			this.gameControllerAgent.addBehaviour(new CheckEndGameBehaviour(this.gameControllerAgent));
 
 			this.flag = true;
 		}

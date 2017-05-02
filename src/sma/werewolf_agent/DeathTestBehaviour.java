@@ -14,10 +14,10 @@ import sma.model.VoteRequest;
 import sma.player_agent.IVotingAgent;
 import sma.player_agent.PlayerAgent;
 
-public class WakeSleepTestBehaviour extends SimpleBehaviour{
+public class DeathTestBehaviour extends SimpleBehaviour{
 	private PlayerAgent playerAgent ;
 
-	public WakeSleepTestBehaviour(PlayerAgent playerAgent) {
+	public DeathTestBehaviour(PlayerAgent playerAgent) {
 		super();
 		this.playerAgent = playerAgent;
 	}
@@ -26,17 +26,16 @@ public class WakeSleepTestBehaviour extends SimpleBehaviour{
 	public void action() {
 		MessageTemplate mt = MessageTemplate.and(
 				MessageTemplate.MatchPerformative(ACLMessage.REQUEST),
-				MessageTemplate.MatchConversationId("WAKE_PLAYER"));
+				MessageTemplate.MatchConversationId("KILL_PLAYER"));
 
 		ACLMessage message = this.myAgent.receive(mt);
 		if (message != null) 
 		{
-			System.out.println("I WAKE ");
-			
-			DFServices.setStatusPlayerAgent("WAKE", this.playerAgent, this.playerAgent.getGameid());
-			
+			System.err.println("[ "+this.playerAgent.getName()+" ] DIE ");
+			DFServices.setStatusPlayerAgent("DEAD", this.playerAgent, this.playerAgent.getGameid());
+
 			ACLMessage reply = new ACLMessage(ACLMessage.CONFIRM);
-			reply.setConversationId("WAKE_PLAYER");
+			reply.setConversationId("DEAD_PLAYER");
 			reply.setSender(this.myAgent.getAID());
 			reply.addReceiver(message.getSender());
 
@@ -44,26 +43,7 @@ public class WakeSleepTestBehaviour extends SimpleBehaviour{
 		}
 		else
 		{
-			mt = MessageTemplate.and(
-			MessageTemplate.MatchPerformative(ACLMessage.REQUEST),
-			MessageTemplate.MatchConversationId("SLEEP_PLAYER"));
-
-			 message = this.myAgent.receive(mt);
-			if (message != null) 
-			{
-				System.out.println("I SLEEP ");
-				DFServices.setStatusPlayerAgent("SLEEP", this.playerAgent, this.playerAgent.getGameid());
-				
-				ACLMessage reply = new ACLMessage(ACLMessage.CONFIRM);
-				reply.setConversationId("SLEEP_PLAYER");
-				reply.setSender(this.myAgent.getAID());
-				reply.addReceiver(message.getSender());
-
-				this.myAgent.send(reply);
-			}
-			else{
-				block();
-			}		
+			block();
 		}
 	}
 

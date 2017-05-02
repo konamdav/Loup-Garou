@@ -82,7 +82,7 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 	@Override
 	public void action() {
 
-		System.out.println("STATE = "+this.step);
+		//System.out.println("STATE = "+this.step);
 
 		if(this.step.equals(STATE_INIT))
 		{
@@ -121,6 +121,7 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 		}
 		else if(this.step.equals(STATE_SEND_REQUEST))
 		{
+			System.out.println("[ "+this.agent.getName()+" ] VOTE REQUEST");
 			for(String s : this.agent.getVotingBehaviours())
 			{
 				System.out.println("ROLE VOTE : "+s);
@@ -154,10 +155,10 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 
 			if(message !=null)
 			{
-				System.out.println("\n\nDEBUT PLAYER AGENT : "+this.agent.getName());
-				System.out.println("MESSAGE INFORM "+
-						this.agent.getVotingBehaviours().get(nbVoters)+" : "+message.getContent());
-
+				//System.out.println("\n\nDEBUT PLAYER AGENT : "+this.agent.getName());
+				System.err.println("REQUEST => "+this.request.getRequest());
+				System.err.println("MESSAGE INFORM "+" : "+message.getContent());
+				
 				++this.nbVoters;
 				
 				ObjectMapper mapper = new ObjectMapper();
@@ -209,9 +210,16 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 
 				}
 				else
-				{
+				{					
 					// new vote with finalists
-					request = new VoteRequest(this.finalResults, request.getGlobalVoteResults());
+					
+					this.lastResults = this.finalResults;
+					
+					VoteRequest tmp = new VoteRequest(this.finalResults, request.getGlobalCitizenVoteResults());
+					tmp.setRequest(request.getRequest());
+					tmp.setVoteAgainst(request.isVoteAgainst());
+					
+					this.request = tmp;
 					this.nbVoters = 0;
 					this.nextStep = STATE_SEND_REQUEST;
 				}

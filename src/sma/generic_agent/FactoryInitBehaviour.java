@@ -15,6 +15,7 @@ import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import sma.citizen_agent.CitizenInitBehaviour;
 import sma.lover_behaviour.LoverInitBehaviour;
 import sma.model.Roles;
 import sma.model.ScoreResults;
@@ -40,29 +41,32 @@ public class FactoryInitBehaviour extends CyclicBehaviour{
 		MessageTemplate mt = MessageTemplate.and(
 				MessageTemplate.MatchPerformative(ACLMessage.REQUEST),
 				MessageTemplate.MatchConversationId("INIT_ROLE"));
-		
+
 
 		ACLMessage message = this.myAgent.receive(mt);
 		if (message != null) 
 		{
 
-		     String role_receive = message.getContent();
-		     
-			System.out.println("FACTORY INIT BEHAVIOUR "+role_receive+ " TO THIS PLAYER "+this.agent.getName());				
+			String role_receive = message.getContent();
+			//System.out.println("FACTORY INIT BEHAVIOUR "+role_receive+ " TO THIS PLAYER "+this.agent.getName());				
 
-		     //TODO TODO TODO IMPORTANT CHANGE COMPILANCE TRUC VERSTION TO 1.7 FOR THIS SWITCH STRING
-		     switch (role_receive) {
-		         case Roles.CITIZEN:
-		             break;
-		         case Roles.WEREWOLF:
-		     		this.agent.addBehaviour(new WerewolfInitBehaviour(this.agent));
-		             break;
-		         case Roles.LOVER:
-			     	this.agent.addBehaviour(new LoverInitBehaviour(this.agent));
-		             break;
-		         default:
-		             throw new IllegalArgumentException("Invalid day of the week: " + role_receive);
-		     }
+			//TODO TODO TODO IMPORTANT CHANGE COMPILANCE TRUC VERSTION TO 1.7 FOR THIS SWITCH STRING
+			switch (role_receive) {
+			case Roles.CITIZEN:
+				this.agent.addBehaviour(new CitizenInitBehaviour(this.agent));
+				break;
+			case Roles.WEREWOLF:
+				this.agent.addBehaviour(new WerewolfInitBehaviour(this.agent));
+				break;
+			case Roles.LOVER:
+				this.agent.addBehaviour(new LoverInitBehaviour(this.agent));
+				break;
+			case Roles.MAYOR:
+				this.agent.addBehaviour(new MayorInitBehaviour(this.agent));
+				break;
+			default:
+				throw new IllegalArgumentException("Invalid day of the week: " + role_receive);
+			}
 		}
 		else
 		{

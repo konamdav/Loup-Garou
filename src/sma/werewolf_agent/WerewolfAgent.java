@@ -57,7 +57,7 @@ public class WerewolfAgent extends Agent implements IVotingAgent{
 		this.addBehaviour(new WerewolfVoteBehaviour(this));
 		this.addBehaviour(new LoverVoteBehaviour(this));
 
-		this.addBehaviour(new WakeSleepTestBehaviour(this));
+		//this.addBehaviour(new WakeSleepTestBehaviour(this));
 		
 	}
 

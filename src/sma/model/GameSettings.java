@@ -11,7 +11,7 @@ public class GameSettings {
 		
 		//Liste role par défaut
 		this.rolesSettings = new HashMap<String, Integer>();
-		this.rolesSettings.put(Roles.CITIZEN, 3);
+		this.rolesSettings.put(Roles.CITIZEN, 1);
 		this.rolesSettings.put(Roles.WEREWOLF, 3);
 		this.rolesSettings.put(Roles.CUPID, 0);
 		this.rolesSettings.put(Roles.LITTLE_GIRL, 0);

@@ -44,8 +44,7 @@ public class TurnsBehaviour extends SimpleBehaviour {
 	public void action() {
 		
 		if(this.step.equals(STATE_INIT))
-		{
-			
+		{	
 			this.nextStep = STATE_START_CITIZEN_TURN;
 		}
 		else if (this.step.equals(STATE_START_CITIZEN_TURN))

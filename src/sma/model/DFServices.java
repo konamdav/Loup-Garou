@@ -14,6 +14,7 @@ import jade.domain.FIPAException;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.Property;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
+import jade.util.leap.Iterator;
 import sma.data.Data;
 
 public class DFServices {
@@ -77,67 +78,98 @@ public class DFServices {
 		DFServices.registerGameAgent("CONTROLLER", name, agent, gameid);
 	}
 
-	private static void registerGameAgent(String type, String name, Agent agent,  int gameid){
+	private static DFAgentDescription getDFAgentDescription(Agent agent)
+	{
+		DFAgentDescription descriptionAgent = null;
+		DFAgentDescription dfad = new DFAgentDescription();
+		dfad.setName(agent.getAID());
+		try 
+		{
+
+			DFAgentDescription[] dfds = DFService.search(agent, dfad);
+			if(dfds.length > 0)
+			{
+				descriptionAgent = dfds[0];
+			}
+			else
+			{
+				descriptionAgent = dfad;
+			}
+
+		} 
+		catch (FIPAException e) 
+		{
+			descriptionAgent = dfad;
+			e.printStackTrace();
+		}
+
+		return descriptionAgent;
+	}
+
+	private static void registerGameAgent(String type, String name, Agent agent,  int gameid)
+	{
 
 		ServiceDescription sd = new ServiceDescription();
-
 		sd.setType(type);
 		sd.setName(name);
 		sd.addProperties(new Property("CONTAINER", "GAME_"+gameid));
 
 		try {
-			if(registered.containsKey(agent.getAID()))
+			DFAgentDescription dfad = getDFAgentDescription(agent);
+			
+			if(!dfad.getAllServices().hasNext())
 			{
-				DFAgentDescription dfad = registered.get(agent.getAID());
 				dfad.addServices(sd);
-
-				DFService.modify(agent, dfad);
+				DFService.register(agent, dfad);
 			}
 			else
 			{
-				DFAgentDescription dfad = new DFAgentDescription();
-				dfad.setName(agent.getAID());
 				dfad.addServices(sd);
-
-				DFService.register(agent, dfad);
-				registered.put(agent.getAID(), dfad);
+				DFService.modify(agent, dfad);
 			}
-
 		}
 		catch (FIPAException fe) {
 			fe.printStackTrace();
 		}
 	}
 
+
+
 	private static void deregisterGameAgent(String type, String name, Agent agent,  int gameid){
-
-		ServiceDescription sd = new ServiceDescription();
-		sd.setType(type);
-		sd.setName(name);
-		sd.addProperties(new Property("CONTAINER", "GAME_"+gameid));
-
-		DFAgentDescription dfad = null;
-		if(registered.containsKey(agent.getAID()))
+		DFAgentDescription dfad = getDFAgentDescription(agent);
+		
+		Iterator it = dfad.getAllServices();
+		boolean flag = false;
+		ServiceDescription sd = null;
+		while(it.hasNext() && !flag )
 		{
-			dfad = registered.get(agent.getAID());
+			sd = (ServiceDescription) it.next();
+			if(sd.getName().equals(name) && sd.getType().equals(type))
+			{
+				flag = true;
+			}
+			
+		}
+		
+		if(flag)
+		{
 			dfad.removeServices(sd);
-
 			try {
 				DFService.modify(agent, dfad);
-			}
-			catch (FIPAException fe) {
-				fe.printStackTrace();
-			}
+			} catch (FIPAException e) {
+				e.printStackTrace();
+			}	
 		}
 	}
 
 
+
 	public static void setStatusPlayerAgent(String status, Agent agent,  int gameid)
 	{
-		DFServices.deregisterGameAgent("PLAYER", "SLEEP", agent, gameid);
-		DFServices.deregisterGameAgent("PLAYER", "WAKE", agent, gameid);
-		DFServices.deregisterGameAgent("PLAYER", "DEAD", agent, gameid);
-
+		DFServices.deregisterGameAgent("PLAYER", Status.SLEEP, agent, gameid);
+		DFServices.deregisterGameAgent("PLAYER", Status.WAKE, agent, gameid);
+		//DFServices.deregisterGameAgent("PLAYER", "DEAD", agent, gameid);	
+		
 		DFServices.registerGameAgent("PLAYER", status, agent, gameid);
 	}
 
@@ -154,7 +186,7 @@ public class DFServices {
 	{
 		List<AID> res = new ArrayList<AID>();
 		List<AID> citizens = findOrderedCitizen(agent, gameid);
-		
+
 		int i = 0; 
 		boolean flag = false;
 		while(i<citizens.size() && !flag)
@@ -163,7 +195,7 @@ public class DFServices {
 			if(aid.getLocalName().equals(player.getLocalName()))
 			{
 				int area = Math.min(citizens.size()-1, Data.AREA_NEIGHBORS);
-				
+
 				/** recuperation des voisins de portée N **/
 				for(int j = i-1; j<= i-area; j--)
 				{
@@ -174,7 +206,7 @@ public class DFServices {
 					}
 					res.add(citizens.get(index));
 				}
-				
+
 				for(int j = i+1; j<= i+area; j++)
 				{
 					int index = j;
@@ -188,10 +220,10 @@ public class DFServices {
 			}
 			++i;
 		}
-		
+
 		return res;
 	}
-	
+
 	/** recupere les voisins d'un coté **/
 	public static List<AID> findNeighborsBySide(String side, AID player, Agent agent, int gameid)
 	{
@@ -211,10 +243,10 @@ public class DFServices {
 				res.add(tmp.get(i));
 			}
 		}
-		
+
 		return res;
 	}
-	
+
 	/** trouver les voisins **/
 	public static List<AID> findOrderedCitizen(Agent agent, int gameid)
 	{

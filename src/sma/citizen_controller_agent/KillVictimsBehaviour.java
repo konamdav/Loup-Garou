@@ -2,6 +2,8 @@ package sma.citizen_controller_agent;
 
 import jade.core.AID;
 import jade.core.behaviours.SimpleBehaviour;
+import jade.lang.acl.ACLMessage;
+import jade.lang.acl.MessageTemplate;
 
 /**
  * Behaviour tuant les joueurs désignés comme victimes
@@ -36,7 +38,7 @@ public class KillVictimsBehaviour extends SimpleBehaviour
 	@Override
 	public void action() {
 
-		System.out.println("STATE KILL VICTIMS "+this.step);
+		//System.out.println("STATE KILL VICTIMS "+this.step);
 
 
 		if(this.step.equals(STATE_INIT))
@@ -51,7 +53,7 @@ public class KillVictimsBehaviour extends SimpleBehaviour
 			else
 			{
 				this.currentVictim = this.citizenControllerAgent.getVictims().pop();
-				System.out.println("CURRENT VICTIM "+this.currentVictim.getLocalName());
+				System.out.println("CURRENT VICTIM "+this.currentVictim.getName());
 
 				this.nextStep =STATE_SEND_GET_ROLE;
 			}
@@ -70,17 +72,42 @@ public class KillVictimsBehaviour extends SimpleBehaviour
 		}
 		else if(this.step.equals(STATE_SEND_KILL))
 		{
+			System.err.println("SEND KILL "+currentVictim.getName());
+			
+			ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
+			msg.setConversationId("KILL_PLAYER");
+			msg.setSender(this.citizenControllerAgent.getAID());
+			msg.addReceiver(this.currentVictim);
+			this.citizenControllerAgent.send(msg);
+			
 			this.nextStep = STATE_RECEIVE_KILL;
 		}	
 		else if(this.step.equals(STATE_RECEIVE_KILL))
 		{
-			if(this.citizenControllerAgent.getVictims().isEmpty())
+			if(this.currentVictim==null && this.citizenControllerAgent.getVictims().isEmpty())
 			{
+				System.out.println("PAS DE VICTIMES");
 				this.nextStep = STATE_END;
 			}
 			else
 			{
-				this.nextStep = STATE_INIT;
+				//Message get from InitBehaviour game_control_Agent
+				MessageTemplate mt = MessageTemplate.and(
+						MessageTemplate.MatchPerformative(ACLMessage.CONFIRM),
+						MessageTemplate.MatchConversationId("DEAD_PLAYER"));
+					
+				ACLMessage message = this.myAgent.receive(mt);
+				if(message != null)
+				{
+					this.nextStep = STATE_INIT;
+				}
+				else
+				{
+					this.nextStep = STATE_RECEIVE_KILL;
+					block();
+				}
+				
+				
 			}
 
 		}

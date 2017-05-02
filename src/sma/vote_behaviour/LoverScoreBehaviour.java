@@ -99,7 +99,7 @@ public class LoverScoreBehaviour extends Behaviour{
 			AID lover = null;
 			for(AID aid : agents)
 			{
-				if(!aid.getLocalName().equals(this.playerAgent.getPlayerName()))
+				if(!aid.getName().equals(this.playerAgent.getPlayerName()))
 				{
 					lover = aid;
 				}
@@ -108,7 +108,7 @@ public class LoverScoreBehaviour extends Behaviour{
 			
 			for(AID player : this.request.getAIDChoices())
 			{
-				scores.put(player.getLocalName(), this.score(player, request, lover));
+				scores.put(player.getName(), this.score(player, request, lover));
 			}
 
 			this.nextStep =  STATE_SEND_SCORE;
@@ -150,30 +150,30 @@ public class LoverScoreBehaviour extends Behaviour{
 
 	private int score(AID player,  VoteRequest request, AID lover)
 	{
-		VoteResults globalResults = request.getGlobalVoteResults();
+		VoteResults globalResults = request.getGlobalCitizenVoteResults();
 		VoteResults localResults = request.getLocalVoteResults();
 
 		int score = 0;
 		if(request.isVoteAgainst()){
 			// joueur analysé = joueur 
-			if(player.getLocalName().equals(this.playerAgent.getPlayerName()))
+			if(player.getName().equals(this.playerAgent.getPlayerName()))
 			{
 				score = ScoreFactor.SCORE_MIN;
 			}
 			else
 			{
 				//lover
-				if(player.getLocalName().equals(lover.getLocalName()))
+				if(player.getName().equals(lover.getName()))
 				{
 					score = ScoreFactor.SCORE_MIN;
 				}
 				else
 				{
 					// regles de scoring
-					score+= globalResults.getVoteCount(player.getLocalName(), lover.getLocalName()) * ScoreFactor.SCORE_FACTOR_GLOBAL_VOTE; 
-					score+= localResults.getVoteCount(player.getLocalName(), lover.getLocalName()) * ScoreFactor.SCORE_FACTOR_LOCAL_VOTE; 
-					score+= localResults.getVoteCount(player.getLocalName()) * ScoreFactor.SCORE_FACTOR_LOCAL_NB_VOTE; 
-					score+= localResults.getDifferenceVote(player.getLocalName(),lover.getLocalName()) * ScoreFactor.SCORE_FACTOR_DIFFERENCE_LOCAL_VOTE; 
+					score+= globalResults.getVoteCount(player.getName(), lover.getName()) * ScoreFactor.SCORE_FACTOR_GLOBAL_VOTE; 
+					score+= localResults.getVoteCount(player.getName(), lover.getName()) * ScoreFactor.SCORE_FACTOR_LOCAL_VOTE; 
+					score+= localResults.getVoteCount(player.getName()) * ScoreFactor.SCORE_FACTOR_LOCAL_NB_VOTE; 
+					score+= localResults.getDifferenceVote(player.getName(),lover.getName()) * ScoreFactor.SCORE_FACTOR_DIFFERENCE_LOCAL_VOTE; 
 				}
 				
 
@@ -183,7 +183,7 @@ public class LoverScoreBehaviour extends Behaviour{
 		{
 			
 			// joueur analysé = joueur 
-			if(player.getLocalName().equals(this.playerAgent.getPlayerName()))
+			if(player.getName().equals(this.playerAgent.getPlayerName()))
 			{
 				score = 0;
 			}
@@ -191,16 +191,16 @@ public class LoverScoreBehaviour extends Behaviour{
 			else
 			{
 				//lover ?
-				if(player.getLocalName().equals(lover.getLocalName()))
+				if(player.getName().equals(lover.getName()))
 				{
 					score+=250;
 				}
 				
 				// regles de scoring
 				//lover a déjà voté pour lui
-				score += localResults.getVoteCount(player.getLocalName(), lover.getLocalName()) *ScoreFactor.SCORE_FACTOR_LOVER_VOTE; 
+				score += localResults.getVoteCount(player.getName(), lover.getName()) *ScoreFactor.SCORE_FACTOR_LOVER_VOTE; 
 				//nb de voix qu'il a déjà
-				score += localResults.getVoteCount(player.getLocalName()) *ScoreFactor.SCORE_FACTOR_LOCAL_NB_VOTE;
+				score += localResults.getVoteCount(player.getName()) *ScoreFactor.SCORE_FACTOR_LOCAL_NB_VOTE;
 
 			}
 		}

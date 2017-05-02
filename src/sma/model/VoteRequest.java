@@ -12,14 +12,14 @@ public class VoteRequest {
 	private boolean voteAgainst;
 	private List<String> choices;
 	private List<String> voters;
-	private VoteResults globalVoteResults;
+	private VoteResults globalCitizenVoteResults;
 	private VoteResults localVoteResults;
 	
 	public VoteRequest() {
 		super();
 		this.choices = new ArrayList<String>(); //String convert to aid later
 		this.voters = new ArrayList<String>();//String convert to aid later
-		this.globalVoteResults = new VoteResults();// Archive des votes previously on AMC WALKING DEAD
+		this.globalCitizenVoteResults = new VoteResults();// Archive des votes previously on AMC WALKING DEAD
 		this.localVoteResults = new VoteResults();
 		this.request="UNKNOWN_REQUEST";
 		this.voteAgainst = true;
@@ -30,14 +30,16 @@ public class VoteRequest {
 		this.choices = choices;
 		this.voters = new ArrayList<String>();
 		this.request="UNKNOWN_REQUEST";
-		this.globalVoteResults = new VoteResults();
+		this.globalCitizenVoteResults = new VoteResults();
+		this.localVoteResults = new VoteResults();
 		this.voteAgainst = true;
 	}
 	
 	public VoteRequest(List<String> choices , VoteResults results) {
 		super();
 		this.choices = choices;
-		this.globalVoteResults = results;
+		this.globalCitizenVoteResults = results;
+		this.request="UNKNOWN_REQUEST";
 		this.localVoteResults = new VoteResults();
 		this.voteAgainst = true;
 	}
@@ -45,7 +47,8 @@ public class VoteRequest {
 	public VoteRequest(List<String> choices , VoteResults gresults, VoteResults lresults) {
 		super();
 		this.choices = choices;
-		this.globalVoteResults = gresults;
+		this.request="UNKNOWN_REQUEST";
+		this.globalCitizenVoteResults = gresults;
 		this.localVoteResults = lresults;
 		this.voteAgainst = true;
 	}
@@ -82,12 +85,12 @@ public class VoteRequest {
 		this.request = request;
 	}
 
-	public VoteResults getGlobalVoteResults() {
-		return globalVoteResults;
+	public VoteResults getGlobalCitizenVoteResults() {
+		return globalCitizenVoteResults;
 	}
 
-	public void setGlobalVoteResults(VoteResults globalVoteResults) {
-		this.globalVoteResults = globalVoteResults;
+	public void setGlobalCitizenVoteResults(VoteResults globalVoteResults) {
+		this.globalCitizenVoteResults = globalVoteResults;
 	}
 
 	public List<String> getVoters() {

@@ -89,7 +89,7 @@ public class CitizenScoreBehaviour extends Behaviour{
 
 			for(AID player : this.request.getAIDChoices())
 			{
-				scores.put(player.getLocalName(), this.score(player, request));
+				scores.put(player.getName(), this.score(player, request));
 			}
 
 			this.nextStep =  STATE_SEND_SCORE;
@@ -131,30 +131,30 @@ public class CitizenScoreBehaviour extends Behaviour{
 
 	private int score(AID player,  VoteRequest request)
 	{
-		VoteResults globalResults = request.getGlobalVoteResults();
+		VoteResults globalResults = request.getGlobalCitizenVoteResults();
 		VoteResults localResults = request.getLocalVoteResults();
 
 		int score = 0;
 		if(request.isVoteAgainst()){
 			// joueur analysé = joueur 
-			if(player.getLocalName().equals(this.playerAgent.getPlayerName()))
+			if(player.getName().equals(this.playerAgent.getPlayerName()))
 			{
 				score = ScoreFactor.SCORE_MIN;
 			}
 			else
 			{
 				// regles de scoring
-				score+= globalResults.getVoteCount(player.getLocalName(), this.playerAgent.getPlayerName()) * ScoreFactor.SCORE_FACTOR_GLOBAL_VOTE; 
-				score+= localResults.getVoteCount(player.getLocalName(), this.playerAgent.getPlayerName()) * ScoreFactor.SCORE_FACTOR_LOCAL_VOTE; 
-				score+= localResults.getVoteCount(player.getLocalName()) * ScoreFactor.SCORE_FACTOR_LOCAL_NB_VOTE; 
-				score+= localResults.getDifferenceVote(player.getLocalName(), this.playerAgent.getPlayerName()) * ScoreFactor.SCORE_FACTOR_DIFFERENCE_LOCAL_VOTE; 
+				score+= globalResults.getVoteCount(player.getName(), this.playerAgent.getPlayerName()) * ScoreFactor.SCORE_FACTOR_GLOBAL_VOTE; 
+				score+= localResults.getVoteCount(player.getName(), this.playerAgent.getPlayerName()) * ScoreFactor.SCORE_FACTOR_LOCAL_VOTE; 
+				score+= localResults.getVoteCount(player.getName()) * ScoreFactor.SCORE_FACTOR_LOCAL_NB_VOTE; 
+				score+= localResults.getDifferenceVote(player.getName(), this.playerAgent.getPlayerName()) * ScoreFactor.SCORE_FACTOR_DIFFERENCE_LOCAL_VOTE; 
 
 			}
 		}
 		else
 		{
 			// joueur analysé = joueur 
-			if(player.getLocalName().equals(this.playerAgent.getPlayerName()))
+			if(player.getName().equals(this.playerAgent.getPlayerName()))
 			{
 				score = 0;
 			}
@@ -162,8 +162,8 @@ public class CitizenScoreBehaviour extends Behaviour{
 			{
 				// ici global  =  resultat global du vote d'élimination ("contre")
 				// local = vote "pour" en cours
-				score+= globalResults.getVoteCount(player.getLocalName(), this.playerAgent.getPlayerName()) * ScoreFactor.SCORE_FACTOR_GLOBAL_VOTE *-1; 
-				score+= localResults.getVoteCount(player.getLocalName(), this.playerAgent.getPlayerName()) * ScoreFactor.SCORE_FACTOR_LOCAL_VOTE;  
+				score+= globalResults.getVoteCount(player.getName(), this.playerAgent.getPlayerName()) * ScoreFactor.SCORE_FACTOR_GLOBAL_VOTE *-1; 
+				score+= localResults.getVoteCount(player.getName(), this.playerAgent.getPlayerName()) * ScoreFactor.SCORE_FACTOR_LOCAL_VOTE;  
 
 			}
 		}

@@ -39,14 +39,11 @@ public class NewMainRoleBehaviour extends CyclicBehaviour{
 		MessageTemplate mt = MessageTemplate.and(
 				MessageTemplate.MatchPerformative(ACLMessage.REQUEST),
 				MessageTemplate.MatchConversationId("ATTRIBUTION_ROLE"));
-		
-		//TODO CEDRIC Renvoyer a la fin au game controller un msg INFORM de conversation id ATTRIBUTION_ROLE
-		// pour prévenir de la fin de l'attribution du role
-		
+			
 		ACLMessage message = this.myAgent.receive(mt);
 		if(message != null)
 		{
-			System.out.println("WAIT NEW MAIN ROLE BEHAVIOUR : "+message.getContent());
+			//System.out.println("WAIT NEW MAIN ROLE BEHAVIOUR : "+message.getContent());
 
 			ObjectMapper mapper = new ObjectMapper();
 			String new_role = message.getContent();
@@ -55,22 +52,36 @@ public class NewMainRoleBehaviour extends CyclicBehaviour{
 			//Test if already got a role
 			String main_role = this.agent.getMain_role();
 			
-			if (main_role == null){
-				System.out.println("SET NEW ROLE : "+new_role+ " TO THIS PLAYER "+this.agent.getName());				
+			if (main_role.isEmpty()){
+				//System.out.println("SET NEW ROLE : "+new_role+ " TO THIS PLAYER "+this.agent.getName());				
 				
 				this.agent.setMain_role(new_role);
 				//TODO Check if in first position
 				//DFServices.modifyPlayerAgent(old_role, new_role, this.agent, this.agent.getGameid());
-				DFServices.registerPlayerAgent(this.agent.getMain_role(), this.agent, this.agent.getGameid());
+				//DFServices.registerPlayerAgent(this.agent.getMain_role(), this.agent, this.agent.getGameid());
 				reply = new ACLMessage(ACLMessage.CONFIRM);
 				
 				ACLMessage messageRequest = new ACLMessage(ACLMessage.REQUEST);
 				messageRequest.addReceiver(this.agent.getAID());
+				messageRequest.setSender(this.agent.getAID());
 				messageRequest.setConversationId("INIT_ROLE");
 
 				messageRequest.setContent(this.agent.getMain_role());
 				this.myAgent.send(messageRequest);
 				
+			
+				//TODO CEDRIC Renvoyer a la fin au game controller un msg INFORM de conversation id ATTRIBUTION_ROLE
+				// pour prévenir de la fin de l'attribution du role
+				messageRequest = new ACLMessage(ACLMessage.INFORM);
+				messageRequest.setSender(this.agent.getAID());
+				
+				List<AID> agents = DFServices.findGameControllerAgent("GAME", this.myAgent, this.agent.getGameid());
+				if(!agents.isEmpty())
+				{
+					messageRequest.addReceiver(agents.get(0));
+					messageRequest.setConversationId("ATTRIBUTION_ROLE");
+					this.myAgent.send(messageRequest);	
+				}
 				
 			}
 			else if (main_role == new_role){
@@ -80,7 +91,18 @@ public class NewMainRoleBehaviour extends CyclicBehaviour{
 			}
 			else if (main_role != new_role){
 				//TODO If voleur can swap role SO DO this case 
-				System.out.println("Got another role "+main_role+ "TO THIS PLAYER "+this.agent.getName());
+				//System.out.println("Got another role "+main_role+ "TO THIS PLAYER "+this.agent.getName());
+				
+				
+				System.out.println("ATTRIBUTION => "+new_role);
+				ACLMessage messageRequest = new ACLMessage(ACLMessage.REQUEST);
+				messageRequest.addReceiver(this.agent.getAID());
+				messageRequest.setSender(this.agent.getAID());
+				messageRequest.setConversationId("INIT_ROLE");
+
+				messageRequest.setContent(new_role);
+				this.myAgent.send(messageRequest);
+				
 				reply = new ACLMessage(ACLMessage.FAILURE);
 			}
 

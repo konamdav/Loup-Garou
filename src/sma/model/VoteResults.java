@@ -21,14 +21,14 @@ public class VoteResults {
 
 	public VoteResults(Map<String, List<String>> voteResults) {
 		super();
-		
+
 		this.voteResults = voteResults;
 	}
 
 	public Map<String, List<String>> getVoteResults() {
 		return voteResults;
 	}
-	
+
 	@JsonIgnore
 	public Map<String, Integer> getSimpleVoteResults() {
 		Map<String, Integer> simpleVoteResults = new HashMap<String, Integer>();
@@ -42,13 +42,13 @@ public class VoteResults {
 	public void setVoteResults(Map<String, List<String>> voteResults) {
 		this.voteResults = voteResults;
 	}
-	
+
 	public void add(VoteResults newVoteResults)
 	{
 		for(Entry<String, List<String>> entry : newVoteResults.getVoteResults().entrySet())
 		{
 			List<String> voteResult = entry.getValue();
-			
+
 			if(this.voteResults.containsKey(entry.getKey()))
 			{
 				this.voteResults.get(entry.getKey()).addAll(voteResult);
@@ -59,46 +59,56 @@ public class VoteResults {
 			}
 		}
 	}
-	
+
 	public int getVoteCount(String voted, String voter)
 	{
 		if(!this.voteResults.containsKey(voted)) return 0;
-		
+
 		return Collections.frequency(this.voteResults.get(voted), voter);
 	}
-	
+
 	public int getVoteCount(String voted, List<AID> voters)
 	{
 		if(!this.voteResults.containsKey(voted)) return 0;
 		int occ = 0;
-		
+
 		for(AID aid : voters)
 		{
-			if(this.voteResults.get(voted).contains(aid.getLocalName()))
+			if(this.voteResults.get(voted).contains(aid.getName()))
 			{
 				occ++;
 			}
 		}
-		
+
 		return occ;
-	
+
 	}
-	
+
 	public int getVoteCount(String voted)
 	{
 		if(!this.voteResults.containsKey(voted)) return 0;
 		return this.voteResults.get(voted).size();
-	
+
 	}
-	
+
 	public int getDifferenceVote(String voted, String voter)
 	{
-		int nbVoted = this.voteResults.get(voted).size();
-		int nbVoter = this.voteResults.get(voter).size();
+
+		int nbVoted = 0;
+		if(this.voteResults.containsKey(voted))
+		{
+			nbVoted = this.voteResults.get(voted).size();
+		}
+		int nbVoter = 0;
 		
+		if(this.voteResults.containsKey(voter))
+		{
+			nbVoter = this.voteResults.get(voter).size();
+		}
+
 		return nbVoter - nbVoted;
 	}
-	
+
 	/*** get finalists **/
 	public List<String> getFinalResults()
 	{
@@ -118,7 +128,7 @@ public class VoteResults {
 
 			}
 		}
-		
+
 		return finalResults;
 	}
 }

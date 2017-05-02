@@ -61,10 +61,8 @@ public class CheckEndGameBehaviour extends CyclicBehaviour {
 			ACLMessage message = this.myAgent.receive(mt);
 			if(message != null)
 			{
-				System.out.println("!!!!!!!!!!!RECEIVE!!!!!!!!!!!!!!!!!!!");
 				this.sender = message.getSender();
 				this.nextStep = STATE_SEND_ANSWER;
-				System.out.println("!!!!!!!!!!!RECEIVE!!!!!!!!!!!!!!!!!!!");
 			}
 			else
 			{
@@ -86,10 +84,16 @@ public class CheckEndGameBehaviour extends CyclicBehaviour {
 			String[] services3 = {Roles.LOVER, Status.WAKE};
 			List<AID> lovers = DFServices.findGamePlayerAgent(services3, this.gameControllerAgent, this.gameControllerAgent.getGameid());
 
+			System.err.println("W Size = "+werewolves.size());
+			System.err.println("C Size = "+citizens.size());
+			System.err.println("L Size = "+citizens.size());
+			System.err.println("DEAD Size = "+DFServices.findGamePlayerAgent("DEAD", this.gameControllerAgent, this.gameControllerAgent.getGameid()).size());
+			System.err.println("SLEEP Size = "+DFServices.findGamePlayerAgent("SLEEP", this.gameControllerAgent, this.gameControllerAgent.getGameid()).size());
+			System.err.println("MAYOR Size = "+DFServices.findGamePlayerAgent("MAYOR", this.gameControllerAgent, this.gameControllerAgent.getGameid()).size());
 			
 			if( werewolves.isEmpty()) 
 			{
-				System.out.println("CHECK ? GAME ENDS");
+				System.err.println("No werewolf");
 				this.gameControllerAgent.setCheckEndGame(true);
 				message.setConversationId("END_GAME");
 				this.nextStep = STATE_NOTIFY_END_GAME;
@@ -97,21 +101,21 @@ public class CheckEndGameBehaviour extends CyclicBehaviour {
 			}
 			else if(werewolves.size() == citizens.size()) 
 			{
-				System.out.println("CHECK ? GAME ENDS");
+				System.err.println("No simple citizen");
 				this.gameControllerAgent.setCheckEndGame(true);
 				message.setConversationId("END_GAME");
 				this.nextStep = STATE_NOTIFY_END_GAME;
 			}
 			else if(lovers.size() == citizens.size()) 
 			{
-				System.out.println("CHECK ? GAME ENDS");
+				System.err.println("just lovers");
 				this.gameControllerAgent.setCheckEndGame(true);
 				message.setConversationId("END_GAME");
 				this.nextStep = STATE_NOTIFY_END_GAME;
 			}	
 			else
 			{
-				System.out.println("CHECK ? GAME CONTINUES");
+				System.err.println("GAME CONTINUES");
 				message.setConversationId("CONTINUE_GAME");
 				this.nextStep = STATE_END;
 			}

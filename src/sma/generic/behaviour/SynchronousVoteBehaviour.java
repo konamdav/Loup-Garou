@@ -163,7 +163,7 @@ public class SynchronousVoteBehaviour extends Behaviour {
 			ACLMessage messageRequest = new ACLMessage(ACLMessage.REQUEST);
 			messageRequest.setSender(this.myAgent.getAID());
 			messageRequest.setConversationId("VOTE_REQUEST");
-
+			
 			//VoteRequest request = new VoteRequest(choices, this.globalResults);
 			ObjectMapper mapper = new ObjectMapper();
 
@@ -186,7 +186,7 @@ public class SynchronousVoteBehaviour extends Behaviour {
 			MessageTemplate mt = MessageTemplate.and(
 					MessageTemplate.MatchPerformative(ACLMessage.INFORM),
 					MessageTemplate.MatchConversationId("VOTE_INFORM"));
-
+			
 			ACLMessage message = this.myAgent.receive(mt);
 			if(message!=null)
 			{
@@ -205,7 +205,6 @@ public class SynchronousVoteBehaviour extends Behaviour {
 				AID aidPlayer = message.getSender();
 
 				this.results.add(res);
-				this.globalResults.add(res);
 
 				if(this.request.getRequest().equals("CITIZEN_VOTE")&&
 						DFServices.containsGameAgent(aidPlayer, "PLAYER", "MAYOR", this.myAgent, this.controllerAgent.getGameid()))
@@ -214,6 +213,30 @@ public class SynchronousVoteBehaviour extends Behaviour {
 					this.results.add(res);
 					this.globalResults.add(res);
 				}
+				
+				
+				//envoi du resultat partiel 
+				String json = "";
+				mapper = new ObjectMapper();
+				try {
+					json = mapper.writeValueAsString(this.results);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				
+				ACLMessage msg = new ACLMessage(ACLMessage.AGREE);
+				msg.setContent(json);
+				msg.setSender(this.myAgent.getAID());
+				msg.setConversationId("NEW_VOTE_RESULTS");
+
+				List<AID> agents = DFServices.findGameControllerAgent("ENVIRONMENT", this.myAgent, this.controllerAgent.getGameid());
+				if(!agents.isEmpty())
+				{
+					msg.addReceiver(agents.get(0));
+					this.myAgent.send(msg);
+				}
+				
+				System.out.println(""+this.nbVoters+"/"+this.request.getAIDVoters().size());
 
 				if(this.nbVoters>= this.request.getAIDVoters().size())
 				{
@@ -232,12 +255,11 @@ public class SynchronousVoteBehaviour extends Behaviour {
 		else if(this.step.equals(STATE_RESULTS))
 		{
 			this.finalResults = this.results.getFinalResults();
-			System.out.println("VOTE BEHAVIOUR => RESULTS "+this.finalResults);
+			
 			/** equality  ? **/
 			if(this.finalResults.size() == 1)
 			{
 				this.nextStep = STATE_SEND_RESULTS;
-
 			}
 			else
 			{
@@ -281,19 +303,22 @@ public class SynchronousVoteBehaviour extends Behaviour {
 				System.out.println("RESULTS => "+this.finalResults.get(0));
 			}
 
-			String json = "";
-			ObjectMapper mapper = new ObjectMapper();
-			try {
-				json = mapper.writeValueAsString(this.results);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-			if(this.request.getRequest().equals("CITIZEN_VOTE")){
+			
+			//envoi resultat final + maj global vote
+			if(this.request.getRequest().equals("CITIZEN_VOTE"))
+			{
+				String json = "";
+				ObjectMapper mapper = new ObjectMapper();
+				try {
+					json = mapper.writeValueAsString(this.results);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				
 				ACLMessage message = new ACLMessage(ACLMessage.AGREE);
 				message.setContent(json);
 				message.setSender(this.myAgent.getAID());
-				message.setConversationId("NEW_VOTE_RESULTS");
+				message.setConversationId("NEW_CITIZEN_VOTE_RESULTS");
 
 				List<AID> agents = DFServices.findGameControllerAgent("ENVIRONMENT", this.myAgent, this.controllerAgent.getGameid());
 				if(!agents.isEmpty())

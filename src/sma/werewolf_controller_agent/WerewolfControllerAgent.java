@@ -1,4 +1,4 @@
-package sma.citizen_controller_agent;
+package sma.werewolf_controller_agent;
 
 import java.util.Stack;
 
@@ -6,6 +6,7 @@ import generic.interfaces.IController;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
+import sma.werewolf_controller_agent.TurnBehaviour;
 import sma.generic.behaviour.SynchronousVoteBehaviour;
 import sma.model.DFServices;
 
@@ -14,29 +15,14 @@ import sma.model.DFServices;
  * @author Davy
  *
  */
-public class CitizenControllerAgent extends Agent implements IController {
+public class WerewolfControllerAgent extends Agent implements IController {
 	private int gameid;
-	private Stack<AID> victims;
-	private boolean flag_victims;
 	
-	public CitizenControllerAgent() {
+	public WerewolfControllerAgent() {
 		super();	
-		
-		flag_victims= false;
-		victims = new Stack<AID>();
-		
+
 	}
 	
-
-	public boolean isFlag_victims() {
-		return flag_victims;
-	}
-
-
-	public void setFlag_victims(boolean flag_victims) {
-		this.flag_victims = flag_victims;
-	}
-
 
 	@Override
 	protected void setup() {
@@ -44,10 +30,10 @@ public class CitizenControllerAgent extends Agent implements IController {
 		Object[] args = this.getArguments();
 		this.gameid = (Integer) args[0];
 		
-		DFServices.registerGameControllerAgent("CITIZEN", this, this.gameid);		
+		DFServices.registerGameControllerAgent("WEREWOLF", this, this.gameid);		
 		this.addBehaviour(new SynchronousVoteBehaviour(this));
 		this.addBehaviour(new TurnBehaviour(this));
-		this.addBehaviour(new AddVictimBehaviour(this));
+		
 	}
 
 
@@ -55,10 +41,5 @@ public class CitizenControllerAgent extends Agent implements IController {
 		return gameid;
 	}
 	
-	
-	public Stack<AID> getVictims() {
-		return victims;
-	}
-
 
 }

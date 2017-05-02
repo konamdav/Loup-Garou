@@ -14,6 +14,7 @@ import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import sma.model.DFServices;
 import sma.model.ScoreResults;
 import sma.model.VoteRequest;
 import sma.model.VoteResults;
@@ -57,28 +58,7 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 
 	}
 
-	public AID getController() {
-		AID rec = null;
-		DFAgentDescription template = new DFAgentDescription();
-		ServiceDescription sd = new ServiceDescription();
-		sd.setType("CONTROLLER");
-		sd.setName("CITIZEN");
-		template.addServices(sd);
-		try {
-			DFAgentDescription[] result =
-					DFService.search(this.myAgent, template);
-			if (result.length > 0)
-			{
-				int n = (int)(Math.random() * result.length);
-				rec = result[n].getName();
-			}
-
-		} catch(FIPAException fe) {
-			fe.printStackTrace();
-		}
-		return rec;
-	}
-
+	
 	@Override
 	public void action() {
 
@@ -238,7 +218,12 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 			ACLMessage reply = new ACLMessage(ACLMessage.INFORM);
 			reply.setConversationId("VOTE_INFORM");
 			reply.setSender(this.myAgent.getAID());
-			reply.addReceiver(this.getController());
+			
+			List<AID> agents = DFServices.findGameControllerAgent("WEREWOLF", this.myAgent, this.agent.getGameid());
+			if(!agents.isEmpty())
+			{
+				reply.addReceiver(agents.get(0));
+			}
 
 			String json = "";
 			ObjectMapper mapper = new ObjectMapper();

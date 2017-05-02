@@ -48,6 +48,10 @@ public class GameContainer {
 					"CITIZEN_CONTROLLER_AGENT_"+gameid, "sma.citizen_controller_agent.CitizenControllerAgent", objects);
 			ac.start();
 			
+			ac = container.createNewAgent(
+					"WEREWOLF_CONTROLLER_AGENT_"+gameid, "sma.werewolf_controller_agent.WerewolfControllerAgent", objects);
+			ac.start();
+			
 		}
 		catch(Exception e) {
 			e.printStackTrace();

@@ -19,6 +19,7 @@ import sma.model.DFServices;
  */
 public class TurnsBehaviour extends SimpleBehaviour {
 	private IController controllerAgent;
+	
 	private final static String STATE_INIT = "INIT";
 	private final static String STATE_WAITING = "WAITING";
 	private final static String STATE_START_CITIZEN_TURN = "START_CITIZEN_TURN";
@@ -26,7 +27,6 @@ public class TurnsBehaviour extends SimpleBehaviour {
 	private final static String STATE_START_WEREWOLF_TURN = "START_WEREWOLF_TURN";
 	private final static String STATE_STOP_WEREWOLF_TURN = "STOP_WEREWOLF_TURN";
 	private final static String STATE_END = "END";
-	
 	
 	private String step;
 	private String nextStep;
@@ -42,19 +42,16 @@ public class TurnsBehaviour extends SimpleBehaviour {
 
 	@Override
 	public void action() {
-		
+			
 		if(this.step.equals(STATE_INIT))
 		{	
-			this.nextStep = STATE_START_CITIZEN_TURN;
+			this.nextStep = STATE_START_WEREWOLF_TURN;
 		}
 		else if (this.step.equals(STATE_START_CITIZEN_TURN))
 		{
 			List<AID> agents = DFServices.findGameControllerAgent("CITIZEN", this.myAgent, this.controllerAgent.getGameid());
-			if(agents.isEmpty())
-			{
-			}
-			else {
-				
+			if(!agents.isEmpty())
+			{				
 				ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
 				message.setConversationId("START_TURN");
 				message.setSender(this.getAgent().getAID());
@@ -73,23 +70,48 @@ public class TurnsBehaviour extends SimpleBehaviour {
 			ACLMessage message = this.myAgent.receive(mt);
 			if(message != null)
 			{
-				this.nextStep = STATE_START_WEREWOLF_TURN;
+				this.nextStep = STATE_END;
 			}
 			else
 			{
+				this.nextStep = STATE_STOP_CITIZEN_TURN;
 				block();
 			}
 
 		}
 		else if (this.step.equals(STATE_START_WEREWOLF_TURN))
 		{
-			
+			List<AID> agents = DFServices.findGameControllerAgent("WEREWOLF", this.myAgent, this.controllerAgent.getGameid());
+			if(!agents.isEmpty())
+			{				
+				ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
+				message.setConversationId("START_TURN");
+				message.setSender(this.getAgent().getAID());
+				message.addReceiver(agents.get(0));
+				this.getAgent().send(message);
+				
+				this.nextStep = STATE_STOP_WEREWOLF_TURN;
+			}
 			this.nextStep = STATE_STOP_WEREWOLF_TURN;
 		}
 		else if (this.step.equals(STATE_STOP_WEREWOLF_TURN))
 		{
 			
-			this.nextStep = STATE_END;
+			MessageTemplate mt = MessageTemplate.and(
+					MessageTemplate.MatchPerformative(ACLMessage.INFORM),
+					MessageTemplate.MatchConversationId("END_TURN"));
+
+			ACLMessage message = this.myAgent.receive(mt);
+			if(message != null)
+			{
+				this.nextStep = STATE_START_CITIZEN_TURN;
+			}
+			else
+			{
+				this.nextStep = STATE_STOP_WEREWOLF_TURN;
+				block();
+			}
+			
 		}
 		else if (this.step.equals(STATE_END))
 		{

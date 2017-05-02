@@ -28,7 +28,7 @@ public class ReceiveBehaviour extends OneShotBehaviour {
 		
 		ObjectMapper mapper = new ObjectMapper();
 		
-		if(message.getConversationId().equals("NEW_VOTE_RESULTS"))
+		if(message.getConversationId().equals("NEW_CITIZEN_VOTE_RESULTS"))
 		{
 			try {
 				VoteResults newVoteResults = mapper.readValue(message.getContent(), VoteResults.class);
@@ -37,6 +37,16 @@ public class ReceiveBehaviour extends OneShotBehaviour {
 				this.envAgent.getGlobalResults().add(newVoteResults);
 				
 				System.out.println("ENV AGENT | MAJ RESULTS ");
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		else if(message.getConversationId().equals("NEW_VOTE_RESULTS"))
+		{
+			try {
+				VoteResults newVoteResults = mapper.readValue(message.getContent(), VoteResults.class);
+				this.envAgent.setCurrentResults(newVoteResults);
 				
 			} catch (IOException e) {
 				e.printStackTrace();

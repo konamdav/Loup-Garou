@@ -117,7 +117,6 @@ public class KillVictimsBehaviour extends SimpleBehaviour
 			flag = true;
 		}
 
-
 		if(!this.nextStep.isEmpty())
 		{
 			this.step = this.nextStep;

@@ -150,25 +150,35 @@ public class WerewolfScoreBehaviour extends Behaviour{
 			}
 			else
 			{
-				// regles de scoring
-				score += localResults.getVoteCount(player.getName(), werewolves) *ScoreFactor.SCORE_FACTOR_WEREWOLF_VOTE;
-				
 				boolean isWerewolf = false;
 				for(AID aid : werewolves)
 				{
 					if(player.getName().equals(aid.getName()))
 					{
 						isWerewolf = true;
+						score -=100;
 					}
+					
 				}
 		
-				if(isWerewolf  && localResults.getVoteCount(player.getName())!=0)
+				if(!isWerewolf || (isWerewolf  && localResults.getVoteCount(player.getName())!=0))
+				{			
+					// regles de scoring
+					score += localResults.getVoteCount(player.getName(), werewolves) *ScoreFactor.SCORE_FACTOR_WEREWOLF_VOTE;
+					score+= globalResults.getVoteCount(player.getName(), werewolves) * ScoreFactor.SCORE_FACTOR_GLOBAL_VOTE;
+					
+					int diff =0;
+					for(AID wolf : werewolves)
+					{
+						diff+= localResults.getDifferenceVote(player.getName(), wolf.getName());
+					}
+					
+					diff = diff/werewolves.size();
+					score+= diff * ScoreFactor.SCORE_FACTOR_DIFFERENCE_LOCAL_VOTE;
+				}
+				else
 				{
-					score+= globalResults.getVoteCount(player.getName()) * ScoreFactor.SCORE_FACTOR_GLOBAL_VOTE; 
-					score+= localResults.getVoteCount(player.getName(), this.playerAgent.getPlayerName()) * ScoreFactor.SCORE_FACTOR_LOCAL_VOTE;
-					score+= localResults.getVoteCount(player.getName()) * ScoreFactor.SCORE_FACTOR_LOCAL_NB_VOTE;
-					score+= localResults.getDifferenceVote(player.getName(), this.playerAgent.getPlayerName()) * ScoreFactor.SCORE_FACTOR_DIFFERENCE_LOCAL_VOTE;
-
+					score = ScoreFactor.SCORE_MIN;
 				}
 
 			}
@@ -182,14 +192,25 @@ public class WerewolfScoreBehaviour extends Behaviour{
 			}
 			else
 			{
+				boolean isWerewolf = false;
+				for(AID aid : werewolves)
+				{
+					if(player.getName().equals(aid.getName()))
+					{
+						isWerewolf = true;
+					}
+				}
+				
+				if(isWerewolf)
+				{
+					score += 100;
+				}
+				
 				// regles de scoring
 				score += localResults.getVoteCount(player.getName(), werewolves) *ScoreFactor.SCORE_FACTOR_WEREWOLF_VOTE;
-				score+= localResults.getVoteCount(player.getName()) * ScoreFactor.SCORE_FACTOR_LOCAL_NB_VOTE;
 			}
 		}
 		return score;
-
-
 	}
 	
 

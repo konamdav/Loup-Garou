@@ -106,7 +106,7 @@ public class VoteResults {
 			nbVoter = this.voteResults.get(voter).size();
 		}
 
-		return nbVoter - nbVoted;
+		return nbVoted - nbVoter;
 	}
 
 	/*** get finalists **/

@@ -59,7 +59,7 @@ public class FactoryInitBehaviour extends CyclicBehaviour{
 				this.agent.addBehaviour(new WerewolfInitBehaviour(this.agent));
 				break;
 			case Roles.LOVER:
-				this.agent.addBehaviour(new LoverInitBehaviour(this.agent));
+				//this.agent.addBehaviour(new LoverInitBehaviour(this.agent));
 				break;
 			case Roles.MAYOR:
 				this.agent.addBehaviour(new MayorInitBehaviour(this.agent));

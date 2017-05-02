@@ -144,8 +144,9 @@ public class CitizenScoreBehaviour extends Behaviour{
 			else
 			{
 				// regles de scoring
-				score+= globalResults.getVoteCount(player.getName(), this.playerAgent.getPlayerName()) * ScoreFactor.SCORE_FACTOR_GLOBAL_VOTE; 
-				score+= localResults.getVoteCount(player.getName(), this.playerAgent.getPlayerName()) * ScoreFactor.SCORE_FACTOR_LOCAL_VOTE; 
+				score+= globalResults.getVoteCount(player.getName(), this.playerAgent.getPlayerName()) * ScoreFactor.SCORE_FACTOR_GLOBAL_VOTE;
+				score+= globalResults.getVoteCount(player.getName()) * ScoreFactor.SCORE_FACTOR_GLOBAL_NB_VOTE; 
+				
 				score+= localResults.getVoteCount(player.getName()) * ScoreFactor.SCORE_FACTOR_LOCAL_NB_VOTE; 
 				score+= localResults.getDifferenceVote(player.getName(), this.playerAgent.getPlayerName()) * ScoreFactor.SCORE_FACTOR_DIFFERENCE_LOCAL_VOTE; 
 
@@ -163,7 +164,7 @@ public class CitizenScoreBehaviour extends Behaviour{
 				// ici global  =  resultat global du vote d'élimination ("contre")
 				// local = vote "pour" en cours
 				score+= globalResults.getVoteCount(player.getName(), this.playerAgent.getPlayerName()) * ScoreFactor.SCORE_FACTOR_GLOBAL_VOTE *-1; 
-				score+= localResults.getVoteCount(player.getName(), this.playerAgent.getPlayerName()) * ScoreFactor.SCORE_FACTOR_LOCAL_VOTE;  
+				score+= localResults.getVoteCount(player.getName()) * ScoreFactor.SCORE_FACTOR_LOCAL_NB_VOTE;  
 
 			}
 		}

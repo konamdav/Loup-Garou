@@ -3,13 +3,26 @@ package ui.view;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
+import sma.launch.SystemContainer;
+
 /***
  * Moteur graphique 
  */
 public class App extends Game {
 	private LwjglApplicationConfiguration config;
-	private StyleResources style;
 	
+	public SystemContainer systemContainer = null; 
+	
+
+	public SystemContainer newSystemContainer() {
+		systemContainer = new SystemContainer();
+		return systemContainer;
+	}
+	
+	public SystemContainer getSystemContainer() {
+		return systemContainer;
+	}
+
 	public App(LwjglApplicationConfiguration config) {
 		this.config=config;
 	}
@@ -18,14 +31,9 @@ public class App extends Game {
 		return config;
 	}
 
-
-	public StyleResources getStyle() {
-		return style;
-	}
-
 	public void create() {
 		
-		this.setScreen(new ViewInterfaceGame(this));
+		this.setScreen(new StartView(this));
 	}
 	
 	

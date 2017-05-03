@@ -3,8 +3,10 @@ package ui.view;
 //Import des fichiers libgdx
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
@@ -19,15 +21,40 @@ public class ViewInterfaceGame implements Screen{
 	private ViewPlayers viewPlayers;
 	private int iii;
 	private Texture textureNight;
+	boolean hover;
+	
+	private int mapx; 
+	private int mapy;
 
 	public ViewInterfaceGame (App game){
 		this.ctrlTerrain = new Controleur_Terrain();
+		hover = true;
+		mapx = 0;
+		mapy = 0;
 	}
 
 
 	public void show() {
-		stage=new Stage();
+		stage=new Stage(){
+			@Override
+			public boolean mouseMoved(int x, int y) {
+				y=(int) (this.getHeight()-y);
 
+				System.out.println(" X = "+x+" Y = "+y);
+				x = x+10;
+				y = y+10;
+				
+				mapx = x;
+				mapy = y;
+
+				//survol_terrain(x,y);
+
+
+				return true;
+			}
+		};
+
+		Gdx.input.setInputProcessor(stage);
 		viewPlayers=new ViewPlayers(((SpriteBatch)stage.getBatch()));
 		terrain=new ViewMap((SpriteBatch) stage.getBatch(), ctrlTerrain);
 
@@ -75,6 +102,14 @@ public class ViewInterfaceGame implements Screen{
 
 		viewPlayers.drawPlayersWake();
 
+
+		if(hover)
+		{
+			BitmapFont  font = new BitmapFont();
+			font.setColor(Color.WHITE);
+			font.setScale(1.5f);
+			font.draw(stage.getBatch(), viewPlayers.getLabel(mapx, mapy), mapx, mapy);
+		}
 
 		//stage.getBatch().draw(style.getBackground(), 0, 0,Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		stage.getBatch().end(); 

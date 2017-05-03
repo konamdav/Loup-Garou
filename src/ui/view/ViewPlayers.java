@@ -92,4 +92,18 @@ public class ViewPlayers {
 		
 	}
 
+
+	public String getLabel(int mapx, int mapy) {
+		String label ="";
+		for(Entry<String, ViewPlayer> entry : this.viewPlayers.entrySet())
+		{
+			if(mapx > entry.getValue().getPosition()[0] && mapx< entry.getValue().getPosition()[0]+64
+				&& mapy > entry.getValue().getPosition()[1] && mapy < entry.getValue().getPosition()[1]+64)
+			{
+				label = entry.getKey();
+			}
+		}
+		return label;
+	}
+
 }

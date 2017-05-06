@@ -253,6 +253,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 				request.setVoteAgainst(false);
 				request.setChoices(choices);
 				request.setVoters(choices);
+				request.setCanBeFake(false);
 
 				ObjectMapper mapper = new ObjectMapper();
 				String json = "";
@@ -326,7 +327,8 @@ public class TurnBehaviour extends SimpleBehaviour {
 			request.setRequest("CITIZEN_VOTE");
 			request.setChoices(choices);
 			request.setVoters(choices);
-
+			request.setCanBeFake(true);
+			
 			ObjectMapper mapper = new ObjectMapper();
 			String json = "";
 			try {

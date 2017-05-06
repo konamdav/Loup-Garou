@@ -54,7 +54,7 @@ public class GetGamesBehaviour extends Behaviour {
 				e.printStackTrace();
 			}
 			reply.setContent(json);
-			
+			System.err.println(json);
 			this.systemControllerAgent.send(reply);
 			
 		}

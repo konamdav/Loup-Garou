@@ -2,6 +2,7 @@ package sma.generic.behaviour;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import org.codehaus.jackson.map.ObjectMapper;
 
@@ -169,7 +170,6 @@ public class SynchronousVoteBehaviour extends Behaviour {
 			messageRequest.setSender(this.myAgent.getAID());
 			messageRequest.setConversationId("VOTE_REQUEST");
 			
-			//VoteRequest request = new VoteRequest(choices, this.globalResults);
 			ObjectMapper mapper = new ObjectMapper();
 
 			String json ="";
@@ -296,6 +296,7 @@ public class SynchronousVoteBehaviour extends Behaviour {
 				SuspicionScore suspicionScore = new SuspicionScore();
 				try {
 					suspicionScore = mapper.readValue(message.getContent(), SuspicionScore.class);
+					System.err.println("JSON PARTIAL SUSPICION \n"+message.getContent());
 				} 
 				catch (IOException e) 
 				{
@@ -308,7 +309,10 @@ public class SynchronousVoteBehaviour extends Behaviour {
 				if(this.nbVoters>= this.request.getAIDVoters().size())
 				{
 					this.nbVoters = 0;
-					System.err.println("SUSPICION COLLECTIVE \n "+message.getContent());
+					System.err.println("SUSPICION COLLECTIVE \n "+this.request.getCollectiveSuspicionScore().getScore());
+					
+					//sort random
+					Collections.shuffle(this.request.getVoters());
 					this.nextStep = STATE_SEND_REQUEST;
 				}
 				else
@@ -352,6 +356,9 @@ public class SynchronousVoteBehaviour extends Behaviour {
 					// new vote with finalists
 					this.request.setChoices(this.finalResults);
 
+					//sort random
+					Collections.shuffle(this.request.getVoters());
+					
 					this.results = new VoteResults();
 					this.request.setLocalVoteResults(this.results);
 					this.lastResults = this.finalResults;

@@ -165,6 +165,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 			request.setRequest("WEREWOLF_VOTE");
 			request.setChoices(choices);
 			request.setVoters(voters);
+			request.setCanBeFake(false);
 
 			ObjectMapper mapper = new ObjectMapper();
 			String json = "";

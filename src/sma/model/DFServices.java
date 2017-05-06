@@ -192,12 +192,12 @@ public class DFServices {
 		while(i<citizens.size() && !flag)
 		{
 			AID aid = citizens.get(i);
-			if(aid.getLocalName().equals(player.getLocalName()))
+			if(aid.getName().equals(player.getName()))
 			{
 				int area = Math.min(citizens.size()-1, Data.AREA_NEIGHBORS);
 
 				/** recuperation des voisins de portée N **/
-				for(int j = i-1; j<= i-area; j--)
+				for(int j = i-1; j>= i-area; j--)
 				{
 					int index = j;
 					if(j<0)

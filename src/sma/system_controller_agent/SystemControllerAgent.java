@@ -1,11 +1,15 @@
 package sma.system_controller_agent;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.codehaus.jackson.map.ObjectMapper;
 
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
 import sma.launch.GameContainer;
+import sma.model.GameSettings;
 
 /***
  * Agent système
@@ -28,11 +32,26 @@ public class SystemControllerAgent extends Agent{
 		this.addBehaviour(new GetGamesBehaviour(this));
 
 		//test init 
+		//send msg
 		ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
 		message.setConversationId("CREATE_GAME_REQUEST");
 		message.setSender(this.getAID());
 		message.addReceiver(this.getAID());
+		
+		GameSettings gameSettings = new GameSettings();
+		ObjectMapper mapper = new ObjectMapper();
+		String json ="";
+		try {
+			json = mapper.writeValueAsString(gameSettings);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		message.setContent(json);
 		this.send(message);
+		this.send(message);
+		this.send(message);
+
+		
 	}
 
 	public void setContainers(List<GameContainer> containers) {

@@ -3,24 +3,25 @@ package sma.model;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 public class GameSettings {
 	private HashMap<String, Integer> rolesSettings;
-	
+
 	public GameSettings() {
 		super();
-		
+
 		//Liste role par défaut
 		this.rolesSettings = new HashMap<String, Integer>();
-		this.rolesSettings.put(Roles.CITIZEN, 2);
 		this.rolesSettings.put(Roles.WEREWOLF, 2);
+		this.rolesSettings.put(Roles.CITIZEN, 2);
 		this.rolesSettings.put(Roles.CUPID, 0);
 		this.rolesSettings.put(Roles.LITTLE_GIRL, 0);
 		this.rolesSettings.put(Roles.MEDIUM, 0);
-		
+
 	}
 
-
-
+	@JsonIgnore
 	public HashMap<String, Integer> getCurrentRolesSettings() {
 		HashMap<String, Integer> tmp = new HashMap<String, Integer>();
 		for(Entry<String, Integer> entry : this.rolesSettings.entrySet())
@@ -32,15 +33,17 @@ public class GameSettings {
 		}
 		return tmp;
 	}
-	
+
 	public HashMap<String, Integer> getRolesSettings() {
 		return rolesSettings;
 	}
-	
+
+	@JsonIgnore
 	public boolean isRoleRegistered(String key) {
 		return rolesSettings.containsKey(key) && rolesSettings.get(key)>0;
 	}
-	
+
+	@JsonIgnore
 	public int getPlayersCount()
 	{
 		int i = 0;
@@ -49,5 +52,9 @@ public class GameSettings {
 			i+= entry.getValue();
 		}
 		return i;
+	}
+
+	public void setRolesSettings(HashMap<String, Integer> rolesSettings) {
+		this.rolesSettings = rolesSettings;
 	}
 }

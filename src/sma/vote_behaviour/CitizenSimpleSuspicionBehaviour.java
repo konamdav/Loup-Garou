@@ -116,7 +116,6 @@ public class CitizenSimpleSuspicionBehaviour extends Behaviour{
 			ObjectMapper mapper = new ObjectMapper();
 			try {
 				json = mapper.writeValueAsString(this.simpleSuspicionScore);
-				System.err.println("JSON "+json);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

@@ -19,10 +19,10 @@ public class GameContainer {
 	private AgentContainer container;
 	private GameSettings gameSettings;
 	
-	public GameContainer(int gameid)
+	public GameContainer(int gameid, GameSettings gameSettings)
 	{
 		this.gameid = gameid;
-		this.gameSettings = new GameSettings();
+		this.gameSettings = gameSettings;
 		
 		Runtime rt = Runtime.instance();
 		Profile p = null;

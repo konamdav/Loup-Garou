@@ -143,7 +143,7 @@ public class GenericSuspicionBehaviour extends Behaviour{
 		}
 		else
 		{
-			score = collectiveSuspicion.getScore(player.getName())+this.suspicionScore.getScore(player.getName());
+			score = collectiveSuspicion.getScore(player.getName())+this.suspicionScore.getScore(player.getName())*2000;
 			if(!request.isVoteAgainst())
 			{
 				score = score * -1;

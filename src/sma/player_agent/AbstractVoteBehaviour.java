@@ -157,7 +157,6 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 				System.err.println("("+this.nbVoters+"/"+this.agent.getVotingBehaviours().size()+")");
 				if(this.nbVoters >= this.agent.getVotingBehaviours().size())
 				{
-					System.err.println("END RECEIVE");
 					this.nextStep = STATE_RESULTS;
 				}
 				else
@@ -191,7 +190,7 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 					tmp.add(this.finalResults.get((int)Math.random()*this.finalResults.size()));				
 					this.finalResults = tmp;
 
-					System.err.println("FINAL RESULTS = "+this.finalResults.size());
+					System.err.println("FINAL RESULTS WITH INTERBLOCAGE = "+this.finalResults.size());
 					this.nextStep = STATE_SEND_RESULTS;
 
 				}

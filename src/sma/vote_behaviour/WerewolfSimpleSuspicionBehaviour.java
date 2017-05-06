@@ -47,7 +47,7 @@ public class WerewolfSimpleSuspicionBehaviour extends Behaviour{
 	public WerewolfSimpleSuspicionBehaviour(PlayerAgent playerAgent) {
 		super();
 		this.playerAgent = playerAgent;
-		this.name_behaviour = "CITIZEN_SIMPLE_SUSPICION";
+		this.name_behaviour = "WEREWOLF_SIMPLE_SUSPICION";
 		this.suspicionScore = this.playerAgent.getSuspicionScore();
 		
 		this.sender = null;
@@ -125,7 +125,7 @@ public class WerewolfSimpleSuspicionBehaviour extends Behaviour{
 			ObjectMapper mapper = new ObjectMapper();
 			try {
 				json = mapper.writeValueAsString(this.simpleSuspicionScore);
-				System.err.println("JSON "+json);
+				
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

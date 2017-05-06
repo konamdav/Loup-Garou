@@ -26,7 +26,7 @@ public class VoteRequest {
 		this.collectiveSuspicionScore = new SuspicionScore();
 		this.request="UNKNOWN_REQUEST";
 		this.voteAgainst = true;
-		this.canBeFake = true;
+		this.canBeFake = false;
 	}
 	
 	public VoteRequest(List<String> choices) {

@@ -69,20 +69,6 @@ public class NewMainRoleBehaviour extends CyclicBehaviour{
 				messageRequest.setContent(this.agent.getMain_role());
 				this.myAgent.send(messageRequest);
 				
-			
-				//TODO CEDRIC Renvoyer a la fin au game controller un msg INFORM de conversation id ATTRIBUTION_ROLE
-				// pour prévenir de la fin de l'attribution du role
-				messageRequest = new ACLMessage(ACLMessage.INFORM);
-				messageRequest.setSender(this.agent.getAID());
-				
-				List<AID> agents = DFServices.findGameControllerAgent("GAME", this.myAgent, this.agent.getGameid());
-				if(!agents.isEmpty())
-				{
-					messageRequest.addReceiver(agents.get(0));
-					messageRequest.setConversationId("ATTRIBUTION_ROLE");
-					this.myAgent.send(messageRequest);	
-				}
-				
 			}
 			else if (main_role == new_role){
 				System.out.println("Already got this role "+new_role+ "TO THIS PLAYER "+this.agent.getName());

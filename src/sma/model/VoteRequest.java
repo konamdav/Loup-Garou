@@ -14,6 +14,8 @@ public class VoteRequest {
 	private List<String> voters;
 	private VoteResults globalCitizenVoteResults;
 	private VoteResults localVoteResults;
+	private SuspicionScore collectiveSuspicionScore;
+	private boolean canBeFake;
 	
 	public VoteRequest() {
 		super();
@@ -21,8 +23,10 @@ public class VoteRequest {
 		this.voters = new ArrayList<String>();//String convert to aid later
 		this.globalCitizenVoteResults = new VoteResults();// Archive des votes previously on AMC WALKING DEAD
 		this.localVoteResults = new VoteResults();
+		this.collectiveSuspicionScore = new SuspicionScore();
 		this.request="UNKNOWN_REQUEST";
 		this.voteAgainst = true;
+		this.canBeFake = true;
 	}
 	
 	public VoteRequest(List<String> choices) {
@@ -32,6 +36,7 @@ public class VoteRequest {
 		this.request="UNKNOWN_REQUEST";
 		this.globalCitizenVoteResults = new VoteResults();
 		this.localVoteResults = new VoteResults();
+		this.collectiveSuspicionScore = new SuspicionScore();
 		this.voteAgainst = true;
 	}
 	
@@ -41,6 +46,7 @@ public class VoteRequest {
 		this.globalCitizenVoteResults = results;
 		this.request="UNKNOWN_REQUEST";
 		this.localVoteResults = new VoteResults();
+		this.collectiveSuspicionScore = new SuspicionScore();
 		this.voteAgainst = true;
 	}
 	
@@ -50,6 +56,7 @@ public class VoteRequest {
 		this.request="UNKNOWN_REQUEST";
 		this.globalCitizenVoteResults = gresults;
 		this.localVoteResults = lresults;
+		this.collectiveSuspicionScore = new SuspicionScore();
 		this.voteAgainst = true;
 	}
 
@@ -113,6 +120,14 @@ public class VoteRequest {
 		return list;
 	}
 	
+	public boolean isCanBeFake() {
+		return canBeFake;
+	}
+
+	public void setCanBeFake(boolean canBeFake) {
+		this.canBeFake = canBeFake;
+	}
+
 	@JsonIgnore
 	public List<AID> getAIDChoices() {
 		
@@ -124,6 +139,12 @@ public class VoteRequest {
 				
 		return list;
 	}
-	
-	
+
+	public SuspicionScore getCollectiveSuspicionScore() {
+		return collectiveSuspicionScore;
+	}
+
+	public void setCollectiveSuspicionScore(SuspicionScore collectiveSuspicionScore) {
+		this.collectiveSuspicionScore = collectiveSuspicionScore;
+	}	
 }

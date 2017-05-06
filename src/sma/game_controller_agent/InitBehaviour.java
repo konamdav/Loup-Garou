@@ -161,6 +161,7 @@ public class InitBehaviour extends Behaviour {
 		}
 		else if(step.equals(STATE_START_GAME))
 		{
+			System.err.println(DFServices.findOrderedCitizen(this.getAgent(), this.gameControllerAgent.getGameid()));
 			System.out.println("START GAME");
 
 			//System.out.println("PROFILES");

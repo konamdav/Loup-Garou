@@ -16,6 +16,7 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import sma.citizen_controller_agent.CitizenControllerAgent;
 import sma.model.DFServices;
+import sma.model.SuspicionScore;
 import sma.model.VoteRequest;
 import sma.model.VoteResults;
 
@@ -37,8 +38,12 @@ public class SynchronousVoteBehaviour extends Behaviour {
 	private AID agentSender;
 
 	private final static String STATE_INIT = "INIT";
+	
 	private final static String STATE_RECEIVE_REQUEST = "RECEIVE_REQUEST";
 	private final static String STATE_SEND_REQUEST = "SEND_REQUEST";
+	
+	private final static String STATE_GET_SIMPLE_SUSPICION = "GET_SIMPLE_SUSPICION";
+	private final static String STATE_ADD_SIMPLE_SUSPICION = "ADD_SIMPLE_SUSPICION";
 
 	private final static String SEND_REQUEST_GLOBAL_VOTE_RESULTS = "SEND_REQUEST_GLOBAL_VOTE_RESULTS";
 	private final static String RECEIVE_REQUEST_GLOBAL_VOTE_RESULTS = "RECEIVE_REQUEST_GLOBAL_VOTE_RESULTS";
@@ -151,7 +156,7 @@ public class SynchronousVoteBehaviour extends Behaviour {
 				{
 					e.printStackTrace();
 				}
-				this.nextStep = STATE_SEND_REQUEST;
+				this.nextStep = STATE_GET_SIMPLE_SUSPICION;
 			}
 			else
 			{
@@ -252,6 +257,71 @@ public class SynchronousVoteBehaviour extends Behaviour {
 				block();
 			}
 		}
+		
+		
+		else if(this.step.equals(STATE_GET_SIMPLE_SUSPICION))
+		{
+			ACLMessage messageRequest = new ACLMessage(ACLMessage.REQUEST);
+			messageRequest.setSender(this.myAgent.getAID());
+			messageRequest.setConversationId("GET_SIMPLE_SUSPICION");
+			
+			ObjectMapper mapper = new ObjectMapper();
+
+			String json ="";
+
+			try {		
+				json = mapper.writeValueAsString(this.request);			
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			messageRequest.setContent(json);
+			messageRequest.addReceiver(this.request.getAIDVoters().get(this.nbVoters));	
+			this.myAgent.send(messageRequest);
+
+			this.nextStep = STATE_ADD_SIMPLE_SUSPICION;
+		}
+		else if(this.step.equals(STATE_ADD_SIMPLE_SUSPICION))
+		{
+			MessageTemplate mt = MessageTemplate.and(
+					MessageTemplate.MatchPerformative(ACLMessage.INFORM),
+					MessageTemplate.MatchConversationId("GET_SIMPLE_SUSPICION"));
+			
+			ACLMessage message = this.myAgent.receive(mt);
+			if(message!=null)
+			{
+				++this.nbVoters;
+
+				ObjectMapper mapper = new ObjectMapper();
+				SuspicionScore suspicionScore = new SuspicionScore();
+				try {
+					suspicionScore = mapper.readValue(message.getContent(), SuspicionScore.class);
+				} 
+				catch (IOException e) 
+				{
+					e.printStackTrace();
+				}
+
+				AID aidPlayer = message.getSender();
+				this.request.getCollectiveSuspicionScore().addSuspicionScoreGrid(aidPlayer.getName(), suspicionScore);
+
+				if(this.nbVoters>= this.request.getAIDVoters().size())
+				{
+					this.nbVoters = 0;
+					System.err.println("SUSPICION COLLECTIVE \n "+message.getContent());
+					this.nextStep = STATE_SEND_REQUEST;
+				}
+				else
+				{
+					this.nextStep = STATE_GET_SIMPLE_SUSPICION;
+				}
+			}
+			else
+			{
+				block();
+			}
+		}
+		
 		else if(this.step.equals(STATE_RESULTS))
 		{
 			this.finalResults = this.results.getFinalResults();

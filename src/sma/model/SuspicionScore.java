@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 /***
  * Grille de suspcicion
  * @author Davy
@@ -13,14 +15,23 @@ import java.util.Map.Entry;
  */
 public class SuspicionScore 
 {
-	
+	//grille global de suspicion
 	private Map<String, Integer> score;
+	//archive player suspicion
+	@JsonIgnore
+	private Map<String, Map<String, Integer>> playerSuspicion;
 	
 	public SuspicionScore() {
 		super();
 		this.score = new HashMap<String, Integer>();
+		this.playerSuspicion = new HashMap<String, Map<String, Integer>>();
 	}
 
+	public Map<String, Integer> getScore() {
+		return score;
+	}
+
+	@JsonIgnore
 	public int getScore(String name)
 	{
 		if(this.score.containsKey(name))
@@ -33,6 +44,18 @@ public class SuspicionScore
 		}
 	}
 	
+	
+	
+	@JsonIgnore
+	public void addSuspicionScoreGrid(String name, SuspicionScore scoreGrid)
+	{
+		this.playerSuspicion.put(name, scoreGrid.score);
+		for(Entry<String, Integer> entry : scoreGrid.score.entrySet())
+		{
+			this.score.put(entry.getKey(), this.getScore(entry.getKey())+entry.getValue());
+		}
+	}
+	@JsonIgnore
 	public void addScore(String name, int score)
 	{
 		if(this.score.containsKey(name))
@@ -44,10 +67,11 @@ public class SuspicionScore
 			this.score.put(name, score);
 		}
 	}
-	
-	public void getScore()
+	@JsonIgnore
+	public void clear()
 	{
 		this.score.clear();
+		this.playerSuspicion.clear();
 	}
 }
 	

@@ -254,7 +254,7 @@ public class DFServices {
 		String[] services2 = {Roles.CITIZEN, Status.SLEEP};
 
 		List<AID> citizens = DFServices.findGamePlayerAgent(services1, agent, gameid);
-		List<AID> tmp = DFServices.findGamePlayerAgent(services1, agent, gameid);
+		List<AID> tmp = DFServices.findGamePlayerAgent(services2, agent, gameid);
 
 		citizens.addAll(tmp);
 		Collections.sort(citizens, comparator);

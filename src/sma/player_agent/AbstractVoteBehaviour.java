@@ -42,6 +42,7 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 
 	private String step;
 	private String nextStep;
+	private AID sender;
 
 
 	public AbstractVoteBehaviour(IVotingAgent agent) {
@@ -68,7 +69,7 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 		{
 			this.nbVoters = 0;
 			this.request = null;
-
+			this.sender = null;
 			this.results = new ScoreResults();
 			this.nextStep = STATE_RECEIVE_REQUEST;
 
@@ -82,6 +83,7 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 			ACLMessage message = this.myAgent.receive(mt);
 			if(message != null)
 			{
+				this.sender = message.getSender();
 				ObjectMapper mapper = new ObjectMapper();
 				request = new VoteRequest();
 				try {
@@ -136,7 +138,7 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 			if(message !=null)
 			{
 				//System.out.println("\n\nDEBUT PLAYER AGENT : "+this.agent.getName());
-				System.err.println("REQUEST => "+this.request.getRequest());
+				System.err.println(this.agent.getName()+" REQUEST => "+this.request.getRequest());
 				System.err.println("MESSAGE INFORM "+" : "+message.getContent());
 				
 				++this.nbVoters;
@@ -152,8 +154,10 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 				}
 				this.results.add(res);
 
+				System.err.println("("+this.nbVoters+"/"+this.agent.getVotingBehaviours().size()+")");
 				if(this.nbVoters >= this.agent.getVotingBehaviours().size())
 				{
+					System.err.println("END RECEIVE");
 					this.nextStep = STATE_RESULTS;
 				}
 				else
@@ -169,10 +173,11 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 		else if(this.step.equals(STATE_RESULTS))
 		{
 			this.finalResults = this.results.getFinalResults();
-
+			
 			/** equality  ? **/
 			if(this.finalResults.size() == 1)
 			{
+				System.err.println("FINAL RESULTS = "+this.finalResults.size());
 				this.nextStep = STATE_SEND_RESULTS;
 			}
 			else
@@ -186,6 +191,7 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 					tmp.add(this.finalResults.get((int)Math.random()*this.finalResults.size()));				
 					this.finalResults = tmp;
 
+					System.err.println("FINAL RESULTS = "+this.finalResults.size());
 					this.nextStep = STATE_SEND_RESULTS;
 
 				}
@@ -207,23 +213,20 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 		}
 		else if(this.step.equals(STATE_SEND_RESULTS))
 		{
+			System.err.println("SEND RESULTS");
 			HashMap<String, List<String>> results = new HashMap<String, List<String>>();
 			VoteResults answer = new VoteResults(results);
 
 			List<String> voter = new ArrayList<String>();
 			voter.add(this.agent.getName());
 			results.put(this.finalResults.get(0), voter);
-
+			System.err.println("VOTE FOR "+this.finalResults.get(0));
 
 			ACLMessage reply = new ACLMessage(ACLMessage.INFORM);
 			reply.setConversationId("VOTE_INFORM");
 			reply.setSender(this.myAgent.getAID());
 			
-			List<AID> agents = DFServices.findGameControllerAgent("WEREWOLF", this.myAgent, this.agent.getGameid());
-			if(!agents.isEmpty())
-			{
-				reply.addReceiver(agents.get(0));
-			}
+			reply.addReceiver(sender);
 
 			String json = "";
 			ObjectMapper mapper = new ObjectMapper();

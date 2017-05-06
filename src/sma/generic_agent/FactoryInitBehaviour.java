@@ -64,8 +64,6 @@ public class FactoryInitBehaviour extends CyclicBehaviour{
 			case Roles.MAYOR:
 				this.agent.addBehaviour(new MayorInitBehaviour(this.agent));
 				break;
-			default:
-				throw new IllegalArgumentException("Invalid day of the week: " + role_receive);
 			}
 		}
 		else

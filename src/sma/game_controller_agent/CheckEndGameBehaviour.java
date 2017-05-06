@@ -86,7 +86,7 @@ public class CheckEndGameBehaviour extends CyclicBehaviour {
 
 			System.err.println("W Size = "+werewolves.size());
 			System.err.println("C Size = "+citizens.size());
-			System.err.println("L Size = "+citizens.size());
+			System.err.println("L Size = "+lovers.size());
 			System.err.println("DEAD Size = "+DFServices.findGamePlayerAgent("DEAD", this.gameControllerAgent, this.gameControllerAgent.getGameid()).size());
 			System.err.println("SLEEP Size = "+DFServices.findGamePlayerAgent("SLEEP", this.gameControllerAgent, this.gameControllerAgent.getGameid()).size());
 			System.err.println("MAYOR Size = "+DFServices.findGamePlayerAgent("MAYOR", this.gameControllerAgent, this.gameControllerAgent.getGameid()).size());

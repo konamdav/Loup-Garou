@@ -36,4 +36,19 @@ public class Functions {
 			a.send(msg);
 		}
 	}
+	
+	public static void  setEndGame(Agent a, int gameid)
+	{
+		ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
+		msg.setSender(a.getAID());
+		msg.setConversationId("END_GAME");
+		msg.setContent("true");
+		
+		List<AID> agents = DFServices.findGameControllerAgent("ENVIRONMENT", a, gameid);
+		if(!agents.isEmpty())
+		{
+			msg.addReceiver(agents.get(0));
+			a.send(msg);
+		}
+	}
 }

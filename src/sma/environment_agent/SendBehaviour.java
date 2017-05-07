@@ -39,6 +39,14 @@ public class SendBehaviour extends OneShotBehaviour {
 		{
 			contentString = this.envAgent.getDayState();	
 		}
+		else if(message.getConversationId().equals("TURN"))
+		{
+			contentString = this.envAgent.getTurn();	
+		}
+		else if(message.getConversationId().equals("END_GAME"))
+		{
+			contentString = this.envAgent.isEndGame() ? "true" : "false" ;	
+		}
 		else if(message.getConversationId().equals("ACTION_LOGS"))
 		{
 			try {

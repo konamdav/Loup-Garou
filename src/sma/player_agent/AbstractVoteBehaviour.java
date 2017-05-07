@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.codehaus.jackson.map.ObjectMapper;
 
 import jade.core.AID;
@@ -15,6 +17,7 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import sma.model.DFServices;
+import sma.model.ForceVoteRequest;
 import sma.model.ScoreResults;
 import sma.model.VoteRequest;
 import sma.model.VoteResults;
@@ -32,6 +35,7 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 	private List<String> finalResults;
 
 	private final static String STATE_INIT = "INIT";
+	private final static String STATE_RECEIVE_FORCE_VOTE = "FORCE_RESULT";
 	private final static String STATE_RECEIVE_REQUEST = "RECEIVE_REQUEST";
 	private final static String STATE_SEND_REQUEST = "SEND_REQUEST";
 	private final static String STATE_RECEIVE_INFORM = "RECEIVE_INFORM";
@@ -44,6 +48,8 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 	private String nextStep;
 	private AID sender;
 
+	private Map<String, String> forceResults;
+
 
 	public AbstractVoteBehaviour(IVotingAgent agent) {
 		super();
@@ -53,13 +59,15 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 		this.lastResults = null;
 		this.finalResults = null;
 		this.request = null;
-		
+
+		this.forceResults = new HashMap<String, String>();
+
 		this.step = STATE_INIT;
 		this.nextStep ="";
 
 	}
 
-	
+
 	@Override
 	public void action() {
 
@@ -98,34 +106,79 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 			}
 			else
 			{
+				this.nextStep = STATE_RECEIVE_FORCE_VOTE;
+			}
+		}
+		else if(this.step.equals(STATE_RECEIVE_FORCE_VOTE))
+		{
+			MessageTemplate mt = MessageTemplate.and(
+					MessageTemplate.MatchPerformative(ACLMessage.REQUEST),
+					MessageTemplate.MatchConversationId("FORCE_VOTE"));
+
+			ACLMessage message = this.myAgent.receive(mt);
+			if(message != null)
+			{
+				ObjectMapper mapper = new ObjectMapper();
+				ForceVoteRequest forceVoteRequest = new ForceVoteRequest();
+				try {
+					forceVoteRequest = mapper.readValue(message.getContent(), ForceVoteRequest.class);
+					System.err.println("FORCE VOTE "+forceVoteRequest.getVoteRequest()+ " "+forceVoteRequest.getVoteResult());
+					this.forceResults.put(forceVoteRequest.getVoteRequest(), forceVoteRequest.getVoteResult());
+				} 
+				catch (IOException e) 
+				{
+					e.printStackTrace();
+				}
+
+				this.nextStep = STATE_RECEIVE_REQUEST;
+			}
+			else
+			{
+				this.nextStep = STATE_RECEIVE_REQUEST;
 				block();
 			}
 		}
 		else if(this.step.equals(STATE_SEND_REQUEST))
 		{
 			System.out.println("[ "+this.agent.getName()+" ] VOTE REQUEST");
-			for(String s : this.agent.getVotingBehaviours())
+			if(this.forceResults.containsKey(request.getRequest()) && request.getChoices().contains(this.forceResults.get(request.getRequest())))
 			{
-				System.out.println("ROLE VOTE : "+s);
-
-				ACLMessage messageRequest = new ACLMessage(ACLMessage.REQUEST);
-				messageRequest.setSender(this.myAgent.getAID());
-				messageRequest.addReceiver(this.myAgent.getAID());
-				messageRequest.setConversationId("VOTE_TO_"+s+"_REQUEST");
-
-				ObjectMapper mapper = new ObjectMapper();
-				String json ="";
-				try {		
-					json = mapper.writeValueAsString(request);			
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				messageRequest.setContent(json);
-				this.myAgent.send(messageRequest);
-
+				String voted = this.forceResults.get(request.getRequest());
+				//remove vote
+				this.forceResults.remove(request.getRequest());
+				
+				ScoreResults scr = new ScoreResults();
+				scr.getResults().put(voted, 1);
+				
+				this.results.add(scr);
+				
+				this.nextStep = STATE_RESULTS;
 			}
+			else
+			{
+				for(String s : this.agent.getVotingBehaviours())
+				{
+					System.out.println("ROLE VOTE : "+s);
 
-			this.nextStep = STATE_RECEIVE_INFORM;
+					ACLMessage messageRequest = new ACLMessage(ACLMessage.REQUEST);
+					messageRequest.setSender(this.myAgent.getAID());
+					messageRequest.addReceiver(this.myAgent.getAID());
+					messageRequest.setConversationId("VOTE_TO_"+s+"_REQUEST");
+
+					ObjectMapper mapper = new ObjectMapper();
+					String json ="";
+					try {		
+						json = mapper.writeValueAsString(request);			
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					messageRequest.setContent(json);
+					this.myAgent.send(messageRequest);
+
+				}
+
+				this.nextStep = STATE_RECEIVE_INFORM;
+			}
 		}
 		else if(this.step.equals(STATE_RECEIVE_INFORM))
 		{
@@ -140,9 +193,9 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 				//System.out.println("\n\nDEBUT PLAYER AGENT : "+this.agent.getName());
 				System.err.println(this.agent.getName()+" REQUEST => "+this.request.getRequest());
 				System.err.println("MESSAGE INFORM "+" : "+message.getContent());
-				
+
 				++this.nbVoters;
-				
+
 				ObjectMapper mapper = new ObjectMapper();
 				ScoreResults res = new ScoreResults();
 				try {
@@ -172,7 +225,7 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 		else if(this.step.equals(STATE_RESULTS))
 		{
 			this.finalResults = this.results.getFinalResults();
-			
+
 			/** equality  ? **/
 			if(this.finalResults.size() == 1)
 			{
@@ -197,13 +250,13 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 				else
 				{					
 					// new vote with finalists
-					
+
 					this.lastResults = this.finalResults;
-					
+
 					VoteRequest tmp = new VoteRequest(this.finalResults, request.getGlobalCitizenVoteResults());
 					tmp.setRequest(request.getRequest());
 					tmp.setVoteAgainst(request.isVoteAgainst());
-					
+
 					this.request = tmp;
 					this.nbVoters = 0;
 					this.nextStep = STATE_SEND_REQUEST;
@@ -224,7 +277,7 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 			ACLMessage reply = new ACLMessage(ACLMessage.INFORM);
 			reply.setConversationId("VOTE_INFORM");
 			reply.setSender(this.myAgent.getAID());
-			
+
 			reply.addReceiver(sender);
 
 			String json = "";

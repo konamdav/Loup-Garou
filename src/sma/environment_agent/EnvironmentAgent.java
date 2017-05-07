@@ -24,6 +24,7 @@ public class EnvironmentAgent extends Agent{
 		globalResults = new VoteResults();
 		currentResults = new VoteResults();
 		turn ="INIT";
+		endGame = false;
 		dayState = "NIGHT";
 		
 		actionLogs = new ArrayList<String>();
@@ -41,6 +42,18 @@ public class EnvironmentAgent extends Agent{
 
 	public void setListeners(List<AID> listeners) {
 		this.listeners = listeners;
+	}
+	public String getTurn() {
+		return turn;
+	}
+	public void setTurn(String turn) {
+		this.turn = turn;
+	}
+	public boolean isEndGame() {
+		return endGame;
+	}
+	public void setEndGame(boolean endGame) {
+		this.endGame = endGame;
 	}
 	public String getDayState() {
 		return dayState;

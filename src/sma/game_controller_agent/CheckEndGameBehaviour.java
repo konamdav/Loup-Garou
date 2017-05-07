@@ -10,6 +10,7 @@ import jade.lang.acl.MessageTemplate;
 import jade.wrapper.AgentController;
 import jade.wrapper.StaleProxyException;
 import sma.model.DFServices;
+import sma.model.Functions;
 import sma.model.Roles;
 import sma.model.Status;
 
@@ -99,9 +100,16 @@ public class CheckEndGameBehaviour extends CyclicBehaviour {
 				this.nextStep = STATE_NOTIFY_END_GAME;
 				
 			}
-			else if(werewolves.size() == citizens.size()) 
+			else if(werewolves.size() == citizens.size() && citizens.size()!=0) 
 			{
 				System.err.println("No simple citizen");
+				this.gameControllerAgent.setCheckEndGame(true);
+				message.setConversationId("END_GAME");
+				this.nextStep = STATE_NOTIFY_END_GAME;
+			}
+			else if(0 == citizens.size()) 
+			{
+				System.err.println("equality - all people are dead");
 				this.gameControllerAgent.setCheckEndGame(true);
 				message.setConversationId("END_GAME");
 				this.nextStep = STATE_NOTIFY_END_GAME;
@@ -124,7 +132,8 @@ public class CheckEndGameBehaviour extends CyclicBehaviour {
 		}
 		else if(this.step.equals(STATE_NOTIFY_END_GAME))
 		{
-			System.out.println("NOTIFCATION");
+			//maj environment
+			Functions.setEndGame(this.gameControllerAgent, this.gameControllerAgent.getGameid());
 			this.nextStep = STATE_END;
 		}
 		else if(this.step.equals(STATE_END))

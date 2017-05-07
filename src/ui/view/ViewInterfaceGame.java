@@ -9,7 +9,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
+import sma.launch.SystemContainer;
 import ui.control.Controleur_Terrain;
 
 
@@ -22,7 +25,7 @@ public class ViewInterfaceGame implements Screen{
 	private int iii;
 	private Texture textureNight;
 	boolean hover;
-	
+
 	private int mapx; 
 	private int mapy;
 
@@ -40,10 +43,10 @@ public class ViewInterfaceGame implements Screen{
 			public boolean mouseMoved(int x, int y) {
 				y=(int) (this.getHeight()-y);
 
-				System.out.println(" X = "+x+" Y = "+y);
+				//System.out.println(" X = "+x+" Y = "+y);
 				x = x+10;
 				y = y+10;
-				
+
 				mapx = x;
 				mapy = y;
 
@@ -60,9 +63,33 @@ public class ViewInterfaceGame implements Screen{
 
 		ViewPlayer player;
 
-		initPlayers((int) (2+Math.random()*20));
+		initPlayers((int) (4+Math.random()*20));
 
 		textureNight = new Texture(Gdx.files.internal("resources/sprites/night.png"));
+
+		new Thread(
+				new Runnable(){
+					public void run(){
+						
+						try {
+							Thread.sleep(4000);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						
+						Gdx.app.postRunnable(new Runnable(){
+
+							@Override
+							public void run() {
+
+								new SystemContainer();
+								Skin uiSkin = new Skin(Gdx.files.internal("resources/visui/uiskin.json"));
+								stage.addActor(new Label("test", uiSkin ));
+							}
+
+						});
+					}}).start();;
 
 	}
 
@@ -135,6 +162,7 @@ public class ViewInterfaceGame implements Screen{
 
 	public void initPlayers(int nb)
 	{
+		System.out.println("NB " +nb);
 		int n_rows = 0;
 		int n_cols = 0 ;
 
@@ -164,7 +192,7 @@ public class ViewInterfaceGame implements Screen{
 		ViewPlayer player;
 		for(int i = 0; i<n_rows; ++i)
 		{
-			player = viewPlayers.newPlayer("player 3"+i,"WAKE", "RIGHT", ind_x-n_cols/2, ind_y-i );
+			player = viewPlayers.newPlayer("PLAYER1"+i,"WAKE", "RIGHT", ind_x-n_cols/2, ind_y-(n_rows-1-i) );
 			if((int)(Math.random()*3) == 1){
 				player.getRoles().addNewRole("WEREWOLF");
 			}
@@ -184,7 +212,7 @@ public class ViewInterfaceGame implements Screen{
 
 			for(int i = 0; i<n_rows; ++i)
 			{
-				player = viewPlayers.newPlayer("player iii"+i,"WAKE", "LEFT", ind_x+1+ret+n_cols/2, ind_y-i );
+				player = viewPlayers.newPlayer("PLAYER3"+i,"WAKE", "LEFT", ind_x+1+ret+n_cols/2, ind_y-i );
 				if((int)(Math.random()*3) == 1){
 					player.getRoles().addNewRole("WEREWOLF");
 				}
@@ -199,7 +227,7 @@ public class ViewInterfaceGame implements Screen{
 
 				for(int i = 0; i<n_cols; ++i)
 				{
-					player = viewPlayers.newPlayer("player 1"+i,"WAKE", "DOWN", ind_x+1+i-n_cols/2, ind_y+1);
+					player = viewPlayers.newPlayer("PLAYER2"+i,"WAKE", "DOWN", ind_x+1+i-n_cols/2, ind_y+1);
 					if((int)(Math.random()*3) == 1){
 						player.getRoles().addNewRole("WEREWOLF");
 					}
@@ -212,10 +240,9 @@ public class ViewInterfaceGame implements Screen{
 
 				if(nb >= 4){
 					int reste = nb - (n_cols+2*n_rows);
-					System.out.println("reste "+reste);
 					for(int i = 0; i<reste; ++i)
 					{
-						player = viewPlayers.newPlayer("player 1oo"+i,"WAKE", "UP", ind_x+1+i-n_cols/2, ind_y-1-n_rows/2);
+						player = viewPlayers.newPlayer("PLAYER4"+i,"WAKE", "UP", ind_x+1+(n_cols-1-i)-n_cols/2, ind_y-1-n_rows/2);
 						if((int)(Math.random()*3) == 1){
 							player.getRoles().addNewRole("WEREWOLF");
 						}

@@ -9,10 +9,10 @@ import jade.lang.acl.MessageTemplate;
  * @author Davy
  *
  */
-public class AddVictimBehaviour extends CyclicBehaviour{
+public class RemoveVictimBehaviour extends CyclicBehaviour{
 	private CitizenControllerAgent citizenController;
 	
-	public AddVictimBehaviour(CitizenControllerAgent citizenController) {
+	public RemoveVictimBehaviour(CitizenControllerAgent citizenController) {
 		super();
 		this.citizenController = citizenController;
 	}
@@ -22,17 +22,35 @@ public class AddVictimBehaviour extends CyclicBehaviour{
 		/*** reception demande de vote **/
 		MessageTemplate mt = MessageTemplate.and(
 				MessageTemplate.MatchPerformative(ACLMessage.REQUEST),
-				MessageTemplate.MatchConversationId("ADD_VICTIM"));
+				MessageTemplate.MatchConversationId("REMOVE_VICTIM"));
 
 		ACLMessage message = this.myAgent.receive(mt);
 		if(message != null)
 		{
 			String victim = message.getContent();
 			AID aidVictim = new AID(victim);
-			this.citizenController.getVictims().push(aidVictim);
+			int index = 0; 
+			boolean flag = false;
+			
+			while(index<this.citizenController.getVictims().size()&&!flag)
+			{
+				if(this.citizenController.getVictims().get(index).getName().equals(victim))
+				{
+					flag = true;
+				}
+				else
+				{
+					index++;
+				}
+			}
+	
+			if(flag)
+			{
+				this.citizenController.getVictims().remove(index);
+			}
 			
 			message = new ACLMessage(ACLMessage.REQUEST);
-			message.setConversationId("ATTR_VICTIM_STATUS");
+			message.setConversationId("REMOVE_VICTIM_STATUS");
 			message.setSender(this.citizenController.getAID());
 			message.addReceiver(aidVictim);
 			this.citizenController.send(message);

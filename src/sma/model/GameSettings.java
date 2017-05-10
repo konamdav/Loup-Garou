@@ -7,18 +7,29 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 
 public class GameSettings {
 	private HashMap<String, Integer> rolesSettings;
+	private int nbHumans;
 
 	public GameSettings() {
 		super();
-
+		//nb
+		this.nbHumans = 2;
+		
 		//Liste role par défaut
 		this.rolesSettings = new HashMap<String, Integer>();
 		this.rolesSettings.put(Roles.WEREWOLF, 2);
-		this.rolesSettings.put(Roles.CITIZEN, 2);
+		this.rolesSettings.put(Roles.CITIZEN, 1);
 		this.rolesSettings.put(Roles.CUPID, 0);
 		this.rolesSettings.put(Roles.LITTLE_GIRL, 0);
 		this.rolesSettings.put(Roles.MEDIUM, 0);
 
+	}
+
+	public int getNbHumans() {
+		return nbHumans;
+	}
+
+	public void setNbHumans(int nbHumans) {
+		this.nbHumans = nbHumans;
 	}
 
 	@JsonIgnore

@@ -33,6 +33,10 @@ public class InitBehaviour extends Behaviour {
 
 	private final static String STATE_INIT ="STATE_INIT";
 	private final static String STATE_RECEIVE_INIT ="STATE_RECEIVE_INIT";
+
+	private final static String STATE_SEND_HUMAN_ATTR ="STATE_HUMAN_ATTR";
+	private final static String STATE_RECEIVE_HUMAN_ATTR ="STATE_RECEIVE_HUMAN_ATTR";
+
 	private final static String STATE_SEND_ATTR ="STATE_ATTR";
 	private final static String STATE_RECEIVE_ATTR ="STATE_RECEIVE_ATTR";
 	private final static String STATE_START_GAME ="STATE_START_GAME";
@@ -44,14 +48,14 @@ public class InitBehaviour extends Behaviour {
 		this.cpt = 0;
 		this.step = STATE_INIT;
 		this.nextStep = "";
-
 	}
 
 	@Override
 	public void action() {
 		if(step.equals(STATE_INIT))
 		{
-			try{
+			try
+			{
 				int nb = this.gameControllerAgent.getGameSettings().getPlayersCount();
 				int gameid = this.gameControllerAgent.getGameid();
 				this.cpt = 0;
@@ -64,7 +68,7 @@ public class InitBehaviour extends Behaviour {
 					AgentController ac = this.gameControllerAgent.getContainerController().createNewAgent(
 							playerName, "sma.player_agent.PlayerAgent", args);
 					ac.start();
-					System.out.println("CREATION AGENT PLAYER");
+
 				}
 			}
 			catch(Exception e)
@@ -86,13 +90,65 @@ public class InitBehaviour extends Behaviour {
 				this.cpt++;
 				if(cpt == this.gameControllerAgent.getGameSettings().getPlayersCount())
 				{
-					this.nextStep = STATE_SEND_ATTR;
+					this.nextStep = STATE_SEND_HUMAN_ATTR;
 					this.cpt = 0;
 				}
 			}
 			else
 			{
 				this.nextStep = STATE_RECEIVE_INIT;
+				block();
+			}
+		}
+
+		else if(step.equals(STATE_SEND_HUMAN_ATTR))
+		{
+			List<AID> agents = DFServices.findGamePlayerAgent( "CITIZEN", this.gameControllerAgent, this.gameControllerAgent.getGameid());
+			Collections.shuffle(agents);
+
+			GameSettings gameSettings = this.gameControllerAgent.getGameSettings();
+
+			if(gameSettings.getNbHumans()> 0)
+			{
+				for(int i = 0; i<gameSettings.getNbHumans(); ++i)
+				{
+					ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
+					message.setSender(this.gameControllerAgent.getAID());
+					message.addReceiver(agents.get(i));
+					message.setConversationId("INIT_AS_HUMAN");
+					this.getAgent().send(message);
+					
+					System.out.println("HUMAN PLAYER "+agents.get(i).getName());
+
+				}
+				
+				this.nextStep = STATE_RECEIVE_HUMAN_ATTR;
+			}
+			else
+			{
+				this.nextStep = STATE_SEND_ATTR;
+			}
+		}
+		else if(step.equals(STATE_RECEIVE_HUMAN_ATTR))
+		{
+			System.out.println("WAITING HUMAN INIT");
+			MessageTemplate mt = MessageTemplate.and(
+					MessageTemplate.MatchPerformative(ACLMessage.INFORM),
+					MessageTemplate.MatchConversationId("INIT_AS_HUMAN"));
+
+			ACLMessage message = this.myAgent.receive(mt);
+			if(message != null)
+			{
+				this.cpt++;
+				if(cpt == this.gameControllerAgent.getGameSettings().getNbHumans())
+				{
+					this.nextStep = STATE_SEND_ATTR;
+					this.cpt = 0;
+				}
+			}
+			else
+			{
+				this.nextStep = STATE_RECEIVE_HUMAN_ATTR;
 				block();
 			}
 		}
@@ -121,7 +177,6 @@ public class InitBehaviour extends Behaviour {
 						messageRequest.setContent(entry.getKey());
 
 						this.gameControllerAgent.send(messageRequest);
-
 						System.out.println("ATTRIBUTION ROLE "+entry.getKey()+" => "+agents.get(indexPlayer).getName());
 						indexPlayer++;
 					}
@@ -144,9 +199,9 @@ public class InitBehaviour extends Behaviour {
 			{
 				this.cpt++;
 				System.out.println("RECEIVE ATTRIBUTION "+this.cpt+"/"+this.gameControllerAgent.getGameSettings().getPlayersCount());
-				
-				
-				
+
+
+
 				if(cpt == this.gameControllerAgent.getGameSettings().getPlayersCount())
 				{
 					this.nextStep = STATE_START_GAME;

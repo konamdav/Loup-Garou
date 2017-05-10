@@ -10,6 +10,7 @@ import sma.generic_agent.NewMainRoleBehaviour;
 import sma.model.Roles;
 import sma.model.SuspicionScore;
 import sma.werewolf_agent.DeathTestBehaviour;
+import sma.werewolf_agent.InitAsHumanBehaviour;
 import sma.werewolf_agent.WakeSleepTestBehaviour;
 import jade.core.AID;
 import jade.core.Agent;
@@ -24,12 +25,11 @@ import sma.model.DFServices;
  *
  */
 public class PlayerAgent extends Agent implements IVotingAgent{
-
 	private ArrayList<String> votingBehaviours; //All behaviour for vote to execute. Treeat them with string to send 
 	private ArrayList<String> deathBehaviours;//All behaviour for death to execute
 
 	private SuspicionScore suspicionScore; //grille de suspicion
-
+	private boolean human;
 	private int gameid;
 	private String statut;
 	private String main_role; //role given by game controller
@@ -73,7 +73,7 @@ public class PlayerAgent extends Agent implements IVotingAgent{
 	protected void setup() {
 		Object[] args = this.getArguments();
 		this.gameid = (Integer) args[0];
-
+		this.human = false;
 		this.votingBehaviours = new ArrayList<String>();
 		this.deathBehaviours = new ArrayList<String>();
 
@@ -95,8 +95,8 @@ public class PlayerAgent extends Agent implements IVotingAgent{
 		//TODO DO it in a init 
 		//TODO CEDRIC 
 		//don't forget to create wake/sleep behaviour like @WakeSleepTestBehaviour
+		this.addBehaviour(new InitAsHumanBehaviour(this));
 		this.addBehaviour(new FactoryInitBehaviour(this));
-		this.addBehaviour(new AbstractVoteBehaviour(this));
 		this.addBehaviour(new AbstractDeathBehaviour(this));
 		this.addBehaviour(new WakeSleepTestBehaviour(this)); // test david
 		this.addBehaviour(new DeathTestBehaviour(this)); //test david 
@@ -141,5 +141,12 @@ public class PlayerAgent extends Agent implements IVotingAgent{
 		return this.getAID().getName();
 	}
 
+	public boolean isHuman() {
+		return human;
+	}
+	
 
+	public void setHuman(boolean human) {
+		this.human = human;
+	}
 }

@@ -21,6 +21,7 @@ import sma.model.Roles;
 import sma.model.ScoreResults;
 import sma.model.VoteRequest;
 import sma.model.VoteResults;
+import sma.player_agent.AbstractVoteBehaviour;
 import sma.player_agent.PlayerAgent;
 
 public class NewMainRoleBehaviour extends CyclicBehaviour{
@@ -54,6 +55,12 @@ public class NewMainRoleBehaviour extends CyclicBehaviour{
 			
 			if (main_role.isEmpty()){
 				//System.out.println("SET NEW ROLE : "+new_role+ " TO THIS PLAYER "+this.agent.getName());				
+				
+				if(!this.agent.isHuman())
+				{
+					this.agent.addBehaviour(new AbstractVoteBehaviour(this.agent));
+				}
+				
 				
 				this.agent.setMain_role(new_role);
 				//TODO Check if in first position

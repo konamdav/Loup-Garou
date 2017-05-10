@@ -48,6 +48,7 @@ public class CitizenControllerAgent extends Agent implements IController {
 		this.addBehaviour(new SynchronousVoteBehaviour(this));
 		this.addBehaviour(new TurnBehaviour(this));
 		this.addBehaviour(new AddVictimBehaviour(this));
+		this.addBehaviour(new RemoveVictimBehaviour(this));
 	}
 
 

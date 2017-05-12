@@ -8,11 +8,12 @@ import org.codehaus.jackson.map.ObjectMapper;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import sma.generic_vote.IVotingAgent;
+import sma.generic_vote.IVotingBehaviour;
 import sma.model.ScoreResults;
 import sma.model.VoteRequest;
-import sma.player_agent.IVotingAgent;
 
-public class WerewolfVoteBehaviour extends SimpleBehaviour{
+public class WerewolfVoteBehaviour extends SimpleBehaviour implements IVotingBehaviour{
 	public WerewolfVoteBehaviour(IVotingAgent agent) {
 		super();
 	}

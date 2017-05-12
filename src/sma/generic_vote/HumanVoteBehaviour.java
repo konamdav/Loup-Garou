@@ -1,4 +1,4 @@
-package sma.player_agent;
+package sma.generic_vote;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ import sma.model.VoteResults;
 
 /**
  * Interface de vote du player
- * Fait le lien entre l'extérieur (controlleur) et les behaviours de scoring
+ * Fait le lien entre l'extï¿½rieur (controlleur) et les behaviours de scoring
  * @author Davy
  */
 public class HumanVoteBehaviour extends SimpleBehaviour{

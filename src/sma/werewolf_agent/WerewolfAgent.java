@@ -8,10 +8,10 @@ import jade.domain.DFService;
 import jade.domain.FIPAException;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
+import sma.generic_vote.AbstractVoteBehaviour;
+import sma.generic_vote.IVotingAgent;
 import sma.lover_behaviour.LoverVoteBehaviour;
 import sma.model.DFServices;
-import sma.player_agent.AbstractVoteBehaviour;
-import sma.player_agent.IVotingAgent;
 
 /***
  * 

@@ -4,14 +4,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import sma.generic_agent.AbstractDeathBehaviour;
-import sma.generic_agent.FactoryInitBehaviour;
-import sma.generic_agent.NewMainRoleBehaviour;
+import sma.generic_init.FactoryInitBehaviour;
+import sma.generic_init.NewMainRoleBehaviour;
+import sma.generic_vote.IVotingAgent;
 import sma.model.Roles;
 import sma.model.SuspicionScore;
 import sma.werewolf_agent.DeathTestBehaviour;
 import sma.werewolf_agent.InitAsHumanBehaviour;
-import sma.werewolf_agent.WakeSleepTestBehaviour;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
@@ -20,7 +19,7 @@ import sma.model.DFServices;
 
 
 /**
- * Structure générique du player
+ * Structure gï¿½nï¿½rique du player
  * @author Davy
  *
  */
@@ -28,13 +27,17 @@ public class PlayerAgent extends Agent implements IVotingAgent{
 	private ArrayList<String> votingBehaviours; //All behaviour for vote to execute. Treeat them with string to send 
 	private ArrayList<String> deathBehaviours;//All behaviour for death to execute
 
+	//Tour du role ce fait par rÃ©ception message (LG, Cupidon)
+	
+	
 	private SuspicionScore suspicionScore; //grille de suspicion
 	private boolean human;
 	private int gameid;
 	private String statut;
 	private String main_role; //role given by game controller
 
-	//map containing specific behaviours 
+	//map containing specific behaviours for each role
+	//TODO when lost role do the conversion entre le tableau de behaviour et le votingBehaviours et deathBehaviours
 	private HashMap<String,ArrayList<Behaviour>> map_role_behaviours;
 
 	public HashMap<String, ArrayList<Behaviour>> getMap_role_behaviours() {
@@ -45,8 +48,15 @@ public class PlayerAgent extends Agent implements IVotingAgent{
 		return statut;
 	}
 
+	//When change Statut, Register to DF
 	public void setStatut(String statut) {
 		this.statut = statut;
+	}
+	
+	public void setStatutandRegister(String statut) {
+		this.statut = statut;
+		DFServices.setStatusPlayerAgent(statut, this, this.gameid);
+
 	}
 
 	public String getMain_role() {
@@ -82,6 +92,7 @@ public class PlayerAgent extends Agent implements IVotingAgent{
 
 		this.suspicionScore = new SuspicionScore(); //new suspicion grid
 
+		this.map_role_behaviours = new HashMap<String,ArrayList<Behaviour>>();
 
 
 		//this.addBehaviour(new RegisterAgentBehaviour(this));
@@ -97,18 +108,16 @@ public class PlayerAgent extends Agent implements IVotingAgent{
 		//don't forget to create wake/sleep behaviour like @WakeSleepTestBehaviour
 		this.addBehaviour(new InitAsHumanBehaviour(this));
 		this.addBehaviour(new FactoryInitBehaviour(this));
-		this.addBehaviour(new AbstractDeathBehaviour(this));
-		this.addBehaviour(new WakeSleepTestBehaviour(this)); // test david
-		this.addBehaviour(new DeathTestBehaviour(this)); //test david 
 
-		//enregistrement par défaut
+		//enregistrement par dï¿½faut
 		System.out.println("[ "+this.getName()+" ] REGISTER "+Roles.CITIZEN);
 		DFServices.registerPlayerAgent(Roles.CITIZEN, this, this.gameid);
-		DFServices.setStatusPlayerAgent("SLEEP", this, this.gameid);
-
 		
-		//TODO CEDRIC Met ça dans un Init Behaviour ( a la fin )
-		// préviens le game controller que le joueur est prêt
+		
+		this.setStatutandRegister("SLEEP");
+		
+		//TODO CEDRIC Met ï¿½a dans un Init Behaviour ( a la fin )
+		// prï¿½viens le game controller que le joueur est prï¿½t
 		ACLMessage msg = new ACLMessage(ACLMessage.SUBSCRIBE);
 		msg.setConversationId("INIT_PLAYER");
 		msg.setSender(this.getAID());
@@ -149,4 +158,5 @@ public class PlayerAgent extends Agent implements IVotingAgent{
 	public void setHuman(boolean human) {
 		this.human = human;
 	}
+	
 }

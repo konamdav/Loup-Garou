@@ -9,7 +9,7 @@ import jade.wrapper.StaleProxyException;
 
 /**
  * Serveur de partie
- * Conteneur système de la plateforme
+ * Conteneur systï¿½me de la plateforme
  * @author Davy
  *
  */
@@ -46,7 +46,7 @@ public class SystemContainer {
 		}).start();
 	}
 	
-	public SystemContainer(String name, String ip, String port)
+	public SystemContainer(final String name, final String ip, String port)
 	{
 		new Thread(new Runnable(){
 			@Override

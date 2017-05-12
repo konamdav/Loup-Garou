@@ -6,7 +6,7 @@ import generic.interfaces.IController;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
-import sma.generic.behaviour.SynchronousVoteBehaviour;
+import sma.generic_vote.SynchronousVoteBehaviour;
 import sma.model.DFServices;
 
 /**

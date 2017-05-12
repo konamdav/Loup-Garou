@@ -46,7 +46,9 @@ public class AbstractDeathBehaviour extends SimpleBehaviour{
 			delete_behaviour();
 			
 			this.agent.setStatutandRegister("DEAD");
-
+			DFServices.deregisterPlayerAgent("VICTIM", this.myAgent, this.agent.getGameid()); //retire son statut de victime (car il est mort)
+			
+			
 			ACLMessage reply = new ACLMessage(ACLMessage.CONFIRM);
 			reply.setConversationId("DEAD_PLAYER");
 			reply.setSender(this.myAgent.getAID());

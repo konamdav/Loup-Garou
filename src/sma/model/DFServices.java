@@ -116,7 +116,7 @@ public class DFServices {
 
 		try {
 			DFAgentDescription dfad = getDFAgentDescription(agent);
-			
+
 			if(!dfad.getAllServices().hasNext())
 			{
 				dfad.addServices(sd);
@@ -137,7 +137,7 @@ public class DFServices {
 
 	private static void deregisterGameAgent(String type, String name, Agent agent,  int gameid){
 		DFAgentDescription dfad = getDFAgentDescription(agent);
-		
+
 		Iterator it = dfad.getAllServices();
 		boolean flag = false;
 		ServiceDescription sd = null;
@@ -148,9 +148,9 @@ public class DFServices {
 			{
 				flag = true;
 			}
-			
+
 		}
-		
+
 		if(flag)
 		{
 			dfad.removeServices(sd);
@@ -169,7 +169,7 @@ public class DFServices {
 		DFServices.deregisterGameAgent("PLAYER", Status.SLEEP, agent, gameid);
 		DFServices.deregisterGameAgent("PLAYER", Status.WAKE, agent, gameid);
 		//DFServices.deregisterGameAgent("PLAYER", "DEAD", agent, gameid);	
-		
+
 		DFServices.registerGameAgent("PLAYER", status, agent, gameid);
 	}
 
@@ -264,7 +264,7 @@ public class DFServices {
 
 	public static List<AID> findGameControllerAgent(String name, Agent agent, int gameid){
 		return DFServices.findGameAgent("CONTROLLER", name, agent, gameid);
-		
+
 	}
 
 	public static List<AID> findGamePlayerAgent(String[] names, Agent agent, int gameid){
@@ -363,6 +363,15 @@ public class DFServices {
 			profile.getRoles().remove("CITIZEN");
 		}
 
+
+		//get profiles joueurs mayor
+		List<AID> mayors = DFServices.findGamePlayerAgent(Roles.MAYOR, agent, gameid);
+		for(AID mayor : mayors)
+		{
+			PlayerProfile profile = tmp.get(mayor.getLocalName());
+			profile.getRoles().add(Roles.MAYOR);
+		}
+
 		//get profiles joueurs wake
 		List<AID> wakes = DFServices.findGamePlayerAgent("WAKE", agent, gameid);
 
@@ -387,7 +396,18 @@ public class DFServices {
 		for(AID dead : deads)
 		{
 			PlayerProfile profile = tmp.get(dead.getLocalName());
+			profile.getRoles().remove("MAYOR");
 			profile.setStatus("DEAD");
+		}
+
+
+		//get profiles joueurs victims
+		List<AID> victims = DFServices.findGamePlayerAgent("VICTIM", agent, gameid);
+
+		for(AID victim : victims)
+		{
+			PlayerProfile profile = tmp.get(victim.getLocalName());
+			profile.getRoles().add("VICTIM");
 		}
 
 		List<PlayerProfile> list = new ArrayList<PlayerProfile>();

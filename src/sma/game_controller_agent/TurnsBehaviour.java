@@ -1,6 +1,9 @@
 package sma.game_controller_agent;
 
+import java.io.IOException;
 import java.util.List;
+
+import org.codehaus.jackson.map.ObjectMapper;
 
 import generic.interfaces.IController;
 import jade.core.AID;
@@ -170,6 +173,10 @@ public class TurnsBehaviour extends SimpleBehaviour {
 			System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
 			System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
 			System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
+
+			ObjectMapper mapper = new ObjectMapper();
+
+			DFServices.getPlayerProfiles(this.myAgent, this.controllerAgent.getGameid());
 
 
 			this.nextStep = STATE_INIT;

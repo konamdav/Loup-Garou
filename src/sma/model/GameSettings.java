@@ -12,7 +12,7 @@ public class GameSettings {
 	public GameSettings() {
 		super();
 		//nb
-		this.nbHumans = 2;
+		this.nbHumans = 0;
 		
 		//Liste role par défaut
 		this.rolesSettings = new HashMap<String, Integer>();
@@ -29,7 +29,7 @@ public class GameSettings {
 	}
 
 	public void setNbHumans(int nbHumans) {
-		this.nbHumans = nbHumans;
+		this.nbHumans = Math.min(nbHumans, this.getPlayersCount());
 	}
 
 	@JsonIgnore

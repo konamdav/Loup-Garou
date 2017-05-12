@@ -6,43 +6,54 @@ import java.util.List;
 import jade.core.AID;
 import jade.core.Agent;
 import sma.model.DFServices;
+import sma.model.HumanVoteRequest;
 import sma.model.VoteResults;
 
 public class EnvironmentAgent extends Agent{
 	private VoteResults globalResults;
 	private VoteResults currentResults;
 	
+	private HumanVoteRequest humanVoteRequest;
+	
 	private String dayState;
 	private List<String> actionLogs;
 	private String turn;
 	
 	private boolean endGame;
-	private List<AID> listeners;
+	private int gameid;
+	
+//	private List<AID> listeners;
 	
 	@Override
 	protected void setup() {
+		Object[] args = this.getArguments();
+		gameid = (int) args[0];
+		
 		globalResults = new VoteResults();
 		currentResults = new VoteResults();
 		turn ="INIT";
 		endGame = false;
 		dayState = "NIGHT";
 		
-		actionLogs = new ArrayList<String>();
-		listeners = new ArrayList<AID>();
+		humanVoteRequest = null;
 		
-		DFServices.registerSystemAgent("CONTROLLER", "ENVIRONMENT", this);
+		actionLogs = new ArrayList<String>();
+		//listeners = new ArrayList<AID>();
+		
+		System.err.println("REGISTER ENV");
+		DFServices.registerGameControllerAgent("ENVIRONMENT",this,  this.gameid);
 		
 		this.addBehaviour(new CycleSendBehaviour(this));
 		this.addBehaviour(new CycleReceiveBehaviour(this));
 		
 	}
-	public List<AID> getListeners() {
+	/*public List<AID> getListeners() {
 		return listeners;
 	}
 
 	public void setListeners(List<AID> listeners) {
 		this.listeners = listeners;
-	}
+	}*/
 	public String getTurn() {
 		return turn;
 	}
@@ -85,6 +96,12 @@ public class EnvironmentAgent extends Agent{
 
 	public VoteResults getCurrentResults() {
 		return currentResults;
+	}
+	public HumanVoteRequest getHumanVoteRequest() {
+		return humanVoteRequest;
+	}
+	public void setHumanVoteRequest(HumanVoteRequest humanVoteRequest) {
+		this.humanVoteRequest = humanVoteRequest;
 	}
 	
 

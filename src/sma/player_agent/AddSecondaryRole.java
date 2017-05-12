@@ -1,4 +1,4 @@
-package sma.generic_agent;
+package sma.player_agent;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,7 +21,6 @@ import sma.model.Roles;
 import sma.model.ScoreResults;
 import sma.model.VoteRequest;
 import sma.model.VoteResults;
-import sma.player_agent.PlayerAgent;
 
 public class AddSecondaryRole extends CyclicBehaviour{
 	

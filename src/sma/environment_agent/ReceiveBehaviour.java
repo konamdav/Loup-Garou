@@ -6,6 +6,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
+import sma.model.HumanVoteRequest;
 import sma.model.VoteResults;
 
 public class ReceiveBehaviour extends OneShotBehaviour {
@@ -67,6 +68,14 @@ public class ReceiveBehaviour extends OneShotBehaviour {
 		else if(message.getConversationId().equals("END_GAME"))
 		{
 			this.envAgent.setEndGame(Boolean.parseBoolean(message.getContent()));
+		}
+		else if(message.getConversationId().equals("HUMAN_VOTE_REQUEST"))
+		{
+			try {
+				this.envAgent.setHumanVoteRequest(mapper.readValue(message.getContent(), HumanVoteRequest.class));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 

@@ -123,7 +123,7 @@ public class SynchronousVoteBehaviour extends Behaviour {
 		}
 		else if(this.step.equals(SEND_REQUEST_GLOBAL_VOTE_RESULTS))
 		{
-			List<AID> agents = DFServices.findSystemAgent("CONTROLLER", "ENVIRONMENT", this.myAgent);
+			List<AID> agents = DFServices.findGameControllerAgent("ENVIRONMENT", this.myAgent, this.controllerAgent.getGameid());
 			if(!agents.isEmpty())
 			{
 				ACLMessage message = new ACLMessage(ACLMessage.REQUEST);

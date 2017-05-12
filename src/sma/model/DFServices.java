@@ -196,7 +196,7 @@ public class DFServices {
 			{
 				int area = Math.min(citizens.size()-1, Data.AREA_NEIGHBORS);
 
-				/** recuperation des voisins de portée N **/
+				/** recuperation des voisins de portï¿½e N **/
 				for(int j = i-1; j>= i-area; j--)
 				{
 					int index = j;
@@ -224,7 +224,7 @@ public class DFServices {
 		return res;
 	}
 
-	/** recupere les voisins d'un coté **/
+	/** recupere les voisins d'un cotï¿½ **/
 	public static List<AID> findNeighborsBySide(String side, AID player, Agent agent, int gameid)
 	{
 		List<AID> tmp = findNeighbors(player, agent, gameid);
@@ -264,6 +264,7 @@ public class DFServices {
 
 	public static List<AID> findGameControllerAgent(String name, Agent agent, int gameid){
 		return DFServices.findGameAgent("CONTROLLER", name, agent, gameid);
+		
 	}
 
 	public static List<AID> findGamePlayerAgent(String[] names, Agent agent, int gameid){

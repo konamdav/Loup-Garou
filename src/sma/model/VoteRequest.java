@@ -16,6 +16,7 @@ public class VoteRequest {
 	private VoteResults localVoteResults;
 	private SuspicionScore collectiveSuspicionScore;
 	private boolean canBeFake;
+	private boolean askRequest;
 	
 	public VoteRequest() {
 		super();
@@ -27,6 +28,7 @@ public class VoteRequest {
 		this.request="UNKNOWN_REQUEST";
 		this.voteAgainst = true;
 		this.canBeFake = false;
+		this.askRequest = false;
 	}
 	
 	public VoteRequest(List<String> choices) {
@@ -38,6 +40,7 @@ public class VoteRequest {
 		this.localVoteResults = new VoteResults();
 		this.collectiveSuspicionScore = new SuspicionScore();
 		this.voteAgainst = true;
+		this.askRequest = false;
 	}
 	
 	public VoteRequest(List<String> choices , VoteResults results) {
@@ -48,6 +51,7 @@ public class VoteRequest {
 		this.localVoteResults = new VoteResults();
 		this.collectiveSuspicionScore = new SuspicionScore();
 		this.voteAgainst = true;
+		this.askRequest = false;
 	}
 	
 	public VoteRequest(List<String> choices , VoteResults gresults, VoteResults lresults) {
@@ -58,6 +62,15 @@ public class VoteRequest {
 		this.localVoteResults = lresults;
 		this.collectiveSuspicionScore = new SuspicionScore();
 		this.voteAgainst = true;
+		this.askRequest = false;
+	}
+
+	public boolean isAskRequest() {
+		return askRequest;
+	}
+
+	public void setAskRequest(boolean askRequest) {
+		this.askRequest = askRequest;
 	}
 
 	public boolean isVoteAgainst() {

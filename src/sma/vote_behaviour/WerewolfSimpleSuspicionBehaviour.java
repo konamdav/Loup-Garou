@@ -16,7 +16,6 @@ import sma.model.DFServices;
 import sma.model.Roles;
 import sma.model.ScoreResults;
 import sma.model.Status;
-import sma.model.VoteRequest;
 import sma.model.SuspicionScore;
 import sma.model.VoteRequest;
 import sma.model.VoteResults;

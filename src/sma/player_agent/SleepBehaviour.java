@@ -1,4 +1,4 @@
-package sma.werewolf_agent;
+package sma.player_agent;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -12,39 +12,38 @@ import sma.generic_vote.IVotingAgent;
 import sma.model.DFServices;
 import sma.model.ScoreResults;
 import sma.model.VoteRequest;
-import sma.player_agent.PlayerAgent;
 
-public class DeathTestBehaviour extends SimpleBehaviour{
+public class SleepBehaviour extends SimpleBehaviour{
 	private PlayerAgent playerAgent ;
 
-	public DeathTestBehaviour(PlayerAgent playerAgent) {
+	public SleepBehaviour(PlayerAgent playerAgent) {
 		super();
 		this.playerAgent = playerAgent;
 	}
 
 	@Override
 	public void action() {
-		MessageTemplate mt = MessageTemplate.and(
-				MessageTemplate.MatchPerformative(ACLMessage.REQUEST),
-				MessageTemplate.MatchConversationId("KILL_PLAYER"));
+		MessageTemplate	mt = MessageTemplate.and(
+		MessageTemplate.MatchPerformative(ACLMessage.REQUEST),
+		MessageTemplate.MatchConversationId("SLEEP_PLAYER"));
 
 		ACLMessage message = this.myAgent.receive(mt);
 		if (message != null) 
 		{
-			System.err.println("[ "+this.playerAgent.getName()+" ] DIE ");
-			DFServices.setStatusPlayerAgent("DEAD", this.playerAgent, this.playerAgent.getGameid());
-
+			System.out.println("I SLEEP ");
+			this.playerAgent.setStatutandRegister("SLEEP");
+			//DFServices.setStatusPlayerAgent("SLEEP", this.playerAgent, this.playerAgent.getGameid());
+			
 			ACLMessage reply = new ACLMessage(ACLMessage.CONFIRM);
-			reply.setConversationId("DEAD_PLAYER");
+			reply.setConversationId("SLEEP_PLAYER");
 			reply.setSender(this.myAgent.getAID());
 			reply.addReceiver(message.getSender());
 
 			this.myAgent.send(reply);
 		}
-		else
-		{
+		else{
 			block();
-		}
+		}		
 	}
 
 	@Override

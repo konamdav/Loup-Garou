@@ -77,7 +77,7 @@ public class CitizenSuspicionListener extends Behaviour{
 		}
 		else if(step.equals(STATE_SEND_SUSPICIONS))
 		{
-			//liste des voisins que l'on soupçonne
+			//liste des voisins que l'on soupï¿½onne
 			List<AID> neighbors = DFServices.findNeighborsBySide(this.side, this.playerAgent.getAID(), playerAgent, this.playerAgent.getGameid());
 			
 			//maj grid
@@ -109,7 +109,7 @@ public class CitizenSuspicionListener extends Behaviour{
 		VoteResults localResults = request.getLocalVoteResults();
 		
 		int score = 0;
-		// joueur analysé = joueur 
+		// joueur analysï¿½ = joueur 
 		if(player.getName().equals(this.playerAgent.getPlayerName()))
 		{
 			score = ScoreFactor.SCORE_MIN;

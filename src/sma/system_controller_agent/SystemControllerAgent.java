@@ -12,8 +12,8 @@ import sma.launch.GameContainer;
 import sma.model.GameSettings;
 
 /***
- * Agent système
- * Création des conteneurs de jeu
+ * Agent systï¿½me
+ * Crï¿½ation des conteneurs de jeu
  * @author Davy
  *
  */

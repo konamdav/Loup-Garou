@@ -1,4 +1,4 @@
-package sma.player_agent;
+package sma.generic_vote;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,21 +24,18 @@ import sma.model.VoteResults;
 
 /**
  * Interface de vote du player
- * Fait le lien entre l'extérieur (controlleur) et les behaviours de scoring
+ * Fait le lien entre l'extï¿½rieur (controlleur) et les behaviours de scoring
  * @author Davy
  */
-public class HumanVoteBehaviour extends SimpleBehaviour{
+public class AbstractVoteBehaviour extends SimpleBehaviour{
 	private IVotingAgent agent;
-	
+	private int nbVoters;
 	private ScoreResults results;
+	private List<String> lastResults;
 	private List<String> finalResults;
 
 	private final static String STATE_INIT = "INIT";
 	private final static String STATE_RECEIVE_FORCE_VOTE = "FORCE_RESULT";
-	
-	private final static String STATE_SEND_REQUEST_TO_ENV = "SEND_REQUEST_TO_ENV";
-	private final static String STATE_RECEIVE_HUMAN_VOTE = "RECEIVE_HUMAN_VOTE";
-	
 	private final static String STATE_RECEIVE_REQUEST = "RECEIVE_REQUEST";
 	private final static String STATE_SEND_REQUEST = "SEND_REQUEST";
 	private final static String STATE_RECEIVE_INFORM = "RECEIVE_INFORM";
@@ -50,14 +47,16 @@ public class HumanVoteBehaviour extends SimpleBehaviour{
 	private String step;
 	private String nextStep;
 	private AID sender;
+
 	private Map<String, String> forceResults;
 
 
-	public HumanVoteBehaviour(IVotingAgent agent) {
+	public AbstractVoteBehaviour(IVotingAgent agent) {
 		super();
 		this.agent = agent;
-	
+		this.nbVoters = 0;
 		this.results = new ScoreResults();
+		this.lastResults = null;
 		this.finalResults = null;
 		this.request = null;
 
@@ -66,14 +65,18 @@ public class HumanVoteBehaviour extends SimpleBehaviour{
 		this.step = STATE_INIT;
 		this.nextStep ="";
 
+		System.err.println("ABSTRACT VOTE");
 	}
 
 
 	@Override
-	public void action() 
-	{
+	public void action() {
+
+		//System.out.println("STATE = "+this.step);
+
 		if(this.step.equals(STATE_INIT))
 		{
+			this.nbVoters = 0;
 			this.request = null;
 			this.sender = null;
 			this.results = new ScoreResults();
@@ -144,28 +147,37 @@ public class HumanVoteBehaviour extends SimpleBehaviour{
 				String voted = this.forceResults.get(request.getRequest());
 				//remove vote
 				this.forceResults.remove(request.getRequest());
-				
+
 				ScoreResults scr = new ScoreResults();
 				scr.getResults().put(voted, 1);
+
 				this.results.add(scr);
-				
+
 				this.nextStep = STATE_RESULTS;
 			}
 			else
 			{
-				System.err.println("ASK HUMAN REQUEST VOTE "+this.request.getRequest());
-				System.err.println(this.request.getChoices());
-				
-				ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
-				message.setSender(this.myAgent.getAID());
-				message.setConversationId("VOTE_HUMAN");
-				
-				List<AID> agents = DFServices.findGameControllerAgent("ENVIRONMENT", this.myAgent, this.agent.getGameid());
-				if(!agents.isEmpty())
+				for(String s : this.agent.getVotingBehaviours())
 				{
-					message.addReceiver(agents.get(0));	
-				}			
-				
+					System.out.println("ROLE VOTE : "+s);
+
+					ACLMessage messageRequest = new ACLMessage(ACLMessage.REQUEST);
+					messageRequest.setSender(this.myAgent.getAID());
+					messageRequest.addReceiver(this.myAgent.getAID());
+					messageRequest.setConversationId("VOTE_TO_"+s+"_REQUEST");
+
+					ObjectMapper mapper = new ObjectMapper();
+					String json ="";
+					try {		
+						json = mapper.writeValueAsString(request);			
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					messageRequest.setContent(json);
+					this.myAgent.send(messageRequest);
+
+				}
+
 				this.nextStep = STATE_RECEIVE_INFORM;
 			}
 		}
@@ -179,12 +191,32 @@ public class HumanVoteBehaviour extends SimpleBehaviour{
 
 			if(message !=null)
 			{
-				System.err.println("RECEIVE HUMAN REQUEST VOTE ===> "+message.getContent());
-				
-				String player = message.getContent();
-				this.results.getResults().put(player, 1);
-				
-				this.nextStep = STATE_RESULTS;
+				//System.out.println("\n\nDEBUT PLAYER AGENT : "+this.agent.getName());
+				System.err.println(this.agent.getName()+" REQUEST => "+this.request.getRequest());
+				System.err.println("MESSAGE INFORM "+" : "+message.getContent());
+
+				++this.nbVoters;
+
+				ObjectMapper mapper = new ObjectMapper();
+				ScoreResults res = new ScoreResults();
+				try {
+					res = mapper.readValue(message.getContent(), ScoreResults.class);
+				} 
+				catch (IOException e) 
+				{
+					e.printStackTrace();
+				}
+				this.results.add(res);
+
+				System.err.println("("+this.nbVoters+"/"+this.agent.getVotingBehaviours().size()+")");
+				if(this.nbVoters >= this.agent.getVotingBehaviours().size())
+				{
+					this.nextStep = STATE_RESULTS;
+				}
+				else
+				{
+					this.nextStep = STATE_RECEIVE_INFORM;
+				}
 			}
 			else
 			{
@@ -194,9 +226,44 @@ public class HumanVoteBehaviour extends SimpleBehaviour{
 		else if(this.step.equals(STATE_RESULTS))
 		{
 			this.finalResults = this.results.getFinalResults();
-			this.nextStep = STATE_SEND_RESULTS;
 
-		
+			/** equality  ? **/
+			if(this.finalResults.size() == 1)
+			{
+				System.err.println("FINAL RESULTS = "+this.finalResults.size());
+				this.nextStep = STATE_SEND_RESULTS;
+			}
+			else
+			{
+				if(this.lastResults != null && this.lastResults.equals(this.finalResults))
+				{
+					/** interblocage **/
+					ArrayList<String> tmp = new ArrayList<String>();
+
+					/** random choice  **/
+					tmp.add(this.finalResults.get((int)Math.random()*this.finalResults.size()));				
+					this.finalResults = tmp;
+
+					System.err.println("FINAL RESULTS WITH INTERBLOCAGE = "+this.finalResults.size());
+					this.nextStep = STATE_SEND_RESULTS;
+
+				}
+				else if(!this.request.isAskRequest())
+				{					
+					// new vote with finalists
+
+					this.lastResults = this.finalResults;
+
+					VoteRequest tmp = new VoteRequest(this.finalResults, request.getGlobalCitizenVoteResults());
+					tmp.setRequest(request.getRequest());
+					tmp.setVoteAgainst(request.isVoteAgainst());
+
+					this.request = tmp;
+					this.nbVoters = 0;
+					this.nextStep = STATE_SEND_REQUEST;
+				}
+
+			}
 		}
 		else if(this.step.equals(STATE_SEND_RESULTS))
 		{
@@ -206,13 +273,34 @@ public class HumanVoteBehaviour extends SimpleBehaviour{
 
 			List<String> voter = new ArrayList<String>();
 			voter.add(this.agent.getName());
-			results.put(this.finalResults.get(0), voter);
-			System.err.println("VOTE FOR "+this.finalResults.get(0));
+			
+			if(!request.isAskRequest()){
 
+				results.put(this.finalResults.get(0), voter);
+				System.err.println("VOTE FOR "+this.finalResults.get(0));
+
+			}
+			else
+			{
+				//TRAITEMENT DE LA REQUETE ASK
+				//LE RESULTAT EST IL SUFFISANT POUR ETRE OK ?
+				
+				if(this.finalResults.size() == 1)
+				{
+					results.put("OK", voter);
+				}
+				if(this.finalResults.size() > 1 && this.results.getMaxScore() > 10)
+				{
+					results.put("OK", voter);
+				}
+				else
+				{
+					results.put("NOT_OK", voter);
+				}
+			}
 			ACLMessage reply = new ACLMessage(ACLMessage.INFORM);
 			reply.setConversationId("VOTE_INFORM");
 			reply.setSender(this.myAgent.getAID());
-
 			reply.addReceiver(sender);
 
 			String json = "";

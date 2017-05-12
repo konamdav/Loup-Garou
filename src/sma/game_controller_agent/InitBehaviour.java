@@ -54,29 +54,35 @@ public class InitBehaviour extends Behaviour {
 	public void action() {
 		if(step.equals(STATE_INIT))
 		{
-			try
-			{
-				int nb = this.gameControllerAgent.getGameSettings().getPlayersCount();
-				int gameid = this.gameControllerAgent.getGameid();
-				this.cpt = 0;
-
-
-				Object[] args = {gameid};
-				for(int i = 0; i<nb; ++i)
+			if(this.gameControllerAgent.getGameSettings().getPlayersCount() >0){
+				try
 				{
-					String playerName = "PLAYER_"+gameid+""+i;
-					AgentController ac = this.gameControllerAgent.getContainerController().createNewAgent(
-							playerName, "sma.player_agent.PlayerAgent", args);
-					ac.start();
+					int nb = this.gameControllerAgent.getGameSettings().getPlayersCount();
+					int gameid = this.gameControllerAgent.getGameid();
+					this.cpt = 0;
 
+
+					Object[] args = {gameid};
+					for(int i = 0; i<nb; ++i)
+					{
+						String playerName = "PLAYER_"+gameid+""+i;
+						AgentController ac = this.gameControllerAgent.getContainerController().createNewAgent(
+								playerName, "sma.player_agent.PlayerAgent", args);
+						ac.start();
+
+					}
 				}
-			}
-			catch(Exception e)
-			{
-				e.printStackTrace();
-			}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+				}
 
-			this.nextStep = STATE_RECEIVE_INIT;
+				this.nextStep = STATE_RECEIVE_INIT;
+			}
+			else
+			{
+				this.nextStep = STATE_START_GAME;
+			}
 		}
 		else if(step.equals(STATE_RECEIVE_INIT))
 		{
@@ -117,11 +123,11 @@ public class InitBehaviour extends Behaviour {
 					message.addReceiver(agents.get(i));
 					message.setConversationId("INIT_AS_HUMAN");
 					this.getAgent().send(message);
-					
+
 					System.out.println("HUMAN PLAYER "+agents.get(i).getName());
 
 				}
-				
+
 				this.nextStep = STATE_RECEIVE_HUMAN_ATTR;
 			}
 			else

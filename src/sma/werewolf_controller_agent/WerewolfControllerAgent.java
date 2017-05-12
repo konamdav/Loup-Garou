@@ -7,7 +7,7 @@ import jade.core.AID;
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
 import sma.werewolf_controller_agent.TurnBehaviour;
-import sma.generic.behaviour.SynchronousVoteBehaviour;
+
 import sma.model.DFServices;
 
 /**
@@ -31,7 +31,7 @@ public class WerewolfControllerAgent extends Agent implements IController {
 		this.gameid = (Integer) args[0];
 		
 		DFServices.registerGameControllerAgent("WEREWOLF", this, this.gameid);		
-		this.addBehaviour(new SynchronousVoteBehaviour(this));
+		this.addBehaviour(new sma.generic.behaviour.SynchronousVoteBehaviour(this));
 		this.addBehaviour(new TurnBehaviour(this));
 		
 	}

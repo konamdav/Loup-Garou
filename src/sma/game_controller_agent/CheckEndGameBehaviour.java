@@ -15,7 +15,7 @@ import sma.model.Roles;
 import sma.model.Status;
 
 /**
- * Behaviour qui prévient la fin de jeu
+ * Behaviour qui prï¿½vient la fin de jeu
  * @author Davy
  *
  */
@@ -78,13 +78,22 @@ public class CheckEndGameBehaviour extends CyclicBehaviour {
 			
 			String[] services1 = {Roles.WEREWOLF, Status.WAKE};
 			List<AID> werewolves = DFServices.findGamePlayerAgent(services1, this.gameControllerAgent, this.gameControllerAgent.getGameid());
-			
+			String[] services11 = {Roles.WEREWOLF, Status.SLEEP};
+			werewolves.addAll(DFServices.findGamePlayerAgent(services11, this.gameControllerAgent, this.gameControllerAgent.getGameid()));
+
 			String[] services2 = {Roles.CITIZEN, Status.WAKE};
 			List<AID> citizens = DFServices.findGamePlayerAgent(services2, this.gameControllerAgent, this.gameControllerAgent.getGameid());
+			String[] services22 = {Roles.CITIZEN, Status.SLEEP};
+			citizens.addAll(DFServices.findGamePlayerAgent(services22, this.gameControllerAgent, this.gameControllerAgent.getGameid()));
 
+			
 			String[] services3 = {Roles.LOVER, Status.WAKE};
 			List<AID> lovers = DFServices.findGamePlayerAgent(services3, this.gameControllerAgent, this.gameControllerAgent.getGameid());
+			String[] services33 = {Roles.LOVER, Status.SLEEP};
+			lovers.addAll(DFServices.findGamePlayerAgent(services33, this.gameControllerAgent, this.gameControllerAgent.getGameid()));
 
+			
+			
 			System.err.println("W Size = "+werewolves.size());
 			System.err.println("C Size = "+citizens.size());
 			System.err.println("L Size = "+lovers.size());

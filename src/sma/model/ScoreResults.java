@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 public class ScoreResults {
 
 	private Map<String, Integer> results;
@@ -62,6 +64,21 @@ public class ScoreResults {
 			}
 		}
 		return finalResults;
+	}
+	
+	@JsonIgnore
+	public int getMaxScore()
+	{
+		ArrayList<String> finalResults = new ArrayList<String>();
+		int m = Integer.MIN_VALUE;
+		for(Entry<String, Integer> entry : getResults().entrySet())
+		{
+			if(m < entry.getValue())
+			{
+				m = entry.getValue();
+			}
+		}
+		return m;
 	}
 	
 }

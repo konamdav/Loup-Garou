@@ -18,7 +18,7 @@ import sma.model.VoteRequest;
 import sma.model.VoteResults;
 
 /** 
- * Vote asynchrone (les players répondent sans attendre les autres)
+ * Vote asynchrone (les players rï¿½pondent sans attendre les autres)
  * @author Davy
  *
  */

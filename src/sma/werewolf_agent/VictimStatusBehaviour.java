@@ -8,11 +8,11 @@ import org.codehaus.jackson.map.ObjectMapper;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import sma.generic_vote.IVotingAgent;
 import sma.model.DFServices;
 import sma.model.ScoreResults;
 import sma.model.Status;
 import sma.model.VoteRequest;
-import sma.player_agent.IVotingAgent;
 import sma.player_agent.PlayerAgent;
 
 public class VictimStatusBehaviour extends SimpleBehaviour{

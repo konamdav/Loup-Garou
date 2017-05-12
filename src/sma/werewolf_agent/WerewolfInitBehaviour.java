@@ -13,11 +13,12 @@ import jade.core.behaviours.OneShotBehaviour;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import sma.generic_vote.IVotingAgent;
+import sma.lover_behaviour.LoverDeathBehaviour;
 import sma.model.DFServices;
 import sma.model.Roles;
 import sma.model.ScoreResults;
 import sma.model.VoteRequest;
-import sma.player_agent.IVotingAgent;
 import sma.player_agent.PlayerAgent;
 import sma.vote_behaviour.CitizenScoreBehaviour;
 import sma.vote_behaviour.CitizenSimpleSuspicionBehaviour;
@@ -38,8 +39,8 @@ public class WerewolfInitBehaviour extends OneShotBehaviour{
 
 	@Override
 	public void action() {
-		//System.out.println("WerewolfInitBehaviour THIS PLAYER "+this.agent.getName());
-		
+		System.out.println("WerewolfInitBehaviour THIS PLAYER "+this.agent.getName());
+		ArrayList<Behaviour> list_behav = new ArrayList<Behaviour>();
 		HashMap<String, ArrayList<Behaviour>> map_behaviour = this.agent.getMap_role_behaviours();
 		//TODO CEDRIC vote behaviour
 		//add WerewolfScoreBehaviour
@@ -49,51 +50,46 @@ public class WerewolfInitBehaviour extends OneShotBehaviour{
 		// in your map + addBehaviour
 		
 		WerewolfScoreBehaviour werewolfScoreBehaviour = new WerewolfScoreBehaviour(this.agent);
+		list_behav.add(werewolfScoreBehaviour);
 		WerewolfSuspicionBehaviour werewolfSuspicionBehaviour = new WerewolfSuspicionBehaviour(this.agent);
-		CitizenScoreBehaviour citizenScoreBehaviour = new CitizenScoreBehaviour(this.agent);
+		list_behav.add(werewolfSuspicionBehaviour);
+
+
+		//Not for werewolf, Do in a common one TODO Look if has to keep it 
 		WerewolfSuspicionListener werewolfSuspicionListener = new WerewolfSuspicionListener(this.agent);
+		list_behav.add(werewolfSuspicionListener);
+		//werewolfSuspicionListener //LISTENER AIT MESSAGE for suscipions
 		
+		WerewolfSimpleSuspicionBehaviour werewolfSimpleSuspicionBehaviour = new WerewolfSimpleSuspicionBehaviour(this.agent);
+		this.agent.addBehaviour(werewolfSimpleSuspicionBehaviour);
 		
-		WerewolfSimpleSuspicionBehaviour citizenSimpleSuspicionBehaviour = new WerewolfSimpleSuspicionBehaviour(this.agent);
-		this.agent.addBehaviour(citizenSimpleSuspicionBehaviour);
-		
+		//ScoreBehvaiour is for Vote
 		this.agent.addBehaviour(werewolfScoreBehaviour);
+		list_behav.add(werewolfScoreBehaviour);
+
 		this.agent.addBehaviour(werewolfSuspicionBehaviour);
-		this.agent.addBehaviour(citizenScoreBehaviour);
+		list_behav.add(werewolfSuspicionBehaviour);
+
 		this.agent.addBehaviour(werewolfSuspicionListener);
+		list_behav.add(werewolfSuspicionListener);
+
 		
 		//TODO CEDRIC 
 		//routing for abstractVote behaviour
 		//don't forget this.agent.getVotingBehaviours().add(<VOTE BEHAVIOUR>.getName_behaviour())
 		this.agent.getVotingBehaviours().add(werewolfScoreBehaviour.getName_behaviour());
 		this.agent.getVotingBehaviours().add(werewolfSuspicionBehaviour.getName_behaviour());
-		this.agent.getVotingBehaviours().add(citizenScoreBehaviour.getName_behaviour());
+
+		//citizenScoreBehaviour // VOTE CONTRE CEUX DEJA VOTER //TODO DAVID MODIFIER NON TO GENERIC
+
+		
+		//Handle attributes
+		map_behaviour.put(Roles.WEREWOLF, list_behav);
+		
 		
 		//enregirstrement
 		System.out.println("[ "+this.agent.getName()+" ] REGISTER "+Roles.WEREWOLF);
 		DFServices.registerPlayerAgent(Roles.WEREWOLF, this.myAgent, this.agent.getGameid());
-		
-		
-		/*ArrayList<Behaviour> list_vote_behaviour = this.agent.getVotingBehaviours();
-		ArrayList<Behaviour> list_all_behaviour = new ArrayList<Behaviour>(); 
-		Behaviour vote = new WerewolfVoteBehaviour(this.agent);
-		list_all_behaviour.add(vote);
-		map_behaviour.put(Roles.WEREWOLF, )*/
-		
-		//TODO CEDRIC Renvoyer a la fin au game controller un msg INFORM de conversation id ATTRIBUTION_ROLE
-		// pour prévenir de la fin de l'attribution du role
-		ACLMessage messageRequest = new ACLMessage(ACLMessage.INFORM);
-		messageRequest.setSender(this.agent.getAID());
-		
-		List<AID> agents = DFServices.findGameControllerAgent("GAME", this.myAgent, this.agent.getGameid());
-		if(!agents.isEmpty())
-		{
-			messageRequest.addReceiver(agents.get(0));
-			messageRequest.setConversationId("ATTRIBUTION_ROLE");
-			this.myAgent.send(messageRequest);	
-		}
-		
-
 
 	}
 

@@ -1,4 +1,4 @@
-package sma.generic_agent;
+package sma.generic_init;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,12 +16,12 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import sma.environment_agent.ReceiveBehaviour;
+import sma.generic_vote.AbstractVoteBehaviour;
 import sma.model.DFServices;
 import sma.model.Roles;
 import sma.model.ScoreResults;
 import sma.model.VoteRequest;
 import sma.model.VoteResults;
-import sma.player_agent.AbstractVoteBehaviour;
 import sma.player_agent.PlayerAgent;
 
 public class NewMainRoleBehaviour extends CyclicBehaviour{
@@ -60,7 +60,8 @@ public class NewMainRoleBehaviour extends CyclicBehaviour{
 				{
 					this.agent.addBehaviour(new AbstractVoteBehaviour(this.agent));
 				}
-				
+				//TODO Look if better place to be				
+				this.agent.addBehaviour(new GenericInitBehaviour(this.agent));
 				
 				this.agent.setMain_role(new_role);
 				//TODO Check if in first position
@@ -84,7 +85,7 @@ public class NewMainRoleBehaviour extends CyclicBehaviour{
 			}
 			else if (main_role != new_role){
 				//TODO If voleur can swap role SO DO this case 
-				//System.out.println("Got another role "+main_role+ "TO THIS PLAYER "+this.agent.getName());
+				System.out.println("Got another role "+main_role+ "TO THIS PLAYER "+this.agent.getName());
 				
 				
 				System.out.println("ATTRIBUTION => "+new_role);

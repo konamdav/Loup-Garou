@@ -1,9 +1,8 @@
-package sma.generic_agent;
+package sma.player_agent;
 
 import jade.core.behaviours.Behaviour;
 import sma.model.DFServices;
 import sma.model.Roles;
-import sma.player_agent.PlayerAgent;
 
 public class MayorInitBehaviour extends Behaviour {
 	private PlayerAgent playerAgent;

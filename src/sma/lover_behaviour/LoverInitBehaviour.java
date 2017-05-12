@@ -9,9 +9,9 @@ import jade.core.behaviours.OneShotBehaviour;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import sma.generic_vote.IVotingAgent;
 import sma.model.ScoreResults;
 import sma.model.VoteRequest;
-import sma.player_agent.IVotingAgent;
 import sma.player_agent.PlayerAgent;
 
 public class LoverInitBehaviour extends OneShotBehaviour{

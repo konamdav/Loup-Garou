@@ -12,7 +12,6 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import sma.data.ScoreFactor;
 import sma.model.ScoreResults;
-import sma.model.VoteRequest;
 import sma.model.SuspicionScore;
 import sma.model.VoteRequest;
 import sma.model.VoteResults;

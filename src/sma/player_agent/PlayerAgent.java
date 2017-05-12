@@ -7,6 +7,7 @@ import java.util.List;
 import sma.generic_init.FactoryInitBehaviour;
 import sma.generic_init.NewMainRoleBehaviour;
 import sma.generic_vote.IVotingAgent;
+import sma.model.DFServices;
 import sma.model.Roles;
 import sma.model.SuspicionScore;
 import sma.werewolf_agent.DeathTestBehaviour;
@@ -15,7 +16,6 @@ import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
-import sma.model.DFServices;
 
 
 /**

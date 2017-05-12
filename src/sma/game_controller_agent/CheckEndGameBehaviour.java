@@ -15,7 +15,7 @@ import sma.model.Roles;
 import sma.model.Status;
 
 /**
- * Behaviour qui prévient la fin de jeu
+ * Behaviour qui prï¿½vient la fin de jeu
  * @author Davy
  *
  */

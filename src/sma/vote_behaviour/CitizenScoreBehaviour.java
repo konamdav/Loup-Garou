@@ -136,7 +136,7 @@ public class CitizenScoreBehaviour extends Behaviour{
 
 		int score = 0;
 		if(request.isVoteAgainst()){
-			// joueur analysé = joueur 
+			// joueur analysï¿½ = joueur 
 			if(player.getName().equals(this.playerAgent.getPlayerName()))
 			{
 				score = ScoreFactor.SCORE_MIN;
@@ -154,14 +154,14 @@ public class CitizenScoreBehaviour extends Behaviour{
 		}
 		else
 		{
-			// joueur analysé = joueur 
+			// joueur analysï¿½ = joueur 
 			if(player.getName().equals(this.playerAgent.getPlayerName()))
 			{
 				score = 0;
 			}
 			else
 			{
-				// ici global  =  resultat global du vote d'élimination ("contre")
+				// ici global  =  resultat global du vote d'ï¿½limination ("contre")
 				// local = vote "pour" en cours
 				score+= globalResults.getVoteCount(player.getName(), this.playerAgent.getPlayerName()) * ScoreFactor.SCORE_FACTOR_GLOBAL_VOTE *-1; 
 				score+= localResults.getVoteCount(player.getName()) * ScoreFactor.SCORE_FACTOR_LOCAL_NB_VOTE;  

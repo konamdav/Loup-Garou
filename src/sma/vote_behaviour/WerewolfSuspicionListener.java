@@ -170,7 +170,7 @@ public class WerewolfSuspicionListener extends Behaviour{
 		VoteResults localResults = request.getLocalVoteResults();
 
 		int score = 0;
-		// joueur analysé = joueur 
+		// joueur analysï¿½ = joueur 
 		if(player.getName().equals(this.playerAgent.getPlayerName()))
 		{
 			score = ScoreFactor.SCORE_MIN;

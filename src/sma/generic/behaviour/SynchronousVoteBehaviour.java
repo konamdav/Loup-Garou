@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.List;
 import org.codehaus.jackson.map.ObjectMapper;
 
-import generic.interfaces.IController;
 import jade.core.AID;
 import jade.core.behaviours.Behaviour;
 import jade.domain.DFService;
@@ -16,6 +15,7 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import sma.citizen_controller_agent.CitizenControllerAgent;
+import sma.generic.interfaces.IController;
 import sma.model.DFServices;
 import sma.model.SuspicionScore;
 import sma.model.VoteRequest;

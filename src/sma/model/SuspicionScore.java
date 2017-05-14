@@ -20,7 +20,7 @@ public class SuspicionScore
 	//archive player suspicion
 	@JsonIgnore
 	private Map<String, Map<String, Integer>> playerSuspicion;
-	
+
 	public SuspicionScore() {
 		super();
 		this.score = new HashMap<String, Integer>();
@@ -43,9 +43,9 @@ public class SuspicionScore
 			return 0;
 		}
 	}
-	
-	
-	
+
+
+
 	@JsonIgnore
 	public void addSuspicionScoreGrid(String name, SuspicionScore scoreGrid)
 	{
@@ -58,15 +58,9 @@ public class SuspicionScore
 	@JsonIgnore
 	public void addScore(String name, int score)
 	{
-		if(this.score.containsKey(name))
-		{
-			this.score.put(name, Math.max(this.score.get(name),score)+50);
-		}
-		else
-		{
-			this.score.put(name, score);
-		}
+		this.score.put(name, score);
 	}
+	
 	@JsonIgnore
 	public void clear()
 	{
@@ -74,5 +68,5 @@ public class SuspicionScore
 		this.playerSuspicion.clear();
 	}
 }
-	
+
 

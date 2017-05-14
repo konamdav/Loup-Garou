@@ -1,4 +1,4 @@
-package generic.interfaces;
+package sma.generic.interfaces;
 
 import jade.core.Agent;
 

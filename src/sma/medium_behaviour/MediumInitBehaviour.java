@@ -1,4 +1,4 @@
-package sma.citizen_agent;
+package sma.medium_behaviour;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,25 +24,22 @@ import sma.vote_behaviour.CitizenScoreBehaviour;
 import sma.vote_behaviour.CitizenSimpleSuspicionBehaviour;
 import sma.vote_behaviour.CitizenSuspicionListener;
 import sma.vote_behaviour.GenericSuspicionBehaviour;
+import sma.vote_behaviour.MediumSuspicionListener;
 import sma.vote_behaviour.WerewolfScoreBehaviour;
 import sma.vote_behaviour.WerewolfSuspicionListener;
 
-public class CitizenInitBehaviour extends OneShotBehaviour{
+public class MediumInitBehaviour extends OneShotBehaviour{
 	private PlayerAgent agent;
 
-	public CitizenInitBehaviour(PlayerAgent agent) {
+	public MediumInitBehaviour(PlayerAgent agent) {
 		super();
 		this.agent = agent;
 	}
 
 	@Override
 	public void action() {
-		System.out.println("CitizenInitBehaviour THIS PLAYER "+this.agent.getName());
 		ArrayList<Behaviour> list_behav = new ArrayList<Behaviour>();
 		HashMap<String, ArrayList<Behaviour>> map_behaviour = this.agent.getMap_role_behaviours();
-		
-		LoverDeathBehaviour loverDeathBehaviour = new LoverDeathBehaviour(this.agent); //FOR TEST
-		list_behav.add(loverDeathBehaviour);
 		
 		GenericSuspicionBehaviour genericSuspicionBehaviour = new GenericSuspicionBehaviour(this.agent);
 		list_behav.add(genericSuspicionBehaviour);
@@ -55,22 +52,24 @@ public class CitizenInitBehaviour extends OneShotBehaviour{
 		list_behav.add(citizenSimpleSuspicionBehaviour);
 		//CitizenSimpleSuspicionBehaviour NOt generic car this one is for finding werewolf
 
+		MediumSuspicionListener mediumSuspicionListener = new MediumSuspicionListener(this.agent);
+		list_behav.add(mediumSuspicionListener);
+		
+		
+		this.agent.addBehaviour(mediumSuspicionListener);
 		this.agent.addBehaviour(citizenSimpleSuspicionBehaviour);
 		this.agent.addBehaviour(genericSuspicionBehaviour);
 		this.agent.addBehaviour(citizenSuspicionListener);
 		this.agent.getVotingBehaviours().add(genericSuspicionBehaviour.getName_behaviour());
 		
 		
-		//TEST
-		this.agent.addBehaviour(loverDeathBehaviour);
-
-		this.agent.getDeathBehaviours().add(loverDeathBehaviour.getName_behaviour());
+		
 		
 		//No death behaviour
 		//this.agent.getDeathBehaviours().add(genericSuspicionBehaviour.getName_behaviour());
 		
 		//Handle attributes
-		map_behaviour.put(Roles.CITIZEN, list_behav);
+		map_behaviour.put(Roles.MEDIUM, list_behav);
 		
 		
 		//enregirstrement NOT FOR CITIZEN CAUZ EVERY PLAYER IS ALREADY A CITIZEN

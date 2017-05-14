@@ -62,7 +62,6 @@ public class NewMainRoleBehaviour extends CyclicBehaviour{
 				}
 				//TODO Look if better place to be				
 				this.agent.addBehaviour(new GenericInitBehaviour(this.agent));
-				
 				this.agent.setMain_role(new_role);
 				//TODO Check if in first position
 				//DFServices.modifyPlayerAgent(old_role, new_role, this.agent, this.agent.getGameid());

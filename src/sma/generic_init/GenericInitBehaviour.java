@@ -26,6 +26,7 @@ import sma.model.Roles;
 import sma.model.ScoreResults;
 import sma.model.VoteRequest;
 import sma.model.VoteResults;
+import sma.player_agent.GetRoleBehaviour;
 import sma.player_agent.PlayerAgent;
 import sma.player_agent.SleepBehaviour;
 import sma.player_agent.WakeBehaviour;
@@ -62,6 +63,9 @@ public class GenericInitBehaviour extends OneShotBehaviour{
 
 		SleepBehaviour genericSleepBehaviour = new SleepBehaviour(this.agent);
 		this.agent.addBehaviour(genericSleepBehaviour);
+		
+		GetRoleBehaviour getRoleBehaviour = new GetRoleBehaviour(this.agent);
+		this.agent.addBehaviour(getRoleBehaviour);
 		
 		//map_behaviour.put(Roles.GENERIC, list_behav);
 

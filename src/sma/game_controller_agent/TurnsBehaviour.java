@@ -5,13 +5,13 @@ import java.util.List;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
-import generic.interfaces.IController;
 import jade.core.AID;
 import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import sma.generic.interfaces.IController;
 import sma.model.DFServices;
 
 

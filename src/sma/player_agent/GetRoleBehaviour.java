@@ -21,7 +21,7 @@ public class GetRoleBehaviour extends SimpleBehaviour{
 			ACLMessage message = this.myAgent.receive(mt);
 			if (message != null) 
 			{
-				System.out.println("THIS IS MY ROLE "+this.playerAgent.getMain_role());
+				System.err.println("THIS IS MY ROLE "+this.playerAgent.getMain_role());
 				
 				ACLMessage reply = new ACLMessage(ACLMessage.INFORM);
 				reply.setConversationId("GET_ROLE");

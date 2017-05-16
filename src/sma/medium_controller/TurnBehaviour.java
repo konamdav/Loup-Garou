@@ -2,6 +2,7 @@ package sma.medium_controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import org.codehaus.jackson.map.ObjectMapper;
 
@@ -30,23 +31,31 @@ public class TurnBehaviour extends SimpleBehaviour {
 	private final static String STATE_INIT = "INIT";
 	private final static String STATE_WAITING_START = "WAITING_START";
 	private final static String STATE_END_TURN = "END_TURN";
-	private final static String STATE_SEND_WAKE_ALL = "SEND_WAKE_ALL";
-	private final static String STATE_RECEIVE_WAKE_ALL = "RECEIVE_WAKE_ALL";
+
+	private final static String STATE_SEND_WAKE_ONE_MEDIUM = "SEND_WAKE_ONE_MEDIUM";
+	private final static String STATE_RECEIVE_WAKE_ONE_MEDIUM = "RECEIVE_WAKE_ONE_MEDIUM";
 
 	private final static String STATE_SEND_VOTE_REQUEST = "SEND_VOTE_REQUEST";
 	private final static String STATE_RECEIVE_VOTE_REQUEST = "RECEIVE_VOTE_REQUEST";
-	private final static String STATE_SEND_SLEEP_ALL = "SEND_SLEEP_ALL";
-	private final static String STATE_RECEIVE_SLEEP_ALL = "RECEIVE_SLEEP_ALL";
-	private static final String STATE_SEND_ADD_VICTIM = "ADD_VICTIM";
+
+	private final static String STATE_SEND_SLEEP_ONE_MEDIUM = "SEND_SLEEP_ONE_MEDIUM";
+	private final static String STATE_RECEIVE_SLEEP_ONE_MEDIUM = "RECEIVE_SLEEP_ONE_MEDIUM";
+	private static final String STATE_GET_ROLE_REQUEST = "GET_ROLE_REQUEST";
+	private static final String STATE_GET_ROLE_RECEIVE= "GET_ROLE_RECEIVE";
+
+	private AID currentMedium;
+	private AID playerChosen;
+	private List<AID> mediums;
 
 	private String step;
 	private String nextStep;
 
-	private int cptWerewolves;
+	private HashMap<String, List<String>> archiveMedium;
+	private int cptMediums;
 
 	private MediumControllerAgent ctrlAgent;
 	private int nbPlayers;
-	private AID aidVictim;
+
 
 	public TurnBehaviour(MediumControllerAgent MediumControllerAgent) {
 		super(MediumControllerAgent);
@@ -54,6 +63,8 @@ public class TurnBehaviour extends SimpleBehaviour {
 		this.ctrlAgent = MediumControllerAgent;
 		this.step = STATE_INIT;
 		this.nextStep ="";
+		
+		this.archiveMedium = new HashMap<String, List<String>>();
 	}
 
 	@Override
@@ -66,14 +77,15 @@ public class TurnBehaviour extends SimpleBehaviour {
 			System.out.println("*******************************************");
 			System.out.println("*******************************************");
 			System.out.println("*******************************************");
-			this.nbPlayers = 0;
-			this.aidVictim = null;
-			
-			cptWerewolves = 0;
+			this.nbPlayers = 0;			
+			this.cptMediums = 0;
+			this.currentMedium = null;
+			this.playerChosen = null;
+			this.mediums = new ArrayList<AID>();
 
 			this.nextStep = STATE_WAITING_START;
 		}
-		/** etat d'attente de dï¿½but de tour **/
+		/** etat d'attente de début de tour **/
 		else if(this.step.equals(STATE_WAITING_START))
 		{
 			MessageTemplate mt = MessageTemplate.and(
@@ -83,34 +95,41 @@ public class TurnBehaviour extends SimpleBehaviour {
 			ACLMessage message = this.myAgent.receive(mt);
 			if(message != null)
 			{
-				this.nextStep = STATE_SEND_WAKE_ALL;
+				String [] args = {Roles.MEDIUM, Status.SLEEP};
+				this.mediums = DFServices.findGamePlayerAgent(args, this.ctrlAgent, this.ctrlAgent.getGameid());				
+				this.nbPlayers = this.mediums.size();
+				
+				if(this.nbPlayers == 0)
+				{
+					//no more medium
+					this.nextStep = STATE_END_TURN;
+				}
+				else
+				{	
+					this.nextStep = STATE_SEND_WAKE_ONE_MEDIUM;
+				}
 			}
 			else
 			{
+				this.nextStep = STATE_WAITING_START;
 				block();
 			}
 
 		}
 		/** etat envoi des requï¿½tes de reveil pour tout les joueurs**/
-		else if(this.step.equals(STATE_SEND_WAKE_ALL))
+		else if(this.step.equals(STATE_SEND_WAKE_ONE_MEDIUM))
 		{
-			String[] args ={Status.SLEEP, Roles.WEREWOLF};
-			List<AID> agents = DFServices.findGamePlayerAgent( args , this.ctrlAgent, this.ctrlAgent.getGameid());
+			this.currentMedium = this.mediums.get(this.cptMediums);		
+			ACLMessage messageRequest = new ACLMessage(ACLMessage.REQUEST);
+			messageRequest.setSender(this.ctrlAgent.getAID());
+			messageRequest.addReceiver(this.currentMedium);
+			messageRequest.setConversationId("WAKE_PLAYER");
+			this.myAgent.send(messageRequest);
 
-			this.nbPlayers = agents.size();
-			for(AID aid : agents)
-			{			
-				ACLMessage messageRequest = new ACLMessage(ACLMessage.REQUEST);
-				messageRequest.setSender(this.ctrlAgent.getAID());
-				messageRequest.addReceiver(aid);
-				messageRequest.setConversationId("WAKE_PLAYER");
-				this.myAgent.send(messageRequest);
-			}
-
-			this.nextStep = STATE_RECEIVE_WAKE_ALL;
+			this.nextStep = STATE_RECEIVE_WAKE_ONE_MEDIUM;
 		}
 		/** etat reception des confirmations de reveil **/
-		else if(this.step.equals(STATE_RECEIVE_WAKE_ALL))
+		else if(this.step.equals(STATE_RECEIVE_WAKE_ONE_MEDIUM))
 		{
 			MessageTemplate mt = MessageTemplate.and(
 					MessageTemplate.MatchPerformative(ACLMessage.CONFIRM),
@@ -119,50 +138,51 @@ public class TurnBehaviour extends SimpleBehaviour {
 			ACLMessage message = this.myAgent.receive(mt);
 			if(message != null)
 			{
-				++this.cptWerewolves;
-				if(this.cptWerewolves == this.nbPlayers)
-				{
-					this.cptWerewolves = 0;
-					this.nextStep = STATE_SEND_VOTE_REQUEST;
-				}
-				else
-				{
-					this.nextStep = STATE_RECEIVE_WAKE_ALL;
-				}
+				this.nextStep = STATE_SEND_VOTE_REQUEST;
 			}
 			else
 			{
+				this.nextStep = STATE_RECEIVE_WAKE_ONE_MEDIUM;
 				block();
 			}
 		}
-		
+
 		/** etat envoi requete demande de vote **/
 		else if(this.step.equals(STATE_SEND_VOTE_REQUEST))
 		{
 			List<String> choices = new ArrayList<String>();
 			List<String> voters = new ArrayList<String>();
-			
-			String [] args = {Roles.WEREWOLF, Status.WAKE};
-			List<AID> werewolves = DFServices.findGamePlayerAgent(args, this.ctrlAgent, this.ctrlAgent.getGameid());
 
-			this.nbPlayers = werewolves.size();
 
-			String [] args2 = {Roles.CITIZEN, Status.SLEEP};
-			List<AID> citizens = DFServices.findGamePlayerAgent(args2, this.ctrlAgent, this.ctrlAgent.getGameid());
+			String [] args = {Roles.CITIZEN, Status.SLEEP};
+			List<AID> citizens = DFServices.findGamePlayerAgent(args, this.ctrlAgent, this.ctrlAgent.getGameid());
+			List<AID> selections = new ArrayList<AID>();
+		
+			//reduction (1 chance sur 3)
+			if((int)(Math.random()*3) != 1 && this.archiveMedium.containsKey(this.currentMedium.getName()))
+			{
+				List<String> list = this.archiveMedium.get(this.currentMedium.getName());
+				for(AID aid : citizens)
+				{
+					if(!list.contains(aid.getName()))
+					{
+						selections.add(aid);
+					}
+				}
+				citizens = selections;
+			}
 			
 			for(AID aid : citizens)
 			{
 				choices.add(aid.getName());
 			}
-			
-			for(AID aid : werewolves)
-			{
-				voters.add(aid.getName());
-			}
+
+
+			voters.add(this.currentMedium.getName());
 
 			VoteRequest request = new VoteRequest();
 			request.setVoteAgainst(true);
-			request.setRequest("WEREWOLF_VOTE");
+			request.setRequest("MEDIUM_VOTE");
 			request.setChoices(choices);
 			request.setVoters(voters);
 			request.setCanBeFake(false);
@@ -174,7 +194,6 @@ public class TurnBehaviour extends SimpleBehaviour {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-
 
 			ACLMessage messageRequest = new ACLMessage(ACLMessage.REQUEST);
 			messageRequest.setSender(this.ctrlAgent.getAID());
@@ -188,7 +207,6 @@ public class TurnBehaviour extends SimpleBehaviour {
 		/** etat reception du vote **/
 		else if(this.step.equals(STATE_RECEIVE_VOTE_REQUEST))
 		{
-
 			/*** reception demande de vote **/
 			MessageTemplate mt = MessageTemplate.and(
 					MessageTemplate.MatchPerformative(ACLMessage.INFORM),
@@ -197,54 +215,102 @@ public class TurnBehaviour extends SimpleBehaviour {
 			ACLMessage message = this.myAgent.receive(mt);
 			if(message != null)
 			{
-				String victim = message.getContent();
-				aidVictim = new AID(victim);
+				String chosen = message.getContent();
+				this.playerChosen = new AID(chosen);
 				
+				//maj list chosen
+				List<String> list = new ArrayList<String>();
+				if(this.archiveMedium.containsKey(this.currentMedium.getName()))
+				{
+					list = this.archiveMedium.get(this.currentMedium.getName());
+				}
+				
+				list.add(this.playerChosen.getName());
+				this.archiveMedium.put(this.currentMedium.getName(), list);
+				
+				this.nextStep = STATE_GET_ROLE_REQUEST;
 
-				this.nextStep = STATE_SEND_ADD_VICTIM;
 			}
 			else
 			{
+				this.nextStep = STATE_RECEIVE_VOTE_REQUEST;
 				block();
 			}
 		}
-		/** etat envoi des requï¿½tes de sommeil **/
-		else if(this.step.equals(STATE_SEND_ADD_VICTIM))
+		/** etat reception du vote **/
+		else if(this.step.equals(STATE_GET_ROLE_REQUEST))
 		{
+			System.err.println("REQUEST GET ROLE OF "+this.playerChosen.getName()+" BY "+this.currentMedium.getName());
+			
 			ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
-			message.setConversationId("ADD_VICTIM");
-			message.setContent(this.aidVictim.getName());
+			message.setConversationId("GET_ROLE");
 			message.setSender(this.ctrlAgent.getAID());
+			message.addReceiver(playerChosen);
 			
-			List<AID> agents = DFServices.findGameControllerAgent("CITIZEN", this.ctrlAgent, this.ctrlAgent.getGameid());
-			if(!agents.isEmpty())
-			{
-				message.addReceiver(agents.get(0));
-				this.ctrlAgent.send(message);
-			}
-			
-			this.nextStep = STATE_SEND_SLEEP_ALL;
-		}
-		/** etat envoi des requï¿½tes de sommeil **/
-		else if(this.step.equals(STATE_SEND_SLEEP_ALL))
+			this.ctrlAgent.send(message);
+
+			this.nextStep = STATE_GET_ROLE_RECEIVE;
+		}	
+		/** etat reception du vote **/
+		else if(this.step.equals(STATE_GET_ROLE_RECEIVE))
 		{
-			String [] args = {Roles.WEREWOLF, Status.WAKE};
-			List<AID> agents = DFServices.findGamePlayerAgent( args , this.ctrlAgent, this.ctrlAgent.getGameid());
-			this.nbPlayers = agents.size();
+			/*** reception demande de vote **/
+			MessageTemplate mt = MessageTemplate.and(
+					MessageTemplate.MatchPerformative(ACLMessage.INFORM),
+					MessageTemplate.MatchConversationId("GET_ROLE"));
 
-			for(AID aid : agents)
+			ACLMessage message = this.myAgent.receive(mt);
+			if(message != null)
 			{
-				ACLMessage messageRequest = new ACLMessage(ACLMessage.REQUEST);
-				messageRequest.setSender(this.ctrlAgent.getAID());
-				messageRequest.addReceiver(aid);
-				messageRequest.setConversationId("SLEEP_PLAYER");
-				this.myAgent.send(messageRequest);
-			}
+				String role = message.getContent();
+				if(role.equals(Roles.WEREWOLF))
+				{
+					System.err.println(this.playerChosen.getName()+" is a werewolf");
+					message = new ACLMessage(ACLMessage.INFORM);
+					message.setConversationId("IS_WEREWOLF");
+					message.setContent(this.playerChosen.getName());
 
-			this.nextStep = STATE_RECEIVE_SLEEP_ALL;
+					message.setSender(this.ctrlAgent.getAID());
+					message.addReceiver(this.currentMedium);
+
+					this.ctrlAgent.send(message);					
+				}
+				else
+				{
+					System.err.println(this.playerChosen.getName()+" is a citizen");
+					message = new ACLMessage(ACLMessage.INFORM);
+					message.setConversationId("IS_CITIZEN");
+					message.setContent(this.playerChosen.getName());
+
+					message.setSender(this.ctrlAgent.getAID());
+					message.addReceiver(this.currentMedium);
+
+					this.ctrlAgent.send(message);	
+				}
+
+				this.nextStep = STATE_SEND_SLEEP_ONE_MEDIUM;
+
+			}
+			else
+			{
+				this.nextStep = STATE_GET_ROLE_RECEIVE;
+				block();
+			}
+		}	
+
+		/** etat envoi des requï¿½tes de sommeil **/
+		else if(this.step.equals(STATE_SEND_SLEEP_ONE_MEDIUM))
+		{
+			ACLMessage messageRequest = new ACLMessage(ACLMessage.REQUEST);
+			messageRequest.setSender(this.ctrlAgent.getAID());
+			messageRequest.addReceiver(this.currentMedium);
+			messageRequest.setConversationId("SLEEP_PLAYER");
+			this.myAgent.send(messageRequest);
+
+			this.nextStep = STATE_RECEIVE_SLEEP_ONE_MEDIUM;
 		}
 		/** reception des confirmations de sommeil **/
-		else if(this.step.equals(STATE_RECEIVE_SLEEP_ALL))
+		else if(this.step.equals(STATE_RECEIVE_SLEEP_ONE_MEDIUM))
 		{
 			/*** reception demande de vote **/
 			MessageTemplate mt = MessageTemplate.and(
@@ -254,19 +320,19 @@ public class TurnBehaviour extends SimpleBehaviour {
 			ACLMessage message = this.myAgent.receive(mt);
 			if(message != null)
 			{
-				++this.cptWerewolves;
-				if(this.cptWerewolves == this.nbPlayers)
+				++this.cptMediums;
+				if(this.cptMediums< this.nbPlayers)
 				{
-					this.cptWerewolves = 0;
-					this.nextStep = STATE_END_TURN;
+					this.nextStep = STATE_SEND_WAKE_ONE_MEDIUM;
 				}
 				else
 				{
-					this.nextStep = STATE_RECEIVE_SLEEP_ALL;
+					this.nextStep = STATE_END_TURN;
 				}
 			}
 			else
 			{
+				this.nextStep = STATE_RECEIVE_SLEEP_ONE_MEDIUM;
 				block();
 			}
 		}
@@ -282,7 +348,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 				message.addReceiver(agents.get(0));
 				this.ctrlAgent.send(message);
 			}
-			
+
 			this.nextStep = STATE_INIT;
 		}
 

@@ -18,6 +18,7 @@ import jade.lang.acl.MessageTemplate;
 import sma.citizen_agent.CitizenInitBehaviour;
 import sma.generic_vote.AbstractVoteBehaviour;
 import sma.lover_behaviour.LoverInitBehaviour;
+import sma.medium_behaviour.MediumInitBehaviour;
 import sma.model.DFServices;
 import sma.model.Roles;
 import sma.model.ScoreResults;
@@ -62,6 +63,9 @@ public class FactoryInitBehaviour extends CyclicBehaviour{
 				break;
 			case Roles.MAYOR:
 				this.agent.addBehaviour(new MayorInitBehaviour(this.agent));
+				break;
+			case Roles.MEDIUM:
+				this.agent.addBehaviour(new MediumInitBehaviour(this.agent));
 				break;
 			default:
 				System.err.print("Erreur role not valid" );

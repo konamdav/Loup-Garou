@@ -72,6 +72,9 @@ public class MediumInitBehaviour extends OneShotBehaviour{
 		map_behaviour.put(Roles.MEDIUM, list_behav);
 		
 		
+		System.out.println("[ "+this.agent.getName()+" ] REGISTER "+Roles.MEDIUM);
+		DFServices.registerPlayerAgent(Roles.MEDIUM, this.myAgent, this.agent.getGameid());
+		
 		//enregirstrement NOT FOR CITIZEN CAUZ EVERY PLAYER IS ALREADY A CITIZEN
 		
 

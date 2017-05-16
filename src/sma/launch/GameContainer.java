@@ -5,6 +5,7 @@ import jade.core.ProfileImpl;
 import jade.core.Runtime;
 import jade.wrapper.AgentContainer;
 import jade.wrapper.AgentController;
+import sma.medium_controller.MediumControllerAgent;
 import sma.model.GameSettings;
 
 //Conteneur de jeu
@@ -50,6 +51,10 @@ public class GameContainer {
 			
 			ac = container.createNewAgent(
 					"WEREWOLF_CONTROLLER_AGENT_"+gameid, "sma.werewolf_controller_agent.WerewolfControllerAgent", objects);
+			ac.start();
+			
+			ac = container.createNewAgent(
+					"MEDIUM_CONTROLLER_AGENT_"+gameid, MediumControllerAgent.class.getName(), objects);
 			ac.start();
 			
 		}

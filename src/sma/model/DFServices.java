@@ -362,6 +362,16 @@ public class DFServices {
 			profile.getRoles().add("WEREWOLF");
 			profile.getRoles().remove("CITIZEN");
 		}
+		
+		//get profiles joueurs medium
+		List<AID> mediums = DFServices.findGamePlayerAgent(Roles.MEDIUM, agent, gameid);
+		
+		for(AID medium : mediums)
+		{
+			PlayerProfile profile = tmp.get(medium.getLocalName());
+			profile.getRoles().add(Roles.MEDIUM);
+			profile.getRoles().remove(Roles.CITIZEN);
+		}
 
 
 		//get profiles joueurs mayor

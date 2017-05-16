@@ -28,25 +28,25 @@ import sma.player_agent.PlayerAgent;
 public class MediumSuspicionListener extends Behaviour{
 	private PlayerAgent playerAgent;
 	private String name_behaviour;
-	
+
 	private final static String STATE_INIT = "INIT";
 	private final static String STATE_RECEIVE_INFORM = "RECEIVE_INFORM";
 	private final static String STATE_UPDATE = "UPDATE";
-	
+
 	private String step;
 	private String nextStep;
-	
+
 	private SuspicionScore suspicionScore;
 	private String player;
 	private String role;
-	
+
 	public MediumSuspicionListener(PlayerAgent playerAgent) {
 		super();
 		this.playerAgent = playerAgent;
 		this.name_behaviour = "MEDIUM_SUSPICION_LISTENER";
-		
+
 		this.suspicionScore = this.playerAgent.getSuspicionScore();
-		
+
 		this.step = STATE_INIT;
 		this.nextStep ="";
 	}
@@ -72,6 +72,8 @@ public class MediumSuspicionListener extends Behaviour{
 				this.player  = message.getContent();
 				this.role = Roles.WEREWOLF;
 				this.nextStep = STATE_UPDATE;
+
+				System.err.println("LISTNER RECEIV");
 			}
 			else
 			{
@@ -85,26 +87,34 @@ public class MediumSuspicionListener extends Behaviour{
 					this.player  = message.getContent();
 					this.role = Roles.CITIZEN;
 					this.nextStep = STATE_UPDATE;
+
+					System.err.println("LISTNER RECEIV");
 				}
-				
-				this.nextStep = STATE_RECEIVE_INFORM;
-				block();
+				else
+				{
+
+					this.nextStep = STATE_RECEIVE_INFORM;
+					block();
+					
+				}
 			}		
 		}
 		else if(step.equals(STATE_UPDATE))
 		{
 			if(this.role.equals(Roles.WEREWOLF))
 			{
+				System.err.println("[ "+this.playerAgent.getName()+" ] is werewolf");
 				this.suspicionScore.addScore(this.player, ScoreFactor.SCORE_MAX);
 			}
 			else
 			{
+				System.err.println("[ "+this.playerAgent.getName()+" ] is not a werewolf");
 				this.suspicionScore.addScore(this.player, ScoreFactor.SCORE_MIN);
 			}
 			this.nextStep =  STATE_INIT;
 		}
-		
-		
+
+
 		if(!this.nextStep.isEmpty())
 		{
 			this.step = this.nextStep;

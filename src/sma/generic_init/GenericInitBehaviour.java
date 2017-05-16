@@ -64,6 +64,7 @@ public class GenericInitBehaviour extends OneShotBehaviour{
 		SleepBehaviour genericSleepBehaviour = new SleepBehaviour(this.agent);
 		this.agent.addBehaviour(genericSleepBehaviour);
 		
+		System.err.println("...............................GET ROLE...........................");
 		GetRoleBehaviour getRoleBehaviour = new GetRoleBehaviour(this.agent);
 		this.agent.addBehaviour(getRoleBehaviour);
 		

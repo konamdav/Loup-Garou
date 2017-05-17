@@ -8,6 +8,7 @@ import java.util.List;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import jade.core.AID;
+import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.core.behaviours.SimpleBehaviour;
@@ -30,12 +31,13 @@ import sma.vote_behaviour.WerewolfSuspicionListener;
 
 public class WerewolfInitBehaviour extends OneShotBehaviour{
 	private PlayerAgent agent;
+	private AID receiver;
 
-	public WerewolfInitBehaviour(PlayerAgent agent) {
+	public WerewolfInitBehaviour(PlayerAgent agent, AID receiver) {
 		super();
 		this.agent = agent;
+		this.receiver = receiver;
 	}
-	//TODO TODO Add behaviour for WereWolf
 
 	@Override
 	public void action() {
@@ -43,10 +45,6 @@ public class WerewolfInitBehaviour extends OneShotBehaviour{
 		ArrayList<Behaviour> list_behav = new ArrayList<Behaviour>();
 		HashMap<String, ArrayList<Behaviour>> map_behaviour = this.agent.getMap_role_behaviours();
 		//TODO CEDRIC vote behaviour
-		//add WerewolfScoreBehaviour
-		//add GenericSuspicionBehaviour
-		//add CitizenScoreBehaviour
-		//add WerewolfSuspicionListener
 		// in your map + addBehaviour
 		
 		WerewolfScoreBehaviour werewolfScoreBehaviour = new WerewolfScoreBehaviour(this.agent);
@@ -54,15 +52,14 @@ public class WerewolfInitBehaviour extends OneShotBehaviour{
 		WerewolfSuspicionBehaviour werewolfSuspicionBehaviour = new WerewolfSuspicionBehaviour(this.agent);
 		list_behav.add(werewolfSuspicionBehaviour);
 
-
 		//Not for werewolf, Do in a common one TODO Look if has to keep it 
 		WerewolfSuspicionListener werewolfSuspicionListener = new WerewolfSuspicionListener(this.agent);
 		list_behav.add(werewolfSuspicionListener);
 		//werewolfSuspicionListener //LISTENER AIT MESSAGE for suscipions
-		
+
 		WerewolfSimpleSuspicionBehaviour werewolfSimpleSuspicionBehaviour = new WerewolfSimpleSuspicionBehaviour(this.agent);
 		this.agent.addBehaviour(werewolfSimpleSuspicionBehaviour);
-		
+
 		//ScoreBehvaiour is for Vote
 		this.agent.addBehaviour(werewolfScoreBehaviour);
 		list_behav.add(werewolfScoreBehaviour);
@@ -72,7 +69,6 @@ public class WerewolfInitBehaviour extends OneShotBehaviour{
 
 		this.agent.addBehaviour(werewolfSuspicionListener);
 		list_behav.add(werewolfSuspicionListener);
-
 		
 		//TODO CEDRIC 
 		//routing for abstractVote behaviour
@@ -82,14 +78,21 @@ public class WerewolfInitBehaviour extends OneShotBehaviour{
 
 		//citizenScoreBehaviour // VOTE CONTRE CEUX DEJA VOTER //TODO DAVID MODIFIER NON TO GENERIC
 
-		
 		//Handle attributes
 		map_behaviour.put(Roles.WEREWOLF, list_behav);
-		
 		
 		//enregirstrement
 		System.out.println("[ "+this.agent.getName()+" ] REGISTER "+Roles.WEREWOLF);
 		DFServices.registerPlayerAgent(Roles.WEREWOLF, this.myAgent, this.agent.getGameid());
+		
+		
+		//Envoie message fin d'initialisation
+		ACLMessage messageRequest = new ACLMessage(ACLMessage.AGREE);
+		messageRequest.setSender(this.agent.getAID());
+		messageRequest.setConversationId("INIT_ROLE");
+		messageRequest.addReceiver(this.receiver);
+		this.myAgent.send(messageRequest);	
+		
 
 	}
 

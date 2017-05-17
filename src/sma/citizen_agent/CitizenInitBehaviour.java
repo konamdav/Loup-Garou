@@ -29,10 +29,12 @@ import sma.vote_behaviour.WerewolfSuspicionListener;
 
 public class CitizenInitBehaviour extends OneShotBehaviour{
 	private PlayerAgent agent;
+	private AID receiver;
 
-	public CitizenInitBehaviour(PlayerAgent agent) {
+	public CitizenInitBehaviour(PlayerAgent agent, AID receiver) {
 		super();
 		this.agent = agent;
+		this.receiver = receiver;
 	}
 
 	@Override
@@ -71,26 +73,15 @@ public class CitizenInitBehaviour extends OneShotBehaviour{
 		
 		//Handle attributes
 		map_behaviour.put(Roles.CITIZEN, list_behav);
-		
-		
+
 		//enregirstrement NOT FOR CITIZEN CAUZ EVERY PLAYER IS ALREADY A CITIZEN
 		
-
-		//TODO CEDRIC Renvoyer a la fin au game controller un msg INFORM de conversation id ATTRIBUTION_ROLE
-		// pour pr�venir de la fin de l'attribution du role
-		//Done in the factoryBehaviour
-		/*ACLMessage messageRequest = new ACLMessage(ACLMessage.INFORM);
+		//Envoie message fin d'initialisation
+		ACLMessage messageRequest = new ACLMessage(ACLMessage.AGREE);
 		messageRequest.setSender(this.agent.getAID());
-		
-		List<AID> agents = DFServices.findGameControllerAgent("GAME", this.myAgent, this.agent.getGameid());
-		if(!agents.isEmpty())
-		{
-			messageRequest.addReceiver(agents.get(0));
-			messageRequest.setConversationId("ATTRIBUTION_ROLE");
-			this.myAgent.send(messageRequest);	
-		}*/
-		
-
+		messageRequest.setConversationId("INIT_ROLE");
+		messageRequest.addReceiver(this.receiver);
+		this.myAgent.send(messageRequest);	
 
 	}
 

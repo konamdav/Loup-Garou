@@ -110,6 +110,9 @@ public class SynchronousVoteBehaviour extends Behaviour {
 
 				ObjectMapper mapper = new ObjectMapper();
 				try {
+					
+					System.err.println("[RQST INITIAL] "+message.getContent());
+					
 					this.request = mapper.readValue(message.getContent(), VoteRequest.class);
 					this.request.setLocalVoteResults(this.results);
 				} catch (IOException e) {
@@ -190,7 +193,8 @@ public class SynchronousVoteBehaviour extends Behaviour {
 			String json ="";
 
 			try {		
-				json = mapper.writeValueAsString(this.request);			
+				json = mapper.writeValueAsString(this.request);	
+				System.err.println("[RQST] "+json);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -323,7 +327,7 @@ public class SynchronousVoteBehaviour extends Behaviour {
 				SuspicionScore suspicionScore = new SuspicionScore();
 				try {
 					suspicionScore = mapper.readValue(message.getContent(), SuspicionScore.class);
-					//System.err.println("JSON PARTIAL SUSPICION \n"+message.getContent());
+					System.err.println("ADD PARTIAL SUSPICION \n"+message.getContent());
 				} 
 				catch (IOException e) 
 				{
@@ -337,6 +341,7 @@ public class SynchronousVoteBehaviour extends Behaviour {
 				{
 					this.nbVoters = 0;
 					System.err.println("SUSPICION COLLECTIVE \n "+this.request.getCollectiveSuspicionScore().getScore());
+					
 					//sort random
 					Collections.shuffle(this.request.getVoters());
 					this.nextStep = STATE_SEND_REQUEST;

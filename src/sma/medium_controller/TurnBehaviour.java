@@ -208,7 +208,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 			else
 			{
 				//fin de tour car il n'a persone à choisir
-				this.nextStep = STATE_END_TURN;
+				this.nextStep = STATE_SEND_SLEEP_ONE_MEDIUM;
 				
 			}
 		}

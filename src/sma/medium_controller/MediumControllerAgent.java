@@ -20,7 +20,6 @@ public class MediumControllerAgent extends Agent implements IController {
 	
 	public MediumControllerAgent() {
 		super();	
-
 	}
 	
 

@@ -14,8 +14,16 @@ public class uiAgent extends Agent  {
 
 	public String test = "test";
 	
+	
+	
 	@Override
 	protected void setup() {
+	
+	   Object[] args = getArguments();
+	   App a = (App)args[0];
+	   a.setAgent(this);
+	   System.out.println("ok");
+		/*
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.title = "Werewolf";
 		config.resizable = false; //on ne veut pas que l'utilisateur la redimensionne
@@ -24,7 +32,7 @@ public class uiAgent extends Agent  {
 		config.height =600; //hauteur de la fenêtre   
 	    config.vSyncEnabled = true;
 		new LwjglApplication(new App(config, this), config);
-		
+		*/
 		addBehaviour(new GetInformation());
 	}
 
@@ -47,6 +55,7 @@ public class uiAgent extends Agent  {
 		}
 		
 	}
+	
 	
 
 }

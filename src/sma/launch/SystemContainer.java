@@ -1,5 +1,6 @@
 package sma.launch;
 
+import ui.view.*;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
 import jade.core.Runtime;
@@ -70,6 +71,33 @@ public class SystemContainer {
 
 		}).start();
 	}
+	
+	public SystemContainer(App a)
+	{
+		new Thread(new Runnable(){
+			@Override
+			public void run() {
+				Runtime rt = Runtime.instance();
+				Profile p = null;
+				try{
+					p = new ProfileImpl(MAIN_PROPERTIES_FILE);
+
+					mc = rt.createMainContainer(p);	
+					AgentController ac = mc.createNewAgent(
+							"SYSTEM_CONTROLLER_AGENT", "sma.system_controller_agent.SystemControllerAgent", null);
+					ac.start();
+					
+					ac = mc.createNewAgent("UI_AGENT", "ui.agent.uiAgent", new Object[]{a});
+					ac.start();
+				}
+				catch(Exception e) {
+					e.printStackTrace();
+				}
+			}
+
+		}).start();
+	}
+	
 
 	public void stop()
 	{

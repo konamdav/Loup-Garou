@@ -9,6 +9,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
 import sma.launch.GameContainer;
+import sma.model.DFServices;
 import sma.model.GameSettings;
 
 /***
@@ -27,12 +28,15 @@ public class SystemControllerAgent extends Agent{
 
 	@Override
 	protected void setup() {
+		
+		DFServices.registerSystemControllerAgent(this);
 
 		this.addBehaviour(new CreateGameBehaviour(this));
 		this.addBehaviour(new GetGamesBehaviour(this));
 
 		//test init 
 		//send msg
+		
 		ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
 		message.setConversationId("CREATE_GAME_REQUEST");
 		message.setSender(this.getAID());
@@ -48,6 +52,7 @@ public class SystemControllerAgent extends Agent{
 		}
 		message.setContent(json);
 		this.send(message);
+		
 		//this.send(message);
 		//this.send(message);
 

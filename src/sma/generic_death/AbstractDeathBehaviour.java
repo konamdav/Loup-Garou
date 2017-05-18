@@ -23,8 +23,6 @@ import sma.player_agent.PlayerAgent;
 public class AbstractDeathBehaviour extends SimpleBehaviour{
 	private PlayerAgent agent;
 
-	//TODO Do deathBehaviour
-
 	public AbstractDeathBehaviour(PlayerAgent agent) {
 		super();
 		this.agent = agent;
@@ -48,7 +46,6 @@ public class AbstractDeathBehaviour extends SimpleBehaviour{
 			this.agent.setStatutandRegister("DEAD");
 			DFServices.deregisterPlayerAgent("VICTIM", this.myAgent, this.agent.getGameid()); //retire son statut de victime (car il est mort)
 			
-			
 			ACLMessage reply = new ACLMessage(ACLMessage.CONFIRM);
 			reply.setConversationId("DEAD_PLAYER");
 			reply.setSender(this.myAgent.getAID());
@@ -70,6 +67,7 @@ public class AbstractDeathBehaviour extends SimpleBehaviour{
 	public void delete_behaviour() {
 
 		//Copy this technique from AbstractVoteBehvaiour
+
 		//TODO Look if better to pass to oneshotBehaviour
 		for(String s : this.agent.getDeathBehaviours())
 		{
@@ -81,7 +79,6 @@ public class AbstractDeathBehaviour extends SimpleBehaviour{
 			messageRequest.setConversationId("DEATH_"+s+"_REQUEST");
 
 			this.myAgent.send(messageRequest);
-
 		}
 	}
 

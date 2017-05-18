@@ -31,67 +31,116 @@ import sma.werewolf_agent.WerewolfInitBehaviour;
 public class FactoryInitBehaviour extends CyclicBehaviour{
 	private PlayerAgent agent;
 
-	//TODO Do deathBehaviour
+	private String step;
+	private String nextStep;
+
+	private AID sender;
+	
+	private final static String STATE_WAIT_ROLE ="STATE_WAIT_ROLE";
+	private final static String STATE_ANSWER_INIT_ROLE ="STATE_ANSWER_INIT_ROLE";
+	
 
 	public FactoryInitBehaviour(PlayerAgent agent) {
 		super();
 		this.agent = agent;
-
+		this.nextStep = "";
+		this.step = STATE_WAIT_ROLE;
+		this.sender = null;
 	}
+
+	
+	//TODO MAchine a état, 
+	//1er => Attente init_role
+	//2eme => Attente accord 
 
 	@Override
 	public void action() {
-		MessageTemplate mt = MessageTemplate.and(
-				MessageTemplate.MatchPerformative(ACLMessage.REQUEST),
-				MessageTemplate.MatchConversationId("INIT_ROLE"));
-
-		ACLMessage message = this.myAgent.receive(mt);
-		if (message != null) 
+		
+		if(step.equals(STATE_WAIT_ROLE))
 		{
-			String role_receive = message.getContent();
-			//System.out.println("FACTORY INIT BEHAVIOUR "+role_receive+ " TO THIS PLAYER "+this.agent.getName());				
-			//TODO TODO TODO IMPORTANT CHANGE COMPILANCE TRUC VERSTION TO 1.7 FOR THIS SWITCH STRING
-			switch (role_receive) {
-			case Roles.CITIZEN:
-				this.agent.addBehaviour(new CitizenInitBehaviour(this.agent));
-				break;
-			case Roles.WEREWOLF:
-				this.agent.addBehaviour(new WerewolfInitBehaviour(this.agent));
-				break;
-			case Roles.LOVER:
-				this.agent.addBehaviour(new LoverInitBehaviour(this.agent));
-				break;
-			case Roles.MAYOR:
-				this.agent.addBehaviour(new MayorInitBehaviour(this.agent));
-				break;
-			case Roles.MEDIUM:
-				this.agent.addBehaviour(new MediumInitBehaviour(this.agent));
-				break;
-			default:
-				System.err.print("Erreur role not valid" );
-				//GET OUT, not send message
-				break;
-			}
-					//Envoie le rôle au controlleur.
-			
-			//TODO LOOk if put this in the genericinitbehviour
-			ACLMessage messageRequest = new ACLMessage(ACLMessage.INFORM);
-			messageRequest.setSender(this.agent.getAID());
-			
-			List<AID> agents = DFServices.findGameControllerAgent("GAME", this.myAgent, this.agent.getGameid());
-			if(!agents.isEmpty())
+			//Message get from NewMainRoleBehaviour game_control_Agent
+
+			MessageTemplate mt = MessageTemplate.and(
+					MessageTemplate.MatchPerformative(ACLMessage.REQUEST),
+					MessageTemplate.MatchConversationId("INIT_ROLE"));
+
+			ACLMessage message = this.myAgent.receive(mt);
+			if (message != null) 
 			{
-				messageRequest.addReceiver(agents.get(0));
-				messageRequest.setConversationId("ATTRIBUTION_ROLE");
+				String role_receive = message.getContent();
+				this.sender = message.getSender();
+
+				System.out.println("FACTORY INIT BEHAVIOUR "+role_receive+ " TO THIS PLAYER "+this.agent.getName());
+				
+				switch (role_receive) {
+				case Roles.CITIZEN:
+					this.agent.addBehaviour(new CitizenInitBehaviour(this.agent, this.agent.getAID()));
+					break;
+				case Roles.WEREWOLF:
+					this.agent.addBehaviour(new WerewolfInitBehaviour(this.agent, this.agent.getAID()));
+					break;
+				case Roles.LOVER:
+					this.agent.addBehaviour(new LoverInitBehaviour(this.agent, this.agent.getAID()));
+					break;
+				case Roles.MAYOR:
+					this.agent.addBehaviour(new MayorInitBehaviour(this.agent, this.agent.getAID()));
+					break;
+				case Roles.MEDIUM:
+					this.agent.addBehaviour(new MediumInitBehaviour(this.agent, this.agent.getAID()));
+					break;
+				default:
+					System.err.print("Erreur role not valid" );
+						//throw new Exception();
+					//GET OUT, not send message
+					break;
+				}
+				this.nextStep = STATE_ANSWER_INIT_ROLE;
+			}
+			else
+			{
+				this.nextStep = "";
+				block();
+			}
+		}
+		else if(step.equals(STATE_ANSWER_INIT_ROLE))
+		{
+			MessageTemplate mt = MessageTemplate.and(
+					MessageTemplate.MatchPerformative(ACLMessage.AGREE),
+					MessageTemplate.MatchConversationId("INIT_ROLE"));
+			
+			//TODO DO fail answer
+
+			System.out.println("Reply to controler init done ");
+
+			ACLMessage message = this.myAgent.receive(mt);
+			if(message != null)
+			{
+				//TODO Machine à état too 
+				
+				ACLMessage messageRequest = new ACLMessage(ACLMessage.INFORM);
+				messageRequest.setSender(this.agent.getAID());
+				messageRequest.setConversationId("INIT_ROLE");
+				messageRequest.addReceiver(this.sender);
 				this.myAgent.send(messageRequest);	
+				
+				this.nextStep = STATE_WAIT_ROLE; //Return to begin 
+			}
+			else
+			{
+				this.nextStep = "";
+				block();
 			}
 
 		}
-		else
-		{
-			block();
-		}
+	if(!this.nextStep.isEmpty())
+	{
+		this.step = this.nextStep;
+		this.nextStep ="";
+	}
+
 	}
 
 
 }
+
+//TODO Do deathBehaviour

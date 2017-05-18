@@ -49,12 +49,16 @@ public class GenericInitBehaviour extends OneShotBehaviour{
 		System.out.println("GenericInitBehaviour THIS PLAYER "+this.agent.getName());
 		ArrayList<Behaviour> list_behav = new ArrayList<Behaviour>();
 		HashMap<String, ArrayList<Behaviour>> map_behaviour = this.agent.getMap_role_behaviours();
+
+		if(!this.agent.isHuman())
+		{
+			this.agent.addBehaviour(new AbstractVoteBehaviour(this.agent));
+		}
 		
 		CitizenScoreBehaviour citizenScoreBehaviour = new CitizenScoreBehaviour(this.agent);
 		list_behav.add(citizenScoreBehaviour);
 		this.agent.addBehaviour(citizenScoreBehaviour);
 		this.agent.getVotingBehaviours().add(citizenScoreBehaviour.getName_behaviour()); 
-		
 		
 		this.agent.addBehaviour(new AbstractDeathBehaviour(this.agent));
 		

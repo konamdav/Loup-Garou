@@ -30,20 +30,22 @@ import sma.vote_behaviour.WerewolfSuspicionListener;
 
 public class MediumInitBehaviour extends OneShotBehaviour{
 	private PlayerAgent agent;
+	private AID receiver;
 
-	public MediumInitBehaviour(PlayerAgent agent) {
+	public MediumInitBehaviour(PlayerAgent agent, AID receiver) {
 		super();
 		this.agent = agent;
+		this.receiver = receiver;
 	}
+
 
 	@Override
 	public void action() {
 		ArrayList<Behaviour> list_behav = new ArrayList<Behaviour>();
 		HashMap<String, ArrayList<Behaviour>> map_behaviour = this.agent.getMap_role_behaviours();
-		
+
 		GenericSuspicionBehaviour genericSuspicionBehaviour = new GenericSuspicionBehaviour(this.agent);
 		list_behav.add(genericSuspicionBehaviour);
-
 
 		CitizenSuspicionListener citizenSuspicionListener = new CitizenSuspicionListener(this.agent);
 		list_behav.add(citizenSuspicionListener);
@@ -54,46 +56,30 @@ public class MediumInitBehaviour extends OneShotBehaviour{
 
 		MediumSuspicionListener mediumSuspicionListener = new MediumSuspicionListener(this.agent);
 		list_behav.add(mediumSuspicionListener);
-		
-		
+
 		this.agent.addBehaviour(mediumSuspicionListener);
 		this.agent.addBehaviour(citizenSimpleSuspicionBehaviour);
 		this.agent.addBehaviour(genericSuspicionBehaviour);
 		this.agent.addBehaviour(citizenSuspicionListener);
 		this.agent.getVotingBehaviours().add(genericSuspicionBehaviour.getName_behaviour());
-		
-		
-		
-		
+
 		//No death behaviour
 		//this.agent.getDeathBehaviours().add(genericSuspicionBehaviour.getName_behaviour());
 		
 		//Handle attributes
 		map_behaviour.put(Roles.MEDIUM, list_behav);
+
 		
-		
+		//enregirstrement
 		System.out.println("[ "+this.agent.getName()+" ] REGISTER "+Roles.MEDIUM);
 		DFServices.registerPlayerAgent(Roles.MEDIUM, this.myAgent, this.agent.getGameid());
 		
-		//enregirstrement NOT FOR CITIZEN CAUZ EVERY PLAYER IS ALREADY A CITIZEN
-		
-
-		//TODO CEDRIC Renvoyer a la fin au game controller un msg INFORM de conversation id ATTRIBUTION_ROLE
-		// pour pr�venir de la fin de l'attribution du role
-		//Done in the factoryBehaviour
-		/*ACLMessage messageRequest = new ACLMessage(ACLMessage.INFORM);
+		//Envoie message fin d'initialisation		
+		ACLMessage messageRequest = new ACLMessage(ACLMessage.AGREE);
 		messageRequest.setSender(this.agent.getAID());
-		
-		List<AID> agents = DFServices.findGameControllerAgent("GAME", this.myAgent, this.agent.getGameid());
-		if(!agents.isEmpty())
-		{
-			messageRequest.addReceiver(agents.get(0));
-			messageRequest.setConversationId("ATTRIBUTION_ROLE");
-			this.myAgent.send(messageRequest);	
-		}*/
-		
-
-
+		messageRequest.setConversationId("INIT_ROLE");
+		messageRequest.addReceiver(this.receiver);
+		this.myAgent.send(messageRequest);
 	}
 
 }

@@ -8,11 +8,12 @@ import org.codehaus.jackson.map.ObjectMapper;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import sma.generic_death.IDeathBehaviour;
 import sma.generic_vote.IVotingAgent;
 import sma.model.ScoreResults;
 import sma.model.VoteRequest;
 
-public class LoverDeathBehaviour extends SimpleBehaviour{
+public class LoverDeathBehaviour extends SimpleBehaviour implements IDeathBehaviour{
 	
 	private String name_behaviour;
 
@@ -40,7 +41,6 @@ public class LoverDeathBehaviour extends SimpleBehaviour{
 		if (message != null) 
 		{
 			System.out.print("Message received " + this.getBehaviourName() );
-			
 		}
 		else {
 			block();

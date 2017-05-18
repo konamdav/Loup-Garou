@@ -36,8 +36,9 @@ public class ViewNewGameMenu implements Screen {
     
     
 	ViewNewGameMenu(App a){
-		//Gdx.graphics.setDisplayMode(800, 500, false);
 		app = a;
+    	//app.newSystemContainer();
+		//Gdx.graphics.setDisplayMode(800, 500, false);
 		stage = new Stage();
         Gdx.input.setInputProcessor(stage);
         skin = new Skin( Gdx.files.internal( "resources/visui/uiskin.json" ));
@@ -109,12 +110,11 @@ public class ViewNewGameMenu implements Screen {
         creer_button.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-        
+            	
             	ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
         		message.setConversationId("CREATE_GAME_REQUEST");
         		message.setSender(app.agent.getAID());
         		message.addReceiver(DFServices.getSystemController(app.agent));
-
         		GameSettings gameSettings = 
         				new GameSettings(
         						Integer.parseInt(werewolf_textField.getText()),
@@ -132,7 +132,9 @@ public class ViewNewGameMenu implements Screen {
         		}
         		message.setContent(json);
         		app.agent.send(message);
+        		
             	
+      		
         		app.setScreen(new ViewMainMenu(app));
             }
         });

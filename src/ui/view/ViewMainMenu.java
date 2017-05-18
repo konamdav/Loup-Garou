@@ -79,9 +79,7 @@ public class ViewMainMenu implements Screen {
         creer_button.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-            	
-            	
-            	
+            	         	
         		app.setScreen(new ViewNewGameMenu(app));
             }
         });

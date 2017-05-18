@@ -19,10 +19,10 @@ public class App extends Game {
 	public UIContainer uiContainer = null; 
 	
 	public uiAgent agent = null ;
-	
+
 
 	public SystemContainer newSystemContainer() {
-		systemContainer = new SystemContainer();
+		systemContainer = new SystemContainer(this);
 		return systemContainer;
 	}
 	
@@ -55,9 +55,13 @@ public class App extends Game {
 	}
 
 	public void create() {
+		//agent = new uiAgent();
+		newSystemContainer();
 		this.setScreen(new ViewMainMenu(this));
 	}
 	
-	
+	public void setAgent(uiAgent a){
+		agent = a; 
+	}
 	
 }

@@ -20,8 +20,8 @@ public class Log {
 	private static BufferedWriter bw;
 
 	/* méthode d'initialisation de la classe statique permettant de définir un fichier par défaut ou de le créer s'il n'existe pas */
-	public static void setup(String logFilePath) {
-
+	public static void setup(String logFilePath) 
+	{
 		try {
 
 			priority = Priority.INFO;
@@ -35,8 +35,8 @@ public class Log {
 	}
 	/* écrit le message passé en paramètre précédé de son niveau de priorité et de la date dans le fichier de log.
 	 * le niveau de priorité est celui actuellement défini dans la classe */
-	public static void writeLog(String log) throws LogException{
-
+	public static void writeLog(String log) throws LogException
+	{
 		String time = "" + LocalDateTime.now().getHour() + ":" + LocalDateTime.now().getMinute() + ":"
 				+ LocalDateTime.now().getSecond();
 		 FileWriter fileWritter;

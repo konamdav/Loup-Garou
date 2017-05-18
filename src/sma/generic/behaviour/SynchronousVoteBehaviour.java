@@ -15,6 +15,7 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import sma.citizen_controller_agent.CitizenControllerAgent;
+import sma.data.Data;
 import sma.generic.interfaces.IController;
 import sma.model.DFServices;
 import sma.model.SuspicionScore;
@@ -36,13 +37,15 @@ public class SynchronousVoteBehaviour extends Behaviour {
 	private List<String> finalResults;
 	//private List<String> choices;
 
+	private int nbAsynchronousPlayers;
+	
 	private AID agentSender;
 
 	private final static String STATE_INIT = "INIT";
-	
+
 	private final static String STATE_RECEIVE_REQUEST = "RECEIVE_REQUEST";
 	private final static String STATE_SEND_REQUEST = "SEND_REQUEST";
-	
+
 	private final static String STATE_GET_SIMPLE_SUSPICION = "GET_SIMPLE_SUSPICION";
 	private final static String STATE_ADD_SIMPLE_SUSPICION = "ADD_SIMPLE_SUSPICION";
 
@@ -77,12 +80,12 @@ public class SynchronousVoteBehaviour extends Behaviour {
 	@Override
 	public void action() {
 
-		System.out.println("STATE = "+this.step);
+		System.out.println("STATE SV = "+this.step);
 
 		if(this.step.equals(STATE_INIT))
 		{
 			this.nbVoters = 0;
-
+			this.nbAsynchronousPlayers = 0;
 			this.globalResults = new VoteResults();
 			this.agentSender = null;
 			this.request = null;
@@ -169,6 +172,18 @@ public class SynchronousVoteBehaviour extends Behaviour {
 			ACLMessage messageRequest = new ACLMessage(ACLMessage.REQUEST);
 			messageRequest.setSender(this.myAgent.getAID());
 			messageRequest.setConversationId("VOTE_REQUEST");
+
+			int reste = this.request.getAIDVoters().size()-this.nbVoters;
+			if(reste >= Data.MAX_SYNCHRONOUS_PLAYERS)
+			{
+				/** hybrid synchronous mode **/
+				this.nbAsynchronousPlayers = (int) (Math.random()*Math.min(Data.MAX_SYNCHRONOUS_PLAYERS, (reste/2)-1))+1;
+				System.err.println("HYDBRID ASYNCRHONOUS ENABLED BECAUSE TOO MANY PARTICIPANTS");
+			}
+			else
+			{
+				this.nbAsynchronousPlayers = 1;
+			}
 			
 			ObjectMapper mapper = new ObjectMapper();
 
@@ -181,7 +196,11 @@ public class SynchronousVoteBehaviour extends Behaviour {
 			}
 
 			messageRequest.setContent(json);
-			messageRequest.addReceiver(this.request.getAIDVoters().get(this.nbVoters));	
+			for(int i = 0; i<this.nbAsynchronousPlayers; ++i)
+			{
+				messageRequest.addReceiver(this.request.getAIDVoters().get(this.nbVoters+i));	
+			}
+		
 			this.myAgent.send(messageRequest);
 
 			this.nextStep = STATE_RECEIVE_INFORM;
@@ -191,11 +210,12 @@ public class SynchronousVoteBehaviour extends Behaviour {
 			MessageTemplate mt = MessageTemplate.and(
 					MessageTemplate.MatchPerformative(ACLMessage.INFORM),
 					MessageTemplate.MatchConversationId("VOTE_INFORM"));
-			
+
 			ACLMessage message = this.myAgent.receive(mt);
 			if(message!=null)
 			{
 				++this.nbVoters;
+				--this.nbAsynchronousPlayers;
 
 				ObjectMapper mapper = new ObjectMapper();
 				VoteResults res = new VoteResults();
@@ -218,8 +238,8 @@ public class SynchronousVoteBehaviour extends Behaviour {
 					this.results.add(res);
 					this.globalResults.add(res);
 				}
-				
-				
+
+
 				//envoi du resultat partiel 
 				String json = "";
 				mapper = new ObjectMapper();
@@ -228,7 +248,7 @@ public class SynchronousVoteBehaviour extends Behaviour {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				
+
 				ACLMessage msg = new ACLMessage(ACLMessage.AGREE);
 				msg.setContent(json);
 				msg.setSender(this.myAgent.getAID());
@@ -240,14 +260,18 @@ public class SynchronousVoteBehaviour extends Behaviour {
 					msg.addReceiver(agents.get(0));
 					this.myAgent.send(msg);
 				}
-				
-				System.out.println(""+this.nbVoters+"/"+this.request.getAIDVoters().size());
+
+				System.err.println("\nSV : "+this.nbVoters+"/"+this.request.getAIDVoters().size());
 
 				if(this.nbVoters>= this.request.getAIDVoters().size())
 				{
 					this.nextStep = STATE_RESULTS;
 				}
-				else
+				else if(this.nbAsynchronousPlayers > 0)
+				{
+					this.nextStep = STATE_RECEIVE_INFORM;
+				}
+				else 
 				{
 					this.nextStep = STATE_SEND_REQUEST;
 				}
@@ -257,14 +281,14 @@ public class SynchronousVoteBehaviour extends Behaviour {
 				block();
 			}
 		}
-		
-		
+
+
 		else if(this.step.equals(STATE_GET_SIMPLE_SUSPICION))
 		{
 			ACLMessage messageRequest = new ACLMessage(ACLMessage.REQUEST);
 			messageRequest.setSender(this.myAgent.getAID());
 			messageRequest.setConversationId("GET_SIMPLE_SUSPICION");
-			
+
 			ObjectMapper mapper = new ObjectMapper();
 
 			String json ="";
@@ -276,9 +300,12 @@ public class SynchronousVoteBehaviour extends Behaviour {
 			}
 
 			messageRequest.setContent(json);
-			messageRequest.addReceiver(this.request.getAIDVoters().get(this.nbVoters));	
+			for(AID aid : this.request.getAIDVoters()){
+				messageRequest.addReceiver(aid);	
+			}
+			
+			this.nbVoters = 0;
 			this.myAgent.send(messageRequest);
-
 			this.nextStep = STATE_ADD_SIMPLE_SUSPICION;
 		}
 		else if(this.step.equals(STATE_ADD_SIMPLE_SUSPICION))
@@ -286,7 +313,7 @@ public class SynchronousVoteBehaviour extends Behaviour {
 			MessageTemplate mt = MessageTemplate.and(
 					MessageTemplate.MatchPerformative(ACLMessage.INFORM),
 					MessageTemplate.MatchConversationId("GET_SIMPLE_SUSPICION"));
-			
+
 			ACLMessage message = this.myAgent.receive(mt);
 			if(message!=null)
 			{
@@ -296,7 +323,7 @@ public class SynchronousVoteBehaviour extends Behaviour {
 				SuspicionScore suspicionScore = new SuspicionScore();
 				try {
 					suspicionScore = mapper.readValue(message.getContent(), SuspicionScore.class);
-					System.err.println("JSON PARTIAL SUSPICION \n"+message.getContent());
+					//System.err.println("JSON PARTIAL SUSPICION \n"+message.getContent());
 				} 
 				catch (IOException e) 
 				{
@@ -310,26 +337,26 @@ public class SynchronousVoteBehaviour extends Behaviour {
 				{
 					this.nbVoters = 0;
 					System.err.println("SUSPICION COLLECTIVE \n "+this.request.getCollectiveSuspicionScore().getScore());
-					
 					//sort random
 					Collections.shuffle(this.request.getVoters());
 					this.nextStep = STATE_SEND_REQUEST;
 				}
 				else
 				{
-					this.nextStep = STATE_GET_SIMPLE_SUSPICION;
+					this.nextStep = STATE_ADD_SIMPLE_SUSPICION;
 				}
 			}
 			else
 			{
+				this.nextStep = STATE_ADD_SIMPLE_SUSPICION;
 				block();
 			}
 		}
-		
+
 		else if(this.step.equals(STATE_RESULTS))
 		{
 			this.finalResults = this.results.getFinalResults();
-			
+
 			/** equality  ? **/
 			if(this.finalResults.size() == 1)
 			{
@@ -358,7 +385,7 @@ public class SynchronousVoteBehaviour extends Behaviour {
 
 					//sort random
 					Collections.shuffle(this.request.getVoters());
-					
+
 					this.results = new VoteResults();
 					this.request.setLocalVoteResults(this.results);
 					this.lastResults = this.finalResults;
@@ -380,7 +407,7 @@ public class SynchronousVoteBehaviour extends Behaviour {
 				System.out.println("RESULTS => "+this.finalResults.get(0));
 			}
 
-			
+
 			//envoi resultat final + maj global vote
 			if(this.request.getRequest().equals("CITIZEN_VOTE"))
 			{
@@ -391,7 +418,7 @@ public class SynchronousVoteBehaviour extends Behaviour {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				
+
 				ACLMessage message = new ACLMessage(ACLMessage.AGREE);
 				message.setContent(json);
 				message.setSender(this.myAgent.getAID());
@@ -404,7 +431,7 @@ public class SynchronousVoteBehaviour extends Behaviour {
 					this.myAgent.send(message);
 				}
 			}
-			
+
 			ACLMessage message = new ACLMessage(ACLMessage.INFORM);
 			message.setSender(this.myAgent.getAID());
 			message.addReceiver(this.agentSender);

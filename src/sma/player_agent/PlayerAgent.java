@@ -10,7 +10,6 @@ import sma.generic_vote.IVotingAgent;
 import sma.model.DFServices;
 import sma.model.Roles;
 import sma.model.SuspicionScore;
-import sma.werewolf_agent.DeathTestBehaviour;
 import sma.werewolf_agent.InitAsHumanBehaviour;
 import jade.core.AID;
 import jade.core.Agent;

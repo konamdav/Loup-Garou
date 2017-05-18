@@ -63,7 +63,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 		this.ctrlAgent = MediumControllerAgent;
 		this.step = STATE_INIT;
 		this.nextStep ="";
-		
+
 		this.archiveMedium = new HashMap<String, List<String>>();
 	}
 
@@ -98,7 +98,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 				String [] args = {Roles.MEDIUM, Status.SLEEP};
 				this.mediums = DFServices.findGamePlayerAgent(args, this.ctrlAgent, this.ctrlAgent.getGameid());				
 				this.nbPlayers = this.mediums.size();
-				
+
 				if(this.nbPlayers == 0)
 				{
 					//no more medium
@@ -157,9 +157,9 @@ public class TurnBehaviour extends SimpleBehaviour {
 			String [] args = {Roles.CITIZEN, Status.SLEEP};
 			List<AID> citizens = DFServices.findGamePlayerAgent(args, this.ctrlAgent, this.ctrlAgent.getGameid());
 			List<AID> selections = new ArrayList<AID>();
-		
-			//reduction (1 chance sur 3)
-			if((int)(Math.random()*3) != 1 && this.archiveMedium.containsKey(this.currentMedium.getName()))
+
+
+			if(this.archiveMedium.containsKey(this.currentMedium.getName()))
 			{
 				List<String> list = this.archiveMedium.get(this.currentMedium.getName());
 				for(AID aid : citizens)
@@ -171,38 +171,46 @@ public class TurnBehaviour extends SimpleBehaviour {
 				}
 				citizens = selections;
 			}
-			
-			for(AID aid : citizens)
+
+			if(!citizens.isEmpty()){
+				for(AID aid : citizens)
+				{
+					choices.add(aid.getName());
+				}
+
+
+				voters.add(this.currentMedium.getName());
+
+				VoteRequest request = new VoteRequest();
+				request.setVoteAgainst(true);
+				request.setRequest("MEDIUM_VOTE");
+				request.setChoices(choices);
+				request.setVoters(voters);
+				request.setCanBeFake(false);
+
+				ObjectMapper mapper = new ObjectMapper();
+				String json = "";
+				try {
+					json = mapper.writeValueAsString(request);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+				ACLMessage messageRequest = new ACLMessage(ACLMessage.REQUEST);
+				messageRequest.setSender(this.ctrlAgent.getAID());
+				messageRequest.addReceiver(this.ctrlAgent.getAID());
+				messageRequest.setConversationId("VOTE_REQUEST");
+				messageRequest.setContent(json);
+				this.ctrlAgent.send(messageRequest);
+
+				this.nextStep = STATE_RECEIVE_VOTE_REQUEST;
+			}
+			else
 			{
-				choices.add(aid.getName());
+				//fin de tour car il n'a persone à choisir
+				this.nextStep = STATE_END_TURN;
+				
 			}
-
-
-			voters.add(this.currentMedium.getName());
-
-			VoteRequest request = new VoteRequest();
-			request.setVoteAgainst(true);
-			request.setRequest("MEDIUM_VOTE");
-			request.setChoices(choices);
-			request.setVoters(voters);
-			request.setCanBeFake(false);
-
-			ObjectMapper mapper = new ObjectMapper();
-			String json = "";
-			try {
-				json = mapper.writeValueAsString(request);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-			ACLMessage messageRequest = new ACLMessage(ACLMessage.REQUEST);
-			messageRequest.setSender(this.ctrlAgent.getAID());
-			messageRequest.addReceiver(this.ctrlAgent.getAID());
-			messageRequest.setConversationId("VOTE_REQUEST");
-			messageRequest.setContent(json);
-			this.ctrlAgent.send(messageRequest);
-
-			this.nextStep = STATE_RECEIVE_VOTE_REQUEST;
 		}
 		/** etat reception du vote **/
 		else if(this.step.equals(STATE_RECEIVE_VOTE_REQUEST))
@@ -217,17 +225,17 @@ public class TurnBehaviour extends SimpleBehaviour {
 			{
 				String chosen = message.getContent();
 				this.playerChosen = new AID(chosen);
-				
+
 				//maj list chosen
 				List<String> list = new ArrayList<String>();
 				if(this.archiveMedium.containsKey(this.currentMedium.getName()))
 				{
 					list = this.archiveMedium.get(this.currentMedium.getName());
 				}
-				
+
 				list.add(this.playerChosen.getName());
 				this.archiveMedium.put(this.currentMedium.getName(), list);
-				
+
 				this.nextStep = STATE_GET_ROLE_REQUEST;
 
 			}
@@ -241,12 +249,12 @@ public class TurnBehaviour extends SimpleBehaviour {
 		else if(this.step.equals(STATE_GET_ROLE_REQUEST))
 		{
 			System.err.println("REQUEST GET ROLE OF "+this.playerChosen.getName()+" BY "+this.currentMedium.getName());
-			
+
 			ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
 			message.setConversationId("GET_ROLE");
 			message.setSender(this.ctrlAgent.getAID());
 			message.addReceiver(playerChosen);
-			
+
 			this.ctrlAgent.send(message);
 
 			this.nextStep = STATE_GET_ROLE_RECEIVE;

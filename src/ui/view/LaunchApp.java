@@ -16,9 +16,11 @@ public class LaunchApp {
 		config.title = "Werewolf";
 		config.resizable = false; //on ne veut pas que l'utilisateur la redimensionne
 		config.disableAudio = false;
-		config.width = 1194; //largeur de la fenêtre
-	    config.height = 574; //hauteur de la fenêtre
-	    
+		//config.width = 1194; //largeur de la fenêtre
+	   // config.height = 574; //hauteur de la fenêtre
+		config.width = 300; //largeur de la fenêtre
+		config.height =600; //hauteur de la fenêtre
+		    
 
 	    // fullscreen
 	    //config.fullscreen = true;

@@ -24,6 +24,21 @@ public class GameSettings {
 		this.rolesSettings.put(Roles.MEDIUM, 4);
 
 	}
+	
+	public GameSettings(int werewolf, int citizen, int cupid, int little_girl, int medium) {
+		super();
+		//nb
+
+		this.nbHumans = 0;
+		
+		this.rolesSettings = new HashMap<String, Integer>();
+		this.rolesSettings.put(Roles.WEREWOLF, werewolf);
+		this.rolesSettings.put(Roles.CITIZEN, citizen);
+		this.rolesSettings.put(Roles.CUPID, cupid);
+		this.rolesSettings.put(Roles.LITTLE_GIRL, little_girl);
+		this.rolesSettings.put(Roles.MEDIUM, medium);
+
+	}
 
 	public int getNbHumans() {
 		return nbHumans;

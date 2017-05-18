@@ -74,9 +74,24 @@ public class DFServices {
 		}
 	}
 
+	public static void registerSystemControllerAgent(Agent agent){
+		DFAgentDescription dfad = new DFAgentDescription();
+		dfad.setName(agent.getAID());
+		ServiceDescription sd = new ServiceDescription();
+		sd.setType("SYSTEM");
+		sd.setName("CONTROLLER");
+		dfad.addServices(sd);
+		try {
+			DFService.register(agent, dfad);
+		} catch (FIPAException fe) {
+			fe.printStackTrace();
+		}
+	}
+	
 	public static void registerGameControllerAgent(String name, Agent agent,  int gameid){
 		DFServices.registerGameAgent("CONTROLLER", name, agent, gameid);
 	}
+	
 
 	private static DFAgentDescription getDFAgentDescription(Agent agent)
 	{
@@ -175,6 +190,23 @@ public class DFServices {
 
 	public static boolean containsGameAgent(AID agent,String type, String name, Agent searcher, int gameid){
 		return DFServices.findGameAgent(type, name, searcher, gameid).contains(agent);
+	}
+	
+	public static AID getSystemController(Agent agent) {
+		AID rec = null;
+		DFAgentDescription template =
+				new DFAgentDescription();
+		ServiceDescription sd = new ServiceDescription();
+		sd.setType("SYSTEM");
+		sd.setName("CONTROLLER");
+		template.addServices(sd);
+		try {
+			DFAgentDescription[] result =
+					DFService.search(agent, template);
+			if (result.length > 0)
+				rec = result[0].getName();
+		} catch(FIPAException fe) {fe.printStackTrace();}
+		return rec;
 	}
 
 	public static List<AID> findGamePlayerAgent(String name, Agent agent, int gameid){

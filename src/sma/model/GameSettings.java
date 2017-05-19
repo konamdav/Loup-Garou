@@ -11,11 +11,10 @@ public class GameSettings {
 
 	public GameSettings() {
 		super();
-		//nb
 
 		this.nbHumans = 0;
 		
-		//Liste role par dï¿½faut
+		//Liste role par défaut
 		this.rolesSettings = new HashMap<String, Integer>();
 		this.rolesSettings.put(Roles.WEREWOLF, 1);
 		this.rolesSettings.put(Roles.CITIZEN, 3);

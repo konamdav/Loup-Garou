@@ -23,7 +23,7 @@ import sma.model.VoteRequest;
 import sma.player_agent.PlayerAgent;
 import sma.vote_behaviour.CitizenScoreBehaviour;
 import sma.vote_behaviour.CitizenSimpleSuspicionBehaviour;
-import sma.vote_behaviour.GenericSuspicionBehaviour;
+import sma.vote_behaviour.CitizenSuspicionBehaviour;
 import sma.vote_behaviour.WerewolfScoreBehaviour;
 import sma.vote_behaviour.WerewolfSimpleSuspicionBehaviour;
 import sma.vote_behaviour.WerewolfSuspicionBehaviour;

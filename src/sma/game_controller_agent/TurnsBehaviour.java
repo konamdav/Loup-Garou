@@ -14,6 +14,7 @@ import jade.lang.acl.MessageTemplate;
 import sma.generic.interfaces.IController;
 import sma.model.DFServices;
 import sma.model.Roles;
+import sma.model.Status;
 
 
 /***
@@ -34,6 +35,9 @@ public class TurnsBehaviour extends SimpleBehaviour {
 
 	private final static String STATE_START_WEREWOLF_TURN = "START_WEREWOLF_TURN";
 	private final static String STATE_STOP_WEREWOLF_TURN = "STOP_WEREWOLF_TURN";
+	
+	private final static String STATE_START_FLUTE_PLAYER_TURN = "START_FLUTE_PLAYER_TURN";
+	private final static String STATE_STOP_FLUTE_PLAYER_TURN = "STOP_FLUTE_PLAYER_TURN";
 
 	private final static String STATE_START_MEDIUM_TURN = "START_MEDIUM_TURN";
 	private final static String STATE_STOP_MEDIUM_TURN = "STOP_MEDIUM_TURN";
@@ -104,19 +108,82 @@ public class TurnsBehaviour extends SimpleBehaviour {
 		}
 		else if(this.step.equals(STATE_INIT))
 		{	
-			this.nextStep = STATE_START_MEDIUM_TURN;
-		}
-		else if (this.step.equals(STATE_START_MEDIUM_TURN))
-		{
 			if(this.controllerAgent.isCheckEndGame())
 			{
 				this.nextStep = STATE_POSTEND;
 			}
 			else
 			{
-				List<AID> agents = DFServices.findGameControllerAgent(Roles.MEDIUM, this.myAgent, this.controllerAgent.getGameid());
-				if(!agents.isEmpty())
-				{				
+				this.controllerAgent.incTurn();
+				System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
+				System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
+				System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
+				System.err.println("DAY "+this.controllerAgent.getNum_turn());
+				this.nextStep = STATE_START_FLUTE_PLAYER_TURN;
+			}
+		}
+		else if (this.step.equals(STATE_START_FLUTE_PLAYER_TURN))
+		{
+			
+			List<AID> agents = DFServices.findGameControllerAgent(Roles.FLUTE_PLAYER, this.myAgent, this.controllerAgent.getGameid());
+			if(!agents.isEmpty())
+			{		
+				String [] args = {Roles.FLUTE_PLAYER, Status.SLEEP};
+				List<AID> mediums = DFServices.findGamePlayerAgent(args, this.controllerAgent, this.controllerAgent.getGameid());				
+				int nbPlayers = mediums.size();
+
+				if(nbPlayers > 0)
+				{
+					ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
+					message.setConversationId("START_TURN");
+					message.setSender(this.getAgent().getAID());
+					message.addReceiver(agents.get(0));
+					this.getAgent().send(message);
+
+					this.nextStep = STATE_STOP_FLUTE_PLAYER_TURN;
+				}
+				else
+				{
+					this.nextStep = STATE_START_MEDIUM_TURN;
+				}
+			}
+			else
+			{
+				this.nextStep = STATE_START_MEDIUM_TURN;
+			}
+			
+
+		}
+		else if (this.step.equals(STATE_STOP_MEDIUM_TURN))
+		{
+			MessageTemplate mt = MessageTemplate.and(
+					MessageTemplate.MatchPerformative(ACLMessage.INFORM),
+					MessageTemplate.MatchConversationId("END_TURN"));
+
+			ACLMessage message = this.myAgent.receive(mt);
+			if(message != null)
+			{
+				this.nextStep = STATE_START_WEREWOLF_TURN;
+			}
+			else
+			{
+				this.nextStep = STATE_STOP_MEDIUM_TURN;
+				block();
+			}
+
+		}
+		
+		else if (this.step.equals(STATE_START_MEDIUM_TURN))
+		{
+			List<AID> agents = DFServices.findGameControllerAgent(Roles.MEDIUM, this.myAgent, this.controllerAgent.getGameid());
+			if(!agents.isEmpty())
+			{		
+				String [] args = {Roles.MEDIUM, Status.SLEEP};
+				List<AID> mediums = DFServices.findGamePlayerAgent(args, this.controllerAgent, this.controllerAgent.getGameid());				
+				int nbPlayers = mediums.size();
+
+				if(nbPlayers > 0)
+				{
 					ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
 					message.setConversationId("START_TURN");
 					message.setSender(this.getAgent().getAID());
@@ -127,9 +194,14 @@ public class TurnsBehaviour extends SimpleBehaviour {
 				}
 				else
 				{
-					this.nextStep = STATE_START_MEDIUM_TURN;
+					this.nextStep = STATE_START_WEREWOLF_TURN;
 				}
 			}
+			else
+			{
+				this.nextStep = STATE_START_WEREWOLF_TURN;
+			}
+
 		}
 		else if (this.step.equals(STATE_STOP_MEDIUM_TURN))
 		{
@@ -151,24 +223,18 @@ public class TurnsBehaviour extends SimpleBehaviour {
 		}
 		else if (this.step.equals(STATE_START_CITIZEN_TURN))
 		{
-			if(this.controllerAgent.isCheckEndGame())
-			{
-				this.nextStep = STATE_POSTEND;
-			}
-			else
-			{
-				List<AID> agents = DFServices.findGameControllerAgent("CITIZEN", this.myAgent, this.controllerAgent.getGameid());
-				if(!agents.isEmpty())
-				{				
-					ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
-					message.setConversationId("START_TURN");
-					message.setSender(this.getAgent().getAID());
-					message.addReceiver(agents.get(0));
-					this.getAgent().send(message);
+			List<AID> agents = DFServices.findGameControllerAgent("CITIZEN", this.myAgent, this.controllerAgent.getGameid());
+			if(!agents.isEmpty())
+			{				
+				ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
+				message.setConversationId("START_TURN");
+				message.setSender(this.getAgent().getAID());
+				message.addReceiver(agents.get(0));
+				this.getAgent().send(message);
 
-					this.nextStep = STATE_STOP_CITIZEN_TURN;
-				}
+				this.nextStep = STATE_STOP_CITIZEN_TURN;
 			}
+
 		}
 		else if (this.step.equals(STATE_STOP_CITIZEN_TURN))
 		{
@@ -190,25 +256,20 @@ public class TurnsBehaviour extends SimpleBehaviour {
 		}
 		else if (this.step.equals(STATE_START_WEREWOLF_TURN))
 		{
-			if(this.controllerAgent.isCheckEndGame())
-			{
-				this.nextStep = STATE_POSTEND;
-			}
-			else
-			{
-				List<AID> agents = DFServices.findGameControllerAgent("WEREWOLF", this.myAgent, this.controllerAgent.getGameid());
-				if(!agents.isEmpty())
-				{				
-					ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
-					message.setConversationId("START_TURN");
-					message.setSender(this.getAgent().getAID());
-					message.addReceiver(agents.get(0));
-					this.getAgent().send(message);
 
-					this.nextStep = STATE_STOP_WEREWOLF_TURN;
-				}
+			List<AID> agents = DFServices.findGameControllerAgent("WEREWOLF", this.myAgent, this.controllerAgent.getGameid());
+			if(!agents.isEmpty())
+			{				
+				ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
+				message.setConversationId("START_TURN");
+				message.setSender(this.getAgent().getAID());
+				message.addReceiver(agents.get(0));
+				this.getAgent().send(message);
+
 				this.nextStep = STATE_STOP_WEREWOLF_TURN;
 			}
+			this.nextStep = STATE_STOP_WEREWOLF_TURN;
+
 		}
 		else if (this.step.equals(STATE_STOP_WEREWOLF_TURN))
 		{
@@ -231,12 +292,7 @@ public class TurnsBehaviour extends SimpleBehaviour {
 		}
 		else if (this.step.equals(STATE_END))
 		{
-			System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
-			System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
-			System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
-
 			ObjectMapper mapper = new ObjectMapper();
-
 			DFServices.getPlayerProfiles(this.myAgent, this.controllerAgent.getGameid());
 
 

@@ -20,7 +20,7 @@ public class GameSettings {
 		this.rolesSettings.put(Roles.CITIZEN, 3);
 		this.rolesSettings.put(Roles.CUPID, 0);
 		this.rolesSettings.put(Roles.LITTLE_GIRL, 0);
-		this.rolesSettings.put(Roles.MEDIUM,4);
+		this.rolesSettings.put(Roles.MEDIUM,0);
 
 
 	}

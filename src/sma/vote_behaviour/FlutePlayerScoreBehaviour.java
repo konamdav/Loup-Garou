@@ -2,6 +2,7 @@ package sma.vote_behaviour;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
@@ -10,18 +11,20 @@ import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import sma.data.ScoreFactor;
+import sma.model.DFServices;
+import sma.model.Roles;
 import sma.model.ScoreResults;
-import sma.model.SuspicionScore;
+import sma.model.Status;
 import sma.model.VoteRequest;
 import sma.model.VoteResults;
 import sma.player_agent.PlayerAgent;
 
 /***
- * Score en fct de la suspicion
+ * Algo de scoring pour tous les joueurs 
  * @author Davy
  *
  */
-public class GenericSuspicionBehaviour extends Behaviour{
+public class FlutePlayerScoreBehaviour extends Behaviour{
 	private PlayerAgent playerAgent;
 	private String name_behaviour;
 
@@ -33,15 +36,13 @@ public class GenericSuspicionBehaviour extends Behaviour{
 	private String step;
 	private String nextStep;
 
-	private VoteRequest request;	
-	private SuspicionScore suspicionScore;
+	private VoteRequest request;
 	private ScoreResults scoreResults;
 
-	public GenericSuspicionBehaviour(PlayerAgent playerAgent) {
+	public FlutePlayerScoreBehaviour(PlayerAgent playerAgent) {
 		super();
 		this.playerAgent = playerAgent;
-		this.name_behaviour = "GENERIC_SUSPICION_SCORE";
-		this.suspicionScore = this.playerAgent.getSuspicionScore();
+		this.name_behaviour = "FLUTE_PLAYER_SCORE";
 
 		this.step = STATE_INIT;
 		this.nextStep ="";
@@ -90,9 +91,12 @@ public class GenericSuspicionBehaviour extends Behaviour{
 			HashMap<String, Integer> scores = new HashMap<String, Integer>();
 			scoreResults = new ScoreResults(scores);
 
+			String [] args = {Roles.FLUTE_PLAYER, Status.WAKE};
+			List<AID> agents = DFServices.findGamePlayerAgent(args, this.playerAgent, this.playerAgent.getGameid());
+			
 			for(AID player : this.request.getAIDChoices())
 			{
-				scores.put(player.getName(), this.score(player, request));
+				scores.put(player.getName(), this.score(player, request, agents));
 			}
 
 			this.nextStep =  STATE_SEND_SCORE;
@@ -132,26 +136,82 @@ public class GenericSuspicionBehaviour extends Behaviour{
 	}
 
 
-	private int score(AID player,  VoteRequest request)
+	private int score(AID player,  VoteRequest request, List<AID> fluteplayers)
 	{
-		SuspicionScore collectiveSuspicion = request.getCollectiveSuspicionScore();
+		VoteResults globalResults = request.getGlobalCitizenVoteResults();
+		VoteResults localResults = request.getLocalVoteResults();
 
 		int score = 0;
-		if(player.getName().equals(playerAgent.getName()))
-		{
-			score = 0;
+		if(request.isVoteAgainst()){
+			if(player.getName().equals(this.playerAgent.getPlayerName()))
+			{
+				score = ScoreFactor.SCORE_MIN;
+			}
+			else
+			{
+				boolean isFlutePlayer = false;
+				for(AID aid : fluteplayers)
+				{
+					if(player.getName().equals(aid.getName()))
+					{
+						isFlutePlayer = true;
+						score -=100;
+					}
+					
+				}
+		
+				if(!isFlutePlayer || (isFlutePlayer  && localResults.getVoteCount(player.getName())!=0))
+				{			
+					// regles de scoring
+					score += localResults.getVoteCount(player.getName(), fluteplayers) *ScoreFactor.SCORE_FACTOR_WEREWOLF_VOTE;
+					score+= globalResults.getVoteCount(player.getName(), fluteplayers) * ScoreFactor.SCORE_FACTOR_GLOBAL_VOTE;
+					
+					int diff =0;
+					for(AID wolf : fluteplayers)
+					{
+						diff+= localResults.getDifferenceVote(player.getName(), wolf.getName());
+					}
+					
+					diff = diff/fluteplayers.size();
+					score+= diff * ScoreFactor.SCORE_FACTOR_DIFFERENCE_LOCAL_VOTE;
+				}
+				else
+				{
+					score = ScoreFactor.SCORE_MIN;
+				}
+
+			}
 		}
 		else
 		{
-			score = collectiveSuspicion.getScore(player.getName())+this.suspicionScore.getScore(player.getName())*2000;
-			if(!request.isVoteAgainst())
+			// joueur analys� = joueur 
+			if(player.getName().equals(this.playerAgent.getPlayerName()))
 			{
-				score = score * -1;
+				score = 0;
+			}
+			else
+			{
+				boolean isFlutePlayer = false;
+				for(AID aid : fluteplayers)
+				{
+					if(player.getName().equals(aid.getName()))
+					{
+						isFlutePlayer = true;
+					}
+				}
+				
+				if(isFlutePlayer)
+				{
+					score += 100;
+				}
+				
+				// regles de scoring
+				score += localResults.getVoteCount(player.getName(), fluteplayers) *ScoreFactor.SCORE_FACTOR_WEREWOLF_VOTE;
 			}
 		}
-		return score;	
+		return score;
 	}
-
+	
 
 	public String getName_behaviour() {
 		return name_behaviour;

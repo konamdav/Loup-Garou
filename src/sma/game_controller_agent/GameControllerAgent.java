@@ -16,10 +16,12 @@ public class GameControllerAgent extends Agent implements IController{
 	private GameSettings gameSettings;
 	private int gameid;
 	private boolean checkEndGame;
+	private int num_turn;
 	
 	public GameControllerAgent() {
 		super();
 		this.checkEndGame = false; /** var indiquant fin de jeu **/
+		this.num_turn = 0;
 	}
 
 	public boolean isCheckEndGame() {
@@ -42,12 +44,25 @@ public class GameControllerAgent extends Agent implements IController{
 		
 	}
 
+	public int getNum_turn() {
+		return num_turn;
+	}
+
+	public void setNum_turn(int num_turn) {
+		this.num_turn = num_turn;
+	}
+
 	public GameSettings getGameSettings() {
 		return gameSettings;
 	}
 
 	public int getGameid() {
 		return gameid;
+	}
+
+	public void incTurn() {
+		++this.num_turn;
+		
 	}
 	
 	

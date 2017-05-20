@@ -23,7 +23,7 @@ import sma.player_agent.PlayerAgent;
 import sma.vote_behaviour.CitizenScoreBehaviour;
 import sma.vote_behaviour.CitizenSimpleSuspicionBehaviour;
 import sma.vote_behaviour.CitizenSuspicionListener;
-import sma.vote_behaviour.GenericSuspicionBehaviour;
+import sma.vote_behaviour.CitizenSuspicionBehaviour;
 import sma.vote_behaviour.WerewolfScoreBehaviour;
 import sma.vote_behaviour.WerewolfSuspicionListener;
 
@@ -46,8 +46,8 @@ public class CitizenInitBehaviour extends OneShotBehaviour{
 		LoverDeathBehaviour loverDeathBehaviour = new LoverDeathBehaviour(this.agent); //FOR TEST
 		list_behav.add(loverDeathBehaviour);
 		
-		GenericSuspicionBehaviour genericSuspicionBehaviour = new GenericSuspicionBehaviour(this.agent);
-		list_behav.add(genericSuspicionBehaviour);
+		CitizenSuspicionBehaviour citizenSuspicionBehaviour = new CitizenSuspicionBehaviour(this.agent);
+		list_behav.add(citizenSuspicionBehaviour);
 
 
 		CitizenSuspicionListener citizenSuspicionListener = new CitizenSuspicionListener(this.agent);
@@ -58,9 +58,9 @@ public class CitizenInitBehaviour extends OneShotBehaviour{
 		//CitizenSimpleSuspicionBehaviour NOt generic car this one is for finding werewolf
 
 		this.agent.addBehaviour(citizenSimpleSuspicionBehaviour);
-		this.agent.addBehaviour(genericSuspicionBehaviour);
+		this.agent.addBehaviour(citizenSuspicionBehaviour);
 		this.agent.addBehaviour(citizenSuspicionListener);
-		this.agent.getVotingBehaviours().add(genericSuspicionBehaviour.getName_behaviour());
+		this.agent.getVotingBehaviours().add(citizenSuspicionBehaviour.getName_behaviour());
 		
 		
 		//TEST

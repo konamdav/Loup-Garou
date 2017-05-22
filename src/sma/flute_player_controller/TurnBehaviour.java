@@ -63,6 +63,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 
 	@Override
 	public void action() {
+			
 		/** etat initial **/
 		if(this.step.equals(STATE_INIT))
 		{
@@ -248,7 +249,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 		else if(this.step.equals(STATE_SEND_SLEEP_CHARMED))
 		{
 			ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
-			message.setConversationId("WAKE_PLAYER");
+			message.setConversationId("SLEEP_PLAYER");
 			message.setSender(this.ctrlAgent.getAID());
 			message.addReceiver(aidChosen);
 			//message.setContent(Roles.CHARMED);
@@ -289,6 +290,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 		}
 		else if(this.step.equals(STATE_RECEIVE_WAIT_CHARMED))
 		{
+			System.out.println("WAIT CHARMED");
 			MessageTemplate mt = MessageTemplate.and(
 					MessageTemplate.MatchPerformative(ACLMessage.INFORM),
 					MessageTemplate.MatchConversationId("ATTRIBUTION_ROLE"));

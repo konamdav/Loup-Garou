@@ -18,6 +18,7 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import sma.citizen_agent.CitizenInitBehaviour;
+import sma.generic.behaviour.DeleteRoleBehaviour;
 import sma.generic_death.AbstractDeathBehaviour;
 import sma.generic_vote.AbstractVoteBehaviour;
 import sma.lover_behaviour.LoverInitBehaviour;
@@ -71,6 +72,9 @@ public class GenericInitBehaviour extends OneShotBehaviour{
 		System.err.println("...............................GET ROLE...........................");
 		GetRoleBehaviour getRoleBehaviour = new GetRoleBehaviour(this.agent);
 		this.agent.addBehaviour(getRoleBehaviour);
+		
+		DeleteRoleBehaviour deleteRoleBehaviour = new DeleteRoleBehaviour(this.agent);
+		this.agent.addBehaviour(deleteRoleBehaviour);
 		
 		//map_behaviour.put(Roles.GENERIC, list_behav);
 

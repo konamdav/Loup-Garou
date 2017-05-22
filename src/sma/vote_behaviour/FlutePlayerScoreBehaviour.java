@@ -24,7 +24,7 @@ import sma.player_agent.PlayerAgent;
  * @author Davy
  *
  */
-public class FlutePlayerScoreBehaviour extends Behaviour{
+public class FlutePlayerScoreBehaviour extends Behaviour implements IVoteBehaviour{
 	private PlayerAgent playerAgent;
 	private String name_behaviour;
 
@@ -50,7 +50,7 @@ public class FlutePlayerScoreBehaviour extends Behaviour{
 
 	@Override
 	public void action() {
-
+		
 		if(step.equals(STATE_INIT))
 		{
 			this.request = null;

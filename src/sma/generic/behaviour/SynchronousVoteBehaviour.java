@@ -35,7 +35,6 @@ public class SynchronousVoteBehaviour extends Behaviour {
 	private VoteResults globalResults;
 	private List<String> lastResults;
 	private List<String> finalResults;
-	//private List<String> choices;
 
 	private int nbAsynchronousPlayers;
 	
@@ -80,7 +79,7 @@ public class SynchronousVoteBehaviour extends Behaviour {
 	@Override
 	public void action() {
 
-		System.out.println("STATE SV = "+this.step);
+		//System.out.println("STATE SV = "+this.step);
 
 		if(this.step.equals(STATE_INIT))
 		{

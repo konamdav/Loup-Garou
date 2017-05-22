@@ -27,8 +27,6 @@ public class CheckEndGameBehaviour extends CyclicBehaviour {
 	private final static String STATE_NOTIFY_END_GAME = "NOTIFY_END_GAME";
 	private final static String STATE_END = "END";
 	
-	
-	
 	private String step;
 	private String nextStep;
 	private AID sender;
@@ -97,9 +95,9 @@ public class CheckEndGameBehaviour extends CyclicBehaviour {
 			String[] services44 = {Roles.FLUTE_PLAYER, Status.SLEEP};
 			flutePlayers.addAll(DFServices.findGamePlayerAgent(services44, this.gameControllerAgent, this.gameControllerAgent.getGameid()));
 
-			String[] services5 = {Roles.FLUTE_PLAYER, Status.WAKE};
+			String[] services5 = {Roles.CHARMED, Status.WAKE};
 			List<AID> charmed = DFServices.findGamePlayerAgent(services5, this.gameControllerAgent, this.gameControllerAgent.getGameid());
-			String[] services55 = {Roles.FLUTE_PLAYER, Status.SLEEP};
+			String[] services55 = {Roles.CHARMED, Status.SLEEP};
 			charmed.addAll(DFServices.findGamePlayerAgent(services55, this.gameControllerAgent, this.gameControllerAgent.getGameid()));
 
 			String[] services6 = {Roles.ANGEL, Status.DEAD};

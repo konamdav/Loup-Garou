@@ -54,7 +54,6 @@ public class FlutePlayerInitBehaviour extends OneShotBehaviour{
 		CitizenSimpleSuspicionBehaviour citizenSimpleSuspicionBehaviour = new CitizenSimpleSuspicionBehaviour(this.agent);
 		list_behav.add(citizenSimpleSuspicionBehaviour);
 		
-		
 		FlutePlayerScoreBehaviour flutePlayerScoreBehaviour = new FlutePlayerScoreBehaviour(this.agent);
 		list_behav.add(flutePlayerScoreBehaviour);
 		
@@ -65,8 +64,11 @@ public class FlutePlayerInitBehaviour extends OneShotBehaviour{
 		this.agent.addBehaviour(citizenSuspicionBehaviour);
 		this.agent.addBehaviour(citizenSuspicionListener);
 		this.agent.addBehaviour(flutePlayerDeathBehaviour);
+		this.agent.addBehaviour(flutePlayerScoreBehaviour);
+		
 		this.agent.getDeathBehaviours().add(flutePlayerDeathBehaviour.getName_behaviour());
 		this.agent.getVotingBehaviours().add(citizenSuspicionBehaviour.getName_behaviour());
+		
 		this.agent.getVotingBehaviours().add(flutePlayerScoreBehaviour.getName_behaviour());
 
 		

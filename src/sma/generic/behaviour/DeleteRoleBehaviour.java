@@ -15,6 +15,7 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import sma.citizen_controller_agent.CitizenControllerAgent;
+import sma.model.DFServices;
 import sma.model.VoteRequest;
 import sma.model.VoteResults;
 import sma.player_agent.PlayerAgent;
@@ -29,6 +30,7 @@ public class DeleteRoleBehaviour extends CyclicBehaviour {
 	
 	public DeleteRoleBehaviour(PlayerAgent agent) {
 		super(agent);
+		this.agent = agent;
 	}
 
 	public void action() {
@@ -39,7 +41,19 @@ public class DeleteRoleBehaviour extends CyclicBehaviour {
 		ACLMessage message = this.agent.receive(mt);
 		if (message != null) 
 		{
-						
+			String role = message.getContent();
+			System.err.println("["+this.agent.getName()+"] DELETE ROLE "+role);
+			DFServices.deregisterPlayerAgent(role, agent, this.agent.getGameid());
+			List<Behaviour> behaviours = this.agent.getMap_role_behaviours().get(role);
+			for(Behaviour bhv : behaviours)
+			{
+				//TODO CEDRIC check if implements IDeathBehaviour/IVoteBehaviour
+				
+				//stop behaviour
+				this.agent.removeBehaviour(bhv);
+			}
+			
+			this.agent.getMap_role_behaviours().remove(role);
 		}
 		else {
 			block();

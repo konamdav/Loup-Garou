@@ -44,11 +44,10 @@ public class CharmedInitBehaviour extends OneShotBehaviour{
 	public void action() {
 		ArrayList<Behaviour> list_behav = new ArrayList<Behaviour>();
 		HashMap<String, ArrayList<Behaviour>> map_behaviour = this.agent.getMap_role_behaviours();
-
 		
 		CharmedScoreBehaviour charmedScoreBehaviour = new CharmedScoreBehaviour(this.agent);
 		list_behav.add(charmedScoreBehaviour);
-		
+		this.agent.addBehaviour(charmedScoreBehaviour);
 		this.agent.getVotingBehaviours().add(charmedScoreBehaviour.getName_behaviour());
 		map_behaviour.put(Roles.CHARMED, list_behav);
 		

@@ -74,7 +74,8 @@ public class AngelInitBehaviour extends OneShotBehaviour{
 		//Handle attributes
 		map_behaviour.put(Roles.ANGEL, list_behav);
 
-		//enregirstrement NOT FOR CITIZEN CAUZ EVERY PLAYER IS ALREADY A CITIZEN
+		
+		System.out.println("[ "+this.agent.getName()+" ] REGISTER "+Roles.ANGEL);
 		DFServices.registerPlayerAgent(Roles.ANGEL, agent, this.agent.getGameid());
 		
 		

@@ -10,6 +10,7 @@ import jade.core.AID;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import sma.generic_death.IDeathBehaviour;
 import sma.generic_vote.IVotingAgent;
 import sma.model.DFServices;
 import sma.model.Roles;
@@ -18,7 +19,7 @@ import sma.model.Status;
 import sma.model.VoteRequest;
 import sma.player_agent.PlayerAgent;
 
-public class FlutePlayerDeathBehaviour extends SimpleBehaviour{
+public class FlutePlayerDeathBehaviour extends SimpleBehaviour implements IDeathBehaviour {
 	private PlayerAgent playerAgent ;
 	private String nameBehaviour;
 
@@ -30,6 +31,7 @@ public class FlutePlayerDeathBehaviour extends SimpleBehaviour{
 
 	@Override
 	public void action() {
+		
 		MessageTemplate mt = MessageTemplate.and(
 				MessageTemplate.MatchPerformative(ACLMessage.REQUEST),
 				MessageTemplate.MatchConversationId("DEATH_"+this.nameBehaviour+"_REQUEST"));
@@ -37,7 +39,7 @@ public class FlutePlayerDeathBehaviour extends SimpleBehaviour{
 		ACLMessage message = this.myAgent.receive(mt);
 		if (message != null) 
 		{
-
+			System.err.println("death flute ");
 			String [] args = {Roles.FLUTE_PLAYER, Status.WAKE};
 			List<AID> flutePlayers = DFServices.findGamePlayerAgent(args, this.playerAgent, this.playerAgent.getGameid());
 			if(flutePlayers.size()<2)

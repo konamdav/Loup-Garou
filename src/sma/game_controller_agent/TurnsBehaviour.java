@@ -62,6 +62,8 @@ public class TurnsBehaviour extends SimpleBehaviour {
 	@Override
 	public void action() {
 
+		System.out.println("STATE GC = "+this.step);
+		
 		if(this.step.equals(STATE_PREINIT))
 		{	
 			this.nextStep = STATE_CHECK_ENDGAME_REQUEST;
@@ -154,7 +156,7 @@ public class TurnsBehaviour extends SimpleBehaviour {
 			
 
 		}
-		else if (this.step.equals(STATE_STOP_MEDIUM_TURN))
+		else if (this.step.equals(STATE_STOP_FLUTE_PLAYER_TURN))
 		{
 			MessageTemplate mt = MessageTemplate.and(
 					MessageTemplate.MatchPerformative(ACLMessage.INFORM),
@@ -163,11 +165,11 @@ public class TurnsBehaviour extends SimpleBehaviour {
 			ACLMessage message = this.myAgent.receive(mt);
 			if(message != null)
 			{
-				this.nextStep = STATE_START_WEREWOLF_TURN;
+				this.nextStep = STATE_START_MEDIUM_TURN;
 			}
 			else
 			{
-				this.nextStep = STATE_STOP_MEDIUM_TURN;
+				this.nextStep = STATE_STOP_FLUTE_PLAYER_TURN;
 				block();
 			}
 

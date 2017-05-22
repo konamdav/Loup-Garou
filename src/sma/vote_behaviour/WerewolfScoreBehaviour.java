@@ -24,7 +24,7 @@ import sma.player_agent.PlayerAgent;
  * @author Davy
  *
  */
-public class WerewolfScoreBehaviour extends Behaviour{
+public class WerewolfScoreBehaviour extends Behaviour implements IVoteBehaviour {
 	private PlayerAgent playerAgent;
 	private String name_behaviour;
 

@@ -24,7 +24,7 @@ import sma.player_agent.PlayerAgent;
  * @author Davy
  *
  */
-public class CharmedScoreBehaviour extends Behaviour{
+public class CharmedScoreBehaviour extends Behaviour implements IVoteBehaviour{
 	private PlayerAgent playerAgent;
 	private String name_behaviour;
 
@@ -93,6 +93,8 @@ public class CharmedScoreBehaviour extends Behaviour{
 
 			String [] args = {Roles.FLUTE_PLAYER, Status.WAKE};
 			List<AID> agents = DFServices.findGamePlayerAgent(args, this.playerAgent, this.playerAgent.getGameid());
+			args[1] = Status.SLEEP;
+			agents.addAll(DFServices.findGamePlayerAgent(args, this.playerAgent, this.playerAgent.getGameid()));
 			
 			for(AID player : this.request.getAIDChoices())
 			{

@@ -1,7 +1,7 @@
 
 package ui.view;
 import java.util.ArrayList;
-import java.util.List;
+
 
 //Import des fichiers libgdx
 import com.badlogic.gdx.Gdx;
@@ -13,6 +13,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.List;
+import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 import sma.launch.SystemContainer;
@@ -69,7 +71,7 @@ public class ViewInterfaceGame implements Screen{
 		viewPlayers=new ViewPlayers(((SpriteBatch)stage.getBatch()));
 
 		/** test**/
-		List<PlayerProfile> profiles = new ArrayList<PlayerProfile>();
+		ArrayList<PlayerProfile> profiles = new ArrayList<PlayerProfile>();
 		for(int i = 0; i<22; ++i)
 		{
 			PlayerProfile p = new PlayerProfile();
@@ -88,9 +90,7 @@ public class ViewInterfaceGame implements Screen{
 				}
 				else
 				{
-
 					roles.add(Roles.ANGEL);
-
 				}
 				
 				roles.add(Roles.CITIZEN);
@@ -98,6 +98,16 @@ public class ViewInterfaceGame implements Screen{
 
 			p.setRoles(roles);
 			profiles.add(p);
+			
+			Skin uiskin = new Skin( Gdx.files.internal( "resources/visui/uiskin.json" ));
+
+			SelectBox<String> list = new SelectBox<String>(uiskin);
+		
+			
+			list.setItems("test", "dk", "konam","ok");
+			list.setSelected("ok");
+			list.pack();
+			stage.addActor(list);
 		}
 		
 		this.viewPlayers.updatePlayers(profiles);
@@ -112,30 +122,6 @@ public class ViewInterfaceGame implements Screen{
 
 		textureNight = new Texture(Gdx.files.internal("resources/sprites/night.png"));
 
-		new Thread(
-				new Runnable(){
-					public void run(){
-
-						try {
-							Thread.sleep(4000);
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-
-						Gdx.app.postRunnable(new Runnable(){
-
-							@Override
-							public void run() {
-
-								new SystemContainer();
-								Skin uiSkin = new Skin(Gdx.files.internal("resources/visui/uiskin.json"));
-								stage.addActor(new Label("test", uiSkin ));
-							}
-
-						});
-					}}).start();;
-
 	}
 
 
@@ -146,6 +132,7 @@ public class ViewInterfaceGame implements Screen{
 
 	public void render(float arg0)
 	{
+		//System.gc();
 		//Pour actualiser l'interface
 		Gdx.gl.glClearColor(0.7f,0.7f,0.7f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);       

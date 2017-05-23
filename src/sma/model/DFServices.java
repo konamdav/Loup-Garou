@@ -423,6 +423,15 @@ public class DFServices {
 			profile.getRoles().remove("CITIZEN");
 		}
 
+		//get profiles joueurs 
+		List<AID> humans = DFServices.findGamePlayerAgent("HUMAN", agent, gameid);
+		for(AID human : humans)
+		{
+			PlayerProfile profile = tmp.get(human.getLocalName());
+			profile.getRoles().add("HUMAN");
+			
+		}
+
 		//get profiles joueurs lover
 		List<AID> lovers = DFServices.findGamePlayerAgent(Roles.LOVER, agent, gameid);
 		for(AID lover : lovers)

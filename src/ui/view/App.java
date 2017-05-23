@@ -57,7 +57,7 @@ public class App extends Game {
 	public void create() {
 		//agent = new uiAgent();
 		newSystemContainer();
-		this.setScreen(new ViewMainMenu(this));
+		this.setScreen(new ViewInterfaceGame(this));
 	}
 	
 	public void setAgent(uiAgent a){

@@ -1,5 +1,8 @@
 
 package ui.view;
+import java.util.ArrayList;
+import java.util.List;
+
 //Import des fichiers libgdx
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -13,14 +16,19 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 import sma.launch.SystemContainer;
-import ui.control.Controleur_Terrain;
+import sma.model.PlayerProfile;
+import sma.model.Roles;
+import sma.model.Status;
+import ui.control.MapController;
+import ui.model.ViewPlayer;
+import ui.model.ViewPlayers;
 
 
 public class ViewInterfaceGame implements Screen{
 
 	private Stage stage;
 	private ViewMap terrain;
-	private Controleur_Terrain ctrlTerrain;
+	private MapController ctrlTerrain;
 	private ViewPlayers viewPlayers;
 	private int iii;
 	private Texture textureNight;
@@ -30,7 +38,7 @@ public class ViewInterfaceGame implements Screen{
 	private int mapy;
 
 	public ViewInterfaceGame (App game){
-		this.ctrlTerrain = new Controleur_Terrain();
+		this.ctrlTerrain = new MapController();
 		hover = true;
 		mapx = 0;
 		mapy = 0;
@@ -59,25 +67,62 @@ public class ViewInterfaceGame implements Screen{
 
 		Gdx.input.setInputProcessor(stage);
 		viewPlayers=new ViewPlayers(((SpriteBatch)stage.getBatch()));
+
+		/** test**/
+		List<PlayerProfile> profiles = new ArrayList<PlayerProfile>();
+		for(int i = 0; i<15; ++i)
+		{
+			PlayerProfile p = new PlayerProfile();
+			p.setName("PLAYER "+i);
+			p.setStatus(Status.WAKE);
+			ArrayList<String> roles = new ArrayList<String>();
+			if(Math.random()%3 == 1)
+			{
+				roles.add(Roles.WEREWOLF);
+			}
+			else
+			{
+				if(Math.random()%3 == 1)
+				{
+					roles.add(Roles.LOVER);
+				}
+				else
+				{
+
+					roles.add(Roles.ANGEL);
+
+				}
+				
+				roles.add(Roles.CITIZEN);
+			}
+
+			p.setRoles(roles);
+			profiles.add(p);
+		}
+		
+		this.viewPlayers.updatePlayers(profiles);
+
+
+
 		terrain=new ViewMap((SpriteBatch) stage.getBatch(), ctrlTerrain);
 
 		ViewPlayer player;
 
-		initPlayers((int) (4+Math.random()*20));
+		//initPlayers((int) (4+Math.random()*20));
 
 		textureNight = new Texture(Gdx.files.internal("resources/sprites/night.png"));
 
 		new Thread(
 				new Runnable(){
 					public void run(){
-						
+
 						try {
 							Thread.sleep(4000);
 						} catch (InterruptedException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-						
+
 						Gdx.app.postRunnable(new Runnable(){
 
 							@Override
@@ -135,7 +180,7 @@ public class ViewInterfaceGame implements Screen{
 			BitmapFont  font = new BitmapFont();
 			font.setColor(Color.WHITE);
 			font.setScale(1.5f);
-			font.draw(stage.getBatch(), viewPlayers.getLabel(mapx, mapy), mapx, mapy);
+			font.drawMultiLine(stage.getBatch(), viewPlayers.getLabel(mapx, mapy), mapx, mapy);
 		}
 
 		//stage.getBatch().draw(style.getBackground(), 0, 0,Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -160,103 +205,6 @@ public class ViewInterfaceGame implements Screen{
 	}
 
 
-	public void initPlayers(int nb)
-	{
-		System.out.println("NB " +nb);
-		int n_rows = 0;
-		int n_cols = 0 ;
-
-		n_rows  = nb % 4;
-		n_cols = nb / 4;
-
-		System.out.println("NC "+n_cols+" NR "+n_rows);
-
-		if(n_cols+n_rows >= 2)
-		{
-			if(nb>4)
-			{
-				n_cols = (nb-4)/2 + (nb-4)%2;
-				//n_cols+= n_cols-2+n_rows;
-				n_rows = 2;
-			}
-		}
-		else
-		{
-			n_rows = n_cols;
-		}
-
-		System.out.println("NC "+n_cols+" NR "+n_rows);
-
-		int ind_x = 6;
-		int ind_y = 4;
-		ViewPlayer player;
-		for(int i = 0; i<n_rows; ++i)
-		{
-			player = viewPlayers.newPlayer("PLAYER1"+i,"WAKE", "RIGHT", ind_x-n_cols/2, ind_y-(n_rows-1-i) );
-			if((int)(Math.random()*3) == 1){
-				player.getRoles().addNewRole("WEREWOLF");
-			}
-			else
-			{
-				player.getRoles().addNewRole("CITIZEN");
-			}
-
-		}
-
-		if(nb >= 2) {
-			int ret = 0;
-			if(n_cols%2!=0)
-			{
-				ret = 1;
-			}
-
-			for(int i = 0; i<n_rows; ++i)
-			{
-				player = viewPlayers.newPlayer("PLAYER3"+i,"WAKE", "LEFT", ind_x+1+ret+n_cols/2, ind_y-i );
-				if((int)(Math.random()*3) == 1){
-					player.getRoles().addNewRole("WEREWOLF");
-				}
-				else
-				{
-					player.getRoles().addNewRole("CITIZEN");
-				}
-
-			}
-
-			if(nb >= 3){
-
-				for(int i = 0; i<n_cols; ++i)
-				{
-					player = viewPlayers.newPlayer("PLAYER2"+i,"WAKE", "DOWN", ind_x+1+i-n_cols/2, ind_y+1);
-					if((int)(Math.random()*3) == 1){
-						player.getRoles().addNewRole("WEREWOLF");
-					}
-					else
-					{
-						player.getRoles().addNewRole("CITIZEN");
-					}
-
-				}
-
-				if(nb >= 4){
-					int reste = nb - (n_cols+2*n_rows);
-					for(int i = 0; i<reste; ++i)
-					{
-						player = viewPlayers.newPlayer("PLAYER4"+i,"WAKE", "UP", ind_x+1+(n_cols-1-i)-n_cols/2, ind_y-1-n_rows/2);
-						if((int)(Math.random()*3) == 1){
-							player.getRoles().addNewRole("WEREWOLF");
-						}
-						else
-						{
-							player.getRoles().addNewRole("CITIZEN");
-						}
-
-					}
-				}
-			}
-		}
-
-	}
 
 	public void resume() {
 

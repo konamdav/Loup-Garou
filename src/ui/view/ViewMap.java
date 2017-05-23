@@ -7,7 +7,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import ui.control.Controleur_Terrain;
+import ui.control.MapController;
 import ui.model.Case;
 import ui.model.Const;
 
@@ -16,9 +16,9 @@ public class ViewMap {
 	private SpriteBatch batch;    
 	private Texture case_constructible;
 	
-	private Controleur_Terrain ctrlTerrain;
+	private MapController ctrlTerrain;
 
-	public ViewMap(SpriteBatch batch, Controleur_Terrain ctrlTerrain)
+	public ViewMap(SpriteBatch batch, MapController ctrlTerrain)
 	{
 		this.ctrlTerrain=ctrlTerrain;
 		this.batch=batch;

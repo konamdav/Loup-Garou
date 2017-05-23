@@ -37,11 +37,8 @@ public class SynchronousVoteBehaviour extends Behaviour {
 	private List<String> finalResults;
 
 	private int nbAsynchronousPlayers;
-	
 	private AID agentSender;
-
 	private final static String STATE_INIT = "INIT";
-
 	private final static String STATE_RECEIVE_REQUEST = "RECEIVE_REQUEST";
 	private final static String STATE_SEND_REQUEST = "SEND_REQUEST";
 

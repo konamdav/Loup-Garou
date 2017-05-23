@@ -1,4 +1,4 @@
-package ui.view;
+package ui.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,11 +62,48 @@ public class ViewRoles {
 		return player;
 	}
 	
+	public String getAllRolesLabel()
+	{
+		String s ="\n";
+		for(ViewRole role : this.roles)
+		{
+			s+="\n"+role.getName();
+		}
+		
+		return s;
+	}
+	
 	public void update()
 	{
 		for(ViewRole role : this.roles)
 		{
 			role.update();
+		}
+	}
+	
+	public List<String> getListRole()
+	{
+		ArrayList<String> tmp = new ArrayList<String>();
+		for(ViewRole role : this.roles)
+		{
+			tmp.add(role.getName());
+		}
+		
+		return tmp;
+	}
+
+	public void deleteRole(String role) {
+		boolean flag = false;
+		int cpt = 0;
+		
+		while(cpt < this.roles.size() && !flag)
+		{
+			if(this.roles.get(cpt).getName().equals(role))
+			{
+				flag = true;
+				this.roles.remove(cpt);
+			}
+			++cpt;
 		}
 	}
 	

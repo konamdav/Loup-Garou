@@ -39,6 +39,9 @@ public class TurnsBehaviour extends SimpleBehaviour {
 	private final static String STATE_START_FLUTE_PLAYER_TURN = "START_FLUTE_PLAYER_TURN";
 	private final static String STATE_STOP_FLUTE_PLAYER_TURN = "STOP_FLUTE_PLAYER_TURN";
 
+	private final static String STATE_START_CUPID_TURN = "START_CUPID_TURN";
+	private final static String STATE_STOP_CUPID_TURN = "STOP_CUPID_TURN";
+	
 	private final static String STATE_START_MEDIUM_TURN = "START_MEDIUM_TURN";
 	private final static String STATE_STOP_MEDIUM_TURN = "STOP_MEDIUM_TURN";
 
@@ -47,6 +50,8 @@ public class TurnsBehaviour extends SimpleBehaviour {
 	private static final String STATE_POSTEND = "POSTEND";
 	private boolean flag_done;
 
+	private boolean flag_cupid; 
+	
 	private String step;
 	private String nextStep;
 
@@ -55,6 +60,7 @@ public class TurnsBehaviour extends SimpleBehaviour {
 
 		this.step = STATE_PREINIT;
 		this.nextStep = "";
+		this.flag_cupid = false;
 		this.flag_done = false;
 		this.controllerAgent = controllerAgent;	
 	}
@@ -62,7 +68,7 @@ public class TurnsBehaviour extends SimpleBehaviour {
 	@Override
 	public void action() {
 
-		System.out.println("STATE GC = "+this.step);
+		//System.out.println("STATE GC = "+this.step);
 		
 		if(this.step.equals(STATE_PREINIT))
 		{	
@@ -121,9 +127,61 @@ public class TurnsBehaviour extends SimpleBehaviour {
 				System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
 				System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
 				System.err.println("DAY "+this.controllerAgent.getNum_turn());
-				this.nextStep = STATE_START_FLUTE_PLAYER_TURN;
+				this.nextStep = STATE_START_CUPID_TURN;
 			}
 		}
+		else if (this.step.equals(STATE_START_CUPID_TURN))
+		{
+			
+			List<AID> agents = DFServices.findGameControllerAgent(Roles.CUPID, this.myAgent, this.controllerAgent.getGameid());
+			if(!agents.isEmpty())
+			{		
+				String [] args = {Roles.CUPID, Status.SLEEP};
+				List<AID> cupids = DFServices.findGamePlayerAgent(args, this.controllerAgent, this.controllerAgent.getGameid());				
+				int nbPlayers = cupids.size();
+
+				if(nbPlayers > 0 && !this.flag_cupid)
+				{
+					ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
+					message.setConversationId("START_TURN");
+					message.setSender(this.getAgent().getAID());
+					message.addReceiver(agents.get(0));
+					this.getAgent().send(message);
+
+					this.flag_cupid = true;
+					this.nextStep = STATE_STOP_CUPID_TURN;
+				}
+				else
+				{
+					this.nextStep = STATE_START_FLUTE_PLAYER_TURN;
+				}
+			}
+			else
+			{
+				this.nextStep = STATE_START_FLUTE_PLAYER_TURN;
+			}
+			
+
+		}
+		else if (this.step.equals(STATE_STOP_CUPID_TURN))
+		{
+			MessageTemplate mt = MessageTemplate.and(
+					MessageTemplate.MatchPerformative(ACLMessage.INFORM),
+					MessageTemplate.MatchConversationId("END_TURN"));
+
+			ACLMessage message = this.myAgent.receive(mt);
+			if(message != null)
+			{
+				this.nextStep = STATE_START_FLUTE_PLAYER_TURN;
+			}
+			else
+			{
+				this.nextStep = STATE_STOP_CUPID_TURN;
+				block();
+			}
+
+		}
+		
 		else if (this.step.equals(STATE_START_FLUTE_PLAYER_TURN))
 		{
 			

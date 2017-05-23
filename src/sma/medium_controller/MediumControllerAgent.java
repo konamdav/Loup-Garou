@@ -5,8 +5,8 @@ import java.util.Stack;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
-import sma.generic.behaviour.SynchronousVoteBehaviour;
 import sma.generic.interfaces.IController;
+import sma.generic_vote.SynchronousVoteBehaviour;
 import sma.model.DFServices;
 import sma.model.Roles;
 

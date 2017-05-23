@@ -143,7 +143,7 @@ public class CitizenSuspicionBehaviour extends Behaviour implements IVoteBehavio
 		}
 		else
 		{
-			score = collectiveSuspicion.getScore(player.getName())+this.suspicionScore.getScore(player.getName())*2000;
+			score = collectiveSuspicion.getScore(player.getName())+this.suspicionScore.getScore(player.getName());
 			if(!request.isVoteAgainst())
 			{
 				score = score * -1;

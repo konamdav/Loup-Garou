@@ -87,7 +87,6 @@ public class ViewPlayers {
 
 	public void dead() {
 
-
 		for(Entry<String, ViewPlayer> entry : this.viewPlayers.entrySet())
 		{
 			if((int)(Math.random()*5) == 1){

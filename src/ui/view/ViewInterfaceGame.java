@@ -70,7 +70,7 @@ public class ViewInterfaceGame implements Screen{
 
 		/** test**/
 		List<PlayerProfile> profiles = new ArrayList<PlayerProfile>();
-		for(int i = 0; i<15; ++i)
+		for(int i = 0; i<22; ++i)
 		{
 			PlayerProfile p = new PlayerProfile();
 			p.setName("PLAYER "+i);

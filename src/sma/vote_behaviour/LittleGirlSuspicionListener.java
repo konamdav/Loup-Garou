@@ -13,6 +13,7 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import sma.data.ScoreFactor;
 import sma.model.DFServices;
+import sma.model.Roles;
 import sma.model.ScoreResults;
 import sma.model.SuspicionScore;
 import sma.model.VoteRequest;
@@ -20,36 +21,32 @@ import sma.model.VoteResults;
 import sma.player_agent.PlayerAgent;
 
 /**
- * 	Listener de mouvement pour loup garou
+ * Listener de mouvements pour les citizens
  * @author Davy
  *
  */
-public class WerewolfSuspicionListener extends Behaviour{
+public class LittleGirlSuspicionListener extends Behaviour{
 	private PlayerAgent playerAgent;
 	private String name_behaviour;
 
-	public String getName_behaviour() {
-		return name_behaviour;
-	}
-
-
 	private final static String STATE_INIT = "INIT";
 	private final static String STATE_RECEIVE_INFORM = "RECEIVE_INFORM";
-	private final static String STATE_SUSPICION_LITTLE_GIRL = "SUSPICION_LITTLE_GIRL";
-
+	private final static String STATE_UPDATE = "UPDATE";
 
 	private String step;
 	private String nextStep;
 
 	private SuspicionScore suspicionScore;
-	private String side;
+	private String player;
+	private String role;
 
-	public WerewolfSuspicionListener(PlayerAgent playerAgent) {
+	public LittleGirlSuspicionListener(PlayerAgent playerAgent) {
 		super();
 		this.playerAgent = playerAgent;
-		this.name_behaviour = "WEREWOLF_SUSPICION";
+		this.name_behaviour = "LITTLE_GIRL_SUSPICION_LISTENER";
 
 		this.suspicionScore = this.playerAgent.getSuspicionScore();
+
 		this.step = STATE_INIT;
 		this.nextStep ="";
 	}
@@ -59,42 +56,39 @@ public class WerewolfSuspicionListener extends Behaviour{
 
 		if(step.equals(STATE_INIT))
 		{
-
-			this.side = "";
+			this.player = "";
+			this.role = "";
 			this.nextStep = STATE_RECEIVE_INFORM;
 		}
 		else if(step.equals(STATE_RECEIVE_INFORM))
 		{
-			/** alerte mouvement d'un citizen durant la nuit (role important)**/
 			MessageTemplate mt = MessageTemplate.and(
 					MessageTemplate.MatchPerformative(ACLMessage.INFORM),
-					MessageTemplate.MatchConversationId("MOVE_LITTLE_GIRL"));
+					MessageTemplate.MatchConversationId("IS_WEREWOLF"));
 
 			ACLMessage message = this.myAgent.receive(mt);
 			if (message != null) 
 			{
-				this.side = message.getContent();
-				this.nextStep = STATE_SUSPICION_LITTLE_GIRL;
+				this.player  = message.getContent();
+				this.nextStep = STATE_UPDATE;
+
+				System.err.println("LISTNER RECEIV");
 			}
 			else
 			{
+				this.nextStep = STATE_RECEIVE_INFORM;
 				block();
 			}		
 		}
-		else if(step.equals(STATE_SUSPICION_LITTLE_GIRL))
+		else if(step.equals(STATE_UPDATE))
 		{
-			List<AID> neighbors = DFServices.findNeighborsBySide(this.side, this.playerAgent.getAID(), playerAgent, this.playerAgent.getGameid());
-
-			//envoi a la suspicion citizen
-			//maj grid
-			for(AID aid : neighbors)
-			{
-				this.suspicionScore.addScore(aid.getName(), 10);
-			}
+			System.err.println("-----------------------------------------------------------");
+			System.err.println("LITTLE GIRL [ "+this.playerAgent.getName()+" ] "+this.player+"is werewolf");
+			this.suspicionScore.addScore(this.player, ScoreFactor.SCORE_MAX);
 
 			this.nextStep =  STATE_INIT;
 		}
-		
+
 
 		if(!this.nextStep.isEmpty())
 		{
@@ -108,4 +102,8 @@ public class WerewolfSuspicionListener extends Behaviour{
 		return false;
 	}
 
+
+	public String getName_behaviour() {
+		return name_behaviour;
+	}
 }

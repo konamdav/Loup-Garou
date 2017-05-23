@@ -18,6 +18,10 @@ public class Roles {
 	public static final String FOOL = "FOOL";
 	public static final String FLUTE_PLAYER = "FLUTE_PLAYER";
 	public static final String CHARMED = "CHARMED";
+	public static final String  SCAPEGOAT= "SCAPEGOAT";
+	
+	
+	
 	//public static final String WILD = "WILD";
 	//public static final String WILD = "EXORCIST";
 	

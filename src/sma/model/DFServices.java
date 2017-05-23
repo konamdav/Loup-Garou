@@ -414,6 +414,23 @@ public class DFServices {
 			profile.getRoles().remove("CITIZEN");
 		}
 
+		//get profiles joueurs flute
+		List<AID> cupids = DFServices.findGamePlayerAgent(Roles.CUPID, agent, gameid);
+		for(AID cupid : cupids)
+		{
+			PlayerProfile profile = tmp.get(cupid.getLocalName());
+			profile.getRoles().add(Roles.CUPID);
+			profile.getRoles().remove("CITIZEN");
+		}
+
+		//get profiles joueurs lover
+		List<AID> lovers = DFServices.findGamePlayerAgent(Roles.LOVER, agent, gameid);
+		for(AID lover : lovers)
+		{
+			PlayerProfile profile = tmp.get(lover.getLocalName());
+			profile.getRoles().add(Roles.LOVER);
+		}
+
 		//get profiles joueurs charmed
 		List<AID> charmed = DFServices.findGamePlayerAgent(Roles.CHARMED, agent, gameid);
 		for(AID ch : charmed)

@@ -146,7 +146,7 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 			{
 				String voted = this.forceResults.get(request.getRequest());
 				//remove vote
-				this.forceResults.remove(request.getRequest());
+				//this.forceResults.remove(request.getRequest());
 
 				ScoreResults scr = new ScoreResults();
 				scr.getResults().put(voted, 1);

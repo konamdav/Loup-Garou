@@ -1,4 +1,4 @@
-package sma.generic.behaviour;
+package sma.generic_vote;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,6 +18,7 @@ import sma.citizen_controller_agent.CitizenControllerAgent;
 import sma.data.Data;
 import sma.generic.interfaces.IController;
 import sma.model.DFServices;
+import sma.model.Roles;
 import sma.model.SuspicionScore;
 import sma.model.VoteRequest;
 import sma.model.VoteResults;
@@ -106,9 +107,9 @@ public class SynchronousVoteBehaviour extends Behaviour {
 
 				ObjectMapper mapper = new ObjectMapper();
 				try {
-					
+
 					System.err.println("[RQST INITIAL] "+message.getContent());
-					
+
 					this.request = mapper.readValue(message.getContent(), VoteRequest.class);
 					this.request.setLocalVoteResults(this.results);
 				} catch (IOException e) {
@@ -183,7 +184,7 @@ public class SynchronousVoteBehaviour extends Behaviour {
 			{
 				this.nbAsynchronousPlayers = 1;
 			}
-			
+
 			ObjectMapper mapper = new ObjectMapper();
 
 			String json ="";
@@ -200,7 +201,7 @@ public class SynchronousVoteBehaviour extends Behaviour {
 			{
 				messageRequest.addReceiver(this.request.getAIDVoters().get(this.nbVoters+i));	
 			}
-		
+
 			this.myAgent.send(messageRequest);
 
 			this.nextStep = STATE_RECEIVE_INFORM;
@@ -303,7 +304,7 @@ public class SynchronousVoteBehaviour extends Behaviour {
 			for(AID aid : this.request.getAIDVoters()){
 				messageRequest.addReceiver(aid);	
 			}
-			
+
 			this.nbVoters = 0;
 			this.myAgent.send(messageRequest);
 			this.nextStep = STATE_ADD_SIMPLE_SUSPICION;
@@ -337,7 +338,7 @@ public class SynchronousVoteBehaviour extends Behaviour {
 				{
 					this.nbVoters = 0;
 					System.err.println("SUSPICION COLLECTIVE \n "+this.request.getCollectiveSuspicionScore().getScore());
-					
+
 					//sort random
 					Collections.shuffle(this.request.getVoters());
 					this.nextStep = STATE_SEND_REQUEST;
@@ -365,6 +366,29 @@ public class SynchronousVoteBehaviour extends Behaviour {
 			}
 			else
 			{
+				//defavorisé le bouc emmissaire
+				List<AID> scapegoats = DFServices.findGamePlayerAgent(Roles.SCAPEGOAT, this.myAgent, this.controllerAgent.getGameid());
+				List<String> nameScapegoats = new ArrayList<String>();
+				for(AID scapegoat : scapegoats)
+				{
+					nameScapegoats.add(scapegoat.getName());
+				}
+				for(String scapegoat : nameScapegoats)
+				{
+					if(this.finalResults.contains(scapegoat))
+					{
+						if(this.request.isVoteAgainst())
+						{
+							this.finalResults = nameScapegoats;
+						}
+						else if(this.finalResults.size()>1)
+						{
+							this.finalResults.remove(scapegoat);
+						}
+
+					}
+				}
+
 				if(this.lastResults != null && this.lastResults.equals(this.finalResults))
 				{
 					/** interblocage **/

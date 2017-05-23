@@ -1,4 +1,4 @@
-package sma.citizen_agent;
+package sma.scapegoat;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,11 +27,11 @@ import sma.vote_behaviour.CitizenSuspicionBehaviour;
 import sma.vote_behaviour.WerewolfScoreBehaviour;
 import sma.vote_behaviour.WerewolfSuspicionListener;
 
-public class CitizenInitBehaviour extends OneShotBehaviour{
+public class ScapegoatInitBehaviour extends OneShotBehaviour{
 	private PlayerAgent agent;
 	private AID receiver;
 
-	public CitizenInitBehaviour(PlayerAgent agent, AID receiver) {
+	public ScapegoatInitBehaviour(PlayerAgent agent, AID receiver) {
 		super();
 		this.agent = agent;
 		this.receiver = receiver;
@@ -39,44 +39,35 @@ public class CitizenInitBehaviour extends OneShotBehaviour{
 
 	@Override
 	public void action() {
-		System.out.println("CitizenInitBehaviour THIS PLAYER "+this.agent.getName());
+		
 		ArrayList<Behaviour> list_behav = new ArrayList<Behaviour>();
 		HashMap<String, ArrayList<Behaviour>> map_behaviour = this.agent.getMap_role_behaviours();
-
 		
 		CitizenSuspicionBehaviour citizenSuspicionBehaviour = new CitizenSuspicionBehaviour(this.agent);
 		list_behav.add(citizenSuspicionBehaviour);
-
 
 		CitizenSuspicionListener citizenSuspicionListener = new CitizenSuspicionListener(this.agent);
 		list_behav.add(citizenSuspicionListener);
 
 		CitizenSimpleSuspicionBehaviour citizenSimpleSuspicionBehaviour = new CitizenSimpleSuspicionBehaviour(this.agent);
 		list_behav.add(citizenSimpleSuspicionBehaviour);
-		//CitizenSimpleSuspicionBehaviour NOt generic car this one is for finding werewolf
 
 		this.agent.addBehaviour(citizenSimpleSuspicionBehaviour);
 		this.agent.addBehaviour(citizenSuspicionBehaviour);
 		this.agent.addBehaviour(citizenSuspicionListener);
 		this.agent.getVotingBehaviours().add(citizenSuspicionBehaviour.getName_behaviour());
-		
-		
-		
-		
-		//No death behaviour
-		//this.agent.getDeathBehaviours().add(genericSuspicionBehaviour.getName_behaviour());
-		
+	
 		//Handle attributes
-		map_behaviour.put(Roles.CITIZEN, list_behav);
+		map_behaviour.put(Roles.SCAPEGOAT, list_behav);
 
-		//enregirstrement NOT FOR CITIZEN CAUZ EVERY PLAYER IS ALREADY A CITIZEN
-		
 		//Envoie message fin d'initialisation
 		ACLMessage messageRequest = new ACLMessage(ACLMessage.AGREE);
 		messageRequest.setSender(this.agent.getAID());
 		messageRequest.setConversationId("INIT_ROLE");
 		messageRequest.addReceiver(this.receiver);
 		this.myAgent.send(messageRequest);	
+		
+		DFServices.registerPlayerAgent(Roles.SCAPEGOAT, this.myAgent, this.agent.getGameid());
 
 	}
 

@@ -1,6 +1,7 @@
 package ui.view;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
@@ -29,7 +30,8 @@ public class ViewMainMenu implements Screen {
     Skin skin;
     String test = "test";
     Label l ;
-
+    TextField rejoindre_ip_textField;
+    
 	public ViewMainMenu(App game){
 		app = game;
 		stage=new Stage();
@@ -58,7 +60,7 @@ public class ViewMainMenu implements Screen {
         table.add(rejoindre_label);
         table.row();
         
-        TextField rejoindre_ip_textField = new TextField("IP",skin);
+        rejoindre_ip_textField = new TextField("IP",skin);
         table.add(rejoindre_ip_textField);
         table.row();
         
@@ -79,15 +81,23 @@ public class ViewMainMenu implements Screen {
         creer_button.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-            	         	
-        		app.setScreen(new ViewNewGameMenu(app));
+            	app.newSystemContainer();
+            	try {
+					TimeUnit.SECONDS.sleep(5);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+            	app.newUIContainer("127.0.0.1");
+        		app.setScreen(new ViewJoinMenu(app));
             }
         });
         
         rejoindre_button.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-            	test = "ouiiiiii";
+            	app.newUIContainer(rejoindre_ip_textField.getText());
+        		app.setScreen(new ViewJoinMenu(app));
             }
         });
         

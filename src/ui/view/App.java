@@ -1,9 +1,12 @@
 package ui.view;
 
+import java.util.List;
+
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
 import jade.core.Agent;
+import sma.launch.GameContainer;
 import sma.launch.SystemContainer;
 import ui.agent.uiAgent;
 import ui.sma.UIContainer;
@@ -15,6 +18,16 @@ public class App extends Game {
 	private LwjglApplicationConfiguration config;
 	
 	public SystemContainer systemContainer = null; 
+	
+	public List<GameContainer> containers = null;
+
+	public List<GameContainer> getContainers() {
+		return containers;
+	}
+
+	public void setContainers(List<GameContainer> containers) {
+		this.containers = containers;
+	}
 
 	public UIContainer uiContainer = null; 
 	
@@ -28,11 +41,13 @@ public class App extends Game {
 	
 	public SystemContainer getSystemContainer() {
 		return systemContainer;
+		
+		
 	}
 	
 
-	public UIContainer newUIContainer() {
-		uiContainer = new UIContainer("127.0.0.1");
+	public UIContainer newUIContainer(String ip) {
+		uiContainer = new UIContainer(ip, this);
 		return uiContainer;
 	}
 	
@@ -56,7 +71,7 @@ public class App extends Game {
 
 	public void create() {
 		//agent = new uiAgent();
-		newSystemContainer();
+		//newSystemContainer();
 		this.setScreen(new ViewMainMenu(this));
 	}
 	

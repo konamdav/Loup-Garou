@@ -135,7 +135,7 @@ public class ViewNewGameMenu implements Screen {
         		
             	
       		
-        		app.setScreen(new ViewMainMenu(app));
+        		app.setScreen(new ViewJoinMenu(app));
             }
         });
         

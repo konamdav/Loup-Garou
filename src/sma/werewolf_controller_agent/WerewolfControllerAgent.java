@@ -30,7 +30,7 @@ public class WerewolfControllerAgent extends Agent implements IController {
 		this.gameid = (Integer) args[0];
 		
 		DFServices.registerGameControllerAgent("WEREWOLF", this, this.gameid);		
-		this.addBehaviour(new sma.generic.behaviour.SynchronousVoteBehaviour(this));
+		this.addBehaviour(new sma.generic_vote.SynchronousVoteBehaviour(this));
 		this.addBehaviour(new TurnBehaviour(this));
 		
 	}

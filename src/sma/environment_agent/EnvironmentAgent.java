@@ -2,6 +2,7 @@ package sma.environment_agent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 import jade.core.AID;
 import jade.core.Agent;
@@ -14,6 +15,8 @@ public class EnvironmentAgent extends Agent{
 	private VoteResults currentResults;
 	
 	private HumanVoteRequest humanVoteRequest;
+	
+	private Stack<HumanVoteRequest> stackRequest;
 	
 	private String dayState;
 	private List<String> actionLogs;
@@ -29,6 +32,7 @@ public class EnvironmentAgent extends Agent{
 		Object[] args = this.getArguments();
 		gameid = (int) args[0];
 		
+		stackRequest = new Stack<HumanVoteRequest>();
 		globalResults = new VoteResults();
 		currentResults = new VoteResults();
 		turn ="INIT";
@@ -46,6 +50,9 @@ public class EnvironmentAgent extends Agent{
 		this.addBehaviour(new CycleSendBehaviour(this));
 		this.addBehaviour(new CycleReceiveBehaviour(this));
 		
+	}
+	public Stack<HumanVoteRequest> getStackRequest() {
+		return stackRequest;
 	}
 	/*public List<AID> getListeners() {
 		return listeners;

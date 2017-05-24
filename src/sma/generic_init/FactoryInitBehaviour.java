@@ -15,10 +15,13 @@ import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import sma.citizen_agent.AngelInitBehaviour;
 import sma.citizen_agent.CitizenInitBehaviour;
+import sma.cupid.CupidInitBehaviour;
 import sma.flute_player.CharmedInitBehaviour;
 import sma.flute_player.FlutePlayerInitBehaviour;
 import sma.generic_vote.AbstractVoteBehaviour;
+import sma.littlegirl.LittleGirlInitBehaviour;
 import sma.lover_behaviour.LoverInitBehaviour;
 import sma.medium_behaviour.MediumInitBehaviour;
 import sma.model.DFServices;
@@ -28,6 +31,7 @@ import sma.model.VoteRequest;
 import sma.model.VoteResults;
 import sma.player_agent.MayorInitBehaviour;
 import sma.player_agent.PlayerAgent;
+import sma.scapegoat.ScapegoatInitBehaviour;
 import sma.werewolf_agent.WerewolfInitBehaviour;
 
 public class FactoryInitBehaviour extends CyclicBehaviour{
@@ -41,7 +45,6 @@ public class FactoryInitBehaviour extends CyclicBehaviour{
 	private final static String STATE_WAIT_ROLE ="STATE_WAIT_ROLE";
 	private final static String STATE_ANSWER_INIT_ROLE ="STATE_ANSWER_INIT_ROLE";
 	
-
 	public FactoryInitBehaviour(PlayerAgent agent) {
 		super();
 		this.agent = agent;
@@ -96,6 +99,18 @@ public class FactoryInitBehaviour extends CyclicBehaviour{
 				case Roles.CHARMED:
 					this.agent.addBehaviour(new CharmedInitBehaviour(this.agent, this.agent.getAID()));
 					break;
+				case Roles.SCAPEGOAT:
+					this.agent.addBehaviour(new ScapegoatInitBehaviour(this.agent, this.agent.getAID()));
+					break;
+				case Roles.ANGEL:
+					this.agent.addBehaviour(new AngelInitBehaviour(this.agent, this.agent.getAID()));
+					break;
+				case Roles.CUPID:
+					this.agent.addBehaviour(new CupidInitBehaviour(this.agent, this.agent.getAID()));
+					break;
+				case Roles.LITTLE_GIRL:
+					this.agent.addBehaviour(new LittleGirlInitBehaviour(this.agent, this.agent.getAID()));
+					break;
 				default:
 					System.err.print("Erreur role not valid" );
 						//throw new Exception();
@@ -124,7 +139,6 @@ public class FactoryInitBehaviour extends CyclicBehaviour{
 			if(message != null)
 			{
 				//TODO Machine à état too 
-				
 				ACLMessage messageRequest = new ACLMessage(ACLMessage.INFORM);
 				messageRequest.setSender(this.agent.getAID());
 				messageRequest.setConversationId("INIT_ROLE");

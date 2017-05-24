@@ -10,10 +10,10 @@ import sma.model.HumanVoteRequest;
 import sma.model.VoteResults;
 
 public class ReceiveBehaviour extends OneShotBehaviour {
-	
+
 	private EnvironmentAgent envAgent;
 	private ACLMessage message;
-	
+
 
 	public ReceiveBehaviour(EnvironmentAgent envAgent, ACLMessage message) {
 		super();
@@ -24,21 +24,21 @@ public class ReceiveBehaviour extends OneShotBehaviour {
 
 	@Override
 	public void action() {
-		
+
 		System.out.println("RECEIVE DATA");
-		
+
 		ObjectMapper mapper = new ObjectMapper();
-		
+
 		if(message.getConversationId().equals("NEW_CITIZEN_VOTE_RESULTS"))
 		{
 			try {
 				VoteResults newVoteResults = mapper.readValue(message.getContent(), VoteResults.class);
-				
+
 				this.envAgent.setCurrentResults(newVoteResults);
 				this.envAgent.getGlobalResults().add(newVoteResults);
-				
+
 				System.out.println("ENV AGENT | MAJ RESULTS ");
-				
+
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -48,7 +48,7 @@ public class ReceiveBehaviour extends OneShotBehaviour {
 			try {
 				VoteResults newVoteResults = mapper.readValue(message.getContent(), VoteResults.class);
 				this.envAgent.setCurrentResults(newVoteResults);
-				
+
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -72,13 +72,36 @@ public class ReceiveBehaviour extends OneShotBehaviour {
 		else if(message.getConversationId().equals("HUMAN_VOTE_REQUEST"))
 		{
 			try {
-				this.envAgent.setHumanVoteRequest(mapper.readValue(message.getContent(), HumanVoteRequest.class));
+				HumanVoteRequest req = mapper.readValue(message.getContent(), HumanVoteRequest.class);
+				if(req == null )
+				{
+					if(!this.envAgent.getStackRequest().isEmpty())
+					{
+						req = this.envAgent.getStackRequest().pop();
+					}
+
+					this.envAgent.setHumanVoteRequest(req);
+
+				}
+				else
+				{
+					if(this.envAgent.getStackRequest().isEmpty())
+					{
+						this.envAgent.setHumanVoteRequest(req);
+					}
+					else
+					{
+						this.envAgent.getStackRequest().push(req);
+					}
+
+				}
+
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
 	}
 
-	
+
 
 }

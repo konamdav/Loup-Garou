@@ -20,10 +20,10 @@ import sma.model.Roles;
 import sma.model.ScoreResults;
 import sma.model.VoteRequest;
 import sma.player_agent.PlayerAgent;
+import sma.vote_behaviour.CharmedScoreBehaviour;
 import sma.vote_behaviour.CitizenScoreBehaviour;
 import sma.vote_behaviour.CitizenSimpleSuspicionBehaviour;
 import sma.vote_behaviour.CitizenSuspicionListener;
-import sma.vote_behaviour.FlutePlayerScoreBehaviour;
 import sma.vote_behaviour.CitizenSuspicionBehaviour;
 import sma.vote_behaviour.MediumSuspicionListener;
 import sma.vote_behaviour.WerewolfScoreBehaviour;
@@ -44,12 +44,11 @@ public class CharmedInitBehaviour extends OneShotBehaviour{
 	public void action() {
 		ArrayList<Behaviour> list_behav = new ArrayList<Behaviour>();
 		HashMap<String, ArrayList<Behaviour>> map_behaviour = this.agent.getMap_role_behaviours();
-
 		
-		FlutePlayerScoreBehaviour flutePlayerScoreBehaviour = new FlutePlayerScoreBehaviour(this.agent);
-		list_behav.add(flutePlayerScoreBehaviour);
-		
-		this.agent.getVotingBehaviours().add(flutePlayerScoreBehaviour.getName_behaviour());
+		CharmedScoreBehaviour charmedScoreBehaviour = new CharmedScoreBehaviour(this.agent);
+		list_behav.add(charmedScoreBehaviour);
+		this.agent.addBehaviour(charmedScoreBehaviour);
+		this.agent.getVotingBehaviours().add(charmedScoreBehaviour.getName_behaviour());
 		map_behaviour.put(Roles.CHARMED, list_behav);
 		
 		//enregirstrement

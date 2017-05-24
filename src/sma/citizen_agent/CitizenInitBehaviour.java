@@ -42,9 +42,7 @@ public class CitizenInitBehaviour extends OneShotBehaviour{
 		System.out.println("CitizenInitBehaviour THIS PLAYER "+this.agent.getName());
 		ArrayList<Behaviour> list_behav = new ArrayList<Behaviour>();
 		HashMap<String, ArrayList<Behaviour>> map_behaviour = this.agent.getMap_role_behaviours();
-		
-		LoverDeathBehaviour loverDeathBehaviour = new LoverDeathBehaviour(this.agent); //FOR TEST
-		list_behav.add(loverDeathBehaviour);
+
 		
 		CitizenSuspicionBehaviour citizenSuspicionBehaviour = new CitizenSuspicionBehaviour(this.agent);
 		list_behav.add(citizenSuspicionBehaviour);
@@ -63,10 +61,7 @@ public class CitizenInitBehaviour extends OneShotBehaviour{
 		this.agent.getVotingBehaviours().add(citizenSuspicionBehaviour.getName_behaviour());
 		
 		
-		//TEST
-		this.agent.addBehaviour(loverDeathBehaviour);
-
-		this.agent.getDeathBehaviours().add(loverDeathBehaviour.getName_behaviour());
+		
 		
 		//No death behaviour
 		//this.agent.getDeathBehaviours().add(genericSuspicionBehaviour.getName_behaviour());

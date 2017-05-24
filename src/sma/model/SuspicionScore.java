@@ -58,7 +58,7 @@ public class SuspicionScore
 	@JsonIgnore
 	public void addScore(String name, int score)
 	{
-		this.score.put(name, score);
+		this.score.put(name, score + this.getScore(name));
 	}
 	
 	@JsonIgnore

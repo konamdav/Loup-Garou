@@ -5,6 +5,7 @@ import jade.core.ProfileImpl;
 import jade.core.Runtime;
 import jade.wrapper.AgentContainer;
 import jade.wrapper.AgentController;
+import sma.cupid_controller.CupidControllerAgent;
 import sma.flute_player_controller.FlutePlayerControllerAgent;
 import sma.medium_controller.MediumControllerAgent;
 import sma.model.GameSettings;
@@ -60,6 +61,14 @@ public class GameContainer {
 			{
 				ac = container.createNewAgent(
 						"WEREWOLF_CONTROLLER_AGENT_"+gameid, "sma.werewolf_controller_agent.WerewolfControllerAgent", objects);
+				ac.start();
+			}
+			
+			//selection role CUPID
+			if(this.gameSettings.isRoleRegistered(Roles.CUPID))
+			{
+				ac = container.createNewAgent(
+						"CUPID_CONTROLLER_AGENT_"+gameid, CupidControllerAgent.class.getName(), objects);
 				ac.start();
 			}
 

@@ -83,7 +83,7 @@ public class CitizenSuspicionListener extends Behaviour{
 			//maj grid
 			for(AID aid : neighbors)
 			{
-				this.suspicionScore.addScore(aid.getName(), ScoreFactor.SCORE_FACTOR_SUSPICION_WEREWOLF);
+				this.suspicionScore.addScore(aid.getName(), 10);
 			}
 			
 			this.nextStep =  STATE_INIT;

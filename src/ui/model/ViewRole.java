@@ -1,8 +1,10 @@
-package ui.view;
+package ui.model;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
+import sma.model.Roles;
 /**
  * Hp Bar
  * @author Davy
@@ -13,6 +15,7 @@ public class ViewRole {
 	private int[] position;
 	private SpriteBatch batch;
 	private ViewRoles roles;
+	private String name;
 
 	/**
 	 * Constructeur
@@ -25,18 +28,15 @@ public class ViewRole {
 		this.position=new int[2];
 		this.batch=this.roles.getPlayer().getSpriteBatch();
 		this.textureRole = null;
-		
-		if(role.equals("WEREWOLF"))
-		{
-			this.textureRole = new Texture(Gdx.files.internal("resources/sprites/werewolf.png"));
-		}
-		else
-		{
-			this.textureRole = new Texture(Gdx.files.internal("resources/sprites/citizen.png"));
-		}
-		
+		this.name = role;
+		this.textureRole = new Texture(Gdx.files.internal("resources/sprites/"+role.toLowerCase()+".png"));
+				
 		this.position[0] = x;
 		this.position[1] = y;
+	}
+
+	public String getName() {
+		return name;
 	}
 
 	public void update()

@@ -37,7 +37,12 @@ public class TurnBehaviour extends SimpleBehaviour {
 	private final static String STATE_RECEIVE_VOTE_REQUEST = "RECEIVE_VOTE_REQUEST";
 	private final static String STATE_SEND_SLEEP_ALL = "SEND_SLEEP_ALL";
 	private final static String STATE_RECEIVE_SLEEP_ALL = "RECEIVE_SLEEP_ALL";
-	private static final String STATE_SEND_ADD_CHARMED = "ADD_VICTIM";
+	private static final String STATE_SEND_ADD_CHARMED = "ADD_CHARMED";
+	private static final String STATE_SEND_WAKE_CHARMED = "SEND_WAKE_CHARMED";
+	private static final String STATE_RECEIVE_WAKE_CHARMED = "RECEIVE_WAKE_CHARMED";
+	private static final String STATE_SEND_SLEEP_CHARMED = "SEND_SLEEP_CHARMED";
+	private static final String STATE_RECEIVE_WAIT_CHARMED = "RECEIVE_WAIT_CHARMED";
+	private static final String STATE_RECEIVE_SLEEP_CHARMED = "RECEIVE_SLEEP_CHARMED";
 
 	private String step;
 	private String nextStep;
@@ -58,6 +63,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 
 	@Override
 	public void action() {
+			
 		/** etat initial **/
 		if(this.step.equals(STATE_INIT))
 		{
@@ -202,8 +208,36 @@ public class TurnBehaviour extends SimpleBehaviour {
 			{
 				String chosen = message.getContent();
 				this.aidChosen = new AID(chosen);
-				//aidVictim = new AID(victim);
 
+				this.nextStep = STATE_SEND_WAKE_CHARMED;
+			}
+			else
+			{
+				block();
+			}
+		}
+		
+		else if(this.step.equals(STATE_SEND_WAKE_CHARMED))
+		{
+			ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
+			message.setConversationId("WAKE_PLAYER");
+			message.setSender(this.ctrlAgent.getAID());
+			message.addReceiver(aidChosen);
+			//message.setContent(Roles.CHARMED);
+			this.ctrlAgent.send(message);
+			
+			this.nextStep = STATE_RECEIVE_WAKE_CHARMED;
+		}
+		else if(this.step.equals(STATE_RECEIVE_WAKE_CHARMED))
+		{
+			/*** reception demande de vote **/
+			MessageTemplate mt = MessageTemplate.and(
+					MessageTemplate.MatchPerformative(ACLMessage.CONFIRM),
+					MessageTemplate.MatchConversationId("WAKE_PLAYER"));
+
+			ACLMessage message = this.myAgent.receive(mt);
+			if(message != null)
+			{
 				this.nextStep = STATE_SEND_ADD_CHARMED;
 			}
 			else
@@ -211,17 +245,65 @@ public class TurnBehaviour extends SimpleBehaviour {
 				block();
 			}
 		}
+		
+		else if(this.step.equals(STATE_SEND_SLEEP_CHARMED))
+		{
+			ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
+			message.setConversationId("SLEEP_PLAYER");
+			message.setSender(this.ctrlAgent.getAID());
+			message.addReceiver(aidChosen);
+			//message.setContent(Roles.CHARMED);
+			this.ctrlAgent.send(message);
+			
+			this.nextStep = STATE_RECEIVE_SLEEP_CHARMED;
+		}
+		else if(this.step.equals(STATE_RECEIVE_SLEEP_CHARMED))
+		{
+			/*** reception demande de vote **/
+			MessageTemplate mt = MessageTemplate.and(
+					MessageTemplate.MatchPerformative(ACLMessage.CONFIRM),
+					MessageTemplate.MatchConversationId("SLEEP_PLAYER"));
+
+			ACLMessage message = this.myAgent.receive(mt);
+			if(message != null)
+			{
+				this.nextStep = STATE_SEND_SLEEP_ALL;
+			}
+			else
+			{
+				block();
+			}
+		}
+		
 		/** etat envoi des requ�tes de sommeil **/
 		else if(this.step.equals(STATE_SEND_ADD_CHARMED))
 		{
 			ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
 			
-			message.setConversationId("SET_CHARMED");
+			message.setConversationId("ATTRIBUTION_ROLE");
 			message.setSender(this.ctrlAgent.getAID());
 			message.addReceiver(aidChosen);
+			message.setContent(Roles.CHARMED);
 			this.ctrlAgent.send(message);
 			
-			this.nextStep = STATE_SEND_SLEEP_ALL;
+			this.nextStep = STATE_RECEIVE_WAIT_CHARMED;
+		}
+		else if(this.step.equals(STATE_RECEIVE_WAIT_CHARMED))
+		{
+			System.out.println("WAIT CHARMED");
+			MessageTemplate mt = MessageTemplate.and(
+					MessageTemplate.MatchPerformative(ACLMessage.INFORM),
+					MessageTemplate.MatchConversationId("ATTRIBUTION_ROLE"));
+
+			ACLMessage message = this.myAgent.receive(mt);
+			if(message != null)
+			{
+				this.nextStep = STATE_SEND_SLEEP_CHARMED;
+			}
+			else
+			{
+				block();
+			}
 		}
 		/** etat envoi des requ�tes de sommeil **/
 		else if(this.step.equals(STATE_SEND_SLEEP_ALL))

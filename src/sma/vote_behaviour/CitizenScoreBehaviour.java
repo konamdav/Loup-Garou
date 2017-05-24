@@ -20,7 +20,7 @@ import sma.player_agent.PlayerAgent;
  * @author Davy
  *
  */
-public class CitizenScoreBehaviour extends Behaviour{
+public class CitizenScoreBehaviour extends Behaviour implements IVoteBehaviour{
 	private PlayerAgent playerAgent;
 	private String name_behaviour;
 

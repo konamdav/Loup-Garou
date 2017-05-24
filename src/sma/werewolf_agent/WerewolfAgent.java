@@ -10,7 +10,6 @@ import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import sma.generic_vote.AbstractVoteBehaviour;
 import sma.generic_vote.IVotingAgent;
-import sma.lover_behaviour.LoverVoteBehaviour;
 import sma.model.DFServices;
 
 /***

@@ -24,7 +24,7 @@ import sma.player_agent.PlayerAgent;
  * @author Davy
  *
  */
-public class LoverScoreBehaviour extends Behaviour{
+public class LoverScoreBehaviour extends Behaviour implements IVoteBehaviour{
 	private PlayerAgent playerAgent;
 	private String name_behaviour;
 
@@ -93,13 +93,15 @@ public class LoverScoreBehaviour extends Behaviour{
 
 			String [] args = {Roles.LOVER, Status.WAKE};
 			List<AID> agents = DFServices.findGamePlayerAgent(args, this.playerAgent, this.playerAgent.getGameid());
-			
 			String[] args2 = {Roles.LOVER, Status.SLEEP};
 			agents.addAll(DFServices.findGamePlayerAgent(args2, this.playerAgent, this.playerAgent.getGameid()));
+			
+			System.err.println("SIZE "+agents.size());
+			
 			AID lover = null;
 			for(AID aid : agents)
 			{
-				if(!aid.getName().equals(this.playerAgent.getPlayerName()))
+				if(!aid.getName().equals(this.playerAgent.getAID().getName()))
 				{
 					lover = aid;
 				}
@@ -163,7 +165,7 @@ public class LoverScoreBehaviour extends Behaviour{
 			else
 			{
 				//lover
-				if(player.getName().equals(lover.getName()))
+				if(lover!=null&&player.getName().equals(lover.getName()))
 				{
 					score = ScoreFactor.SCORE_MIN;
 				}
@@ -191,7 +193,7 @@ public class LoverScoreBehaviour extends Behaviour{
 			else
 			{
 				//lover ?
-				if(player.getName().equals(lover.getName()))
+				if(lover!=null&& player.getName().equals(lover.getName()))
 				{
 					if(request.getRequest().equals("WITCH_SAVE_VOTE"))
 					{
@@ -201,13 +203,18 @@ public class LoverScoreBehaviour extends Behaviour{
 					{
 						score +=250;
 					}
+					
+					
 
 				}
 				
-				
+				if(lover!=null)
+				{
+					score += localResults.getVoteCount(player.getName(), lover.getName()) *ScoreFactor.SCORE_FACTOR_LOVER_VOTE; 
+				}
 				// regles de scoring
 				//lover a d�j� vot� pour lui
-				score += localResults.getVoteCount(player.getName(), lover.getName()) *ScoreFactor.SCORE_FACTOR_LOVER_VOTE; 
+
 				//nb de voix qu'il a d�j�
 				score += localResults.getVoteCount(player.getName()) *ScoreFactor.SCORE_FACTOR_LOCAL_NB_VOTE;
 

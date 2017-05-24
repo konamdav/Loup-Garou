@@ -24,7 +24,7 @@ import sma.player_agent.PlayerAgent;
  * @author Davy
  *
  */
-public class FlutePlayerScoreBehaviour extends Behaviour{
+public class FlutePlayerScoreBehaviour extends Behaviour implements IVoteBehaviour{
 	private PlayerAgent playerAgent;
 	private String name_behaviour;
 
@@ -50,7 +50,7 @@ public class FlutePlayerScoreBehaviour extends Behaviour{
 
 	@Override
 	public void action() {
-
+		
 		if(step.equals(STATE_INIT))
 		{
 			this.request = null;
@@ -92,11 +92,18 @@ public class FlutePlayerScoreBehaviour extends Behaviour{
 			scoreResults = new ScoreResults(scores);
 
 			String [] args = {Roles.FLUTE_PLAYER, Status.WAKE};
-			List<AID> agents = DFServices.findGamePlayerAgent(args, this.playerAgent, this.playerAgent.getGameid());
+			String [] args2 = {Roles.CHARMED, Status.WAKE};
+			List<AID> fluteplayers = DFServices.findGamePlayerAgent(args, this.playerAgent, this.playerAgent.getGameid());
+			args[1] = Status.SLEEP;
+			fluteplayers.addAll(DFServices.findGamePlayerAgent(args, this.playerAgent, this.playerAgent.getGameid()));
+			
+			List<AID> charmed = DFServices.findGamePlayerAgent(args2, this.playerAgent, this.playerAgent.getGameid());
+			args2[1] = Status.SLEEP;
+			charmed.addAll(DFServices.findGamePlayerAgent(args2, this.playerAgent, this.playerAgent.getGameid()));
 			
 			for(AID player : this.request.getAIDChoices())
 			{
-				scores.put(player.getName(), this.score(player, request, agents));
+				scores.put(player.getName(), this.score(player, request, fluteplayers, charmed));
 			}
 
 			this.nextStep =  STATE_SEND_SCORE;
@@ -136,7 +143,7 @@ public class FlutePlayerScoreBehaviour extends Behaviour{
 	}
 
 
-	private int score(AID player,  VoteRequest request, List<AID> fluteplayers)
+	private int score(AID player,  VoteRequest request, List<AID> fluteplayers, List<AID> charmed)
 	{
 		VoteResults globalResults = request.getGlobalCitizenVoteResults();
 		VoteResults localResults = request.getLocalVoteResults();
@@ -159,8 +166,22 @@ public class FlutePlayerScoreBehaviour extends Behaviour{
 					}
 					
 				}
+				
+				boolean isCharmed = false;
+				for(AID aid : charmed)
+				{
+					if(player.getName().equals(aid.getName()))
+					{
+						isCharmed = true;
+						score -=100;
+					}
+					
+				}
 		
-				if(!isFlutePlayer || (isFlutePlayer  && localResults.getVoteCount(player.getName())!=0))
+				if(!isFlutePlayer || !isCharmed 
+						|| (isFlutePlayer && localResults.getVoteCount(player.getName())!=0)
+						|| (isCharmed  && localResults.getVoteCount(player.getName())!=0)
+						)
 				{			
 					// regles de scoring
 					score += localResults.getVoteCount(player.getName(), fluteplayers) *ScoreFactor.SCORE_FACTOR_WEREWOLF_VOTE;
@@ -172,7 +193,12 @@ public class FlutePlayerScoreBehaviour extends Behaviour{
 						diff+= localResults.getDifferenceVote(player.getName(), wolf.getName());
 					}
 					
-					diff = diff/fluteplayers.size();
+					for(AID wolf : charmed)
+					{
+						diff+= localResults.getDifferenceVote(player.getName(), wolf.getName());
+					}
+					
+					diff = diff/(fluteplayers.size()+charmed.size());
 					score+= diff * ScoreFactor.SCORE_FACTOR_DIFFERENCE_LOCAL_VOTE;
 				}
 				else
@@ -201,6 +227,22 @@ public class FlutePlayerScoreBehaviour extends Behaviour{
 				}
 				
 				if(isFlutePlayer)
+				{
+					score += 100;
+				}
+			
+				boolean isCharmed = false;
+				for(AID aid : charmed)
+				{
+					if(player.getName().equals(aid.getName()))
+					{
+						isCharmed = true;
+						score -=100;
+					}
+					
+				}
+				
+				if(isCharmed)
 				{
 					score += 100;
 				}

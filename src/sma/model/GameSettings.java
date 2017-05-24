@@ -16,11 +16,13 @@ public class GameSettings {
 		
 		//Liste role par défaut
 		this.rolesSettings = new HashMap<String, Integer>();
-		this.rolesSettings.put(Roles.WEREWOLF, 1);
+		this.rolesSettings.put(Roles.WEREWOLF, 2);
 		this.rolesSettings.put(Roles.CITIZEN, 3);
-		this.rolesSettings.put(Roles.CUPID, 0);
-		this.rolesSettings.put(Roles.LITTLE_GIRL, 0);
+		this.rolesSettings.put(Roles.CUPID, 1);
+		this.rolesSettings.put(Roles.LITTLE_GIRL, 4);
 		this.rolesSettings.put(Roles.MEDIUM,0);
+		this.rolesSettings.put(Roles.ANGEL,2);
+		this.rolesSettings.put(Roles.FLUTE_PLAYER,0);
 
 
 	}
@@ -67,6 +69,16 @@ public class GameSettings {
 
 	@JsonIgnore
 	public boolean isRoleRegistered(String key) {
+		if(key.equals(Roles.CITIZEN))
+		{
+			return true;
+		}
+		else if(key.equals(Roles.WEREWOLF))
+		{
+			return rolesSettings.containsKey(key) && rolesSettings.get(key)>0
+					|| rolesSettings.containsKey(Roles.GREAT_WEREWOLF) && rolesSettings.get(Roles.GREAT_WEREWOLF)>0
+					|| rolesSettings.containsKey(Roles.WHITE_WEREWOLF) && rolesSettings.get(Roles.WHITE_WEREWOLF)>0;
+		}
 		return rolesSettings.containsKey(key) && rolesSettings.get(key)>0;
 	}
 

@@ -21,7 +21,7 @@ import sma.player_agent.PlayerAgent;
  * @author Davy
  *
  */
-public class CitizenSuspicionBehaviour extends Behaviour{
+public class CitizenSuspicionBehaviour extends Behaviour implements IVoteBehaviour{
 	private PlayerAgent playerAgent;
 	private String name_behaviour;
 
@@ -143,7 +143,7 @@ public class CitizenSuspicionBehaviour extends Behaviour{
 		}
 		else
 		{
-			score = collectiveSuspicion.getScore(player.getName())+this.suspicionScore.getScore(player.getName())*2000;
+			score = collectiveSuspicion.getScore(player.getName())+this.suspicionScore.getScore(player.getName());
 			if(!request.isVoteAgainst())
 			{
 				score = score * -1;

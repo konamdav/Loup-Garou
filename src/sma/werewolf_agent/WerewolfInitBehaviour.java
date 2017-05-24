@@ -52,10 +52,8 @@ public class WerewolfInitBehaviour extends OneShotBehaviour{
 		WerewolfSuspicionBehaviour werewolfSuspicionBehaviour = new WerewolfSuspicionBehaviour(this.agent);
 		list_behav.add(werewolfSuspicionBehaviour);
 
-		//Not for werewolf, Do in a common one TODO Look if has to keep it 
 		WerewolfSuspicionListener werewolfSuspicionListener = new WerewolfSuspicionListener(this.agent);
 		list_behav.add(werewolfSuspicionListener);
-		//werewolfSuspicionListener //LISTENER AIT MESSAGE for suscipions
 
 		WerewolfSimpleSuspicionBehaviour werewolfSimpleSuspicionBehaviour = new WerewolfSimpleSuspicionBehaviour(this.agent);
 		this.agent.addBehaviour(werewolfSimpleSuspicionBehaviour);
@@ -70,13 +68,8 @@ public class WerewolfInitBehaviour extends OneShotBehaviour{
 		this.agent.addBehaviour(werewolfSuspicionListener);
 		list_behav.add(werewolfSuspicionListener);
 		
-		//TODO CEDRIC 
-		//routing for abstractVote behaviour
-		//don't forget this.agent.getVotingBehaviours().add(<VOTE BEHAVIOUR>.getName_behaviour())
 		this.agent.getVotingBehaviours().add(werewolfScoreBehaviour.getName_behaviour());
 		this.agent.getVotingBehaviours().add(werewolfSuspicionBehaviour.getName_behaviour());
-
-		//citizenScoreBehaviour // VOTE CONTRE CEUX DEJA VOTER //TODO DAVID MODIFIER NON TO GENERIC
 
 		//Handle attributes
 		map_behaviour.put(Roles.WEREWOLF, list_behav);

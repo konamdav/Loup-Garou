@@ -10,11 +10,11 @@ import ui.model.Map;
  * @author Davy
  *Gere tout ce qui est relatif au terrain
  */
-public class Controleur_Terrain {
+public class MapController {
 	private Map sonTerrain;
 	private static int ii = 0;
 
-	public  Controleur_Terrain() {
+	public  MapController() {
 		super();
 		preparerTerrain();
 	}

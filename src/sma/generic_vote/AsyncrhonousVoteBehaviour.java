@@ -1,4 +1,4 @@
-package sma.generic.behaviour;
+package sma.generic_vote;
 
 import java.io.IOException;
 import java.util.ArrayList;

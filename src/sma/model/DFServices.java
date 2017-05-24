@@ -87,11 +87,11 @@ public class DFServices {
 			fe.printStackTrace();
 		}
 	}
-	
+
 	public static void registerGameControllerAgent(String name, Agent agent,  int gameid){
 		DFServices.registerGameAgent("CONTROLLER", name, agent, gameid);
 	}
-	
+
 
 	private static DFAgentDescription getDFAgentDescription(Agent agent)
 	{
@@ -191,7 +191,7 @@ public class DFServices {
 	public static boolean containsGameAgent(AID agent,String type, String name, Agent searcher, int gameid){
 		return DFServices.findGameAgent(type, name, searcher, gameid).contains(agent);
 	}
-	
+
 	public static AID getSystemController(Agent agent) {
 		AID rec = null;
 		DFAgentDescription template =
@@ -394,17 +394,78 @@ public class DFServices {
 			profile.getRoles().add("WEREWOLF");
 			profile.getRoles().remove("CITIZEN");
 		}
-		
+
+
+		//get profiles joueurs angel
+		List<AID> angels = DFServices.findGamePlayerAgent(Roles.ANGEL, agent, gameid);
+		for(AID angel : angels)
+		{
+			PlayerProfile profile = tmp.get(angel.getLocalName());
+			profile.getRoles().add("ANGEL");
+			profile.getRoles().remove("CITIZEN");
+		}
+
+		//get profiles joueurs flute
+		List<AID> flutes = DFServices.findGamePlayerAgent(Roles.FLUTE_PLAYER, agent, gameid);
+		for(AID flute : flutes)
+		{
+			PlayerProfile profile = tmp.get(flute.getLocalName());
+			profile.getRoles().add(Roles.FLUTE_PLAYER);
+			profile.getRoles().remove("CITIZEN");
+		}
+
+		//get profiles joueurs flute
+		List<AID> girls = DFServices.findGamePlayerAgent(Roles.LITTLE_GIRL, agent, gameid);
+		for(AID girl : girls)
+		{
+			PlayerProfile profile = tmp.get(girl.getLocalName());
+			profile.getRoles().add(Roles.LITTLE_GIRL);
+			profile.getRoles().remove("CITIZEN");
+		}
+
+		//get profiles joueurs flute
+		List<AID> cupids = DFServices.findGamePlayerAgent(Roles.CUPID, agent, gameid);
+		for(AID cupid : cupids)
+		{
+			PlayerProfile profile = tmp.get(cupid.getLocalName());
+			profile.getRoles().add(Roles.CUPID);
+			profile.getRoles().remove("CITIZEN");
+		}
+
+		//get profiles joueurs 
+		List<AID> humans = DFServices.findGamePlayerAgent("HUMAN", agent, gameid);
+		for(AID human : humans)
+		{
+			PlayerProfile profile = tmp.get(human.getLocalName());
+			profile.getRoles().add("HUMAN");
+
+		}
+
+		//get profiles joueurs lover
+		List<AID> lovers = DFServices.findGamePlayerAgent(Roles.LOVER, agent, gameid);
+		for(AID lover : lovers)
+		{
+			PlayerProfile profile = tmp.get(lover.getLocalName());
+			profile.getRoles().add(Roles.LOVER);
+		}
+
+		//get profiles joueurs charmed
+		List<AID> charmed = DFServices.findGamePlayerAgent(Roles.CHARMED, agent, gameid);
+		for(AID ch : charmed)
+		{
+			PlayerProfile profile = tmp.get(ch.getLocalName());
+			profile.getRoles().add(Roles.CHARMED);
+		}
+
 		//get profiles joueurs medium
 		List<AID> mediums = DFServices.findGamePlayerAgent(Roles.MEDIUM, agent, gameid);
-		
+
 		for(AID medium : mediums)
 		{
 			PlayerProfile profile = tmp.get(medium.getLocalName());
 			profile.getRoles().add(Roles.MEDIUM);
 			profile.getRoles().remove(Roles.CITIZEN);
 		}
-
 
 		//get profiles joueurs mayor
 		List<AID> mayors = DFServices.findGamePlayerAgent(Roles.MAYOR, agent, gameid);
@@ -456,8 +517,7 @@ public class DFServices {
 		for(Entry<String, PlayerProfile> entry : tmp.entrySet())
 		{
 			list.add(entry.getValue());
-
-			entry.getValue().print();
+			//entry.getValue().print();
 		}
 
 		return list;

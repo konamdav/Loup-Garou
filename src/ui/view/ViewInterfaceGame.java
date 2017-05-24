@@ -1,7 +1,8 @@
 
 package ui.view;
 import java.util.ArrayList;
-
+import java.util.Timer;
+import java.util.TimerTask;
 
 //Import des fichiers libgdx
 import com.badlogic.gdx.Gdx;
@@ -18,6 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 import sma.launch.SystemContainer;
+import sma.model.DFServices;
 import sma.model.PlayerProfile;
 import sma.model.Roles;
 import sma.model.Status;
@@ -38,12 +40,15 @@ public class ViewInterfaceGame implements Screen{
 
 	private int mapx; 
 	private int mapy;
+	private App game;
+	protected java.util.List<PlayerProfile> list;
 
 	public ViewInterfaceGame (App game){
 		this.ctrlTerrain = new MapController();
 		hover = true;
 		mapx = 0;
 		mapy = 0;
+		this.game = game;
 	}
 
 
@@ -109,11 +114,33 @@ public class ViewInterfaceGame implements Screen{
 			list.pack();
 			stage.addActor(list);
 		}
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
-		this.viewPlayers.updatePlayers(profiles);
+		list = DFServices.getPlayerProfiles(this.game.agent, 0);
+		this.viewPlayers.updatePlayers(list);
+/*
+		Timer t = new Timer();
+		t.scheduleAtFixedRate(new TimerTask(){
+			@Override
+			public void run() {
+				System.out.println("oooo");
+				Gdx.app.postRunnable(new Runnable(){
+					@Override
+					public void run() {
+						
+						
+					}	
+				});
+			}
+		}, 1000, 1000);
+		
 
-
-
+*/
 		terrain=new ViewMap((SpriteBatch) stage.getBatch(), ctrlTerrain);
 
 		ViewPlayer player;
@@ -143,20 +170,28 @@ public class ViewInterfaceGame implements Screen{
 		viewPlayers.drawPlayersDead();
 		viewPlayers.drawPlayersSleep();
 
-		if(iii > 100)
+		
+		
+		
+		/*if(iii > 100)
 		{
 			stage.getBatch().draw(textureNight,0,0);
 			if(iii == 101) 	this.viewPlayers.sleep();
+			System.gc();
 
 		}
-
+*/
 		++iii;
 
-		if(iii> 200)
+		
+		viewPlayers.updatePlayers(list);
+		
+		if(iii> 10)
 		{
 			iii = 0;
-			this.viewPlayers.wake();
-			this.viewPlayers.dead();
+			list = DFServices.getPlayerProfiles(game.agent, 0);
+			//this.viewPlayers.wake();
+			//this.viewPlayers.dead();
 		}
 
 		viewPlayers.drawPlayersWake();

@@ -10,6 +10,7 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import sma.generic_vote.IVotingAgent;
 import sma.model.DFServices;
+import sma.model.Functions;
 import sma.model.ScoreResults;
 import sma.model.VoteRequest;
 
@@ -30,9 +31,8 @@ public class SleepBehaviour extends SimpleBehaviour{
 		ACLMessage message = this.myAgent.receive(mt);
 		if (message != null) 
 		{
-			System.out.println("I SLEEP ");
 			this.playerAgent.setStatutandRegister("SLEEP");
-			//DFServices.setStatusPlayerAgent("SLEEP", this.playerAgent, this.playerAgent.getGameid());
+			Functions.newActionToLog(this.playerAgent.getLocalName()+" s'endort", this.playerAgent, this.playerAgent.getGameid());
 			
 			ACLMessage reply = new ACLMessage(ACLMessage.CONFIRM);
 			reply.setConversationId("SLEEP_PLAYER");

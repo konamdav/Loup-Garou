@@ -415,6 +415,15 @@ public class DFServices {
 		}
 
 		//get profiles joueurs flute
+		List<AID> girls = DFServices.findGamePlayerAgent(Roles.LITTLE_GIRL, agent, gameid);
+		for(AID girl : girls)
+		{
+			PlayerProfile profile = tmp.get(girl.getLocalName());
+			profile.getRoles().add(Roles.LITTLE_GIRL);
+			profile.getRoles().remove("CITIZEN");
+		}
+
+		//get profiles joueurs flute
 		List<AID> cupids = DFServices.findGamePlayerAgent(Roles.CUPID, agent, gameid);
 		for(AID cupid : cupids)
 		{
@@ -429,7 +438,7 @@ public class DFServices {
 		{
 			PlayerProfile profile = tmp.get(human.getLocalName());
 			profile.getRoles().add("HUMAN");
-			
+
 		}
 
 		//get profiles joueurs lover
@@ -508,8 +517,7 @@ public class DFServices {
 		for(Entry<String, PlayerProfile> entry : tmp.entrySet())
 		{
 			list.add(entry.getValue());
-
-			entry.getValue().print();
+			//entry.getValue().print();
 		}
 
 		return list;

@@ -10,6 +10,7 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import sma.generic_vote.IVotingAgent;
 import sma.model.DFServices;
+import sma.model.Functions;
 import sma.model.ScoreResults;
 import sma.model.VoteRequest;
 
@@ -30,11 +31,10 @@ public class WakeBehaviour extends SimpleBehaviour{
 		ACLMessage message = this.myAgent.receive(mt);
 		if (message != null) 
 		{
-			System.out.println("I WAKE ");
-			this.playerAgent.setStatutandRegister("WAKE");
-
-			//DFServices.setStatusPlayerAgent("WAKE", this.playerAgent, this.playerAgent.getGameid());
 			
+			this.playerAgent.setStatutandRegister("WAKE");
+			Functions.newActionToLog(this.playerAgent.getLocalName()+" se reveille", this.playerAgent, this.playerAgent.getGameid());
+		
 			ACLMessage reply = new ACLMessage(ACLMessage.CONFIRM);
 			reply.setConversationId("WAKE_PLAYER");
 			reply.setSender(this.myAgent.getAID());

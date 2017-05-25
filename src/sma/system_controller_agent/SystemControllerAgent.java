@@ -37,7 +37,7 @@ public class SystemControllerAgent extends Agent{
 
 		//test init 
 		//send msg
-		
+
 		ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
 		message.setConversationId("CREATE_GAME_REQUEST");
 		message.setSender(this.getAID());

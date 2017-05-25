@@ -19,14 +19,14 @@ public class App extends Game {
 	
 	public SystemContainer systemContainer = null; 
 	
-	public List<Integer> containers = null;
+	public List<GameContainer> containers = null;
 
-	public List<Integer> getContainers() {
+	public List<GameContainer> getContainers() {
 		return containers;
 	}
 
-	public void setContainers(List<Integer> containers) {
-		this.containers = containers;
+	public void setContainers(List<GameContainer> containers2) {
+		this.containers = containers2;
 	}
 
 	public UIContainer uiContainer = null; 

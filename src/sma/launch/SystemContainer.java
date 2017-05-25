@@ -72,7 +72,7 @@ public class SystemContainer {
 		}).start();
 	}
 	
-	public SystemContainer(App a)
+	public SystemContainer(final App a)
 	{
 		new Thread(new Runnable(){
 			@Override

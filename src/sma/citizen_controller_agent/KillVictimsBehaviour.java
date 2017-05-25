@@ -48,6 +48,7 @@ public class KillVictimsBehaviour extends SimpleBehaviour
 			/** pop la victime **/
 			if(this.citizenControllerAgent.getVictims().isEmpty())
 			{
+				System.err.println("KV No more victims");
 				this.nextStep =STATE_END;
 			}
 			else
@@ -99,6 +100,7 @@ public class KillVictimsBehaviour extends SimpleBehaviour
 				ACLMessage message = this.myAgent.receive(mt);
 				if(message != null)
 				{
+					System.err.println("KV Receive confirm");
 					this.nextStep = STATE_INIT;
 				}
 				else

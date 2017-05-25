@@ -21,6 +21,8 @@ public class DeleteRoleBehaviour extends CyclicBehaviour {
 		this.agent = agent;
 	}
 
+	//TODO David Shaman relou, beahviour to keep
+
 	public void action() {
 		MessageTemplate mt = MessageTemplate.and(
 				MessageTemplate.MatchPerformative(ACLMessage.CANCEL),
@@ -40,8 +42,14 @@ public class DeleteRoleBehaviour extends CyclicBehaviour {
 				//stop behaviour
 				this.agent.removeBehaviour(bhv);
 			}
-			
+
 			this.agent.getMap_role_behaviours().remove(role);
+
+			ACLMessage messageRequest = new ACLMessage(ACLMessage.INFORM);
+			messageRequest.setSender(this.agent.getAID());
+			messageRequest.setConversationId("DELETE_ROLE"+role);
+			messageRequest.addReceiver(message.getSender());
+			this.myAgent.send(messageRequest);
 		}
 		else {
 			block();

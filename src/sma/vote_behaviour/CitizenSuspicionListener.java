@@ -1,11 +1,6 @@
 package sma.vote_behaviour;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-
-import org.codehaus.jackson.map.ObjectMapper;
 
 import jade.core.AID;
 import jade.core.behaviours.Behaviour;
@@ -13,7 +8,6 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import sma.data.ScoreFactor;
 import sma.model.DFServices;
-import sma.model.ScoreResults;
 import sma.model.SuspicionScore;
 import sma.model.VoteRequest;
 import sma.model.VoteResults;
@@ -28,9 +22,9 @@ public class CitizenSuspicionListener extends Behaviour{
 	private PlayerAgent playerAgent;
 	private String name_behaviour;
 	
-	private final static String STATE_INIT = "INIT";
-	private final static String STATE_RECEIVE_INFORM = "RECEIVE_INFORM";
-	private final static String STATE_SEND_SUSPICIONS = "SEND_NEIHBORS";
+	private final String STATE_INIT = "INIT";
+	private final String STATE_RECEIVE_INFORM = "RECEIVE_INFORM";
+	private final String STATE_SEND_SUSPICIONS = "SEND_NEIHBORS";
 	
 	private String step;
 	private String nextStep;

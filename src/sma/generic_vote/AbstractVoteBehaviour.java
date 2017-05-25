@@ -10,13 +10,8 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 import jade.core.AID;
 import jade.core.behaviours.SimpleBehaviour;
-import jade.domain.DFService;
-import jade.domain.FIPAException;
-import jade.domain.FIPAAgentManagement.DFAgentDescription;
-import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
-import sma.model.DFServices;
 import sma.model.ForceVoteRequest;
 import sma.model.Functions;
 import sma.model.ScoreResults;
@@ -36,13 +31,13 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 	private List<String> lastResults;
 	private List<String> finalResults;
 
-	private final static String STATE_INIT = "INIT";
-	private final static String STATE_RECEIVE_FORCE_VOTE = "FORCE_RESULT";
-	private final static String STATE_RECEIVE_REQUEST = "RECEIVE_REQUEST";
-	private final static String STATE_SEND_REQUEST = "SEND_REQUEST";
-	private final static String STATE_RECEIVE_INFORM = "RECEIVE_INFORM";
-	private final static String STATE_RESULTS = "RESULTS";
-	private final static String STATE_SEND_RESULTS = "SEND_RESULTS";
+	private final String STATE_INIT = "INIT";
+	private final String STATE_RECEIVE_FORCE_VOTE = "FORCE_RESULT";
+	private final String STATE_RECEIVE_REQUEST = "RECEIVE_REQUEST";
+	private final String STATE_SEND_REQUEST = "SEND_REQUEST";
+	private final String STATE_RECEIVE_INFORM = "RECEIVE_INFORM";
+	private final String STATE_RESULTS = "RESULTS";
+	private final String STATE_SEND_RESULTS = "SEND_RESULTS";
 
 	private VoteRequest request;
 
@@ -92,6 +87,7 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 			ACLMessage message = this.myAgent.receive(mt);
 			if(message != null)
 			{
+				this.agent.doWait((int) (Math.random()*1000));
 				Functions.newActionToLog(this.agent.getLocalName()+" réfléchit", this.agent, this.agent.getGameid());
 
 				this.sender = message.getSender();

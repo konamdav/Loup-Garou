@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-import jade.core.AID;
 import jade.core.Agent;
 import sma.model.DFServices;
 import sma.model.HumanVoteRequest;

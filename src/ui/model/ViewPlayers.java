@@ -113,6 +113,10 @@ public class ViewPlayers {
 
 	public void updatePlayers(List<PlayerProfile> profiles)
 	{
+		if(profiles.isEmpty())
+		{
+			System.exit(1);
+		}
 		if(!this.init)
 		{
 			int nb = profiles.size();

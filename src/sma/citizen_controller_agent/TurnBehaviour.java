@@ -6,12 +6,7 @@ import java.util.List;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import jade.core.AID;
-import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.SimpleBehaviour;
-import jade.domain.DFService;
-import jade.domain.FIPAException;
-import jade.domain.FIPAAgentManagement.DFAgentDescription;
-import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import sma.model.DFServices;
@@ -19,7 +14,6 @@ import sma.model.Functions;
 import sma.model.Roles;
 import sma.model.Status;
 import sma.model.VoteRequest;
-import sma.model.VoteResults;
 
 /***
  * Behaviour de gestion du tour des citizens
@@ -27,25 +21,25 @@ import sma.model.VoteResults;
  *
  */
 public class TurnBehaviour extends SimpleBehaviour {
-	private final static String STATE_INIT = "INIT";
-	private final static String STATE_WAITING_START = "WAITING_START";
-	private final static String STATE_END_TURN = "END_TURN";
-	private final static String STATE_SEND_WAKE_ALL = "SEND_WAKE_ALL";
-	private final static String STATE_RECEIVE_WAKE_ALL = "RECEIVE_WAKE_ALL";
-	private final static String STATE_SEND_KILL_VICTIMS_REQUEST = "SEND_KILL_VICTIMS_REQUEST";
-	private final static String STATE_RECEIVE_KILL_VICTIMS_REQUEST = "RECEIVE_KILL_VICTIMS_REQUEST";
-	private final static String STATE_SEND_CHECK_ENDGAME = "SEND_CHECK_ENDGAME";
-	private final static String STATE_RECEIVE_CHECK_ENDGAME = "RECEIVE_CHECK_ENDGAME";
-	private final static String STATE_SEND_ELECTION_REQUEST = "SEND_ELECTION_REQUEST";
-	private final static String STATE_RECEIVE_ELECTION_REQUEST = "RECEIVE_ELECTION_REQUEST";
-	private final static String STATE_SEND_VOTE_REQUEST = "SEND_VOTE_REQUEST";
-	private final static String STATE_RECEIVE_VOTE_REQUEST = "RECEIVE_VOTE_REQUEST";
-	private final static String STATE_SEND_SLEEP_ALL = "SEND_SLEEP_ALL";
-	private final static String STATE_RECEIVE_SLEEP_ALL = "RECEIVE_SLEEP_ALL";
+	private final String STATE_INIT = "INIT";
+	private final String STATE_WAITING_START = "WAITING_START";
+	private final String STATE_END_TURN = "END_TURN";
+	private final String STATE_SEND_WAKE_ALL = "SEND_WAKE_ALL";
+	private final String STATE_RECEIVE_WAKE_ALL = "RECEIVE_WAKE_ALL";
+	private final String STATE_SEND_KILL_VICTIMS_REQUEST = "SEND_KILL_VICTIMS_REQUEST";
+	private final String STATE_RECEIVE_KILL_VICTIMS_REQUEST = "RECEIVE_KILL_VICTIMS_REQUEST";
+	private final String STATE_SEND_CHECK_ENDGAME = "SEND_CHECK_ENDGAME";
+	private final String STATE_RECEIVE_CHECK_ENDGAME = "RECEIVE_CHECK_ENDGAME";
+	private final String STATE_SEND_ELECTION_REQUEST = "SEND_ELECTION_REQUEST";
+	private final String STATE_RECEIVE_ELECTION_REQUEST = "RECEIVE_ELECTION_REQUEST";
+	private final String STATE_SEND_VOTE_REQUEST = "SEND_VOTE_REQUEST";
+	private final String STATE_RECEIVE_VOTE_REQUEST = "RECEIVE_VOTE_REQUEST";
+	private final String STATE_SEND_SLEEP_ALL = "SEND_SLEEP_ALL";
+	private final String STATE_RECEIVE_SLEEP_ALL = "RECEIVE_SLEEP_ALL";
 
 
-	private final static String STATE_DAY = "DAY";
-	private final static String STATE_NIGHT = "NIGHT";
+	private final String STATE_DAY = "DAY";
+	private final String STATE_NIGHT = "NIGHT";
 
 	private String step;
 	private String nextStep;

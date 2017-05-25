@@ -1,6 +1,5 @@
 package sma.game_controller_agent;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map.Entry;
@@ -31,15 +30,15 @@ public class InitBehaviour extends Behaviour {
 	private String nextStep;
 	private int cpt;
 
-	private final static String STATE_INIT ="STATE_INIT";
-	private final static String STATE_RECEIVE_INIT ="STATE_RECEIVE_INIT";
+	private final String STATE_INIT ="STATE_INIT";
+	private final String STATE_RECEIVE_INIT ="STATE_RECEIVE_INIT";
 
-	private final static String STATE_SEND_HUMAN_ATTR ="STATE_HUMAN_ATTR";
-	private final static String STATE_RECEIVE_HUMAN_ATTR ="STATE_RECEIVE_HUMAN_ATTR";
+	private final String STATE_SEND_HUMAN_ATTR ="STATE_HUMAN_ATTR";
+	private final String STATE_RECEIVE_HUMAN_ATTR ="STATE_RECEIVE_HUMAN_ATTR";
 
-	private final static String STATE_SEND_ATTR ="STATE_ATTR";
-	private final static String STATE_RECEIVE_ATTR ="STATE_RECEIVE_ATTR";
-	private final static String STATE_START_GAME ="STATE_START_GAME";
+	private final String STATE_SEND_ATTR ="STATE_ATTR";
+	private final String STATE_RECEIVE_ATTR ="STATE_RECEIVE_ATTR";
+	private final String STATE_START_GAME ="STATE_START_GAME";
 
 	public InitBehaviour(GameControllerAgent gameControllerAgent) {
 		super();
@@ -227,7 +226,7 @@ public class InitBehaviour extends Behaviour {
 
 			//System.out.println("PROFILES");
 			//DFServices.getPlayerProfiles(this.gameControllerAgent, this.gameControllerAgent.getGameid());
-			this.gameControllerAgent.addBehaviour(new TurnsBehaviour(this.gameControllerAgent));
+			this.gameControllerAgent.addBehaviour(new WaitStartBehaviour(this.gameControllerAgent));
 			this.gameControllerAgent.addBehaviour(new CheckEndGameBehaviour(this.gameControllerAgent));
 
 			this.flag = true;

@@ -1,18 +1,9 @@
 package sma.werewolf_agent;
 
-import java.io.IOException;
-import java.util.HashMap;
-
-import org.codehaus.jackson.map.ObjectMapper;
-
 import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import sma.generic_vote.HumanVoteBehaviour;
-import sma.generic_vote.IVotingAgent;
-import sma.model.DFServices;
-import sma.model.ScoreResults;
-import sma.model.VoteRequest;
 import sma.player_agent.PlayerAgent;
 
 public class InitAsHumanBehaviour extends SimpleBehaviour{

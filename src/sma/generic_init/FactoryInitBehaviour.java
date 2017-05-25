@@ -1,18 +1,7 @@
 package sma.generic_init;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import org.codehaus.jackson.map.ObjectMapper;
-
 import jade.core.AID;
 import jade.core.behaviours.CyclicBehaviour;
-import jade.core.behaviours.SimpleBehaviour;
-import jade.domain.DFService;
-import jade.domain.FIPAException;
-import jade.domain.FIPAAgentManagement.DFAgentDescription;
-import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import sma.citizen_agent.AngelInitBehaviour;
@@ -20,15 +9,10 @@ import sma.citizen_agent.CitizenInitBehaviour;
 import sma.cupid.CupidInitBehaviour;
 import sma.flute_player.CharmedInitBehaviour;
 import sma.flute_player.FlutePlayerInitBehaviour;
-import sma.generic_vote.AbstractVoteBehaviour;
 import sma.littlegirl.LittleGirlInitBehaviour;
 import sma.lover_behaviour.LoverInitBehaviour;
 import sma.medium_behaviour.MediumInitBehaviour;
-import sma.model.DFServices;
 import sma.model.Roles;
-import sma.model.ScoreResults;
-import sma.model.VoteRequest;
-import sma.model.VoteResults;
 import sma.player_agent.MayorInitBehaviour;
 import sma.player_agent.PlayerAgent;
 import sma.scapegoat.ScapegoatInitBehaviour;
@@ -42,8 +26,8 @@ public class FactoryInitBehaviour extends CyclicBehaviour{
 
 	private AID sender;
 	
-	private final static String STATE_WAIT_ROLE ="STATE_WAIT_ROLE";
-	private final static String STATE_ANSWER_INIT_ROLE ="STATE_ANSWER_INIT_ROLE";
+	private final String STATE_WAIT_ROLE ="STATE_WAIT_ROLE";
+	private final String STATE_ANSWER_INIT_ROLE ="STATE_ANSWER_INIT_ROLE";
 	
 	public FactoryInitBehaviour(PlayerAgent agent) {
 		super();

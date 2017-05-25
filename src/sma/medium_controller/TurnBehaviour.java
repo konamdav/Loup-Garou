@@ -7,20 +7,13 @@ import java.util.List;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import jade.core.AID;
-import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.SimpleBehaviour;
-import jade.domain.DFService;
-import jade.domain.FIPAException;
-import jade.domain.FIPAAgentManagement.DFAgentDescription;
-import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import sma.model.DFServices;
-import sma.model.Functions;
 import sma.model.Roles;
 import sma.model.Status;
 import sma.model.VoteRequest;
-import sma.model.VoteResults;
 
 /***
  * Behaviour de gestion du tour des citizens
@@ -28,18 +21,18 @@ import sma.model.VoteResults;
  *
  */
 public class TurnBehaviour extends SimpleBehaviour {
-	private final static String STATE_INIT = "INIT";
-	private final static String STATE_WAITING_START = "WAITING_START";
-	private final static String STATE_END_TURN = "END_TURN";
+	private final String STATE_INIT = "INIT";
+	private final String STATE_WAITING_START = "WAITING_START";
+	private final String STATE_END_TURN = "END_TURN";
 
-	private final static String STATE_SEND_WAKE_ONE_MEDIUM = "SEND_WAKE_ONE_MEDIUM";
-	private final static String STATE_RECEIVE_WAKE_ONE_MEDIUM = "RECEIVE_WAKE_ONE_MEDIUM";
+	private final String STATE_SEND_WAKE_ONE_MEDIUM = "SEND_WAKE_ONE_MEDIUM";
+	private final String STATE_RECEIVE_WAKE_ONE_MEDIUM = "RECEIVE_WAKE_ONE_MEDIUM";
 
-	private final static String STATE_SEND_VOTE_REQUEST = "SEND_VOTE_REQUEST";
-	private final static String STATE_RECEIVE_VOTE_REQUEST = "RECEIVE_VOTE_REQUEST";
+	private final String STATE_SEND_VOTE_REQUEST = "SEND_VOTE_REQUEST";
+	private final String STATE_RECEIVE_VOTE_REQUEST = "RECEIVE_VOTE_REQUEST";
 
-	private final static String STATE_SEND_SLEEP_ONE_MEDIUM = "SEND_SLEEP_ONE_MEDIUM";
-	private final static String STATE_RECEIVE_SLEEP_ONE_MEDIUM = "RECEIVE_SLEEP_ONE_MEDIUM";
+	private final String STATE_SEND_SLEEP_ONE_MEDIUM = "SEND_SLEEP_ONE_MEDIUM";
+	private final String STATE_RECEIVE_SLEEP_ONE_MEDIUM = "RECEIVE_SLEEP_ONE_MEDIUM";
 	private static final String STATE_GET_ROLE_REQUEST = "GET_ROLE_REQUEST";
 	private static final String STATE_GET_ROLE_RECEIVE= "GET_ROLE_RECEIVE";
 

@@ -10,14 +10,12 @@ import jade.core.AID;
 import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
-import sma.data.ScoreFactor;
 import sma.model.DFServices;
 import sma.model.Roles;
 import sma.model.ScoreResults;
 import sma.model.Status;
 import sma.model.SuspicionScore;
 import sma.model.VoteRequest;
-import sma.model.VoteResults;
 import sma.player_agent.PlayerAgent;
 
 /***
@@ -29,10 +27,10 @@ public class WerewolfSuspicionBehaviour extends Behaviour implements IVoteBehavi
 	private PlayerAgent playerAgent;
 	private String name_behaviour;
 
-	private final static String STATE_INIT = "INIT";
-	private final static String STATE_RECEIVE_REQUEST = "RECEIVE_REQUEST";
-	private final static String STATE_SCORE = "SCORE";
-	private final static String STATE_SEND_SCORE = "SEND_SCORE";
+	private final String STATE_INIT = "INIT";
+	private final String STATE_RECEIVE_REQUEST = "RECEIVE_REQUEST";
+	private final String STATE_SCORE = "SCORE";
+	private final String STATE_SEND_SCORE = "SEND_SCORE";
 
 	private String step;
 	private String nextStep;

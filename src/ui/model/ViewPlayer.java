@@ -14,9 +14,9 @@ import ui.view.ViewEntity;
  *
  */
 public class ViewPlayer extends ViewEntity{
-	private final static String LEFT = "LEFT";
-	private final static String RIGHT = "RIGHT";
-	private final static String UP = "UP";
+	private final String LEFT = "LEFT";
+	private final String RIGHT = "RIGHT";
+	private final String UP = "UP";
 	/* Constante de frame */
 	private static final int NB_FRAME = 2;         
 	private static final int NB_DIRECTION = 4;
@@ -249,13 +249,13 @@ public class ViewPlayer extends ViewEntity{
 		{
 			this.updateSleep();
 		}
-		else if(this.status.equals("WAKE"))
-		{
-			this.updateWake();
-		}
 		else if(this.status.equals("DEAD"))
 		{
 			this.updateDead();
+		}
+		else //if(this.status.equals("WAKE"))
+		{
+			this.updateWake();
 		}
 		
 		this.stateAnimation += Gdx.graphics.getDeltaTime();

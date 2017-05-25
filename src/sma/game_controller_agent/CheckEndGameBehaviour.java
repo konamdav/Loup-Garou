@@ -4,11 +4,8 @@ import java.util.List;
 
 import jade.core.AID;
 import jade.core.behaviours.CyclicBehaviour;
-import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
-import jade.wrapper.AgentController;
-import jade.wrapper.StaleProxyException;
 import sma.model.DFServices;
 import sma.model.Functions;
 import sma.model.Roles;
@@ -21,11 +18,11 @@ import sma.model.Status;
  */
 public class CheckEndGameBehaviour extends CyclicBehaviour {
 	private GameControllerAgent gameControllerAgent;
-	private final static String STATE_INIT = "INIT";
-	private final static String STATE_RECEIVE_REQUEST = "RECEIVE_REQUEST";
-	private final static String STATE_SEND_ANSWER = "SEND_ANSWER";
-	private final static String STATE_NOTIFY_END_GAME = "NOTIFY_END_GAME";
-	private final static String STATE_END = "END";
+	private final String STATE_INIT = "INIT";
+	private final String STATE_RECEIVE_REQUEST = "RECEIVE_REQUEST";
+	private final String STATE_SEND_ANSWER = "SEND_ANSWER";
+	private final String STATE_NOTIFY_END_GAME = "NOTIFY_END_GAME";
+	private final String STATE_END = "END";
 	
 	private String step;
 	private String nextStep;

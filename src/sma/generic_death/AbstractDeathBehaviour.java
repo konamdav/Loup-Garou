@@ -1,23 +1,9 @@
 package sma.generic_death;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import org.codehaus.jackson.map.ObjectMapper;
-
-import jade.core.AID;
 import jade.core.behaviours.SimpleBehaviour;
-import jade.domain.DFService;
-import jade.domain.FIPAException;
-import jade.domain.FIPAAgentManagement.DFAgentDescription;
-import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import sma.model.DFServices;
-import sma.model.ScoreResults;
-import sma.model.VoteRequest;
-import sma.model.VoteResults;
 import sma.player_agent.PlayerAgent;
 
 public class AbstractDeathBehaviour extends SimpleBehaviour{

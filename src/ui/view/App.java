@@ -19,13 +19,13 @@ public class App extends Game {
 	
 	public SystemContainer systemContainer = null; 
 	
-	public List<GameContainer> containers = null;
+	public List<Integer> containers = null;
 
-	public List<GameContainer> getContainers() {
+	public List<Integer> getContainers() {
 		return containers;
 	}
 
-	public void setContainers(List<GameContainer> containers) {
+	public void setContainers(List<Integer> containers) {
 		this.containers = containers;
 	}
 
@@ -74,10 +74,6 @@ public class App extends Game {
 
 		//newSystemContainer();
 		this.setScreen(new ViewMainMenu(this));
-/*
-		newSystemContainer();
-		this.setScreen(new ViewInterfaceGame(this));
-*/
 	}
 	
 	public void setAgent(uiAgent a){

@@ -22,41 +22,59 @@ import sma.model.DFServices;
 import sma.model.GameSettings;
 
 public class ViewJoinMenu implements Screen{
-	
+
 	App app;
-    Stage stage;
-    Skin skin;
-    int i =0;
-	
+	Stage stage;
+	Skin skin;
+	int i =0;
+
 	public ViewJoinMenu(App a){
 		app = a;
 		stage=new Stage();
-        Gdx.input.setInputProcessor(stage);
-        skin = new Skin( Gdx.files.internal( "resources/visui/uiskin.json" ));
-        
-        app.agent.addQuery();
+		Gdx.input.setInputProcessor(stage);
+		skin = new Skin( Gdx.files.internal( "resources/visui/uiskin.json" ));
 
-        Table table=new Table();
-        table.setSize(300,600);
-        table.center();
-        
-        
-        Label list_game_label =new Label("Partie en cours",skin);
-        table.add(list_game_label);
-        table.row();
-        
-        
-        
-        TextButton creer_button = new TextButton("Nouvelle partie",skin);
-        table.add(creer_button);
-        table.row();
-		
-        stage.addActor(table);
-        
-        creer_button.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-            	/*
+		app.agent.addQuery();
+
+		Table table=new Table();
+		table.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+		table.center();
+
+
+		Label list_game_label =new Label("Partie en cours",skin);
+		table.add(list_game_label);
+		table.row();
+
+		if (app.getContainers()!= null){
+			System.out.println("OK4");
+			for (int i = 0; i < app.getContainers().size(); i++){
+
+				System.out.println("OK5");
+				Label game_label =new Label("Partie " + (i +1) ,skin);
+				table.add(game_label);
+
+				TextButton join_button = new TextButton("Rejoindre",skin);
+				table.add(join_button);
+				table.row();
+			}
+		}
+
+
+		TextButton creer_button = new TextButton("Nouvelle partie",skin);
+		table.add(creer_button);
+		table.row();
+
+
+		TextButton refresh_button = new TextButton("Rafraîchir",skin);
+		table.add(refresh_button);
+		table.row();
+
+		stage.addActor(table);
+
+		creer_button.addListener(new ClickListener(){
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				/*
             	TextButton bbu = new TextButton("Créer"+i,skin);
             	bbu.addListener(new ClickListener(){
                     @Override
@@ -70,21 +88,28 @@ public class ViewJoinMenu implements Screen{
                 table.row();
                 i++;*/
 
-        		app.setScreen(new ViewNewGameMenu(app));
-            }
-        });
-        
-        
+				app.setScreen(new ViewNewGameMenu(app));
+			}
+		});
+
+		refresh_button.addListener(new ClickListener(){
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				app.setScreen(new ViewJoinMenu(app));
+			}
+		});
+
+
 	}
 
 	@Override
 	public void render(float delta) {
 		// TODO Auto-generated method stub
 		Gdx.gl.glClearColor(0,0,0,1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        
-        stage.act(delta);
-        stage.draw();
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+		stage.act(delta);
+		stage.draw();
 	}
 
 	@Override

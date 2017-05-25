@@ -517,7 +517,7 @@ public class DFServices {
 		for(Entry<String, PlayerProfile> entry : tmp.entrySet())
 		{
 			list.add(entry.getValue());
-			//entry.getValue().print();
+			entry.getValue().print();
 		}
 
 		return list;

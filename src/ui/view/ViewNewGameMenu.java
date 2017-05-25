@@ -46,7 +46,7 @@ public class ViewNewGameMenu implements Screen {
 		Table table=new Table();
 //        table.setSize(800,500);
   
-		 table.setSize(300,600);
+		 table.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 	       table.center();
         
         

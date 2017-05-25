@@ -39,7 +39,7 @@ public class ViewMainMenu implements Screen {
         skin = new Skin( Gdx.files.internal( "resources/visui/uiskin.json" ));
 
         Table table=new Table();
-        table.setSize(300,600);
+        table.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
         table.center();
         
         

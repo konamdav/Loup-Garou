@@ -68,7 +68,14 @@ public class SystemControllerAgent extends Agent{
 		return containers;
 	}
 
-
+	public List<Integer> getIdContainers(){
+		List<Integer> l =  new ArrayList<Integer>();
+		for (int i = 0; i < containers.size(); i++)
+		{
+		    l.add(containers.get(i).getGameid());
+		}
+		return l;
+	}
 
 
 }

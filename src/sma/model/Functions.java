@@ -14,6 +14,8 @@ public class Functions {
 		msg.setConversationId("ACTION_LOG");
 		msg.setContent(action);
 		
+		System.err.println(action);
+		
 		List<AID> agents = DFServices.findGameControllerAgent("ENVIRONMENT", a, gameid);
 		if(!agents.isEmpty())
 		{

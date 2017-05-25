@@ -14,13 +14,13 @@ public class KillVictimsBehaviour extends SimpleBehaviour
 {
 	private CitizenControllerAgent citizenControllerAgent;
 	private boolean flag;
-	private final static String STATE_INIT = "INIT";
-	private final static String STATE_SEND_GET_ROLE = "SEND_GET_ROLE";
-	private final static String STATE_RECEIVE_GET_ROLE = "RECEIVE_GET_ROLE";
-	private final static String STATE_INFORM_ALL_ROLE = "RECEIVE_INFORM_ALL_ROLE";
-	private final static String STATE_SEND_KILL = "SEND_KILL";
-	private final static String STATE_RECEIVE_KILL = "RECEIVE_KILL";
-	private final static String STATE_END = "END";
+	private final String STATE_INIT = "INIT";
+	private final String STATE_SEND_GET_ROLE = "SEND_GET_ROLE";
+	private final String STATE_RECEIVE_GET_ROLE = "RECEIVE_GET_ROLE";
+	private final String STATE_INFORM_ALL_ROLE = "RECEIVE_INFORM_ALL_ROLE";
+	private final String STATE_SEND_KILL = "SEND_KILL";
+	private final String STATE_RECEIVE_KILL = "RECEIVE_KILL";
+	private final String STATE_END = "END";
 	private String step;
 	private String nextStep;
 

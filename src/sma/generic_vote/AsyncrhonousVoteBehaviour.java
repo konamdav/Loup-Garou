@@ -30,12 +30,12 @@ public class AsyncrhonousVoteBehaviour extends Behaviour {
 	private List<String> finalResults;
 	private List<String> choices;
 
-	private final static String STATE_INIT = "INIT";
-	private final static String STATE_RECEIVE_REQUEST = "RECEIVE_REQUEST";
-	private final static String STATE_SEND_REQUEST = "SEND_REQUEST";
-	private final static String STATE_RECEIVE_INFORM = "RECEIVE_INFORM";
-	private final static String STATE_RESULTS = "RESULTS";
-	private final static String STATE_SEND_RESULTS = "SEND_RESULTS";
+	private final String STATE_INIT = "INIT";
+	private final String STATE_RECEIVE_REQUEST = "RECEIVE_REQUEST";
+	private final String STATE_SEND_REQUEST = "SEND_REQUEST";
+	private final String STATE_RECEIVE_INFORM = "RECEIVE_INFORM";
+	private final String STATE_RESULTS = "RESULTS";
+	private final String STATE_SEND_RESULTS = "SEND_RESULTS";
 	private String step;
 	private String nextStep;
 

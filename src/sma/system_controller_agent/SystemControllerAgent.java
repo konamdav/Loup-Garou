@@ -33,10 +33,12 @@ public class SystemControllerAgent extends Agent{
 
 		this.addBehaviour(new CreateGameBehaviour(this));
 		this.addBehaviour(new GetGamesBehaviour(this));
+		this.addBehaviour(new ReturnContainers(this));
 
 		//test init 
 		//send msg
-		
+		//CEDRIC Decommente pour les logs
+		/*
 		ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
 		message.setConversationId("CREATE_GAME_REQUEST");
 		message.setSender(this.getAID());
@@ -52,7 +54,7 @@ public class SystemControllerAgent extends Agent{
 		}
 		message.setContent(json);
 		this.send(message);
-		
+		*/
 		//this.send(message);
 		//this.send(message);
 
@@ -67,7 +69,14 @@ public class SystemControllerAgent extends Agent{
 		return containers;
 	}
 
-
+	public List<Integer> getIdContainers(){
+		List<Integer> l =  new ArrayList<Integer>();
+		for (int i = 0; i < containers.size(); i++)
+		{
+		    l.add(containers.get(i).getGameid());
+		}
+		return l;
+	}
 
 
 }

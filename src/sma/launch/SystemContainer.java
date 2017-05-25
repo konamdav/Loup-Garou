@@ -81,14 +81,14 @@ public class SystemContainer {
 				Profile p = null;
 				try{
 					p = new ProfileImpl(MAIN_PROPERTIES_FILE);
-
+					p.setParameter("port", "1099");
 					mc = rt.createMainContainer(p);	
 					AgentController ac = mc.createNewAgent(
 							"SYSTEM_CONTROLLER_AGENT", "sma.system_controller_agent.SystemControllerAgent", null);
 					ac.start();
 					
-					ac = mc.createNewAgent("UI_AGENT", "ui.agent.uiAgent", new Object[]{a});
-					ac.start();
+					//ac = mc.createNewAgent("UI_AGENT", "ui.agent.uiAgent", new Object[]{a});
+					//ac.start();
 				}
 				catch(Exception e) {
 					e.printStackTrace();

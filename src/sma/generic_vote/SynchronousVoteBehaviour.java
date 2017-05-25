@@ -8,13 +8,8 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 import jade.core.AID;
 import jade.core.behaviours.Behaviour;
-import jade.domain.DFService;
-import jade.domain.FIPAException;
-import jade.domain.FIPAAgentManagement.DFAgentDescription;
-import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
-import sma.citizen_controller_agent.CitizenControllerAgent;
 import sma.data.Data;
 import sma.generic.interfaces.IController;
 import sma.model.DFServices;
@@ -39,19 +34,19 @@ public class SynchronousVoteBehaviour extends Behaviour {
 
 	private int nbAsynchronousPlayers;
 	private AID agentSender;
-	private final static String STATE_INIT = "INIT";
-	private final static String STATE_RECEIVE_REQUEST = "RECEIVE_REQUEST";
-	private final static String STATE_SEND_REQUEST = "SEND_REQUEST";
+	private final String STATE_INIT = "INIT";
+	private final String STATE_RECEIVE_REQUEST = "RECEIVE_REQUEST";
+	private final String STATE_SEND_REQUEST = "SEND_REQUEST";
 
-	private final static String STATE_GET_SIMPLE_SUSPICION = "GET_SIMPLE_SUSPICION";
-	private final static String STATE_ADD_SIMPLE_SUSPICION = "ADD_SIMPLE_SUSPICION";
+	private final String STATE_GET_SIMPLE_SUSPICION = "GET_SIMPLE_SUSPICION";
+	private final String STATE_ADD_SIMPLE_SUSPICION = "ADD_SIMPLE_SUSPICION";
 
-	private final static String SEND_REQUEST_GLOBAL_VOTE_RESULTS = "SEND_REQUEST_GLOBAL_VOTE_RESULTS";
-	private final static String RECEIVE_REQUEST_GLOBAL_VOTE_RESULTS = "RECEIVE_REQUEST_GLOBAL_VOTE_RESULTS";
+	private final String SEND_REQUEST_GLOBAL_VOTE_RESULTS = "SEND_REQUEST_GLOBAL_VOTE_RESULTS";
+	private final String RECEIVE_REQUEST_GLOBAL_VOTE_RESULTS = "RECEIVE_REQUEST_GLOBAL_VOTE_RESULTS";
 
-	private final static String STATE_RECEIVE_INFORM = "RECEIVE_INFORM";
-	private final static String STATE_RESULTS = "RESULTS";
-	private final static String STATE_SEND_RESULTS = "SEND_RESULTS";
+	private final String STATE_RECEIVE_INFORM = "RECEIVE_INFORM";
+	private final String STATE_RESULTS = "RESULTS";
+	private final String STATE_SEND_RESULTS = "SEND_RESULTS";
 	private String step;
 	private String nextStep;
 

@@ -28,10 +28,10 @@ public class LoverScoreBehaviour extends Behaviour implements IVoteBehaviour{
 	private PlayerAgent playerAgent;
 	private String name_behaviour;
 
-	private final static String STATE_INIT = "INIT";
-	private final static String STATE_RECEIVE_REQUEST = "RECEIVE_REQUEST";
-	private final static String STATE_SCORE = "SCORE";
-	private final static String STATE_SEND_SCORE = "SEND_SCORE";
+	private final String STATE_INIT = "INIT";
+	private final String STATE_RECEIVE_REQUEST = "RECEIVE_REQUEST";
+	private final String STATE_SCORE = "SCORE";
+	private final String STATE_SEND_SCORE = "SEND_SCORE";
 
 	private String step;
 	private String nextStep;
@@ -93,19 +93,21 @@ public class LoverScoreBehaviour extends Behaviour implements IVoteBehaviour{
 
 			String [] args = {Roles.LOVER, Status.WAKE};
 			List<AID> agents = DFServices.findGamePlayerAgent(args, this.playerAgent, this.playerAgent.getGameid());
-			
 			String[] args2 = {Roles.LOVER, Status.SLEEP};
 			agents.addAll(DFServices.findGamePlayerAgent(args2, this.playerAgent, this.playerAgent.getGameid()));
+
+			System.err.println("SIZE "+agents.size());
+
 			AID lover = null;
 			for(AID aid : agents)
 			{
-				if(!aid.getName().equals(this.playerAgent.getPlayerName()))
+				if(!aid.getName().equals(this.playerAgent.getAID().getName()))
 				{
 					lover = aid;
 				}
 			}
-			
-			
+
+
 			for(AID player : this.request.getAIDChoices())
 			{
 				scores.put(player.getName(), this.score(player, request, lover));
@@ -163,35 +165,39 @@ public class LoverScoreBehaviour extends Behaviour implements IVoteBehaviour{
 			else
 			{
 				//lover
-				if(player.getName().equals(lover.getName()))
+				if(lover!=null&&player.getName().equals(lover.getName()))
 				{
 					score = ScoreFactor.SCORE_MIN;
 				}
 				else
 				{
 					// regles de scoring
-					score+= globalResults.getVoteCount(player.getName(), lover.getName()) * ScoreFactor.SCORE_FACTOR_GLOBAL_VOTE; 
-					score+= localResults.getVoteCount(player.getName(), lover.getName()) * ScoreFactor.SCORE_FACTOR_LOCAL_VOTE; 
-					score+= localResults.getVoteCount(player.getName()) * ScoreFactor.SCORE_FACTOR_LOCAL_NB_VOTE; 
-					score+= localResults.getDifferenceVote(player.getName(),lover.getName()) * ScoreFactor.SCORE_FACTOR_DIFFERENCE_LOCAL_VOTE; 
-				}
-				
+					if(lover!=null)
+					{
+						score+= globalResults.getVoteCount(player.getName(), lover.getName()) * ScoreFactor.SCORE_FACTOR_GLOBAL_VOTE; 
+						score+= localResults.getVoteCount(player.getName(), lover.getName()) * ScoreFactor.SCORE_FACTOR_LOCAL_VOTE; 
+						score+= localResults.getVoteCount(player.getName()) * ScoreFactor.SCORE_FACTOR_LOCAL_NB_VOTE; 
+						score+= localResults.getDifferenceVote(player.getName(),lover.getName()) * ScoreFactor.SCORE_FACTOR_DIFFERENCE_LOCAL_VOTE; 
+
+					}
+									}
+
 
 			}
 		}
 		else
 		{
-			
+
 			// joueur analys� = joueur 
 			if(player.getName().equals(this.playerAgent.getPlayerName()))
 			{
 				score = 0;
 			}
-			
+
 			else
 			{
 				//lover ?
-				if(player.getName().equals(lover.getName()))
+				if(lover!=null&& player.getName().equals(lover.getName()))
 				{
 					if(request.getRequest().equals("WITCH_SAVE_VOTE"))
 					{
@@ -202,22 +208,23 @@ public class LoverScoreBehaviour extends Behaviour implements IVoteBehaviour{
 						score +=250;
 					}
 
+
+
 				}
-				
-				
+
+				if(lover!=null)
+				{
+					score += localResults.getVoteCount(player.getName(), lover.getName()) *ScoreFactor.SCORE_FACTOR_LOVER_VOTE; 
+				}
 				// regles de scoring
 				//lover a d�j� vot� pour lui
-				score += localResults.getVoteCount(player.getName(), lover.getName()) *ScoreFactor.SCORE_FACTOR_LOVER_VOTE; 
-				//nb de voix qu'il a d�j�
-				score += localResults.getVoteCount(player.getName()) *ScoreFactor.SCORE_FACTOR_LOCAL_NB_VOTE;
-
 			}
 		}
 		return score;
 
 
 	}
-	
+
 
 	public String getName_behaviour() {
 		return name_behaviour;

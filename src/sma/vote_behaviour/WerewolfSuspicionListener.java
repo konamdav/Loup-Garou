@@ -1,22 +1,13 @@
 package sma.vote_behaviour;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-
-import org.codehaus.jackson.map.ObjectMapper;
 
 import jade.core.AID;
 import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
-import sma.data.ScoreFactor;
 import sma.model.DFServices;
-import sma.model.ScoreResults;
 import sma.model.SuspicionScore;
-import sma.model.VoteRequest;
-import sma.model.VoteResults;
 import sma.player_agent.PlayerAgent;
 
 /**
@@ -33,9 +24,9 @@ public class WerewolfSuspicionListener extends Behaviour{
 	}
 
 
-	private final static String STATE_INIT = "INIT";
-	private final static String STATE_RECEIVE_INFORM = "RECEIVE_INFORM";
-	private final static String STATE_SUSPICION_LITTLE_GIRL = "SUSPICION_LITTLE_GIRL";
+	private final String STATE_INIT = "INIT";
+	private final String STATE_RECEIVE_INFORM = "RECEIVE_INFORM";
+	private final String STATE_SUSPICION_LITTLE_GIRL = "SUSPICION_LITTLE_GIRL";
 
 
 	private String step;

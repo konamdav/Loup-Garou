@@ -1,17 +1,13 @@
 package sma.game_controller_agent;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
 import jade.core.AID;
-import jade.core.behaviours.Behaviour;
-import jade.core.behaviours.CyclicBehaviour;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
-import sma.generic.interfaces.IController;
 import sma.model.DFServices;
 import sma.model.Roles;
 import sma.model.Status;
@@ -24,28 +20,28 @@ import sma.model.Status;
  */
 public class TurnsBehaviour extends SimpleBehaviour {
 	private GameControllerAgent controllerAgent;
-	private final static String STATE_INIT = "INIT";
-	private final static String STATE_WAITING = "WAITING";
-	private final static String STATE_START_CITIZEN_TURN = "START_CITIZEN_TURN";
-	private final static String STATE_STOP_CITIZEN_TURN = "STOP_CITIZEN_TURN";
+	private final String STATE_INIT = "INIT";
+	private final String STATE_WAITING = "WAITING";
+	private final String STATE_START_CITIZEN_TURN = "START_CITIZEN_TURN";
+	private final String STATE_STOP_CITIZEN_TURN = "STOP_CITIZEN_TURN";
 
-	private final static String STATE_PREINIT = "STATE_PREINIT";
-	private final static String STATE_CHECK_ENDGAME_REQUEST = "STATE_CHECK_ENDGAME_REQUEST";
-	private final static String STATE_CHECK_ENDGAME_RECEIVE = "STATE_CHECK_ENDGAME_RECEIVE";
+	private final String STATE_PREINIT = "STATE_PREINIT";
+	private final String STATE_CHECK_ENDGAME_REQUEST = "STATE_CHECK_ENDGAME_REQUEST";
+	private final String STATE_CHECK_ENDGAME_RECEIVE = "STATE_CHECK_ENDGAME_RECEIVE";
 
-	private final static String STATE_START_WEREWOLF_TURN = "START_WEREWOLF_TURN";
-	private final static String STATE_STOP_WEREWOLF_TURN = "STOP_WEREWOLF_TURN";
+	private final String STATE_START_WEREWOLF_TURN = "START_WEREWOLF_TURN";
+	private final String STATE_STOP_WEREWOLF_TURN = "STOP_WEREWOLF_TURN";
 	
-	private final static String STATE_START_FLUTE_PLAYER_TURN = "START_FLUTE_PLAYER_TURN";
-	private final static String STATE_STOP_FLUTE_PLAYER_TURN = "STOP_FLUTE_PLAYER_TURN";
+	private final String STATE_START_FLUTE_PLAYER_TURN = "START_FLUTE_PLAYER_TURN";
+	private final String STATE_STOP_FLUTE_PLAYER_TURN = "STOP_FLUTE_PLAYER_TURN";
 
-	private final static String STATE_START_CUPID_TURN = "START_CUPID_TURN";
-	private final static String STATE_STOP_CUPID_TURN = "STOP_CUPID_TURN";
+	private final String STATE_START_CUPID_TURN = "START_CUPID_TURN";
+	private final String STATE_STOP_CUPID_TURN = "STOP_CUPID_TURN";
 	
-	private final static String STATE_START_MEDIUM_TURN = "START_MEDIUM_TURN";
-	private final static String STATE_STOP_MEDIUM_TURN = "STOP_MEDIUM_TURN";
+	private final String STATE_START_MEDIUM_TURN = "START_MEDIUM_TURN";
+	private final String STATE_STOP_MEDIUM_TURN = "STOP_MEDIUM_TURN";
 
-	private final static String STATE_END = "END";
+	private final String STATE_END = "END";
 
 	private static final String STATE_POSTEND = "POSTEND";
 	private boolean flag_done;
@@ -116,6 +112,9 @@ public class TurnsBehaviour extends SimpleBehaviour {
 		}
 		else if(this.step.equals(STATE_INIT))
 		{	
+			
+			System.gc();
+			
 			if(this.controllerAgent.isCheckEndGame())
 			{
 				this.nextStep = STATE_POSTEND;

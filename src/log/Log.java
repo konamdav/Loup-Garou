@@ -2,13 +2,10 @@ package log;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Date;
 import java.time.LocalDateTime;
-import java.util.logging.*;
 
 
 /* classe statique permettant d'écrire des logs dans un fichier. */

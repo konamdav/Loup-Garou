@@ -1,28 +1,9 @@
 package sma.generic_init;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import org.codehaus.jackson.map.ObjectMapper;
-
 import jade.core.AID;
 import jade.core.behaviours.CyclicBehaviour;
-import jade.core.behaviours.SimpleBehaviour;
-import jade.domain.DFService;
-import jade.domain.FIPAException;
-import jade.domain.FIPAAgentManagement.DFAgentDescription;
-import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
-import jade.wrapper.AgentController;
-import sma.environment_agent.ReceiveBehaviour;
-import sma.generic_vote.AbstractVoteBehaviour;
-import sma.model.DFServices;
-import sma.model.Roles;
-import sma.model.ScoreResults;
-import sma.model.VoteRequest;
-import sma.model.VoteResults;
 import sma.player_agent.PlayerAgent;
 
 public class NewMainRoleBehaviour extends CyclicBehaviour{
@@ -31,8 +12,8 @@ public class NewMainRoleBehaviour extends CyclicBehaviour{
 	private String step;
 	private String nextStep;
 
-	private final static String STATE_WAIT_ROLE ="STATE_WAIT_ROLE";
-	private final static String STATE_ANSWER_INIT_ROLE ="STATE_ANSWER_INIT_ROLE";
+	private final String STATE_WAIT_ROLE ="STATE_WAIT_ROLE";
+	private final String STATE_ANSWER_INIT_ROLE ="STATE_ANSWER_INIT_ROLE";
 
 	private PlayerAgent agent;
 	private AID sender; // sender of the request

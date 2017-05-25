@@ -10,17 +10,14 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 import jade.core.AID;
 import jade.core.behaviours.SimpleBehaviour;
-import jade.domain.DFService;
-import jade.domain.FIPAException;
-import jade.domain.FIPAAgentManagement.DFAgentDescription;
-import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
-import sma.model.DFServices;
 import sma.model.ForceVoteRequest;
+import sma.model.Functions;
 import sma.model.ScoreResults;
 import sma.model.VoteRequest;
 import sma.model.VoteResults;
+import sma.player_agent.PlayerAgent;
 
 /**
  * Interface de vote du player
@@ -28,19 +25,19 @@ import sma.model.VoteResults;
  * @author Davy
  */
 public class AbstractVoteBehaviour extends SimpleBehaviour{
-	private IVotingAgent agent;
+	private PlayerAgent agent;
 	private int nbVoters;
 	private ScoreResults results;
 	private List<String> lastResults;
 	private List<String> finalResults;
 
-	private final static String STATE_INIT = "INIT";
-	private final static String STATE_RECEIVE_FORCE_VOTE = "FORCE_RESULT";
-	private final static String STATE_RECEIVE_REQUEST = "RECEIVE_REQUEST";
-	private final static String STATE_SEND_REQUEST = "SEND_REQUEST";
-	private final static String STATE_RECEIVE_INFORM = "RECEIVE_INFORM";
-	private final static String STATE_RESULTS = "RESULTS";
-	private final static String STATE_SEND_RESULTS = "SEND_RESULTS";
+	private final String STATE_INIT = "INIT";
+	private final String STATE_RECEIVE_FORCE_VOTE = "FORCE_RESULT";
+	private final String STATE_RECEIVE_REQUEST = "RECEIVE_REQUEST";
+	private final String STATE_SEND_REQUEST = "SEND_REQUEST";
+	private final String STATE_RECEIVE_INFORM = "RECEIVE_INFORM";
+	private final String STATE_RESULTS = "RESULTS";
+	private final String STATE_SEND_RESULTS = "SEND_RESULTS";
 
 	private VoteRequest request;
 
@@ -51,7 +48,7 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 	private Map<String, String> forceResults;
 
 
-	public AbstractVoteBehaviour(IVotingAgent agent) {
+	public AbstractVoteBehaviour(PlayerAgent agent) {
 		super();
 		this.agent = agent;
 		this.nbVoters = 0;
@@ -64,8 +61,6 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 
 		this.step = STATE_INIT;
 		this.nextStep ="";
-
-		System.err.println("ABSTRACT VOTE");
 	}
 
 
@@ -92,6 +87,9 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 			ACLMessage message = this.myAgent.receive(mt);
 			if(message != null)
 			{
+				this.agent.doWait((int) (Math.random()*1000));
+				Functions.newActionToLog(this.agent.getLocalName()+" réfléchit", this.agent, this.agent.getGameid());
+
 				this.sender = message.getSender();
 				ObjectMapper mapper = new ObjectMapper();
 				request = new VoteRequest();
@@ -277,7 +275,10 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 			if(!request.isAskRequest()){
 
 				results.put(this.finalResults.get(0), voter);
-				System.err.println("VOTE FOR "+this.finalResults.get(0));
+				String name = this.finalResults.get(0);
+				int index = name.indexOf("@");
+				name = name.substring(0, index);
+				Functions.newActionToLog(this.agent.getLocalName()+" vote "+name, this.agent, this.agent.getGameid());
 
 			}
 			else
@@ -288,14 +289,19 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 				if(this.finalResults.size() == 1)
 				{
 					results.put("OK", voter);
+					Functions.newActionToLog(this.agent.getLocalName()+" veut prendre une décision", this.agent, this.agent.getGameid());
+
 				}
 				if(this.finalResults.size() > 1 && this.results.getMaxScore() > 10)
 				{
 					results.put("OK", voter);
+					Functions.newActionToLog(this.agent.getLocalName()+" accepte", this.agent, this.agent.getGameid());
 				}
 				else
 				{
 					results.put("NOT_OK", voter);
+					Functions.newActionToLog(this.agent.getLocalName()+" refuse", this.agent, this.agent.getGameid());
+
 				}
 			}
 			ACLMessage reply = new ACLMessage(ACLMessage.INFORM);

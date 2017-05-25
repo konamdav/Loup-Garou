@@ -1,17 +1,9 @@
 package sma.player_agent;
 
-import java.io.IOException;
-import java.util.HashMap;
-
-import org.codehaus.jackson.map.ObjectMapper;
-
 import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
-import sma.generic_vote.IVotingAgent;
-import sma.model.DFServices;
-import sma.model.ScoreResults;
-import sma.model.VoteRequest;
+import sma.model.Functions;
 
 public class SleepBehaviour extends SimpleBehaviour{
 	private PlayerAgent playerAgent ;
@@ -30,9 +22,9 @@ public class SleepBehaviour extends SimpleBehaviour{
 		ACLMessage message = this.myAgent.receive(mt);
 		if (message != null) 
 		{
-			System.out.println("I SLEEP ");
+			this.playerAgent.doWait((int) (Math.random()*1000));
 			this.playerAgent.setStatutandRegister("SLEEP");
-			//DFServices.setStatusPlayerAgent("SLEEP", this.playerAgent, this.playerAgent.getGameid());
+			Functions.newActionToLog(this.playerAgent.getLocalName()+" s'endort", this.playerAgent, this.playerAgent.getGameid());
 			
 			ACLMessage reply = new ACLMessage(ACLMessage.CONFIRM);
 			reply.setConversationId("SLEEP_PLAYER");

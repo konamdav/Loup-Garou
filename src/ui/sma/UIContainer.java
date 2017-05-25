@@ -8,6 +8,7 @@ import jade.core.Runtime;
 import jade.wrapper.AgentContainer;
 import jade.wrapper.AgentController;
 import sma.model.GameSettings;
+import ui.view.App;
 
 public class UIContainer {
 	private String id = UUID.randomUUID().toString();
@@ -24,6 +25,29 @@ public class UIContainer {
 			p.setParameter("container-name", "ui_container_"+id);
 			p.setParameter("host", ip);
 			container = rt.createAgentContainer(p);	
+			
+			
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+	
+	public UIContainer(String ip, App app)
+	{		
+		Runtime rt = Runtime.instance();
+		Profile p = null;
+		try{
+			p = new ProfileImpl(MAIN_PROPERTIES_FILE);
+			
+			p.setParameter("container-name", "ui_container_"+id);
+			p.setParameter("host", ip);
+			p.setParameter("port", "1099");
+			container = rt.createAgentContainer(p);	
+			
+			AgentController ac = container.createNewAgent("UI_AGENT", "ui.agent.uiAgent", new Object[]{app});
+			ac.start();
 			
 			
 		}

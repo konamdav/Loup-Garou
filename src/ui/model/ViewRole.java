@@ -3,8 +3,6 @@ package ui.model;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
-import sma.model.Roles;
 /**
  * Hp Bar
  * @author Davy

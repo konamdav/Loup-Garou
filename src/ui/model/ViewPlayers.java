@@ -113,6 +113,10 @@ public class ViewPlayers {
 
 	public void updatePlayers(List<PlayerProfile> profiles)
 	{
+		if(profiles.isEmpty())
+		{
+			System.exit(1);
+		}
 		if(!this.init)
 		{
 			int nb = profiles.size();
@@ -152,27 +156,27 @@ public class ViewPlayers {
 			}
 
 			if(nb >= 2) {
-				int ret = 0;
-				if(n_cols%2!=0)
+				for(int i = 0; i<n_cols; ++i)
 				{
-					ret = 1;
-				}
-
-				for(int i = 0; i<n_rows; ++i)
-				{
-					player = newPlayer(profiles.get(cpt).getName(),profiles.get(cpt).getStatus(), "LEFT", ind_x+1+ret+n_cols/2, ind_y-i );
+					player = newPlayer(profiles.get(cpt).getName(),profiles.get(cpt).getStatus(), "DOWN", ind_x+1+i-n_cols/2, ind_y+1);
 					++cpt;
+
 				}
 
 				if(nb >= 3){
 
-					for(int i = 0; i<n_cols; ++i)
+					int ret = 0;
+					if(n_cols%2!=0)
 					{
-						player = newPlayer(profiles.get(cpt).getName(),profiles.get(cpt).getStatus(), "DOWN", ind_x+1+i-n_cols/2, ind_y+1);
-						++cpt;
-
+						ret = 1;
 					}
 
+					for(int i = 0; i<n_rows; ++i)
+					{
+						player = newPlayer(profiles.get(cpt).getName(),profiles.get(cpt).getStatus(), "LEFT", ind_x+1+ret+n_cols/2, ind_y-i );
+						++cpt;
+					}
+					
 					if(nb >= 4){
 						int reste = nb - (n_cols+2*n_rows);
 						for(int i = 0; i<reste; ++i)
@@ -214,7 +218,7 @@ public class ViewPlayers {
 				for(String role : alreadyRoles)
 				{
 					if(!p.getRoles().contains(role)){
-						this.viewPlayers.get(p.getName()).getRoles().deleteRole(role);
+						//this.viewPlayers.get(p.getName()).getRoles().deleteRole(role);
 					}
 				}
 			}

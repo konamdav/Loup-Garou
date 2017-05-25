@@ -1,4 +1,5 @@
 package ui.model;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Scanner;
 
@@ -32,6 +33,12 @@ public class Map{
 					map[i][j]=new Case(i, j);	
 				}
 
+			}
+			try {
+				carte.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 
 		} finally {

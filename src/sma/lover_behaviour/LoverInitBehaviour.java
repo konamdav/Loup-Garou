@@ -1,22 +1,14 @@
 package sma.lover_behaviour;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import org.codehaus.jackson.map.ObjectMapper;
 
 import jade.core.AID;
 import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.OneShotBehaviour;
-import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
-import jade.lang.acl.MessageTemplate;
-import sma.generic_vote.IVotingAgent;
 import sma.model.DFServices;
 import sma.model.Roles;
-import sma.model.ScoreResults;
-import sma.model.VoteRequest;
 import sma.player_agent.PlayerAgent;
 import sma.vote_behaviour.LoverScoreBehaviour;
 

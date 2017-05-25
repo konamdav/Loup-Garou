@@ -14,12 +14,12 @@ public class GameSettings {
 
 		this.nbHumans = 0;
 		
-		//Liste role par défaut
+		//Liste role par dï¿½faut
 		this.rolesSettings = new HashMap<String, Integer>();
-		this.rolesSettings.put(Roles.WEREWOLF, 1);
-		this.rolesSettings.put(Roles.CITIZEN, 0);
-		this.rolesSettings.put(Roles.CUPID, 0);
-		this.rolesSettings.put(Roles.LITTLE_GIRL, 4);
+		this.rolesSettings.put(Roles.WEREWOLF, 5);
+		this.rolesSettings.put(Roles.CITIZEN, 2);
+		this.rolesSettings.put(Roles.CUPID, 1);
+		this.rolesSettings.put(Roles.LITTLE_GIRL, 0);
 		this.rolesSettings.put(Roles.MEDIUM,0);
 		this.rolesSettings.put(Roles.ANGEL,0);
 		this.rolesSettings.put(Roles.FLUTE_PLAYER,0);

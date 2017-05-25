@@ -46,37 +46,42 @@ public class GenericInitBehaviour extends OneShotBehaviour{
 
 	@Override
 	public void action() {
-		//TODO Add beahviour which are right generic
+
 		System.out.println("GenericInitBehaviour THIS PLAYER "+this.agent.getName());
 		ArrayList<Behaviour> list_behav = new ArrayList<Behaviour>();
 		HashMap<String, ArrayList<Behaviour>> map_behaviour = this.agent.getMap_role_behaviours();
 
 		if(!this.agent.isHuman())
 		{
-			this.agent.addBehaviour(new AbstractVoteBehaviour(this.agent));
+			AbstractVoteBehaviour abstractVoteBehaviour = new AbstractVoteBehaviour(this.agent);
+			//list_behav.add(abstractVoteBehaviour);
+			this.agent.addBehaviour(abstractVoteBehaviour);
 		}
 		
 		CitizenScoreBehaviour citizenScoreBehaviour = new CitizenScoreBehaviour(this.agent);
-		list_behav.add(citizenScoreBehaviour);
+		//list_behav.add(citizenScoreBehaviour);
 		this.agent.addBehaviour(citizenScoreBehaviour);
 		this.agent.getVotingBehaviours().add(citizenScoreBehaviour.getName_behaviour()); 
 		
 		this.agent.addBehaviour(new AbstractDeathBehaviour(this.agent));
-		
+
 		WakeBehaviour genericWakeBehaviour = new WakeBehaviour(this.agent);
 		this.agent.addBehaviour(genericWakeBehaviour);
+		list_behav.add(genericWakeBehaviour);
 
 		SleepBehaviour genericSleepBehaviour = new SleepBehaviour(this.agent);
 		this.agent.addBehaviour(genericSleepBehaviour);
-		
+		list_behav.add(genericSleepBehaviour);
+
 		System.err.println("...............................GET ROLE...........................");
 		GetRoleBehaviour getRoleBehaviour = new GetRoleBehaviour(this.agent);
 		this.agent.addBehaviour(getRoleBehaviour);
 		
 		DeleteRoleBehaviour deleteRoleBehaviour = new DeleteRoleBehaviour(this.agent);
 		this.agent.addBehaviour(deleteRoleBehaviour);
-		
-		//map_behaviour.put(Roles.GENERIC, list_behav);
+		list_behav.add(deleteRoleBehaviour);
+
+		map_behaviour.put(Roles.GENERIC, list_behav);
 
 	}
 

@@ -72,7 +72,7 @@ public class LoverDeathBehaviour extends SimpleBehaviour implements IDeathBehavi
 			}
 			
 			ACLMessage reply = new ACLMessage(ACLMessage.CONFIRM);
-			reply.setConversationId("DEATH_CONFIRM");
+			reply.setConversationId("DEATH_"+this.nameBehaviour+"_REQUEST");
 			reply.setSender(this.myAgent.getAID());
 			reply.addReceiver(message.getSender());
 			this.myAgent.send(reply);

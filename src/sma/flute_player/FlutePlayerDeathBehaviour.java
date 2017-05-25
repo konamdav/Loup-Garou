@@ -44,7 +44,7 @@ public class FlutePlayerDeathBehaviour extends SimpleBehaviour implements IDeath
 			List<AID> flutePlayers = DFServices.findGamePlayerAgent(args, this.playerAgent, this.playerAgent.getGameid());
 			if(flutePlayers.size()<2)
 			{
-				//il s'agit du denier joueur de flute => sa mort provoque le desenchantement des charmés
+				//il s'agit du denier joueur de flute => sa mort provoque le desenchantement des charmï¿½s
 				String [] args2 = {Roles.CHARMED, Status.WAKE};
 				List<AID> charmed = DFServices.findGamePlayerAgent(args2, this.playerAgent, this.playerAgent.getGameid());
 				
@@ -61,7 +61,7 @@ public class FlutePlayerDeathBehaviour extends SimpleBehaviour implements IDeath
 				
 			
 			ACLMessage reply = new ACLMessage(ACLMessage.CONFIRM);
-			reply.setConversationId("DEATH_CONFIRM");
+			reply.setConversationId("DEATH_"+this.nameBehaviour+"_REQUEST");
 			reply.setSender(this.myAgent.getAID());
 			reply.addReceiver(message.getSender());
 			this.myAgent.send(reply);

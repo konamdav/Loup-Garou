@@ -59,8 +59,6 @@ public class LoverDeathBehaviour extends SimpleBehaviour implements IDeathBehavi
 					message.setSender(this.playerAgent.getAID());
 					message.addReceiver(agents.get(0));
 					this.playerAgent.send(message);
-					
-				
 				}			
 			}
 			

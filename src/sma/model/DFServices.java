@@ -183,7 +183,8 @@ public class DFServices {
 	{
 		DFServices.deregisterGameAgent("PLAYER", Status.SLEEP, agent, gameid);
 		DFServices.deregisterGameAgent("PLAYER", Status.WAKE, agent, gameid);
-		//DFServices.deregisterGameAgent("PLAYER", "DEAD", agent, gameid);	
+		
+		DFServices.deregisterGameAgent("PLAYER", Status.DEAD, agent, gameid); //TODO cedric decooment + test	
 
 		DFServices.registerGameAgent("PLAYER", status, agent, gameid);
 	}

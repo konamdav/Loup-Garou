@@ -17,6 +17,7 @@ import jade.lang.acl.MessageTemplate;
 import sma.model.DFServices;
 import sma.model.Roles;
 import sma.model.ScoreResults;
+import sma.model.Status;
 import sma.model.VoteRequest;
 import sma.model.VoteResults;
 
@@ -29,7 +30,7 @@ public class AbstractDeathBehaviour extends CyclicBehaviour{
 	private String nextStep;
 
 	private ArrayList<String> roles_death_answer; //modify name
-	private Set<String> roles_behaviour_answer; //modify name
+	private ArrayList<String> roles_behaviour_answer; //modify name
 
 	private AID sender;
 	
@@ -137,13 +138,15 @@ public class AbstractDeathBehaviour extends CyclicBehaviour{
 		}
 		else if (this.step.equals(STATE_DELETE_ALL_BEHAVIOUR))
 		{
-			this.roles_behaviour_answer = this.agent.getMap_role_behaviours().keySet();
-			//System.out.println(" Delete all behaviours " + this.agent.getName() + " roles : " + this.roles_behaviour_answer);
+			this.roles_behaviour_answer = new ArrayList<String>(this.agent.getMap_role_behaviours().keySet());
+			this.roles_behaviour_answer.remove(Roles.GENERIC);
+			System.out.println(" Delete all behaviours " + this.agent.getName() + " roles : " + this.roles_behaviour_answer);
 
 			for (String role : this.roles_behaviour_answer ){
 				ACLMessage message = new ACLMessage(ACLMessage.CANCEL);
 				message.setConversationId("DELETE_ROLE");
 				message.setContent(role);
+				message.addReceiver(this.agent.getAID());
 				this.agent.send(message);
 			}
 
@@ -151,9 +154,10 @@ public class AbstractDeathBehaviour extends CyclicBehaviour{
 		}
 		else if (this.step.equals(STATE_WAIT_DELETE_ALL_BEHAVIOUR))
 		{
-			if (this.roles_death_answer == null || this.roles_death_answer.isEmpty()){
+			if (this.roles_behaviour_answer == null || this.roles_behaviour_answer.isEmpty()){
 				//System.out.println("All answer from death beahviour death So destroy last behaviour ");
-				
+				System.out.println(" roles_behaviour_answer empty " + this.agent.getName());
+
 				//TODO Cedric Voir les behaviour à garder avec le beahviour removeBehaviour 
 			
 				//this.agent.getVotingBehaviours().clear();
@@ -168,6 +172,7 @@ public class AbstractDeathBehaviour extends CyclicBehaviour{
 				//System.out.println(" Wailt all delete behaviours reponse " + this.agent.getName());
 				ArrayList<String> tmp = new ArrayList<String>(this.roles_behaviour_answer);
 				//Create tmp list, in order to be hable to remove roles_death_answer. 
+				System.out.println(" roles_behaviour_answer to delete " + this.agent.getName() + " delete " + this.roles_behaviour_answer);
 
 				for (String s : tmp){
 					MessageTemplate mt = MessageTemplate.and(
@@ -190,7 +195,12 @@ public class AbstractDeathBehaviour extends CyclicBehaviour{
 		{
 			System.err.println("[ "+this.agent.getName()+" ] DIE End ");
 			//Answer 
-			this.agent.setStatutandRegister("DEAD");
+			System.err.println(this.agent.getStatut() + "   AID " + this.agent.getAID());
+			System.err.println(DFServices.findGamePlayerAgent("DEAD", this.myAgent, this.agent.getGameid()));
+
+			this.agent.setStatutandRegister(Status.DEAD);
+			System.err.println(this.agent.getStatut());
+
 			DFServices.deregisterPlayerAgent("VICTIM", this.myAgent, this.agent.getGameid()); //retire son statut de victime (car il est mort)
 
 			ACLMessage reply = new ACLMessage(ACLMessage.CONFIRM);

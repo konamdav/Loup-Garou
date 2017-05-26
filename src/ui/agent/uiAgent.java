@@ -80,7 +80,7 @@ public class uiAgent extends Agent  {
 				if (message1 != null){
 					ObjectMapper mapper = new ObjectMapper();
 					try {
-						List<GameContainer> containers = mapper.readValue(message1.getContent(),  mapper.getTypeFactory().constructCollectionType(List.class, GameContainer.class));
+						List<Integer> containers = mapper.readValue(message1.getContent(),  mapper.getTypeFactory().constructCollectionType(List.class, Integer.class));
 						if (!containers.isEmpty())
 						{
 							System.out.println("container ok");
@@ -93,7 +93,7 @@ public class uiAgent extends Agent  {
 							System.out.println("********************************************************************************************************************");
 							System.out.println("********************************************************************************************************************");
 							System.out.println("********************************************************************************************************************");
-							//app.setContainers(containers);
+							app.setContainers(containers);
 						}
 					}catch(Exception e) {
 					}

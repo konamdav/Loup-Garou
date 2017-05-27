@@ -10,11 +10,6 @@ import sma.model.DFServices;
 import sma.player_agent.PlayerAgent;
 import sma.vote_behaviour.IVoteBehaviour;
 
-/** 
- * Vote asynchrone (les players r�pondent sans attendre les autres)
- * @author Davy
- *
- */
 public class DeleteRoleBehaviour extends CyclicBehaviour {
 	private PlayerAgent agent;
 	
@@ -40,7 +35,6 @@ public class DeleteRoleBehaviour extends CyclicBehaviour {
 			for(Behaviour bhv : behaviours)
 			{
 				if (bhv instanceof IDeathBehaviour){
-					//TODO CEDROC Find a way for the getBehaviourName to getName_behaviour
 					IDeathBehaviour bhv_death = (IDeathBehaviour) bhv;
 					//System.out.println("Find a behaviour death to delete "+this.agent.getName()+" behaviour  "+bhv_death.getName_behaviour());
 					//System.out.println("Get Death Behaviour " +this.agent.getDeathBehaviours());

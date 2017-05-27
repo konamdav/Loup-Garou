@@ -46,7 +46,7 @@ public class UIContainer {
 			p.setParameter("port", "1099");
 			container = rt.createAgentContainer(p);	
 			
-			AgentController ac = container.createNewAgent("UI_AGENT", "ui.agent.uiAgent", new Object[]{app});
+			AgentController ac = container.createNewAgent("UI_AGENT_"+id, "ui.agent.uiAgent", new Object[]{app});
 			ac.start();
 			
 			

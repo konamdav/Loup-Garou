@@ -27,6 +27,7 @@ public class AddVictimBehaviour extends CyclicBehaviour{
 		ACLMessage message = this.myAgent.receive(mt);
 		if(message != null)
 		{
+			System.err.println("AKV : Receive add victim "+message.getContent());
 			String victim = message.getContent();
 			AID aidVictim = new AID(victim);
 			this.citizenController.getVictims().push(aidVictim);

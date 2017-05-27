@@ -36,10 +36,10 @@ public class DeleteBehavioursFromRoleBehaviour extends CyclicBehaviour {
 				if (bhv instanceof IDeathBehaviour){
 					//TODO CEDROC Find a way for the getBehaviourName to getName_behaviour
 					IDeathBehaviour bhv_death = (IDeathBehaviour) bhv;
-					System.out.println("Find a behaviour death to delete "+this.agent.getName()+" behaviour  "+bhv_death.getName_behaviour());
-					System.out.println("Get Death Behaviour " +this.agent.getDeathBehaviours());
+					//System.out.println("Find a behaviour death to delete "+this.agent.getName()+" behaviour  "+bhv_death.getName_behaviour());
+					//System.out.println("Get Death Behaviour " +this.agent.getDeathBehaviours());
 					this.agent.getDeathBehaviours().remove(bhv_death.getName_behaviour());
-					System.out.println("After remove Death Behaviour " +this.agent.getDeathBehaviours());
+					//System.out.println("After remove Death Behaviour " +this.agent.getDeathBehaviours());
 				}
 				if (bhv instanceof IVoteBehaviour){
 					//Security, to not delete the vote behaviour which has been had (False, delete it in the init in the map)

@@ -37,8 +37,8 @@ public class SystemControllerAgent extends Agent{
 
 		//test init 
 		//send msg
-		//CEDRIC Decommente pour les logs
-		
+		//Decommente pour les logs
+
 		ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
 		message.setConversationId("CREATE_GAME_REQUEST");
 		message.setSender(this.getAID());

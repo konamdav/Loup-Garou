@@ -166,6 +166,8 @@ public class AbstractDeathBehaviour extends CyclicBehaviour{
 				for (Behaviour b : this.agent.getMap_role_behaviours().get(Roles.GENERIC)){
 					this.agent.removeBehaviour(b);
 				}
+				
+				
 				this.nextStep = STATE_ANSWER_DEATH_ROLES;
 			}
 			else {

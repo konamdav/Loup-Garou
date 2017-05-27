@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.OneShotBehaviour;
+import sma.generic.behaviour.DeleteBehavioursFromRoleBehaviour;
 import sma.generic.behaviour.DeleteRoleBehaviour;
 import sma.generic_death.AbstractDeathBehaviour;
 import sma.generic_vote.AbstractVoteBehaviour;
@@ -18,7 +19,8 @@ public class GenericInitBehaviour extends OneShotBehaviour{
 	private PlayerAgent agent;
 
 	//TODO Look which behaviour is common to everyone
-
+	//Behaviour to not delete :
+		//
 	public GenericInitBehaviour(PlayerAgent agent) {
 		super();
 		this.agent = agent;
@@ -34,12 +36,10 @@ public class GenericInitBehaviour extends OneShotBehaviour{
 		if(!this.agent.isHuman())
 		{
 			AbstractVoteBehaviour abstractVoteBehaviour = new AbstractVoteBehaviour(this.agent);
-			//list_behav.add(abstractVoteBehaviour);
 			this.agent.addBehaviour(abstractVoteBehaviour);
 		}
 		
 		CitizenScoreBehaviour citizenScoreBehaviour = new CitizenScoreBehaviour(this.agent);
-		//list_behav.add(citizenScoreBehaviour);
 		this.agent.addBehaviour(citizenScoreBehaviour);
 		this.agent.getVotingBehaviours().add(citizenScoreBehaviour.getName_behaviour()); 
 		
@@ -60,6 +60,11 @@ public class GenericInitBehaviour extends OneShotBehaviour{
 		DeleteRoleBehaviour deleteRoleBehaviour = new DeleteRoleBehaviour(this.agent);
 		this.agent.addBehaviour(deleteRoleBehaviour);
 		list_behav.add(deleteRoleBehaviour);
+		
+		DeleteBehavioursFromRoleBehaviour deleteBehavioursFromRoleBehaviour = new DeleteBehavioursFromRoleBehaviour(this.agent);
+		this.agent.addBehaviour(deleteBehavioursFromRoleBehaviour);
+		list_behav.add(deleteBehavioursFromRoleBehaviour);
+
 
 		map_behaviour.put(Roles.GENERIC, list_behav);
 

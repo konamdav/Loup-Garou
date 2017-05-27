@@ -144,7 +144,7 @@ public class AbstractDeathBehaviour extends CyclicBehaviour{
 
 			for (String role : this.roles_behaviour_answer ){
 				ACLMessage message = new ACLMessage(ACLMessage.CANCEL);
-				message.setConversationId("DELETE_ROLE");
+				message.setConversationId("DELETE_BEHAVIOUR");
 				message.setContent(role);
 				message.addReceiver(this.agent.getAID());
 				this.agent.send(message);
@@ -177,7 +177,7 @@ public class AbstractDeathBehaviour extends CyclicBehaviour{
 				for (String s : tmp){
 					MessageTemplate mt = MessageTemplate.and(
 							MessageTemplate.MatchPerformative(ACLMessage.CONFIRM),
-							MessageTemplate.MatchConversationId("DELETE_ROLE"+s));
+							MessageTemplate.MatchConversationId("DELETE_BEHAVIOUR"+s));
 		
 					ACLMessage message = this.myAgent.receive(mt);
 					if (message != null) 
@@ -197,11 +197,13 @@ public class AbstractDeathBehaviour extends CyclicBehaviour{
 			//Answer 
 			System.err.println(this.agent.getStatut() + "   AID " + this.agent.getAID());
 			System.err.println(DFServices.findGamePlayerAgent("DEAD", this.myAgent, this.agent.getGameid()));
+			
+			DFServices.deregisterPlayerAgent("VICTIM", this.myAgent, this.agent.getGameid()); //retire son statut de victime (car il est mort)
 
-			this.agent.setStatutandRegister(Status.DEAD);
+			this.agent.setStatutandRegister(Status.DEAD);			
+			
 			System.err.println(this.agent.getStatut());
 
-			DFServices.deregisterPlayerAgent("VICTIM", this.myAgent, this.agent.getGameid()); //retire son statut de victime (car il est mort)
 
 			ACLMessage reply = new ACLMessage(ACLMessage.CONFIRM);
 			reply.setConversationId("DEAD_PLAYER");

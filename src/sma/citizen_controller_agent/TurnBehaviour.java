@@ -229,7 +229,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 		{
 			String [] args = {Roles.CITIZEN, Roles.MAYOR, Status.WAKE};
 			List<AID> agents = DFServices.findGamePlayerAgent(args, this.ctrlAgent, this.ctrlAgent.getGameid());
-			
+
 			//mayor ?
 			if(agents.isEmpty())
 			{
@@ -323,7 +323,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 			request.setChoices(choices);
 			request.setVoters(choices);
 			request.setCanBeFake(true);
-			
+
 			ObjectMapper mapper = new ObjectMapper();
 			String json = "";
 			try {
@@ -356,7 +356,18 @@ public class TurnBehaviour extends SimpleBehaviour {
 			{
 				String victim = message.getContent();
 				AID aidVictim = new AID(victim);
-				this.ctrlAgent.getVictims().push(aidVictim);
+				boolean flag = false;
+				for(AID aid : this.ctrlAgent.getVictims())
+				{
+					if(aid.getName().equals(victim))
+					{
+						flag = true;
+					}
+				}
+				if(!flag){
+					this.ctrlAgent.getVictims().push(aidVictim);
+				}
+
 
 				this.nextStep = STATE_SEND_KILL_VICTIMS_REQUEST;
 			}

@@ -11,7 +11,7 @@ import jade.lang.acl.MessageTemplate;
  */
 public class AddVictimBehaviour extends CyclicBehaviour{
 	private CitizenControllerAgent citizenController;
-	
+
 	public AddVictimBehaviour(CitizenControllerAgent citizenController) {
 		super();
 		this.citizenController = citizenController;
@@ -30,13 +30,25 @@ public class AddVictimBehaviour extends CyclicBehaviour{
 			System.err.println("AKV : Receive add victim "+message.getContent());
 			String victim = message.getContent();
 			AID aidVictim = new AID(victim);
-			this.citizenController.getVictims().push(aidVictim);
-			
-			message = new ACLMessage(ACLMessage.REQUEST);
-			message.setConversationId("ATTR_VICTIM_STATUS");
-			message.setSender(this.citizenController.getAID());
-			message.addReceiver(aidVictim);
-			this.citizenController.send(message);
+
+			boolean flag = false;
+			for(AID aid : this.citizenController.getVictims())
+			{
+				if(aid.getName().equals(victim))
+				{
+					flag = true;
+				}
+			}
+			if(!flag){
+				this.citizenController.getVictims().push(aidVictim);
+
+				message = new ACLMessage(ACLMessage.REQUEST);
+				message.setConversationId("ATTR_VICTIM_STATUS");
+				message.setSender(this.citizenController.getAID());
+				message.addReceiver(aidVictim);
+				this.citizenController.send(message);
+
+			}
 		}
 		else
 		{

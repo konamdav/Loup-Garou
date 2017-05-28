@@ -9,7 +9,33 @@ import sma.model.DFServices;
 import sma.model.HumanVoteRequest;
 import sma.model.VoteResults;
 
+/**
+ * Agent d'environnement d'une partie
+ * Communique avec UI
+ * @author Davy
+ *
+ */
 public class EnvironmentAgent extends Agent{
+	/**
+	 * TODO CLEMENT
+	 * Variables à communiquer à l'UI
+	 * 
+	 * currentResults (resultat (partiel ou complet) du vote en cours)
+	 * * * Pour te simplifier les infos de cette classe
+	 * * * utilise this.currentResults.getSimpleVoteResults();
+	 * 
+	 * humanVoteRequest requete de vote pour le joueur humain (peut etre null)
+	 * 
+	 * dayState etat du de la journée (jour/nuit)
+	 * 
+	 * actionLogs les LOGS de partie (actions des joueurs durant la partie)
+	 * 
+	 * turn indique le tour actuel
+	 * 
+	 * endgame pour déterminer la fin du jeu (utile pour stopper le ticker/timer)
+	 */
+	
+	
 	private VoteResults globalResults;
 	private VoteResults currentResults;
 	
@@ -23,8 +49,7 @@ public class EnvironmentAgent extends Agent{
 	
 	private boolean endGame;
 	private int gameid;
-	
-//	private List<AID> listeners;
+
 	
 	@Override
 	protected void setup() {
@@ -53,13 +78,7 @@ public class EnvironmentAgent extends Agent{
 	public Stack<HumanVoteRequest> getStackRequest() {
 		return stackRequest;
 	}
-	/*public List<AID> getListeners() {
-		return listeners;
-	}
 
-	public void setListeners(List<AID> listeners) {
-		this.listeners = listeners;
-	}*/
 	public String getTurn() {
 		return turn;
 	}

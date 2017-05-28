@@ -63,6 +63,7 @@ public class ReceiveBehaviour extends OneShotBehaviour {
 		}
 		else if(message.getConversationId().equals("TURN"))
 		{
+			System.out.println("TURN => "+message.getContent());
 			this.envAgent.setTurn(message.getContent());
 		}
 		else if(message.getConversationId().equals("END_GAME"))

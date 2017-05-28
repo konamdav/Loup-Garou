@@ -1,5 +1,10 @@
 package sma.model;
 
+/**
+ * Message de vote forcé
+ * @author Davy
+ *
+ */
 public class ForceVoteRequest {
 	private String voteRequest;
 	private String voteResult;

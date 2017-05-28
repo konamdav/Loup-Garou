@@ -4,6 +4,11 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 
 import jade.core.AID;
 
+/**
+ * Message de requete pour le vote humain
+ * @author Davy
+ *
+ */
 public class HumanVoteRequest {
 	public HumanVoteRequest() {
 		super();

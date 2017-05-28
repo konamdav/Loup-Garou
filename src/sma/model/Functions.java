@@ -39,6 +39,21 @@ public class Functions {
 		}
 	}
 	
+	public static void  updateTurn(String turn, Agent a, int gameid)
+	{
+		ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
+		msg.setSender(a.getAID());
+		msg.setConversationId("TURN");
+		msg.setContent(turn);
+		
+		List<AID> agents = DFServices.findGameControllerAgent("ENVIRONMENT", a, gameid);
+		if(!agents.isEmpty())
+		{
+			msg.addReceiver(agents.get(0));
+			a.send(msg);
+		}
+	}
+	
 	public static void  setEndGame(Agent a, int gameid)
 	{
 		ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);

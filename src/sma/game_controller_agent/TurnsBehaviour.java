@@ -9,6 +9,7 @@ import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import sma.model.DFServices;
+import sma.model.Functions;
 import sma.model.Roles;
 import sma.model.Status;
 
@@ -141,6 +142,8 @@ public class TurnsBehaviour extends SimpleBehaviour {
 
 				if(nbPlayers > 0 && !this.flag_cupid)
 				{
+					Functions.updateTurn(Roles.CUPID, controllerAgent, controllerAgent.getGameid());
+					
 					ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
 					message.setConversationId("START_TURN");
 					message.setSender(this.getAgent().getAID());
@@ -193,6 +196,9 @@ public class TurnsBehaviour extends SimpleBehaviour {
 
 				if(nbPlayers > 0)
 				{
+					Functions.updateTurn(Roles.FLUTE_PLAYER, controllerAgent, controllerAgent.getGameid());
+					
+					
 					ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
 					message.setConversationId("START_TURN");
 					message.setSender(this.getAgent().getAID());
@@ -243,6 +249,8 @@ public class TurnsBehaviour extends SimpleBehaviour {
 
 				if(nbPlayers > 0)
 				{
+					Functions.updateTurn(Roles.MEDIUM, controllerAgent, controllerAgent.getGameid());
+					
 					ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
 					message.setConversationId("START_TURN");
 					message.setSender(this.getAgent().getAID());
@@ -285,6 +293,9 @@ public class TurnsBehaviour extends SimpleBehaviour {
 			List<AID> agents = DFServices.findGameControllerAgent("CITIZEN", this.myAgent, this.controllerAgent.getGameid());
 			if(!agents.isEmpty())
 			{				
+				Functions.updateTurn(Roles.CITIZEN, controllerAgent, controllerAgent.getGameid());
+				
+				
 				ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
 				message.setConversationId("START_TURN");
 				message.setSender(this.getAgent().getAID());
@@ -318,7 +329,9 @@ public class TurnsBehaviour extends SimpleBehaviour {
 
 			List<AID> agents = DFServices.findGameControllerAgent("WEREWOLF", this.myAgent, this.controllerAgent.getGameid());
 			if(!agents.isEmpty())
-			{				
+			{			
+				Functions.updateTurn(Roles.WEREWOLF, controllerAgent, controllerAgent.getGameid());
+				
 				ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
 				message.setConversationId("START_TURN");
 				message.setSender(this.getAgent().getAID());
@@ -359,6 +372,7 @@ public class TurnsBehaviour extends SimpleBehaviour {
 		}
 		else if (this.step.equals(STATE_POSTEND))
 		{
+			Functions.updateTurn("", controllerAgent, controllerAgent.getGameid());
 			System.err.println("FINISH TURNS");
 			this.flag_done = true;
 		}

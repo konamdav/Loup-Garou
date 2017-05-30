@@ -468,6 +468,17 @@ public class DFServices {
 			profile.getRoles().remove(Roles.CITIZEN);
 		}
 
+		//get profiles joueurs ancien
+		List<AID> anciens = DFServices.findGamePlayerAgent(Roles.ANCIEN, agent, gameid);
+
+		for(AID ancien : anciens)
+		{
+			PlayerProfile profile = tmp.get(ancien.getLocalName());
+			profile.getRoles().add(Roles.ANCIEN);
+			profile.getRoles().remove(Roles.CITIZEN);
+		}
+		
+		
 		//get profiles joueurs mayor
 		List<AID> mayors = DFServices.findGamePlayerAgent(Roles.MAYOR, agent, gameid);
 		for(AID mayor : mayors)
@@ -513,6 +524,8 @@ public class DFServices {
 			PlayerProfile profile = tmp.get(victim.getLocalName());
 			profile.getRoles().add("VICTIM");
 		}
+		
+		
 
 		List<PlayerProfile> list = new ArrayList<PlayerProfile>();
 		for(Entry<String, PlayerProfile> entry : tmp.entrySet())

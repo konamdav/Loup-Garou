@@ -6,6 +6,7 @@ import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import sma.generic_death.IDeathBehaviour;
+import sma.generic_death.IPreDeathBehaviour;
 import sma.model.DFServices;
 import sma.player_agent.PlayerAgent;
 import sma.vote_behaviour.IVoteBehaviour;
@@ -34,19 +35,27 @@ public class DeleteRoleBehaviour extends CyclicBehaviour {
 			List<Behaviour> behaviours = this.agent.getMap_role_behaviours().get(role);
 			for(Behaviour bhv : behaviours)
 			{
-				if (bhv instanceof IDeathBehaviour){
+				//TODO Cedric test the preDeathBehaviour
+				if (bhv instanceof IPreDeathBehaviour){
+					IPreDeathBehaviour bhv_death = (IPreDeathBehaviour) bhv;
+					//System.out.println("Find a behaviour death to delete "+this.agent.getName()+" behaviour  "+bhv_death.getName_behaviour());
+					System.out.println("Get pRE Death Behaviour " +this.agent.getDeathBehaviours());
+					this.agent.getPreDeathBehaviours().remove(bhv_death.getName_behaviour());
+					System.out.println("After remove pRE Death Behaviour " +this.agent.getDeathBehaviours());
+				}
+				else if (bhv instanceof IDeathBehaviour){
 					IDeathBehaviour bhv_death = (IDeathBehaviour) bhv;
 					//System.out.println("Find a behaviour death to delete "+this.agent.getName()+" behaviour  "+bhv_death.getName_behaviour());
-					//System.out.println("Get Death Behaviour " +this.agent.getDeathBehaviours());
+					System.out.println("Get Death Behaviour " +this.agent.getDeathBehaviours());
 					this.agent.getDeathBehaviours().remove(bhv_death.getName_behaviour());
-					//System.out.println("After remove Death Behaviour " +this.agent.getDeathBehaviours());
+					System.out.println("After remove Death Behaviour " +this.agent.getDeathBehaviours());
 				}
 				else if (bhv instanceof IVoteBehaviour){
 					IVoteBehaviour bhv_Vote = (IVoteBehaviour) bhv;
 					//System.out.println("Find a behaviour vote to delete "+this.agent.getName()+" behaviour  "+bhv_Vote.getName_behaviour());
-					//System.out.println("Get Vote Behaviour " +this.agent.getVotingBehaviours());
+					System.out.println("Get Vote Behaviour " +this.agent.getVotingBehaviours());
 					this.agent.getVotingBehaviours().remove(bhv_Vote.getName_behaviour());
-					//System.out.println("After remove Vote Behaviour " +this.agent.getVotingBehaviours());
+					System.out.println("After remove Vote Behaviour " +this.agent.getVotingBehaviours());
 				}
 				//stop behaviour
 				this.agent.removeBehaviour(bhv);

@@ -150,7 +150,6 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 				scr.getResults().put(voted, 1);
 
 				this.results.add(scr);
-
 				this.nextStep = STATE_RESULTS;
 			}
 			else
@@ -171,6 +170,7 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
+
 					messageRequest.setContent(json);
 					this.myAgent.send(messageRequest);
 
@@ -204,8 +204,22 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 				{
 					e.printStackTrace();
 				}
-				this.results.add(res);
 
+				/** pondération  **/
+				String sender = res.getSender();
+				if(!sender.isEmpty())
+				{
+					String type = this.agent.getTypeVotingBehaviours().get(sender);
+					
+					for(int i = 0; i< this.agent.getFactorVotingBehaviours().get(type);++i)
+					{
+						this.results.add(res);
+					}
+				}
+				else
+				{
+					this.results.add(res);
+				}
 				System.err.println("("+this.nbVoters+"/"+this.agent.getVotingBehaviours().size()+")");
 				if(this.nbVoters >= this.agent.getVotingBehaviours().size())
 				{
@@ -271,7 +285,7 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 
 			List<String> voter = new ArrayList<String>();
 			voter.add(this.agent.getName());
-			
+
 			if(!request.isAskRequest()){
 
 				results.put(this.finalResults.get(0), voter);
@@ -285,7 +299,7 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 			{
 				//TRAITEMENT DE LA REQUETE ASK
 				//LE RESULTAT EST IL SUFFISANT POUR ETRE OK ?
-				
+
 				if(this.finalResults.size() == 1)
 				{
 					results.put("OK", voter);

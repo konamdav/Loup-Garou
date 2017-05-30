@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import sma.data.Data;
 import sma.generic_init.FactoryInitBehaviour;
 import sma.generic_init.NewMainRoleBehaviour;
 import sma.generic_vote.IVotingAgent;
 import sma.model.DFServices;
 import sma.model.Roles;
 import sma.model.SuspicionScore;
+import sma.model.TypeIA;
 import sma.werewolf_agent.InitAsHumanBehaviour;
 import jade.core.AID;
 import jade.core.Agent;
@@ -25,10 +27,13 @@ import jade.lang.acl.ACLMessage;
 public class PlayerAgent extends Agent implements IVotingAgent{
 	private ArrayList<String> votingBehaviours; //All behaviour for vote to execute. Treeat them with string to send 
 	private ArrayList<String> deathBehaviours;//All behaviour for death to execute
+	private ArrayList<String> predeathBehaviours;//All behaviour for predeath to execute
 
-	//Tour du role ce fait par réception message (LG, Cupidon)
+	private HashMap<String, String> typeVotingBehaviours;
+	private HashMap<String, Integer> factorVotingBehaviours;
 	
-	
+
+
 	private SuspicionScore suspicionScore; //grille de suspicion
 	private boolean human;
 	private int gameid;
@@ -85,20 +90,26 @@ public class PlayerAgent extends Agent implements IVotingAgent{
 		this.human = false;
 		this.votingBehaviours = new ArrayList<String>();
 		this.deathBehaviours = new ArrayList<String>();
+		
+		this.factorVotingBehaviours = new HashMap<String, Integer>();
+		this.factorVotingBehaviours.put(TypeIA.STRATEGIC, 0);
+		this.factorVotingBehaviours.put(TypeIA.SUSPICIOUS, 0);
+		this.typeVotingBehaviours = new HashMap<String, String>();
+
+		/** repartition **/
+		int ptSuspicious = (int) (Math.random()*Data.REPARTITION_POINTS);
+		int ptStrategic = (Data.REPARTITION_POINTS-ptSuspicious);
+		this.factorVotingBehaviours.put(TypeIA.STRATEGIC, ptStrategic);
+		this.factorVotingBehaviours.put(TypeIA.SUSPICIOUS, ptSuspicious);
+		
+		System.err.println("REPARTITION | SUSPICIOUS "+ptSuspicious+" STRATEGIC "+ptStrategic);
+		
+		this.predeathBehaviours = new ArrayList<String>();
 
 		this.main_role = "";
 
-
 		this.suspicionScore = new SuspicionScore(); //new suspicion grid
-
 		this.map_role_behaviours = new HashMap<String,ArrayList<Behaviour>>();
-
-
-		//this.addBehaviour(new RegisterAgentBehaviour(this));
-
-		//TODO Pass behaviour stop to public, or send messages. 
-		//
-		//Behaviour a = new NewMainRoleBehaviour(this); TODO TO list every behaviour 
 
 
 		this.addBehaviour(new NewMainRoleBehaviour(this));		
@@ -144,6 +155,11 @@ public class PlayerAgent extends Agent implements IVotingAgent{
 		return deathBehaviours;
 	}
 
+
+	public ArrayList<String> getPreDeathBehaviours() {
+		return predeathBehaviours;
+	}
+
 	public String getPlayerName()
 	{
 		return this.getAID().getName();
@@ -153,9 +169,20 @@ public class PlayerAgent extends Agent implements IVotingAgent{
 		return human;
 	}
 	
+	
 
 	public void setHuman(boolean human) {
 		this.human = human;
 	}
+
+	public HashMap<String, String> getTypeVotingBehaviours() {
+		return typeVotingBehaviours;
+	}
+
+	public HashMap<String, Integer> getFactorVotingBehaviours() {
+		return factorVotingBehaviours;
+	}
+	
+	
 	
 }

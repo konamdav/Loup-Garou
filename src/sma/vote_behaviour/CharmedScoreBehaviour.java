@@ -114,6 +114,7 @@ public class CharmedScoreBehaviour extends Behaviour implements IVoteBehaviour{
 			String json = "";
 			ObjectMapper mapper = new ObjectMapper();
 			try {
+				this.scoreResults.setSender(this.getName_behaviour());
 				json = mapper.writeValueAsString(this.scoreResults);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -121,7 +122,7 @@ public class CharmedScoreBehaviour extends Behaviour implements IVoteBehaviour{
 
 			reply.setContent(json);
 			this.playerAgent.send(reply);
-
+			
 			this.nextStep = STATE_INIT;
 		}
 

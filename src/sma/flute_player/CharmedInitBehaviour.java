@@ -8,6 +8,7 @@ import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 import sma.model.DFServices;
 import sma.model.Roles;
+import sma.model.TypeIA;
 import sma.player_agent.PlayerAgent;
 import sma.vote_behaviour.CharmedScoreBehaviour;
 
@@ -36,6 +37,9 @@ public class CharmedInitBehaviour extends OneShotBehaviour{
 		//enregirstrement
 		System.out.println("[ "+this.agent.getName()+" ] REGISTER "+Roles.CHARMED);
 		DFServices.registerPlayerAgent(Roles.CHARMED, this.myAgent, this.agent.getGameid());
+		
+		this.agent.getTypeVotingBehaviours().put(charmedScoreBehaviour.getName_behaviour(), TypeIA.STRATEGIC);
+
 		
 		//Envoie message fin d'initialisation		
 		ACLMessage messageRequest = new ACLMessage(ACLMessage.AGREE);

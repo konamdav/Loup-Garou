@@ -1,1 +1,1 @@
-http://KONAMD2:7778/acc
+http://ced-HP-Notebook:7778/acc

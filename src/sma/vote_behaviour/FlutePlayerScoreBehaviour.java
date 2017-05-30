@@ -119,6 +119,7 @@ public class FlutePlayerScoreBehaviour extends Behaviour implements IVoteBehavio
 			String json = "";
 			ObjectMapper mapper = new ObjectMapper();
 			try {
+				this.scoreResults.setSender(this.getName_behaviour());
 				json = mapper.writeValueAsString(this.scoreResults);
 			} catch (Exception e) {
 				e.printStackTrace();

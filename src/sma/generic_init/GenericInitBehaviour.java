@@ -9,6 +9,7 @@ import sma.generic.behaviour.DeleteRoleBehaviour;
 import sma.generic_death.AbstractDeathBehaviour;
 import sma.generic_vote.AbstractVoteBehaviour;
 import sma.model.Roles;
+import sma.model.TypeIA;
 import sma.player_agent.GetRoleBehaviour;
 import sma.player_agent.PlayerAgent;
 import sma.player_agent.SleepBehaviour;
@@ -18,9 +19,7 @@ import sma.vote_behaviour.CitizenScoreBehaviour;
 public class GenericInitBehaviour extends OneShotBehaviour{
 	private PlayerAgent agent;
 
-	//TODO Look which behaviour is common to everyone
-	//Behaviour to not delete :
-		//
+	
 	public GenericInitBehaviour(PlayerAgent agent) {
 		super();
 		this.agent = agent;
@@ -65,6 +64,7 @@ public class GenericInitBehaviour extends OneShotBehaviour{
 		this.agent.addBehaviour(deleteBehavioursFromRoleBehaviour);
 		list_behav.add(deleteBehavioursFromRoleBehaviour);
 
+		this.agent.getTypeVotingBehaviours().put(citizenScoreBehaviour.getName_behaviour(), TypeIA.STRATEGIC);
 
 		map_behaviour.put(Roles.GENERIC, list_behav);
 

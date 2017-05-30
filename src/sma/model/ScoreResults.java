@@ -9,7 +9,7 @@ import java.util.Map.Entry;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 public class ScoreResults {
-
+	private String sender;
 	private Map<String, Integer> results;
 	
 	public ScoreResults() {
@@ -45,6 +45,14 @@ public class ScoreResults {
 		}
 	}
 	
+	public String getSender() {
+		return sender;
+	}
+
+	public void setSender(String sender) {
+		this.sender = sender;
+	}
+
 	public List<String> getFinalResults()
 	{
 		ArrayList<String> finalResults = new ArrayList<String>();

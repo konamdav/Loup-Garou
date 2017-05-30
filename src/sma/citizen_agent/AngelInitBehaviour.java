@@ -9,6 +9,7 @@ import jade.lang.acl.ACLMessage;
 import sma.lover_behaviour.LoverDeathBehaviour;
 import sma.model.DFServices;
 import sma.model.Roles;
+import sma.model.TypeIA;
 import sma.player_agent.PlayerAgent;
 import sma.vote_behaviour.CitizenSimpleSuspicionBehaviour;
 import sma.vote_behaviour.CitizenSuspicionListener;
@@ -53,6 +54,8 @@ public class AngelInitBehaviour extends OneShotBehaviour{
 		
 		//Handle attributes
 		map_behaviour.put(Roles.ANGEL, list_behav);
+
+		this.agent.getTypeVotingBehaviours().put(citizenSuspicionBehaviour.getName_behaviour(), TypeIA.SUSPICIOUS);
 
 		
 		System.out.println("[ "+this.agent.getName()+" ] REGISTER "+Roles.ANGEL);

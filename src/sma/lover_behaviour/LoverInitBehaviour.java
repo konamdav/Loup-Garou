@@ -9,6 +9,7 @@ import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 import sma.model.DFServices;
 import sma.model.Roles;
+import sma.model.TypeIA;
 import sma.player_agent.PlayerAgent;
 import sma.vote_behaviour.LoverScoreBehaviour;
 
@@ -42,6 +43,7 @@ public class LoverInitBehaviour extends OneShotBehaviour{
 		this.agent.addBehaviour(loverDeathBehaviour);
 		this.agent.getDeathBehaviours().add(loverDeathBehaviour.getName_behaviour());
 		
+		this.agent.getTypeVotingBehaviours().put(loverScoreBehaviour.getName_behaviour(), TypeIA.STRATEGIC);
 		map_behaviour.put(Roles.LOVER, list_behav);
 		
 		//Envoie message fin d'initialisation		

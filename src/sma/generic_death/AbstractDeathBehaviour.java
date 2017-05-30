@@ -60,7 +60,7 @@ public class AbstractDeathBehaviour extends CyclicBehaviour{
 	 * 5. Mets à jour le statut de cet agent et renvoie message de confirmation de mort
 	 * @see jade.core.behaviours.Behaviour#action()
 	 */
-	//TODO CEDRIC Check for a PreDeath for the ancien (Tu fais chier David)
+	//TODO CEDRIC Check for a PreDeath for the ancien 
 	//TODO CEDRIC Delete the behaviour 
 
 	@Override

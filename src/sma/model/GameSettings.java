@@ -17,12 +17,12 @@ public class GameSettings {
 		//Liste role par d�faut
 		this.rolesSettings = new HashMap<String, Integer>();
 
-		this.rolesSettings.put(Roles.WEREWOLF, 2);
-		this.rolesSettings.put(Roles.CITIZEN, 4);
-		this.rolesSettings.put(Roles.CUPID, 2);
-		this.rolesSettings.put(Roles.LITTLE_GIRL, 4);
+		this.rolesSettings.put(Roles.WEREWOLF, 1);
+		this.rolesSettings.put(Roles.CITIZEN, 1);
+		this.rolesSettings.put(Roles.CUPID, 1);
+		this.rolesSettings.put(Roles.LITTLE_GIRL, 1);
 		this.rolesSettings.put(Roles.MEDIUM,1);
-		this.rolesSettings.put(Roles.ANGEL,3);
+		this.rolesSettings.put(Roles.ANGEL,1);
 		this.rolesSettings.put(Roles.FLUTE_PLAYER,1);
 
 	}

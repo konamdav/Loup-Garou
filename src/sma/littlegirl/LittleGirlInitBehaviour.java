@@ -8,6 +8,7 @@ import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 import sma.model.DFServices;
 import sma.model.Roles;
+import sma.model.TypeIA;
 import sma.player_agent.PlayerAgent;
 import sma.vote_behaviour.CitizenSimpleSuspicionBehaviour;
 import sma.vote_behaviour.CitizenSuspicionListener;
@@ -49,6 +50,8 @@ public class LittleGirlInitBehaviour extends OneShotBehaviour{
 		this.agent.addBehaviour(littleGirlSuspicionListener);
 		
 		this.agent.getVotingBehaviours().add(citizenSuspicionBehaviour.getName_behaviour());
+		
+		this.agent.getTypeVotingBehaviours().put(citizenSuspicionBehaviour.getName_behaviour(), TypeIA.SUSPICIOUS);
 		
 		//Handle attributes
 		map_behaviour.put(Roles.LITTLE_GIRL, list_behav);

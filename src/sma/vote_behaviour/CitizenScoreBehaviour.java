@@ -105,6 +105,7 @@ public class CitizenScoreBehaviour extends Behaviour implements IVoteBehaviour{
 			String json = "";
 			ObjectMapper mapper = new ObjectMapper();
 			try {
+				this.scoreResults.setSender(this.getName_behaviour());
 				json = mapper.writeValueAsString(this.scoreResults);
 			} catch (Exception e) {
 				e.printStackTrace();

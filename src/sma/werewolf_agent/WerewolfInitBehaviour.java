@@ -8,6 +8,7 @@ import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 import sma.model.DFServices;
 import sma.model.Roles;
+import sma.model.TypeIA;
 import sma.player_agent.PlayerAgent;
 import sma.vote_behaviour.WerewolfScoreBehaviour;
 import sma.vote_behaviour.WerewolfSimpleSuspicionBehaviour;
@@ -55,6 +56,9 @@ public class WerewolfInitBehaviour extends OneShotBehaviour{
 		
 		this.agent.getVotingBehaviours().add(werewolfScoreBehaviour.getName_behaviour());
 		this.agent.getVotingBehaviours().add(werewolfSuspicionBehaviour.getName_behaviour());
+		
+		this.agent.getTypeVotingBehaviours().put(werewolfSuspicionBehaviour.getName_behaviour(), TypeIA.SUSPICIOUS);
+		this.agent.getTypeVotingBehaviours().put(werewolfScoreBehaviour.getName_behaviour(), TypeIA.STRATEGIC);
 
 		//Handle attributes
 		map_behaviour.put(Roles.WEREWOLF, list_behav);

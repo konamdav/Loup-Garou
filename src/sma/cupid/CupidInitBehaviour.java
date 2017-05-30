@@ -8,6 +8,7 @@ import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 import sma.model.DFServices;
 import sma.model.Roles;
+import sma.model.TypeIA;
 import sma.player_agent.PlayerAgent;
 import sma.vote_behaviour.CitizenSimpleSuspicionBehaviour;
 import sma.vote_behaviour.CitizenSuspicionListener;
@@ -48,6 +49,8 @@ public class CupidInitBehaviour extends OneShotBehaviour{
 		//Handle attributes
 		map_behaviour.put(Roles.CUPID, list_behav);
 
+		this.agent.getTypeVotingBehaviours().put(citizenSuspicionBehaviour.getName_behaviour(), TypeIA.SUSPICIOUS);
+		
 		//enregirstrement
 		System.out.println("[ "+this.agent.getName()+" ] REGISTER "+Roles.CUPID);
 		DFServices.registerPlayerAgent(Roles.CUPID, this.myAgent, this.agent.getGameid());

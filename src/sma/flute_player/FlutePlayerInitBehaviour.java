@@ -8,6 +8,7 @@ import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 import sma.model.DFServices;
 import sma.model.Roles;
+import sma.model.TypeIA;
 import sma.player_agent.PlayerAgent;
 import sma.vote_behaviour.CitizenSimpleSuspicionBehaviour;
 import sma.vote_behaviour.CitizenSuspicionListener;
@@ -55,6 +56,10 @@ public class FlutePlayerInitBehaviour extends OneShotBehaviour{
 		this.agent.getVotingBehaviours().add(citizenSuspicionBehaviour.getName_behaviour());
 		
 		this.agent.getVotingBehaviours().add(flutePlayerScoreBehaviour.getName_behaviour());
+
+		
+		this.agent.getTypeVotingBehaviours().put(citizenSuspicionBehaviour.getName_behaviour(), TypeIA.SUSPICIOUS);
+		this.agent.getTypeVotingBehaviours().put(flutePlayerScoreBehaviour.getName_behaviour(), TypeIA.STRATEGIC);
 
 		
 		//Handle attributes

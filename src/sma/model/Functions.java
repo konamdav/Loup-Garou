@@ -9,7 +9,7 @@ import jade.lang.acl.ACLMessage;
 public class Functions {
 	public static void  newActionToLog(String action, Agent a, int gameid)
 	{
-		ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
+		ACLMessage msg = new ACLMessage(ACLMessage.AGREE);
 		msg.setSender(a.getAID());
 		msg.setConversationId("ACTION_LOG");
 		msg.setContent(action);
@@ -26,7 +26,7 @@ public class Functions {
 	
 	public static void  updateDayState(String state, Agent a, int gameid)
 	{
-		ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
+		ACLMessage msg = new ACLMessage(ACLMessage.AGREE);
 		msg.setSender(a.getAID());
 		msg.setConversationId("DAY_STATE");
 		msg.setContent(state);
@@ -41,7 +41,7 @@ public class Functions {
 	
 	public static void  updateTurn(String turn, Agent a, int gameid)
 	{
-		ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
+		ACLMessage msg = new ACLMessage(ACLMessage.AGREE);
 		msg.setSender(a.getAID());
 		msg.setConversationId("TURN");
 		msg.setContent(turn);
@@ -56,7 +56,7 @@ public class Functions {
 	
 	public static void  setEndGame(Agent a, int gameid)
 	{
-		ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
+		ACLMessage msg = new ACLMessage(ACLMessage.AGREE);
 		msg.setSender(a.getAID());
 		msg.setConversationId("END_GAME");
 		msg.setContent("true");

@@ -183,7 +183,7 @@ public class DFServices {
 	{
 		DFServices.deregisterGameAgent("PLAYER", Status.SLEEP, agent, gameid);
 		DFServices.deregisterGameAgent("PLAYER", Status.WAKE, agent, gameid);
-		
+
 		DFServices.deregisterGameAgent("PLAYER", Status.DEAD, agent, gameid); //TODO cedric decooment + test	
 
 		DFServices.registerGameAgent("PLAYER", status, agent, gameid);
@@ -415,6 +415,15 @@ public class DFServices {
 			profile.getRoles().remove("CITIZEN");
 		}
 
+		//get profiles joueurs 
+		List<AID> hunters = DFServices.findGamePlayerAgent(Roles.HUNTER, agent, gameid);
+		for(AID hunter : hunters)
+		{
+			PlayerProfile profile = tmp.get(hunter.getLocalName());
+			profile.getRoles().add(Roles.HUNTER);
+			profile.getRoles().remove("CITIZEN");
+		}
+
 		//get profiles joueurs flute
 		List<AID> girls = DFServices.findGamePlayerAgent(Roles.LITTLE_GIRL, agent, gameid);
 		for(AID girl : girls)
@@ -423,6 +432,16 @@ public class DFServices {
 			profile.getRoles().add(Roles.LITTLE_GIRL);
 			profile.getRoles().remove("CITIZEN");
 		}
+
+		//get profiles joueurs witch
+		List<AID> witches = DFServices.findGamePlayerAgent(Roles.WITCH, agent, gameid);
+		for(AID witch : witches)
+		{
+			PlayerProfile profile = tmp.get(witch.getLocalName());
+			profile.getRoles().add(Roles.WITCH);
+			profile.getRoles().remove("CITIZEN");
+		}
+
 
 		//get profiles joueurs flute
 		List<AID> cupids = DFServices.findGamePlayerAgent(Roles.CUPID, agent, gameid);
@@ -477,8 +496,8 @@ public class DFServices {
 			profile.getRoles().add(Roles.ANCIEN);
 			profile.getRoles().remove(Roles.CITIZEN);
 		}
-		
-		
+
+
 		//get profiles joueurs mayor
 		List<AID> mayors = DFServices.findGamePlayerAgent(Roles.MAYOR, agent, gameid);
 		for(AID mayor : mayors)
@@ -524,8 +543,8 @@ public class DFServices {
 			PlayerProfile profile = tmp.get(victim.getLocalName());
 			profile.getRoles().add("VICTIM");
 		}
-		
-		
+
+
 
 		List<PlayerProfile> list = new ArrayList<PlayerProfile>();
 		for(Entry<String, PlayerProfile> entry : tmp.entrySet())

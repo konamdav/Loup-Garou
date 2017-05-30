@@ -24,6 +24,7 @@ public class VictimStatusBehaviour extends SimpleBehaviour{
 		ACLMessage message = this.myAgent.receive(mt);
 		if (message != null) 
 		{
+			System.out.println("JE SUIS UNE VICTIME");
 			DFServices.registerPlayerAgent(Status.VICTIM, this.playerAgent, this.playerAgent.getGameid());
 		}
 		else

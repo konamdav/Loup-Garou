@@ -46,6 +46,7 @@ public class RemoveVictimBehaviour extends CyclicBehaviour{
 	
 			if(flag)
 			{
+				System.err.println("ANNULATION VICTIME "+	this.citizenController.getVictims().get(index).getLocalName());
 				this.citizenController.getVictims().remove(index);
 			}
 			

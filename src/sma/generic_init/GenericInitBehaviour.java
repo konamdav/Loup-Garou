@@ -15,6 +15,7 @@ import sma.player_agent.PlayerAgent;
 import sma.player_agent.SleepBehaviour;
 import sma.player_agent.WakeBehaviour;
 import sma.vote_behaviour.CitizenScoreBehaviour;
+import sma.werewolf_agent.VictimStatusBehaviour;
 
 public class GenericInitBehaviour extends OneShotBehaviour{
 	private PlayerAgent agent;
@@ -48,6 +49,10 @@ public class GenericInitBehaviour extends OneShotBehaviour{
 		this.agent.addBehaviour(genericWakeBehaviour);
 		list_behav.add(genericWakeBehaviour);
 
+		VictimStatusBehaviour victimStatusBehaviour = new VictimStatusBehaviour(this.agent);
+		this.agent.addBehaviour(victimStatusBehaviour);
+		list_behav.add(victimStatusBehaviour);
+		
 		SleepBehaviour genericSleepBehaviour = new SleepBehaviour(this.agent);
 		this.agent.addBehaviour(genericSleepBehaviour);
 		list_behav.add(genericSleepBehaviour);

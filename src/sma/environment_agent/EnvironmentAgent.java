@@ -51,6 +51,7 @@ public class EnvironmentAgent extends Agent{
 	private int gameid;
 
 	
+
 	@Override
 	protected void setup() {
 		Object[] args = this.getArguments();
@@ -128,6 +129,11 @@ public class EnvironmentAgent extends Agent{
 	public void setHumanVoteRequest(HumanVoteRequest humanVoteRequest) {
 		this.humanVoteRequest = humanVoteRequest;
 	}
-	
+	public int getGameid() {
+		return gameid;
+	}
+	public void setGameid(int gameid) {
+		this.gameid = gameid;
+	}
 
 }

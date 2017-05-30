@@ -2,6 +2,9 @@ package sma.environment_agent;
 
 import java.io.IOException;
 
+import sma.model.DFServices;
+import sma.model.GameInformations;
+
 import org.codehaus.jackson.map.ObjectMapper;
 
 import jade.core.behaviours.OneShotBehaviour;
@@ -51,6 +54,22 @@ public class SendBehaviour extends OneShotBehaviour {
 		{
 			try {
 				contentString = mapper.writeValueAsString(this.envAgent.getActionLogs());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		else if(message.getConversationId().equals("GAME_INFORMATIONS"))
+		{
+			GameInformations gi = new GameInformations();
+			gi.setActionLogs(envAgent.getActionLogs());
+			gi.setCurrentResults(envAgent.getCurrentResults());
+			gi.setDayState(envAgent.getDayState());
+			gi.setEndGame(envAgent.isEndGame());
+			gi.setProfiles(DFServices.getPlayerProfiles(envAgent, envAgent.getGameid()));
+			gi.setTurn(envAgent.getTurn());
+			
+			try {
+				contentString = mapper.writeValueAsString(gi);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

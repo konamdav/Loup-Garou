@@ -1,5 +1,6 @@
 package ui.view;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.badlogic.gdx.Game;
@@ -8,6 +9,9 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import jade.core.Agent;
 import sma.launch.GameContainer;
 import sma.launch.SystemContainer;
+import sma.model.GameInformations;
+import sma.model.PlayerProfile;
+import sma.model.VoteResults;
 import ui.agent.uiAgent;
 import ui.sma.UIContainer;
 
@@ -15,11 +19,27 @@ import ui.sma.UIContainer;
  * Moteur graphique 
  */
 public class App extends Game {
+	
 	private LwjglApplicationConfiguration config;
 	
 	public SystemContainer systemContainer = null; 
 	
 	public List<Integer> containers = null;
+	
+
+	public UIContainer uiContainer = null; 
+	
+	public uiAgent agent = null ;
+	
+	public GameInformations gameInformations = null;
+
+	public GameInformations getGameInformations() {
+		return gameInformations;
+	}
+
+	public void setGameInformations(GameInformations gameInformations) {
+		this.gameInformations = gameInformations;
+	}
 
 	public List<Integer> getContainers() {
 		return containers;
@@ -29,9 +49,6 @@ public class App extends Game {
 		this.containers = containers2;
 	}
 
-	public UIContainer uiContainer = null; 
-	
-	public uiAgent agent = null ;
 
 
 	public SystemContainer newSystemContainer() {

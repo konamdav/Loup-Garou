@@ -28,7 +28,6 @@ public class ViewInterfaceGame implements Screen{
 	private ViewMap terrain;
 	private MapController ctrlTerrain;
 	private ViewPlayers viewPlayers;
-	private int iii;
 	private Texture textureNight;
 	boolean hover;
 
@@ -68,8 +67,15 @@ public class ViewInterfaceGame implements Screen{
 
 		Gdx.input.setInputProcessor(stage);
 		viewPlayers=new ViewPlayers(((SpriteBatch)stage.getBatch()));
+		
+		/* Iiaison UI */
+		
+		//game.agent.
+		
+		
 
 		/** test**/
+		/*
 		ArrayList<PlayerProfile> profiles = new ArrayList<PlayerProfile>();
 		for(int i = 0; i<22; ++i)
 		{
@@ -117,6 +123,8 @@ public class ViewInterfaceGame implements Screen{
 		
 		list = DFServices.getPlayerProfiles(this.game.agent, 0);
 		this.viewPlayers.updatePlayers(list);
+		*/
+		
 /*
 		Timer t = new Timer();
 		t.scheduleAtFixedRate(new TimerTask(){
@@ -153,11 +161,7 @@ public class ViewInterfaceGame implements Screen{
 
 	public void render(float arg0)
 	{
-		if(iii > 100)
-		{
-			System.gc();
 
-		}
 		//System.gc();
 		//Pour actualiser l'interface
 		Gdx.gl.glClearColor(0.7f,0.7f,0.7f, 1);
@@ -171,19 +175,9 @@ public class ViewInterfaceGame implements Screen{
 
 		
 		
-		++iii;
-
 		
 		viewPlayers.updatePlayers(list);
 		
-		if(iii> 10)
-		{
-			iii = 0;
-			list = DFServices.getPlayerProfiles(game.agent, 0);
-			//this.viewPlayers.wake();
-			//this.viewPlayers.dead();
-		}
-
 		viewPlayers.drawPlayersWake();
 
 

@@ -10,29 +10,31 @@ import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.CyclicBehaviour;
+import jade.core.behaviours.TickerBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.tools.sniffer.Message;
 import sma.launch.GameContainer;
 import sma.model.DFServices;
+import sma.model.GameInformations;
 import ui.view.App;
 
 public class uiAgent extends Agent  {
 
 	public String test = "test";
-	
+
 	public App app = null;
-	
-	
-	
+
+
+
 	@Override
 	protected void setup() {
-	
-	   Object[] args = getArguments();
-	   App a = (App)args[0];
-	   app = a;
-	   a.setAgent(this);
-	   System.out.println("ok");
+
+		Object[] args = getArguments();
+		App a = (App)args[0];
+		app = a;
+		a.setAgent(this);
+		System.out.println("ok");
 		/*
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.title = "Werewolf";
@@ -42,8 +44,8 @@ public class uiAgent extends Agent  {
 		config.height =600; //hauteur de la fenêtre   
 	    config.vSyncEnabled = true;
 		new LwjglApplication(new App(config, this), config);
-		*/
-		//addBehaviour(new QueryContainers(this));
+		 */
+		addBehaviour(new GetGameInformations(this));
 	}
 
 	class QueryContainers extends Behaviour{
@@ -62,16 +64,16 @@ public class uiAgent extends Agent  {
 		public void action() {
 			switch(step){
 			case 0: 
-					ACLMessage m = new ACLMessage(ACLMessage.QUERY_REF);
+				ACLMessage m = new ACLMessage(ACLMessage.QUERY_REF);
 
-	        		m.setConversationId("CONTAINERS");
-	        		m.setSender(this.agent.getAID());
-	        		m.addReceiver(DFServices.getSystemController(this.agent));
-					getAgent().send(m);
-					step =1;
-			
-				
-					
+				m.setConversationId("CONTAINERS");
+				m.setSender(this.agent.getAID());
+				m.addReceiver(DFServices.getSystemController(this.agent));
+				getAgent().send(m);
+				step =1;
+
+
+
 
 			case 1:
 				MessageTemplate m11 = MessageTemplate.MatchPerformative(ACLMessage.INFORM);
@@ -83,16 +85,6 @@ public class uiAgent extends Agent  {
 						List<Integer> containers = mapper.readValue(message1.getContent(),  mapper.getTypeFactory().constructCollectionType(List.class, Integer.class));
 						if (!containers.isEmpty())
 						{
-							System.out.println("container ok");
-							System.out.println("********************************************************************************************************************");
-							System.out.println("********************************************************************************************************************");
-							System.out.println("********************************************************************************************************************");
-							System.out.println("********************************************************************************************************************");
-							System.out.println("********************************************************************************************************************");
-							System.out.println("********************************************************************************************************************");
-							System.out.println("********************************************************************************************************************");
-							System.out.println("********************************************************************************************************************");
-							System.out.println("********************************************************************************************************************");
 							app.setContainers(containers);
 						}
 					}catch(Exception e) {
@@ -112,12 +104,83 @@ public class uiAgent extends Agent  {
 		}
 
 	}
+
+	class QueryGameInformations extends TickerBehaviour{
+
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		uiAgent agent;
+		int gameid;
+
+		public QueryGameInformations(uiAgent a, int id, long period) {
+			super(a, period);
+			agent = a;
+			gameid = id;
+
+		}
+
+		@Override
+		protected void onTick() {
+			ACLMessage m = new ACLMessage(ACLMessage.REQUEST);
+
+			m.setConversationId("GAME_INFORMATIONS");
+			m.setSender(this.agent.getAID());
+			List<AID> aids =DFServices.findGameControllerAgent("ENVIRONMENT", agent, gameid);
+			if (!aids.isEmpty())
+			{
+				m.addReceiver(aids.get(0));
+				getAgent().send(m);
+			}
+
+		}
+
+	}
 	
-	
+	class GetGameInformations extends CyclicBehaviour{
+
+
+		private static final long serialVersionUID = 1L;
+		uiAgent agent;
+
+		public GetGameInformations(uiAgent a) {
+			agent = a;
+
+		}
+
+		@Override
+		public void action() {
+			MessageTemplate m = MessageTemplate.MatchPerformative(ACLMessage.REQUEST);
+			ACLMessage message = receive(m);
+
+			if (message != null){
+				System.out.println(message.getContent());
+				ObjectMapper mapper = new ObjectMapper();
+				try {
+					GameInformations gameInformations = mapper.readValue(message.getContent(), GameInformations.class);
+					app.setGameInformations(gameInformations);
+					
+				}catch(Exception e) {
+				}
+
+			}
+			else block();
+			
+		}
+
+	}
+
 	public void addQuery()
 	{
 		addBehaviour(new QueryContainers(this));
 	}
 	
+	public void getInformations(int id)
+	{
+		addBehaviour(new QueryGameInformations(this, id, 200));
+	}
+
 
 }

@@ -32,6 +32,7 @@ public class RemoveVictimBehaviour extends CyclicBehaviour{
 			int index = 0; 
 			boolean flag = false;
 			
+			
 			while(index<this.citizenController.getVictims().size()&&!flag)
 			{
 				if(this.citizenController.getVictims().get(index).getName().equals(victim))
@@ -44,6 +45,7 @@ public class RemoveVictimBehaviour extends CyclicBehaviour{
 				}
 			}
 	
+			/** annulation de la victime **/
 			if(flag)
 			{
 				System.err.println("ANNULATION VICTIME "+	this.citizenController.getVictims().get(index).getLocalName());

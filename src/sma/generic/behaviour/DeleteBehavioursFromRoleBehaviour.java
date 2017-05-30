@@ -6,6 +6,7 @@ import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import sma.generic_death.IDeathBehaviour;
+import sma.generic_death.IPreDeathBehaviour;
 import sma.model.DFServices;
 import sma.player_agent.PlayerAgent;
 import sma.vote_behaviour.IVoteBehaviour;
@@ -36,10 +37,17 @@ public class DeleteBehavioursFromRoleBehaviour extends CyclicBehaviour {
 				if (bhv instanceof IDeathBehaviour){
 					//TODO CEDROC Find a way for the getBehaviourName to getName_behaviour
 					IDeathBehaviour bhv_death = (IDeathBehaviour) bhv;
-					//System.out.println("Find a behaviour death to delete "+this.agent.getName()+" behaviour  "+bhv_death.getName_behaviour());
-					//System.out.println("Get Death Behaviour " +this.agent.getDeathBehaviours());
+					System.out.println("Find a behaviour death to delete "+this.agent.getName()+" behaviour  "+bhv_death.getName_behaviour());
+					System.out.println("Get pRE Death Behaviour " +this.agent.getPreDeathBehaviours());
 					this.agent.getDeathBehaviours().remove(bhv_death.getName_behaviour());
-					//System.out.println("After remove Death Behaviour " +this.agent.getDeathBehaviours());
+					System.out.println("After remove pRE Death Behaviour " +this.agent.getPreDeathBehaviours());
+				}
+				if (bhv instanceof IPreDeathBehaviour){
+					IPreDeathBehaviour bhv_death = (IPreDeathBehaviour) bhv;
+					System.out.println("Find a behaviour death to delete "+this.agent.getName()+" behaviour  "+bhv_death.getName_behaviour());
+					System.out.println("Get Death Behaviour " +this.agent.getDeathBehaviours());
+					this.agent.getPreDeathBehaviours().remove(bhv_death.getName_behaviour());
+					System.out.println("After remove Death Behaviour " +this.agent.getDeathBehaviours());
 				}
 				if (bhv instanceof IVoteBehaviour){
 					//Security, to not delete the vote behaviour which has been had (False, delete it in the init in the map)

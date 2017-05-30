@@ -6,7 +6,7 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 
 /**
- * Behaviour tuant les joueurs désignés comme victimes
+ * Behaviour tuant les joueurs dï¿½signï¿½s comme victimes
  * @author Davy
  *
  */
@@ -105,8 +105,21 @@ public class KillVictimsBehaviour extends SimpleBehaviour
 				}
 				else
 				{
-					this.nextStep = STATE_RECEIVE_KILL;
-					block();
+					mt = MessageTemplate.and(
+							MessageTemplate.MatchPerformative(ACLMessage.CANCEL),
+							MessageTemplate.MatchConversationId("DEAD_PLAYER"));
+						
+					message = this.myAgent.receive(mt);
+					if(message != null)
+					{
+						System.err.println("KV Receive CANCEL"); //TODO Cedric TEST IT
+						this.nextStep = STATE_INIT;
+					}
+					else {
+						this.nextStep = STATE_RECEIVE_KILL;
+						block();
+					}
+
 				}
 				
 				

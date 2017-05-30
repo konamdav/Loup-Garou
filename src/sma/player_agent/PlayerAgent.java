@@ -27,10 +27,13 @@ import jade.lang.acl.ACLMessage;
 public class PlayerAgent extends Agent implements IVotingAgent{
 	private ArrayList<String> votingBehaviours; //All behaviour for vote to execute. Treeat them with string to send 
 	private ArrayList<String> deathBehaviours;//All behaviour for death to execute
+	private ArrayList<String> predeathBehaviours;//All behaviour for predeath to execute
 
 	private HashMap<String, String> typeVotingBehaviours;
 	private HashMap<String, Integer> factorVotingBehaviours;
 	
+
+
 	private SuspicionScore suspicionScore; //grille de suspicion
 	private boolean human;
 	private int gameid;
@@ -101,6 +104,8 @@ public class PlayerAgent extends Agent implements IVotingAgent{
 		
 		System.err.println("REPARTITION | SUSPICIOUS "+ptSuspicious+" STRATEGIC "+ptStrategic);
 		
+		this.predeathBehaviours = new ArrayList<String>();
+
 		this.main_role = "";
 
 		this.suspicionScore = new SuspicionScore(); //new suspicion grid
@@ -150,7 +155,11 @@ public class PlayerAgent extends Agent implements IVotingAgent{
 		return deathBehaviours;
 	}
 
-	
+
+	public ArrayList<String> getPreDeathBehaviours() {
+		return predeathBehaviours;
+	}
+
 	public String getPlayerName()
 	{
 		return this.getAID().getName();

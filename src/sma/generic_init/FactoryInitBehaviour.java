@@ -4,6 +4,7 @@ import jade.core.AID;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import sma.ancien_behaviour.AncienInitBehaviour;
 import sma.citizen_agent.AngelInitBehaviour;
 import sma.citizen_agent.CitizenInitBehaviour;
 import sma.cupid.CupidInitBehaviour;
@@ -94,6 +95,9 @@ public class FactoryInitBehaviour extends CyclicBehaviour{
 					break;
 				case Roles.LITTLE_GIRL:
 					this.agent.addBehaviour(new LittleGirlInitBehaviour(this.agent, this.agent.getAID()));
+					break;
+				case Roles.ANCIEN:
+					this.agent.addBehaviour(new AncienInitBehaviour(this.agent, this.agent.getAID()));
 					break;
 				default:
 					System.err.print("Erreur role not valid" );

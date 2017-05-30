@@ -20,7 +20,8 @@ public class Roles {
 	public static final String CHARMED = "CHARMED";
 	public static final String  SCAPEGOAT= "SCAPEGOAT";
 	public static final String GENERIC = "GENERIC";
-	
+	public static final String ANCIEN = "ANCIEN";
+
 	
 	
 	//public static final String WILD = "WILD";

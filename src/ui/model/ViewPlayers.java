@@ -128,7 +128,7 @@ public class ViewPlayers {
 			n_rows  = nb % 4;
 			n_cols = nb / 4;
 
-			System.out.println("NC "+n_cols+" NR "+n_rows);
+			//System.out.println("NC "+n_cols+" NR "+n_rows);
 
 			if(n_cols+n_rows >= 2)
 			{
@@ -144,7 +144,7 @@ public class ViewPlayers {
 				n_rows = n_cols;
 			}
 
-			System.out.println("NC "+n_cols+" NR "+n_rows);
+			//System.out.println("NC "+n_cols+" NR "+n_rows);
 
 			int ind_x = 6;
 			int ind_y = 4;
@@ -218,7 +218,7 @@ public class ViewPlayers {
 				for(String role : alreadyRoles)
 				{
 					if(!p.getRoles().contains(role)){
-						//this.viewPlayers.get(p.getName()).getRoles().deleteRole(role);
+						this.viewPlayers.get(p.getName()).getRoles().deleteRole(role);
 					}
 				}
 			}

@@ -130,6 +130,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 				if(this.cptCitizens == this.nbPlayers)
 				{
 					this.cptCitizens = 0;
+					this.ctrlAgent.doWait(500);
 					this.nextStep = STATE_SEND_KILL_VICTIMS_REQUEST;
 				}
 				else

@@ -23,7 +23,7 @@ public class CycleSendBehaviour extends CyclicBehaviour{
 		ACLMessage message = this.myAgent.receive(mt);
 		if(message != null)
 		{
-			System.err.println("[ENV] Message rqst "+message.getConversationId());
+			//System.err.println("[ENV] Message rqst "+message.getConversationId());
 			this.myAgent.addBehaviour(new SendBehaviour(this.envAgent, message));
 		}
 		else

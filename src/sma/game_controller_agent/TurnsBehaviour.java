@@ -177,6 +177,7 @@ public class TurnsBehaviour extends SimpleBehaviour {
 			ACLMessage message = this.myAgent.receive(mt);
 			if(message != null)
 			{
+				this.controllerAgent.doWait(1000);
 				this.nextStep = STATE_START_FLUTE_PLAYER_TURN;
 			}
 			else
@@ -231,6 +232,7 @@ public class TurnsBehaviour extends SimpleBehaviour {
 			ACLMessage message = this.myAgent.receive(mt);
 			if(message != null)
 			{
+				this.controllerAgent.doWait(1000);
 				this.nextStep = STATE_START_MEDIUM_TURN;
 			}
 			else
@@ -282,6 +284,7 @@ public class TurnsBehaviour extends SimpleBehaviour {
 			ACLMessage message = this.myAgent.receive(mt);
 			if(message != null)
 			{
+				this.controllerAgent.doWait(1000);
 				this.nextStep = STATE_START_WEREWOLF_TURN;
 			}
 			else
@@ -318,6 +321,7 @@ public class TurnsBehaviour extends SimpleBehaviour {
 			ACLMessage message = this.myAgent.receive(mt);
 			if(message != null)
 			{
+				this.controllerAgent.doWait(1000);
 				this.nextStep = STATE_END;
 			}
 			else
@@ -356,6 +360,7 @@ public class TurnsBehaviour extends SimpleBehaviour {
 			ACLMessage message = this.myAgent.receive(mt);
 			if(message != null)
 			{
+				this.controllerAgent.doWait(1000);
 				this.nextStep = STATE_START_WITCH_TURN;
 			}
 			else
@@ -396,6 +401,7 @@ public class TurnsBehaviour extends SimpleBehaviour {
 			ACLMessage message = this.myAgent.receive(mt);
 			if(message != null)
 			{
+				this.controllerAgent.doWait(1000);
 				this.nextStep = STATE_START_CITIZEN_TURN;
 			}
 			else
@@ -409,7 +415,7 @@ public class TurnsBehaviour extends SimpleBehaviour {
 		else if (this.step.equals(STATE_END))
 		{
 			ObjectMapper mapper = new ObjectMapper();
-			DFServices.getPlayerProfiles(this.myAgent, this.controllerAgent.getGameid());
+			DFServices.printProfiles(this.myAgent, this.controllerAgent.getGameid());
 
 
 			this.nextStep = STATE_INIT;

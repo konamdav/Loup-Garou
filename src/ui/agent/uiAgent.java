@@ -34,7 +34,7 @@ public class uiAgent extends Agent  {
 		App a = (App)args[0];
 		app = a;
 		a.setAgent(this);
-		System.out.println("ok");
+		//System.out.println("ok");
 		/*
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.title = "Werewolf";
@@ -125,7 +125,7 @@ public class uiAgent extends Agent  {
 		@Override
 		protected void onTick() {
 			ACLMessage m = new ACLMessage(ACLMessage.REQUEST);
-
+			System.out.println("tick");
 			m.setConversationId("GAME_INFORMATIONS");
 			m.setSender(this.agent.getAID());
 			List<AID> aids =DFServices.findGameControllerAgent("ENVIRONMENT", agent, gameid);
@@ -156,7 +156,7 @@ public class uiAgent extends Agent  {
 			ACLMessage message = receive(m);
 
 			if (message != null){
-				System.out.println(message.getContent());
+				//System.out.println(message.getContent());
 				ObjectMapper mapper = new ObjectMapper();
 				try {
 					GameInformations gameInformations = mapper.readValue(message.getContent(), GameInformations.class);

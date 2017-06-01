@@ -281,7 +281,7 @@ public class DFServices {
 		}
 		else
 		{
-				for(int i = Data.AREA_NEIGHBORS; i< Data.AREA_NEIGHBORS+Math.min(tmp.size(),Data.AREA_NEIGHBORS); ++i)
+				for(int i = Math.min(tmp.size(),Data.AREA_NEIGHBORS); i< Data.AREA_NEIGHBORS+Math.min(tmp.size(),Data.AREA_NEIGHBORS); ++i)
 				{
 					int index = i;
 					if(index == tmp.size())
@@ -289,6 +289,7 @@ public class DFServices {
 						index = 0;
 						System.err.println("revient à "+tmp.get(index) .getLocalName());
 					}
+					
 					if(!res.contains(tmp.get(index)))
 					{
 						res.add(tmp.get(index));
@@ -602,9 +603,18 @@ public class DFServices {
 		for(Entry<String, PlayerProfile> entry : tmp.entrySet())
 		{
 			list.add(entry.getValue());
-			entry.getValue().print();
+			//entry.getValue().print();
 		}
 
 		return list;
+	}
+	
+	public static void printProfiles(Agent agent, int gameid)
+	{
+		List<PlayerProfile> list = getPlayerProfiles(agent, gameid);
+		for(PlayerProfile p : list)
+		{
+			p.print();
+		}
 	}
 }

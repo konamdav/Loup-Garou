@@ -64,15 +64,17 @@ public class ViewInterfaceGame implements Screen{
 				return true;
 			}
 		};
+		//Gdx.graphics.setDisplayMode(1194, 574, false);
+		//game.resize(1024, 555);
 
 		Gdx.input.setInputProcessor(stage);
 		viewPlayers=new ViewPlayers(((SpriteBatch)stage.getBatch()));
-		
+
 		/* Iiaison UI */
-		
+
 		//game.agent.
-		
-		
+
+
 
 		/** test**/
 		/*
@@ -97,18 +99,18 @@ public class ViewInterfaceGame implements Screen{
 				{
 					roles.add(Roles.ANGEL);
 				}
-				
+
 				roles.add(Roles.CITIZEN);
 			}
 
 			p.setRoles(roles);
 			profiles.add(p);
-			
+
 			Skin uiskin = new Skin( Gdx.files.internal( "resources/visui/uiskin.json" ));
 
 			SelectBox<String> list = new SelectBox<String>(uiskin);
-		
-			
+
+
 			list.setItems("test", "dk", "konam","ok");
 			list.setSelected("ok");
 			list.pack();
@@ -120,12 +122,12 @@ public class ViewInterfaceGame implements Screen{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		list = DFServices.getPlayerProfiles(this.game.agent, 0);
 		this.viewPlayers.updatePlayers(list);
-		*/
-		
-/*
+		 */
+
+		/*
 		Timer t = new Timer();
 		t.scheduleAtFixedRate(new TimerTask(){
 			@Override
@@ -134,15 +136,15 @@ public class ViewInterfaceGame implements Screen{
 				Gdx.app.postRunnable(new Runnable(){
 					@Override
 					public void run() {
-						
-						
+
+
 					}	
 				});
 			}
 		}, 1000, 1000);
-		
 
-*/
+
+		 */
 		terrain=new ViewMap((SpriteBatch) stage.getBatch(), ctrlTerrain);
 
 		ViewPlayer player;
@@ -173,10 +175,11 @@ public class ViewInterfaceGame implements Screen{
 		viewPlayers.drawPlayersDead();
 		viewPlayers.drawPlayersSleep();
 
-		
-		
-		
-		viewPlayers.updatePlayers(list);
+
+
+		if(this.game.getGameInformations()!=null){
+			viewPlayers.updatePlayers(this.game.gameInformations.getProfiles());
+		}
 		
 		viewPlayers.drawPlayersWake();
 
@@ -194,8 +197,8 @@ public class ViewInterfaceGame implements Screen{
 		stage.act(Gdx.graphics.getDeltaTime());
 		stage.draw();
 		stage.getBatch().disableBlending();
-		
-		
+
+
 	}
 
 

@@ -40,16 +40,15 @@ public class ViewJoinMenu implements Screen{
 		table.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 		table.center();
 
-
 		Label list_game_label =new Label("Partie en cours",skin);
 		table.add(list_game_label);
 		table.row();
 		
 		if (app.getContainers()!= null){
-			System.out.println("OK4");
+			//System.out.println("OK4");
 			for (i = 0; i < app.getContainers().size(); i++){
 
-				System.out.println("OK5");
+				//System.out.println("OK5");
 				Label game_label =new Label("Partie " + (i +1) ,skin);
 				table.add(game_label);
 
@@ -61,8 +60,10 @@ public class ViewJoinMenu implements Screen{
 				join_button.addListener(new ClickListener(){
 					@Override
 					public void clicked(InputEvent event, float x, float y) {
-						System.out.println(i);
+						//System.out.println(i);
 						app.agent.getInformations(app.getContainers().get(id));
+						
+						app.setScreen(new ViewInterfaceGame(app));
 					}
 				});
 			}

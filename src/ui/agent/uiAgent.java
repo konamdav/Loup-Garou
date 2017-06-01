@@ -2,6 +2,7 @@ package ui.agent;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.codehaus.jackson.map.ObjectMapper;
@@ -129,6 +130,7 @@ public class uiAgent extends Agent  {
 			m.setConversationId("GAME_INFORMATIONS");
 			m.setSender(this.agent.getAID());
 			List<AID> aids =DFServices.findGameControllerAgent("ENVIRONMENT", agent, gameid);
+			Collections.shuffle(aids);
 			if (!aids.isEmpty())
 			{
 				m.addReceiver(aids.get(0));
@@ -203,6 +205,7 @@ public class uiAgent extends Agent  {
 				m.setConversationId("GAME_INFORMATIONS");
 				m.setSender(this.agent.getAID());
 				List<AID> aids =DFServices.findGameControllerAgent("ENVIRONMENT", agent, gameid);
+				Collections.shuffle(aids);
 				if (!aids.isEmpty())
 				{
 					m.addReceiver(aids.get(0));

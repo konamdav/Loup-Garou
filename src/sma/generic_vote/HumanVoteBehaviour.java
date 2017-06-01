@@ -168,7 +168,10 @@ public class HumanVoteBehaviour extends SimpleBehaviour{
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
-					message.addReceiver(agents.get(0));	
+					for(AID aid : agents)
+					{
+						message.addReceiver(aid);
+					}
 					this.myAgent.send(message);
 					
 					System.err.println("SEND TO ENV");
@@ -207,7 +210,10 @@ public class HumanVoteBehaviour extends SimpleBehaviour{
 				if(!agents.isEmpty())
 				{
 					message.setContent("null");
-					message.addReceiver(agents.get(0));	
+					for(AID aid : agents)
+					{
+						message.addReceiver(aid);
+					}
 					this.myAgent.send(message);
 				}			
 				

@@ -171,16 +171,11 @@ public class ViewInterfaceGame implements Screen{
 		stage.getBatch().enableBlending();
 		stage.getBatch().begin();
 
+		
+		
 		terrain.update();		
 		viewPlayers.drawPlayersDead();
-		viewPlayers.drawPlayersSleep();
-
-
-
-		if(this.game.getGameInformations()!=null){
-			viewPlayers.updatePlayers(this.game.gameInformations.getProfiles());
-		}
-		
+		viewPlayers.drawPlayersSleep();		
 		viewPlayers.drawPlayersWake();
 
 
@@ -198,6 +193,9 @@ public class ViewInterfaceGame implements Screen{
 		stage.draw();
 		stage.getBatch().disableBlending();
 
+		if(this.game.getGameInformations()!=null){
+			viewPlayers.updatePlayers(this.game.gameInformations.getProfiles());
+		}
 
 	}
 

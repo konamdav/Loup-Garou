@@ -19,7 +19,12 @@ public class Functions {
 		List<AID> agents = DFServices.findGameControllerAgent("ENVIRONMENT", a, gameid);
 		if(!agents.isEmpty())
 		{
-			msg.addReceiver(agents.get(0));
+			
+			for(AID aid : agents)
+			{
+				msg.addReceiver(aid);
+			}
+			
 			a.send(msg);
 		}
 	}
@@ -34,7 +39,11 @@ public class Functions {
 		List<AID> agents = DFServices.findGameControllerAgent("ENVIRONMENT", a, gameid);
 		if(!agents.isEmpty())
 		{
-			msg.addReceiver(agents.get(0));
+			for(AID aid : agents)
+			{
+				msg.addReceiver(aid);
+			}
+			
 			a.send(msg);
 		}
 	}
@@ -49,7 +58,10 @@ public class Functions {
 		List<AID> agents = DFServices.findGameControllerAgent("ENVIRONMENT", a, gameid);
 		if(!agents.isEmpty())
 		{
-			msg.addReceiver(agents.get(0));
+			for(AID aid : agents)
+			{
+				msg.addReceiver(aid);
+			}
 			a.send(msg);
 		}
 	}
@@ -64,7 +76,11 @@ public class Functions {
 		List<AID> agents = DFServices.findGameControllerAgent("ENVIRONMENT", a, gameid);
 		if(!agents.isEmpty())
 		{
-			msg.addReceiver(agents.get(0));
+			for(AID aid : agents)
+			{
+				msg.addReceiver(aid);
+			}
+			
 			a.send(msg);
 		}
 	}

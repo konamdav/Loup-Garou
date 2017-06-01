@@ -6,6 +6,7 @@ import jade.core.Runtime;
 import jade.wrapper.AgentContainer;
 import jade.wrapper.AgentController;
 import sma.cupid_controller.CupidControllerAgent;
+import sma.environment_agent.EnvironmentAgent;
 import sma.flute_player_controller.FlutePlayerControllerAgent;
 import sma.medium_controller.MediumControllerAgent;
 import sma.model.GameSettings;
@@ -41,9 +42,15 @@ public class GameContainer {
 			objects[0] = this.gameid;
 			objects[1] = this.gameSettings;
 
+			/** 2 agents d'environnements **/
 			AgentController ac = container.createNewAgent(
-					"ENVIRONMENT_AGENT_"+gameid, "sma.environment_agent.EnvironmentAgent", objects);
+					"ENVIRONMENT_AGENT_1_"+gameid, EnvironmentAgent.class.getName(), objects);
 			ac.start();
+			
+			ac = container.createNewAgent(
+					"ENVIRONMENT_AGENT_2_"+gameid, EnvironmentAgent.class.getName(), objects);
+			ac.start();
+			
 
 			ac = container.createNewAgent(
 					"GAME_CONTROLLER_AGENT_"+gameid, "sma.game_controller_agent.GameControllerAgent", objects);

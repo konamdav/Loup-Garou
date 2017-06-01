@@ -25,7 +25,6 @@ public class App extends Game {
 	public SystemContainer systemContainer = null; 
 	
 	public List<Integer> containers = null;
-	
 
 	public UIContainer uiContainer = null; 
 	

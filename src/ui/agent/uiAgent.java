@@ -171,6 +171,75 @@ public class uiAgent extends Agent  {
 		}
 
 	}
+	
+	
+	class QueryGameInformationsNoTick extends Behaviour{
+
+		private static final long serialVersionUID = 1L;
+		uiAgent agent;
+		int gameid;
+		int step;
+
+		public QueryGameInformationsNoTick(uiAgent a, int id) {
+			super(a);
+			agent = a;
+			gameid = id;
+			step = 0;
+
+		}
+		
+			
+		protected void onTick() {
+			
+
+		}
+		@Override
+		public void action() {
+			switch (step){
+			case 0:
+				
+				ACLMessage m = new ACLMessage(ACLMessage.REQUEST);
+				System.out.println("tick");
+				m.setConversationId("GAME_INFORMATIONS");
+				m.setSender(this.agent.getAID());
+				List<AID> aids =DFServices.findGameControllerAgent("ENVIRONMENT", agent, gameid);
+				if (!aids.isEmpty())
+				{
+					m.addReceiver(aids.get(0));
+					getAgent().send(m);
+				}
+				step = 1; 
+				break;
+			case 1:
+				MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.REQUEST);
+				ACLMessage message = receive(mt);
+
+				if (message != null){
+					//System.out.println(message.getContent());
+					ObjectMapper mapper = new ObjectMapper();
+					try {
+						GameInformations gameInformations = mapper.readValue(message.getContent(), GameInformations.class);
+						app.setGameInformations(gameInformations);
+						step = 0;
+					}catch(Exception e) {
+					}
+
+				}
+				else block();
+		
+			}
+		}
+		@Override
+		public boolean done() {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+	}
+	
+	
+	
+	
 
 	public void addQuery()
 	{
@@ -179,7 +248,8 @@ public class uiAgent extends Agent  {
 	
 	public void getInformations(int id)
 	{
-		addBehaviour(new QueryGameInformations(this, id, 200));
+		//addBehaviour(new QueryGameInformations(this, id, 600));
+		addBehaviour(new QueryGameInformationsNoTick(this, id));
 	}
 
 

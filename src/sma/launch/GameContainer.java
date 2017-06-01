@@ -10,6 +10,7 @@ import sma.flute_player_controller.FlutePlayerControllerAgent;
 import sma.medium_controller.MediumControllerAgent;
 import sma.model.GameSettings;
 import sma.model.Roles;
+import sma.witch_controller.WitchControllerAgent;
 
 //Conteneur de jeu
 /***
@@ -61,6 +62,15 @@ public class GameContainer {
 			{
 				ac = container.createNewAgent(
 						"WEREWOLF_CONTROLLER_AGENT_"+gameid, "sma.werewolf_controller_agent.WerewolfControllerAgent", objects);
+				ac.start();
+			}
+			
+
+			//selection role witch
+			if(this.gameSettings.isRoleRegistered(Roles.WITCH))
+			{
+				ac = container.createNewAgent(
+						"WITCH_CONTROLLER_AGENT_"+gameid, WitchControllerAgent.class.getName(), objects);
 				ac.start();
 			}
 			

@@ -7,6 +7,7 @@ import jade.lang.acl.MessageTemplate;
 import sma.ancien_behaviour.AncienInitBehaviour;
 import sma.citizen_agent.AngelInitBehaviour;
 import sma.citizen_agent.CitizenInitBehaviour;
+import sma.citizen_agent.WitchInitBehaviour;
 import sma.cupid.CupidInitBehaviour;
 import sma.flute_player.CharmedInitBehaviour;
 import sma.flute_player.FlutePlayerInitBehaviour;
@@ -98,6 +99,9 @@ public class FactoryInitBehaviour extends CyclicBehaviour{
 					break;
 				case Roles.ANCIEN:
 					this.agent.addBehaviour(new AncienInitBehaviour(this.agent, this.agent.getAID()));
+					break;
+				case Roles.WITCH:
+					this.agent.addBehaviour(new WitchInitBehaviour(this.agent, this.agent.getAID()));
 					break;
 				default:
 					System.err.print("Erreur role not valid" );

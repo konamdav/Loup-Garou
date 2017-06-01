@@ -46,6 +46,8 @@ public class CitizenSuspicionListener extends Behaviour{
 	@Override
 	public void action() {
 
+		
+		
 		if(step.equals(STATE_INIT))
 		{
 			this.side = "";
@@ -54,12 +56,13 @@ public class CitizenSuspicionListener extends Behaviour{
 		else if(step.equals(STATE_RECEIVE_INFORM))
 		{
 			MessageTemplate mt = MessageTemplate.and(
-					MessageTemplate.MatchPerformative(ACLMessage.REQUEST),
+					MessageTemplate.MatchPerformative(ACLMessage.INFORM),
 					MessageTemplate.MatchConversationId("MOVE_WEREWOLF"));
 
 			ACLMessage message = this.myAgent.receive(mt);
 			if (message != null) 
 			{
+				
 				this.side = message.getContent();
 				this.nextStep = STATE_SEND_SUSPICIONS;
 			}
@@ -73,10 +76,13 @@ public class CitizenSuspicionListener extends Behaviour{
 		{
 			//liste des voisins que l'on soup�onne
 			List<AID> neighbors = DFServices.findNeighborsBySide(this.side, this.playerAgent.getAID(), playerAgent, this.playerAgent.getGameid());
+			System.err.println(DFServices.findNeighbors(this.getAgent().getAID(), this.myAgent, this.playerAgent.getGameid()));
+			
 			
 			//maj grid
 			for(AID aid : neighbors)
 			{
+				System.err.println(this.playerAgent.getLocalName()+" suspecte "+aid.getLocalName()+" ("+this.side+")");
 				this.suspicionScore.addScore(aid.getName(), 10);
 			}
 			
@@ -94,34 +100,6 @@ public class CitizenSuspicionListener extends Behaviour{
 	@Override
 	public boolean done() {
 		return false;
-	}
-
-	
-	private int score(AID player,  VoteRequest request)
-	{
-		VoteResults globalResults = request.getGlobalCitizenVoteResults();
-		VoteResults localResults = request.getLocalVoteResults();
-		
-		int score = 0;
-		// joueur analys� = joueur 
-		if(player.getName().equals(this.playerAgent.getPlayerName()))
-		{
-			score = ScoreFactor.SCORE_MIN;
-		}
-		else
-		{
-			// regles de scoring
-			score+= globalResults.getVoteCount(player.getName(), this.playerAgent.getPlayerName()) * ScoreFactor.SCORE_FACTOR_GLOBAL_VOTE; 
-			score+= globalResults.getVoteCount(player.getName(), this.playerAgent.getPlayerName()) * ScoreFactor.SCORE_FACTOR_GLOBAL_VOTE; 
-			
-			score+= localResults.getVoteCount(player.getName(), this.playerAgent.getPlayerName()) * ScoreFactor.SCORE_FACTOR_LOCAL_VOTE; 
-			score+= localResults.getVoteCount(player.getName(), this.playerAgent.getPlayerName()) * ScoreFactor.SCORE_FACTOR_LOCAL_VOTE; 
-		
-		}
-		
-		return score;
-		
-		
 	}
 	
 

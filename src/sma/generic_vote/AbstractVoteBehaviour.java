@@ -67,7 +67,7 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 	@Override
 	public void action() {
 
-		//System.out.println("STATE = "+this.step);
+		//System.err.println("AV STATE = "+this.step);
 
 		if(this.step.equals(STATE_INIT))
 		{
@@ -239,6 +239,8 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 		{
 			this.finalResults = this.results.getFinalResults();
 
+			System.err.println("RESULTS size "+this.finalResults.size());
+			
 			/** equality  ? **/
 			if(this.finalResults.size() == 1)
 			{
@@ -274,6 +276,10 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 					this.nbVoters = 0;
 					this.nextStep = STATE_SEND_REQUEST;
 				}
+				else
+				{
+					this.nextStep = STATE_SEND_RESULTS;
+				}
 
 			}
 		}
@@ -303,13 +309,8 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 				if(this.finalResults.size() == 1)
 				{
 					results.put("OK", voter);
-					Functions.newActionToLog(this.agent.getLocalName()+" veut prendre une décision", this.agent, this.agent.getGameid());
-
-				}
-				if(this.finalResults.size() > 1 && this.results.getMaxScore() > 10)
-				{
-					results.put("OK", voter);
 					Functions.newActionToLog(this.agent.getLocalName()+" accepte", this.agent, this.agent.getGameid());
+
 				}
 				else
 				{

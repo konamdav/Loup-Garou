@@ -183,7 +183,7 @@ public class DFServices {
 	{
 		DFServices.deregisterGameAgent("PLAYER", Status.SLEEP, agent, gameid);
 		DFServices.deregisterGameAgent("PLAYER", Status.WAKE, agent, gameid);
-		
+
 		DFServices.deregisterGameAgent("PLAYER", Status.DEAD, agent, gameid); //TODO cedric decooment + test	
 
 		DFServices.registerGameAgent("PLAYER", status, agent, gameid);
@@ -230,14 +230,17 @@ public class DFServices {
 				int area = Math.min(citizens.size()-1, Data.AREA_NEIGHBORS);
 
 				/** recuperation des voisins de portï¿½e N **/
-				for(int j = i-1; j>= i-area; j--)
+				for(int j = i-area; j<= i-1; j++)
 				{
 					int index = j;
 					if(j<0)
 					{
 						index = citizens.size()+j;
 					}
-					res.add(citizens.get(index));
+					if(!res.contains(citizens.get(index)) && !citizens.get(index).getName().equals(player.getName()))
+					{
+						res.add(citizens.get(index));
+					}
 				}
 
 				for(int j = i+1; j<= i+area; j++)
@@ -247,7 +250,11 @@ public class DFServices {
 					{
 						index = j%citizens.size();
 					}
-					res.add(citizens.get(index));
+
+					if(!res.contains(citizens.get(index)) && !citizens.get(index).getName().equals(player.getName()))
+					{
+						res.add(citizens.get(index));
+					}
 				}
 				flag = true;
 			}
@@ -264,16 +271,61 @@ public class DFServices {
 		List<AID> res = new ArrayList<AID>();
 		if(side.equals("LEFT"))
 		{
-			for(int i = 0; i<Data.AREA_NEIGHBORS; ++i)
+			for(int i = 0; i<Math.min(tmp.size(),Data.AREA_NEIGHBORS); ++i)
 			{
-				res.add(tmp.get(i));
+				if(!res.contains(tmp.get(i)))
+				{
+					res.add(tmp.get(i));
+				}
 			}
 		}
 		else
 		{
-			for(int i = Data.AREA_NEIGHBORS; i<2*Data.AREA_NEIGHBORS; ++i)
+				for(int i = Data.AREA_NEIGHBORS; i< Data.AREA_NEIGHBORS+Math.min(tmp.size(),Data.AREA_NEIGHBORS); ++i)
+				{
+					int index = i;
+					if(index == tmp.size())
+					{
+						index = 0;
+						System.err.println("revient à "+tmp.get(index) .getLocalName());
+					}
+					if(!res.contains(tmp.get(index)))
+					{
+						res.add(tmp.get(index));
+					}
+				}
+			
+		}
+
+		return res;
+	}
+	
+	/** recupere les voisins d'un cotï¿½ **/
+	public static List<AID> findNeighborsBySide2(String side, AID player, Agent agent, int gameid)
+	{
+		List<AID> tmp = findNeighbors(player, agent, gameid);
+		List<AID> res = new ArrayList<AID>();
+		if(side.equals("LEFT"))
+		{
+			for(int i = 0; i<Math.min(tmp.size(),Data.AREA_NEIGHBORS); ++i)
 			{
-				res.add(tmp.get(i));
+				if(!res.contains(tmp.get(i)))
+				{
+					res.add(tmp.get(i));
+				}
+			}
+		}
+		else
+		{
+			int reste = tmp.size() - Math.min(tmp.size(),Data.AREA_NEIGHBORS);
+			if(reste > 0){
+				for(int i = Data.AREA_NEIGHBORS; i< Data.AREA_NEIGHBORS+reste; ++i)
+				{
+					if(!res.contains(tmp.get(i)))
+					{
+						res.add(tmp.get(i));
+					}
+				}
 			}
 		}
 
@@ -415,6 +467,15 @@ public class DFServices {
 			profile.getRoles().remove("CITIZEN");
 		}
 
+		//get profiles joueurs 
+		List<AID> hunters = DFServices.findGamePlayerAgent(Roles.HUNTER, agent, gameid);
+		for(AID hunter : hunters)
+		{
+			PlayerProfile profile = tmp.get(hunter.getLocalName());
+			profile.getRoles().add(Roles.HUNTER);
+			profile.getRoles().remove("CITIZEN");
+		}
+
 		//get profiles joueurs flute
 		List<AID> girls = DFServices.findGamePlayerAgent(Roles.LITTLE_GIRL, agent, gameid);
 		for(AID girl : girls)
@@ -423,6 +484,16 @@ public class DFServices {
 			profile.getRoles().add(Roles.LITTLE_GIRL);
 			profile.getRoles().remove("CITIZEN");
 		}
+
+		//get profiles joueurs witch
+		List<AID> witches = DFServices.findGamePlayerAgent(Roles.WITCH, agent, gameid);
+		for(AID witch : witches)
+		{
+			PlayerProfile profile = tmp.get(witch.getLocalName());
+			profile.getRoles().add(Roles.WITCH);
+			profile.getRoles().remove("CITIZEN");
+		}
+
 
 		//get profiles joueurs flute
 		List<AID> cupids = DFServices.findGamePlayerAgent(Roles.CUPID, agent, gameid);
@@ -477,8 +548,8 @@ public class DFServices {
 			profile.getRoles().add(Roles.ANCIEN);
 			profile.getRoles().remove(Roles.CITIZEN);
 		}
-		
-		
+
+
 		//get profiles joueurs mayor
 		List<AID> mayors = DFServices.findGamePlayerAgent(Roles.MAYOR, agent, gameid);
 		for(AID mayor : mayors)
@@ -524,8 +595,8 @@ public class DFServices {
 			PlayerProfile profile = tmp.get(victim.getLocalName());
 			profile.getRoles().add("VICTIM");
 		}
-		
-		
+
+
 
 		List<PlayerProfile> list = new ArrayList<PlayerProfile>();
 		for(Entry<String, PlayerProfile> entry : tmp.entrySet())

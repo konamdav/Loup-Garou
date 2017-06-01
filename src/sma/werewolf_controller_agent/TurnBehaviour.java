@@ -143,30 +143,46 @@ public class TurnBehaviour extends SimpleBehaviour {
 		/** etat reception des confirmations de reveil **/
 		else if(this.step.equals(STATE_MOVE_WEREWOLF))
 		{
+			System.err.println("move werewolf");
+
 			String[] args = {Roles.WEREWOLF, Status.WAKE};
 			List<AID> werewolves = DFServices.findGamePlayerAgent(args, this.ctrlAgent, this.ctrlAgent.getGameid());
 
 			for(AID werewolf : werewolves)
 			{
-				List<AID> neighbors = DFServices.findNeighbors(werewolf, this.ctrlAgent, this.ctrlAgent.getGameid());
+				List<AID> neighborsLeft = DFServices.findNeighborsBySide2("LEFT", werewolf, this.ctrlAgent, this.ctrlAgent.getGameid());
+				List<AID> neighborsRight = DFServices.findNeighborsBySide2("RIGHT", werewolf, this.ctrlAgent, this.ctrlAgent.getGameid());
 
-				for(int i = 0; i<neighbors.size();++i)
+				System.err.println("move  "+werewolf.getName());
+
+				for(int i = 0; i<neighborsLeft.size();++i)
 				{
+					System.err.println("alert voisin (left)"+neighborsLeft.get(i).getName());
+
 					ACLMessage message = new ACLMessage(ACLMessage.INFORM);
 					message.setSender(this.ctrlAgent.getAID());
-					message.addReceiver(neighbors.get(i));
+					message.addReceiver(neighborsLeft.get(i));
 					message.setConversationId("MOVE_WEREWOLF");
-
-					if(i <= neighbors.size()/2)
-					{
-						message.setContent("LEFT");
-					}
-					else
-					{
-						message.setContent("RIGHT");
-					}
+					message.setContent("RIGHT");
 
 					this.ctrlAgent.send(message);
+				}
+
+				for(int i = 0; i<neighborsRight.size();++i)
+				{
+					System.err.println("alert voisin (right) ??? "+neighborsRight.get(i).getName());
+					if(!neighborsLeft.contains(neighborsRight.get(i)))
+					{
+						System.err.println("alert voisin (right)"+neighborsRight.get(i).getName());
+
+						ACLMessage message = new ACLMessage(ACLMessage.INFORM);
+						message.setSender(this.ctrlAgent.getAID());
+						message.addReceiver(neighborsLeft.get(i));
+						message.setConversationId("MOVE_WEREWOLF");
+						message.setContent("LEFT");
+
+						this.ctrlAgent.send(message);
+					}
 				}
 			}
 
@@ -234,28 +250,41 @@ public class TurnBehaviour extends SimpleBehaviour {
 			List<AID> littlegirls = DFServices.findGamePlayerAgent(args, this.ctrlAgent, this.ctrlAgent.getGameid());
 
 			System.err.println("---------> MOVE LITTLE");
-			
+
 			for(AID littlegirl : littlegirls)
 			{
-				List<AID> neighbors = DFServices.findNeighbors(littlegirl, this.ctrlAgent, this.ctrlAgent.getGameid());
+				List<AID> neighborsLeft = DFServices.findNeighborsBySide2("LEFT", littlegirl, this.ctrlAgent, this.ctrlAgent.getGameid());
+				List<AID> neighborsRight = DFServices.findNeighborsBySide2("RIGHT", littlegirl, this.ctrlAgent, this.ctrlAgent.getGameid());
 
-				for(int i = 0; i<neighbors.size();++i)
+				System.err.println("move  "+littlegirl.getName());
+
+				for(int i = 0; i<neighborsLeft.size();++i)
 				{
+					//System.err.println("alert voisin (left)"+neighborsLeft.get(i).getName());
+
 					ACLMessage message = new ACLMessage(ACLMessage.INFORM);
 					message.setSender(this.ctrlAgent.getAID());
-					message.addReceiver(neighbors.get(i));
+					message.addReceiver(neighborsLeft.get(i));
 					message.setConversationId("MOVE_LITTLE_GIRL");
-
-					if(i <= neighbors.size()/2)
-					{
-						message.setContent("LEFT");
-					}
-					else
-					{
-						message.setContent("RIGHT");
-					}
+					message.setContent("RIGHT");
 
 					this.ctrlAgent.send(message);
+				}
+
+				for(int i = 0; i<neighborsRight.size();++i)
+				{
+					if(!neighborsLeft.contains(neighborsRight.get(i)))
+					{
+						//System.err.println("alert voisin (right)"+neighborsRight.get(i).getName());
+
+						ACLMessage message = new ACLMessage(ACLMessage.INFORM);
+						message.setSender(this.ctrlAgent.getAID());
+						message.addReceiver(neighborsLeft.get(i));
+						message.setConversationId("MOVE_LITTLE_GIRL");
+						message.setContent("LEFT");
+
+						this.ctrlAgent.send(message);
+					}
 				}
 			}
 
@@ -265,7 +294,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 		{
 
 			System.err.println("---------> INFORM LITTLE GIRL");
-			
+
 			String [] args = {Roles.WEREWOLF, Status.WAKE};
 			List<AID> werewolves = DFServices.findGamePlayerAgent(args, this.ctrlAgent, this.ctrlAgent.getGameid());
 

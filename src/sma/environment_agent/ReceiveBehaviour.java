@@ -59,6 +59,7 @@ public class ReceiveBehaviour extends OneShotBehaviour {
 		}
 		else if(message.getConversationId().equals("ACTION_LOG"))
 		{
+			System.out.println("RECV ACTION");
 			this.envAgent.getActionLogs().add(message.getContent());
 		}
 		else if(message.getConversationId().equals("TURN"))

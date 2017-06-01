@@ -139,6 +139,7 @@ public class CitizenSimpleSuspicionBehaviour extends Behaviour {
 		int score = 0;
 		score = this.suspicionScore.getScore(player.getName());
 		score = (score > 0) ? 1 : 0;
+		//System.out.println(" score "+this.suspicionScore.getScore(player.getName())+" devient "+score);
 		return score;	
 	}
 	

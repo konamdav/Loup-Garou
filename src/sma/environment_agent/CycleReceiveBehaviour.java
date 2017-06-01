@@ -24,7 +24,6 @@ public class CycleReceiveBehaviour extends CyclicBehaviour{
 		if(message != null)
 		{
 			System.err.println("[ENV] Message rcv "+message.getConversationId());
-			
 			this.myAgent.addBehaviour(new ReceiveBehaviour(this.envAgent, message));
 		}
 		else

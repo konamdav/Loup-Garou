@@ -1,6 +1,8 @@
 
 package ui.view;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.Map.Entry;
 
 //Import des fichiers libgdx
 import com.badlogic.gdx.Gdx;
@@ -33,8 +35,10 @@ public class ViewInterfaceGame implements Screen{
 	private ViewPlayers viewPlayers;
 	private Texture textureNight;
 	private Texture textureEndgame;
-    List<String> list;
-    ScrollPane scrollPane;
+    List<String> list_log;
+    ScrollPane scrollpane_log;
+    List<String> list_vote;
+    ScrollPane scrollpane_vote;
 	boolean hover;
 
 	private int mapx; 
@@ -78,12 +82,21 @@ public class ViewInterfaceGame implements Screen{
 
 		textureEndgame = new Texture(Gdx.files.internal("resources/sprites/endgame.png"));
 		
-		list = new List<String>(skin);
-        scrollPane = new ScrollPane(list);
-        scrollPane.setFadeScrollBars(false);
-        scrollPane.setBounds(0,0, 400,800);
-        scrollPane.setPosition(970,300);
-        stage.addActor(scrollPane);
+		list_log = new List<String>(skin);
+        scrollpane_log = new ScrollPane(list_log);
+        scrollpane_log.setFadeScrollBars(false);
+        scrollpane_log.setBounds(0,0, 400,200);
+        scrollpane_log.setPosition(970,300);
+        
+
+		list_vote = new List<String>(skin);
+        scrollpane_vote = new ScrollPane(list_vote);
+        scrollpane_vote.setFadeScrollBars(false);
+        scrollpane_vote.setBounds(0,0, 400,200);
+        scrollpane_vote.setPosition(970,0);
+        
+        stage.addActor(scrollpane_log);
+        stage.addActor(scrollpane_vote);
 
 	}
 
@@ -114,11 +127,27 @@ public class ViewInterfaceGame implements Screen{
 		
 		if(this.game.getGameInformations()!=null){
 
+			// Set Iog
 			String[] strings = new String[this.game.getGameInformations().getActionLogs().size()];
 			strings = this.game.getGameInformations().getActionLogs().toArray(strings);
-	        list.setItems(strings);
+	        list_log.setItems(strings);
+	        
+	        // Set Vote
+	        if (this.game.getGameInformations().getCurrentResults() != null){
+	        	Map<String, Integer> map_tmp = this.game.getGameInformations().getCurrentResults().getSimpleVoteResults();
+
+				String[] strings_vote = new String[map_tmp.size()];
+				int i = 0;
+	        	for(Entry<String, Integer> entry : map_tmp.entrySet())
+	    		{
+	        		strings_vote[i] = entry.getKey() + "  : " + entry.getValue();
+	        		i++;
+	    		}
+
+		        list_vote.setItems(strings_vote);
+	        }
 			if (!this.game.getGameInformations().isEndGame())
-	        scrollPane.scrollTo(0, 0, 0, 0);
+	        scrollpane_log.scrollTo(0, 0, 0, 0);
 			if (this.game.getGameInformations().isEndGame())
 				stage.getBatch().draw(textureEndgame,0,0);
 			else if (this.game.getGameInformations().getDayState().equals("NIGHT")) 

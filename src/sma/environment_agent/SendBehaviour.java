@@ -50,6 +50,10 @@ public class SendBehaviour extends OneShotBehaviour {
 		{
 			contentString = this.envAgent.isEndGame() ? "true" : "false" ;	
 		}
+		else if(message.getConversationId().equals("NUM_TURN"))
+		{
+			contentString = ""+this.envAgent.getNum_turn();	
+		}
 		else if(message.getConversationId().equals("ACTION_LOGS"))
 		{
 			try {
@@ -65,8 +69,9 @@ public class SendBehaviour extends OneShotBehaviour {
 			gi.setCurrentResults(envAgent.getCurrentResults());
 			gi.setDayState(envAgent.getDayState());
 			gi.setEndGame(envAgent.isEndGame());
-			gi.setProfiles(DFServices.getPlayerProfiles(envAgent, envAgent.getGameid()));
+			gi.setProfiles(DFServices.getPlayerProfiles(this.envAgent.isGame_mode(), this.envAgent.getCptHuman(), envAgent, envAgent.getGameid()));
 			gi.setTurn(envAgent.getTurn());
+			gi.setNum_turn(envAgent.getNum_turn());
 			
 			try {
 				contentString = mapper.writeValueAsString(gi);

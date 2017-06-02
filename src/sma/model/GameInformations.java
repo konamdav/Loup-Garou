@@ -14,6 +14,7 @@ public class GameInformations {
 		this.actionLogs = new ArrayList<String>();
 		this.currentResults = null;
 		this.endGame = false;
+		this.num_turn = 0;
 	}
 
 	private List<PlayerProfile> profiles; 
@@ -75,5 +76,15 @@ public class GameInformations {
 	private VoteResults currentResults;
 	
 	private boolean endGame;
+	
+	private int num_turn;
+
+	public int getNum_turn() {
+		return num_turn;
+	}
+
+	public void setNum_turn(int num_turn) {
+		this.num_turn = num_turn;
+	}
 	
 }

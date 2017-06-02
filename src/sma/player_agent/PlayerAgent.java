@@ -12,7 +12,6 @@ import sma.model.DFServices;
 import sma.model.Roles;
 import sma.model.SuspicionScore;
 import sma.model.TypeIA;
-import sma.werewolf_agent.InitAsHumanBehaviour;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;

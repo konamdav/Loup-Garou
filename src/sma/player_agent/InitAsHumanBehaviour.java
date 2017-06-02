@@ -1,10 +1,10 @@
-package sma.werewolf_agent;
+package sma.player_agent;
 
 import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import sma.generic_vote.HumanVoteBehaviour;
-import sma.player_agent.PlayerAgent;
+import sma.model.DFServices;
 
 public class InitAsHumanBehaviour extends SimpleBehaviour{
 	private PlayerAgent playerAgent ;
@@ -28,6 +28,7 @@ public class InitAsHumanBehaviour extends SimpleBehaviour{
 			HumanVoteBehaviour humanVoteBehaviour = new HumanVoteBehaviour(this.playerAgent);
 			this.playerAgent.addBehaviour(humanVoteBehaviour);
 			
+			DFServices.registerPlayerAgent("HUMAN", this.myAgent, this.playerAgent.getGameid());
 			this.playerAgent.setHuman(true);
 			
 			ACLMessage reply = new ACLMessage(ACLMessage.INFORM);

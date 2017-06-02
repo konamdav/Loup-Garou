@@ -53,6 +53,62 @@ public class Functions {
 		}
 	}
 	
+	
+	public static void  incHumans(Agent a, int gameid)
+	{
+		ACLMessage msg = new ACLMessage(ACLMessage.AGREE);
+		msg.setSender(a.getAID());
+		msg.setConversationId("INC_HUMANS");
+		
+		List<AID> agents = DFServices.findGameControllerAgent("ENVIRONMENT", a, gameid);
+		if(!agents.isEmpty())
+		{
+			for(AID aid : agents)
+			{
+				msg.addReceiver(aid);
+			}
+			
+			a.send(msg);
+		}
+	}
+	
+	public static void  sendNumTurn(int num_turn, Agent a, int gameid)
+	{
+		ACLMessage msg = new ACLMessage(ACLMessage.AGREE);
+		msg.setSender(a.getAID());
+		msg.setConversationId("NUM_TURN");
+		msg.setContent(""+num_turn);
+		
+		List<AID> agents = DFServices.findGameControllerAgent("ENVIRONMENT", a, gameid);
+		if(!agents.isEmpty())
+		{
+			for(AID aid : agents)
+			{
+				msg.addReceiver(aid);
+			}
+			
+			a.send(msg);
+		}
+	}
+	
+	public static void  decHumans(Agent a, int gameid)
+	{
+		ACLMessage msg = new ACLMessage(ACLMessage.AGREE);
+		msg.setSender(a.getAID());
+		msg.setConversationId("DEC_HUMANS");
+		
+		List<AID> agents = DFServices.findGameControllerAgent("ENVIRONMENT", a, gameid);
+		if(!agents.isEmpty())
+		{
+			for(AID aid : agents)
+			{
+				msg.addReceiver(aid);
+			}
+			
+			a.send(msg);
+		}
+	}
+	
 	public static void  updateTurn(String turn, Agent a, int gameid)
 	{
 		ACLMessage msg = new ACLMessage(ACLMessage.AGREE);

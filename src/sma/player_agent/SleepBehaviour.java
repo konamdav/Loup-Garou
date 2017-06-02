@@ -16,8 +16,8 @@ public class SleepBehaviour extends SimpleBehaviour{
 	@Override
 	public void action() {
 		MessageTemplate	mt = MessageTemplate.and(
-		MessageTemplate.MatchPerformative(ACLMessage.REQUEST),
-		MessageTemplate.MatchConversationId("SLEEP_PLAYER"));
+				MessageTemplate.MatchPerformative(ACLMessage.REQUEST),
+				MessageTemplate.MatchConversationId("SLEEP_PLAYER"));
 
 		ACLMessage message = this.myAgent.receive(mt);
 		if (message != null) 
@@ -25,7 +25,11 @@ public class SleepBehaviour extends SimpleBehaviour{
 			this.playerAgent.doWait((int) (Math.random()*1000));
 			this.playerAgent.setStatutandRegister("SLEEP");
 			Functions.newActionToLog(this.playerAgent.getLocalName()+" s'endort", this.playerAgent, this.playerAgent.getGameid());
-			
+
+			if(playerAgent.isHuman()){
+				Functions.decHumans(playerAgent, playerAgent.getGameid());
+			}
+
 			ACLMessage reply = new ACLMessage(ACLMessage.CONFIRM);
 			reply.setConversationId("SLEEP_PLAYER");
 			reply.setSender(this.myAgent.getAID());

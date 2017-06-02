@@ -130,6 +130,7 @@ public class TurnsBehaviour extends SimpleBehaviour {
 				System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
 				System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
 				System.err.println("DAY "+this.controllerAgent.getNum_turn());
+				Functions.sendNumTurn(this.controllerAgent.getNum_turn(), this.controllerAgent, this.controllerAgent.getGameid());
 				this.nextStep = STATE_START_CUPID_TURN;
 			}
 		}

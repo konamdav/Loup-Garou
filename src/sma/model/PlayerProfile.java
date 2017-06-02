@@ -1,11 +1,12 @@
 package sma.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class PlayerProfile {
 	private String name;
 	private String status;
-	private ArrayList<String> roles;
+	private List<String> roles;
 	
 	public PlayerProfile(String name, String status, ArrayList<String> roles) {
 		super();
@@ -37,11 +38,11 @@ public class PlayerProfile {
 		this.status = status;
 	}
 
-	public ArrayList<String> getRoles() {
+	public List<String> getRoles() {
 		return roles;
 	}
 
-	public void setRoles(ArrayList<String> roles) {
+	public void setRoles(List<String> roles) {
 		this.roles = roles;
 	}
 	

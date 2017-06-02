@@ -7,6 +7,7 @@ import java.util.Stack;
 import jade.core.Agent;
 import jade.core.behaviours.ParallelBehaviour;
 import sma.model.DFServices;
+import sma.model.GameSettings;
 import sma.model.HumanVoteRequest;
 import sma.model.VoteResults;
 
@@ -49,14 +50,21 @@ public class EnvironmentAgent extends Agent{
 	private String turn;
 	
 	private boolean endGame;
-	private int gameid;
-
 	
+	private int gameid;
+	private int num_turn;
+
+	/** mode jeu **/
+	private boolean game_mode;
+	private  int cptHuman;
 
 	@Override
 	protected void setup() {
 		Object[] args = this.getArguments();
 		gameid = (int) args[0];
+		game_mode = ((GameSettings) (args[1])).isGame_mode();
+		cptHuman = 0;
+		num_turn = 0;
 		
 		stackRequest = new Stack<HumanVoteRequest>();
 		globalResults = new VoteResults();
@@ -78,6 +86,24 @@ public class EnvironmentAgent extends Agent{
 		parallelBehaviour.addSubBehaviour(new CycleReceiveBehaviour(this));
 		this.addBehaviour(parallelBehaviour);
 		
+	}
+	public boolean isGame_mode() {
+		return game_mode;
+	}
+	public void setGame_mode(boolean game_mode) {
+		this.game_mode = game_mode;
+	}
+	public int getNum_turn() {
+		return num_turn;
+	}
+	public void setNum_turn(int num_turn) {
+		this.num_turn = num_turn;
+	}
+	public int getCptHuman() {
+		return cptHuman;
+	}
+	public void setCptHuman(int cptHuman) {
+		this.cptHuman = cptHuman;
 	}
 	public Stack<HumanVoteRequest> getStackRequest() {
 		return stackRequest;

@@ -26,6 +26,10 @@ public class WakeBehaviour extends SimpleBehaviour{
 			this.playerAgent.setStatutandRegister("WAKE");
 			Functions.newActionToLog(this.playerAgent.getLocalName()+" se reveille", this.playerAgent, this.playerAgent.getGameid());
 		
+			if(playerAgent.isHuman()){
+				Functions.incHumans(playerAgent, playerAgent.getGameid());
+			}
+			
 			ACLMessage reply = new ACLMessage(ACLMessage.CONFIRM);
 			reply.setConversationId("WAKE_PLAYER");
 			reply.setSender(this.myAgent.getAID());

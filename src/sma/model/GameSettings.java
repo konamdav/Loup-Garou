@@ -8,17 +8,19 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 public class GameSettings {
 	private HashMap<String, Integer> rolesSettings;
 	private int nbHumans;
+	private boolean game_mode;
 
 	public GameSettings() {
 		super();
 
-		this.nbHumans = 0;
+		this.game_mode = true;
+		this.nbHumans = 1;
 		
 		//Liste role par d�faut
 		this.rolesSettings = new HashMap<String, Integer>();
 
-		this.rolesSettings.put(Roles.WEREWOLF, 5);
-		this.rolesSettings.put(Roles.CITIZEN, 2);
+		this.rolesSettings.put(Roles.WEREWOLF, 2);
+		this.rolesSettings.put(Roles.CITIZEN, 5);
 		this.rolesSettings.put(Roles.CUPID, 0);
 		this.rolesSettings.put(Roles.LITTLE_GIRL, 0);
 		this.rolesSettings.put(Roles.MEDIUM,0);
@@ -32,6 +34,14 @@ public class GameSettings {
 
 	}
 	
+	public boolean isGame_mode() {
+		return game_mode;
+	}
+
+	public void setGame_mode(boolean game_mode) {
+		this.game_mode = game_mode;
+	}
+
 	public GameSettings(int werewolf, int citizen, int cupid, int little_girl, int medium) {
 		super();
 		//nb

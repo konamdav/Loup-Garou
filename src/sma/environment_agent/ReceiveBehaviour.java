@@ -45,12 +45,15 @@ public class ReceiveBehaviour extends OneShotBehaviour {
 		}
 		else if(message.getConversationId().equals("NEW_VOTE_RESULTS"))
 		{
-			try {
-				VoteResults newVoteResults = mapper.readValue(message.getContent(), VoteResults.class);
-				this.envAgent.setCurrentResults(newVoteResults);
+			if(!this.envAgent.isGame_mode() || (this.envAgent.isGame_mode() && this.envAgent.getCptHuman()>0))
+			{
+				try {
+					VoteResults newVoteResults = mapper.readValue(message.getContent(), VoteResults.class);
+					this.envAgent.setCurrentResults(newVoteResults);
 
-			} catch (IOException e) {
-				e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 		else if(message.getConversationId().equals("DAY_STATE"))
@@ -60,7 +63,20 @@ public class ReceiveBehaviour extends OneShotBehaviour {
 		else if(message.getConversationId().equals("ACTION_LOG"))
 		{
 			System.out.println("RECV ACTION");
+			if(!this.envAgent.isGame_mode() || (this.envAgent.isGame_mode() && this.envAgent.getCptHuman()>0))
+			{
+				this.envAgent.getActionLogs().add(message.getContent());
+			}
+		}
+		else if(message.getConversationId().equals("ACTION_LOG_IMPORTANT"))
+		{
+			System.out.println("RECV ACTION");
 			this.envAgent.getActionLogs().add(message.getContent());
+
+		}
+		else if(message.getConversationId().equals("NUM_TURN"))
+		{
+			this.envAgent.setNum_turn(Integer.parseInt(message.getContent()));
 		}
 		else if(message.getConversationId().equals("TURN"))
 		{
@@ -70,6 +86,14 @@ public class ReceiveBehaviour extends OneShotBehaviour {
 		else if(message.getConversationId().equals("END_GAME"))
 		{
 			this.envAgent.setEndGame(Boolean.parseBoolean(message.getContent()));
+		}
+		else if(message.getConversationId().equals("INC_HUMANS"))
+		{
+			this.envAgent.setCptHuman(this.envAgent.getCptHuman()+1);
+		}
+		else if(message.getConversationId().equals("DEC_HUMANS"))
+		{
+			this.envAgent.setCptHuman(this.envAgent.getCptHuman()-1);
 		}
 		else if(message.getConversationId().equals("HUMAN_VOTE_REQUEST"))
 		{

@@ -13,10 +13,10 @@ public class ViewRoles {
 	{
 		this.player = player;
 		this.roles = new ArrayList<ViewRole>();
-		
+
 		curX = player.getPosition()[0] + 10;
 		curY = player.getPosition()[1];	
-		
+
 		if(this.getPlayer().getDirection().equals("DOWN"))
 		{
 			curX = curX;
@@ -28,7 +28,7 @@ public class ViewRoles {
 			curY = curY;
 		}
 	}
-	
+
 	public void addNewRole(String role)
 	{
 		if(this.getPlayer().getDirection().equals("UP"))
@@ -43,7 +43,7 @@ public class ViewRoles {
 			curY = curY+40;
 			this.roles.add(new ViewRole(this, role, curX, curY));
 		}
-		
+
 		else if(this.getPlayer().getDirection().equals("RIGHT"))
 		{
 			curX = curX-40;
@@ -61,7 +61,7 @@ public class ViewRoles {
 	public ViewPlayer getPlayer() {
 		return player;
 	}
-	
+
 	public String getAllRolesLabel()
 	{
 		String s ="\n";
@@ -69,10 +69,10 @@ public class ViewRoles {
 		{
 			s+="\n"+role.getName();
 		}
-		
+
 		return s;
 	}
-	
+
 	public void update()
 	{
 		for(ViewRole role : this.roles)
@@ -80,7 +80,7 @@ public class ViewRoles {
 			role.update();
 		}
 	}
-	
+
 	public List<String> getListRole()
 	{
 		ArrayList<String> tmp = new ArrayList<String>();
@@ -88,23 +88,49 @@ public class ViewRoles {
 		{
 			tmp.add(role.getName());
 		}
-		
+
 		return tmp;
 	}
 
 	public void deleteRole(String role) {
 		boolean flag = false;
 		int cpt = 0;
-		
-		while(cpt < this.roles.size() && !flag)
+
+		int index = 0;
+		int x = 0;
+		int y = 0;
+		while(cpt < this.roles.size())
 		{
+			if(flag)
+			{
+				int xx = this.roles.get(cpt).getX();
+				int yy = this.roles.get(cpt).getY();
+
+				this.roles.get(cpt).setX(x);
+				this.roles.get(cpt).setY(y);
+
+				x = xx;
+				y = yy;
+			}
+
 			if(this.roles.get(cpt).getName().equals(role))
 			{
 				flag = true;
-				this.roles.remove(cpt);
+				x = this.roles.get(cpt).getX();
+				y = this.roles.get(cpt).getY();
+				index = cpt;
 			}
+
 			++cpt;
+
 		}
+
+		if(flag)
+		{
+			this.roles.remove(index);
+		} 
+
+
 	}
-	
+
 }

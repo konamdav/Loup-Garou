@@ -33,6 +33,16 @@ public class ViewRole {
 		this.position[1] = y;
 	}
 
+	public int getX()
+	{
+		return position[0];
+	}
+	
+	public int getY()
+	{
+		return position[1];
+	}
+	
 	public String getName() {
 		return name;
 	}
@@ -40,5 +50,15 @@ public class ViewRole {
 	public void update()
 	{
 		this.batch.draw(this.textureRole,position[0],position[1]);
+	}
+
+	public void setX(int x) {
+		position[0] = x;
+		
+	}
+
+	public void setY(int y) {
+		position[1] = y;
+		
 	}
 }

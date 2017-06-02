@@ -358,19 +358,12 @@ public class TurnBehaviour extends SimpleBehaviour {
 			if(message != null)
 			{
 				String victim = message.getContent();
-				AID aidVictim = new AID(victim);
-				boolean flag = false;
-				for(AID aid : this.ctrlAgent.getVictims())
-				{
-					if(aid.getName().equals(victim))
-					{
-						flag = true;
-					}
-				}
-				if(!flag){
-					this.ctrlAgent.getVictims().push(aidVictim);
-				}
-
+				ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
+				msg.setSender(this.getAgent().getAID());
+				msg.addReceiver(this.getAgent().getAID());
+				msg.setContent(victim);
+				msg.setConversationId("ADD_VICTIM");
+				this.ctrlAgent.send(msg);
 
 				this.nextStep = STATE_SEND_KILL_VICTIMS_REQUEST;
 			}

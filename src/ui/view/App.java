@@ -30,7 +30,7 @@ public class App extends Game {
 	
 	public uiAgent agent = null ;
 	
-	public GameInformations gameInformations = null;
+	public GameInformations gameInformations;
 
 	public GameInformations getGameInformations() {
 		return gameInformations;
@@ -89,6 +89,7 @@ public class App extends Game {
 		//agent = new uiAgent();
 
 		//newSystemContainer();
+		gameInformations = new GameInformations();
 		this.setScreen(new ViewMainMenu(this));
 	}
 	

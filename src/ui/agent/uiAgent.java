@@ -34,18 +34,6 @@ public class uiAgent extends Agent  {
 		App a = (App)args[0];
 		app = a;
 		a.setAgent(this);
-		//System.out.println("ok");
-		/*
-		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.title = "Werewolf";
-		config.resizable = false; //on ne veut pas que l'utilisateur la redimensionne
-		config.disableAudio = false;
-		config.width = 300; //largeur de la fenêtre
-		config.height =600; //hauteur de la fenêtre   
-	    config.vSyncEnabled = true;
-		new LwjglApplication(new App(config, this), config);
-		 */
-		addBehaviour(new GetGameInformations(this));
 	}
 
 	class QueryContainers extends Behaviour{
@@ -138,39 +126,7 @@ public class uiAgent extends Agent  {
 		}
 
 	}
-	
-	class GetGameInformations extends CyclicBehaviour{
 
-
-		private static final long serialVersionUID = 1L;
-		uiAgent agent;
-
-		public GetGameInformations(uiAgent a) {
-			agent = a;
-
-		}
-
-		@Override
-		public void action() {
-			MessageTemplate m = MessageTemplate.MatchPerformative(ACLMessage.REQUEST);
-			ACLMessage message = receive(m);
-
-			if (message != null){
-				//System.out.println(message.getContent());
-				ObjectMapper mapper = new ObjectMapper();
-				try {
-					GameInformations gameInformations = mapper.readValue(message.getContent(), GameInformations.class);
-					app.setGameInformations(gameInformations);
-					
-				}catch(Exception e) {
-				}
-
-			}
-			else block();
-			
-		}
-
-	}
 	
 	
 	class QueryGameInformationsNoTick extends Behaviour{
@@ -231,8 +187,8 @@ public class uiAgent extends Agent  {
 		}
 		@Override
 		public boolean done() {
-			// TODO Auto-generated method stub
-			return false;
+
+			return agent.app.gameInformations != null && agent.app.gameInformations.isEndGame()  ;
 		}
 
 	}

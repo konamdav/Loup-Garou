@@ -1,6 +1,7 @@
 
 package ui.view;
 import java.util.ArrayList;
+
 //Import des fichiers libgdx
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -10,6 +11,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.List;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
@@ -29,12 +32,15 @@ public class ViewInterfaceGame implements Screen{
 	private MapController ctrlTerrain;
 	private ViewPlayers viewPlayers;
 	private Texture textureNight;
+	private Texture textureEndgame;
+    List<String> list;
+    ScrollPane scrollPane;
 	boolean hover;
 
 	private int mapx; 
 	private int mapy;
 	private App game;
-	protected java.util.List<PlayerProfile> list;
+	private Skin skin;
 
 	public ViewInterfaceGame (App game){
 		this.ctrlTerrain = new MapController();
@@ -51,107 +57,33 @@ public class ViewInterfaceGame implements Screen{
 			public boolean mouseMoved(int x, int y) {
 				y=(int) (this.getHeight()-y);
 
-				//System.out.println(" X = "+x+" Y = "+y);
 				x = x+10;
 				y = y+10;
 
 				mapx = x;
 				mapy = y;
 
-				//survol_terrain(x,y);
-
 
 				return true;
 			}
 		};
-		//Gdx.graphics.setDisplayMode(1194, 574, false);
-		//game.resize(1024, 555);
 
 		Gdx.input.setInputProcessor(stage);
+		skin = new Skin( Gdx.files.internal( "resources/visui/uiskin.json" ));
 		viewPlayers=new ViewPlayers(((SpriteBatch)stage.getBatch()));
 
-		/* Iiaison UI */
-
-		//game.agent.
-
-
-
-		/** test**/
-		/*
-		ArrayList<PlayerProfile> profiles = new ArrayList<PlayerProfile>();
-		for(int i = 0; i<22; ++i)
-		{
-			PlayerProfile p = new PlayerProfile();
-			p.setName("PLAYER "+i);
-			p.setStatus(Status.WAKE);
-			ArrayList<String> roles = new ArrayList<String>();
-			if(Math.random()%3 == 1)
-			{
-				roles.add(Roles.WEREWOLF);
-			}
-			else
-			{
-				if(Math.random()%3 == 1)
-				{
-					roles.add(Roles.LOVER);
-				}
-				else
-				{
-					roles.add(Roles.ANGEL);
-				}
-
-				roles.add(Roles.CITIZEN);
-			}
-
-			p.setRoles(roles);
-			profiles.add(p);
-
-			Skin uiskin = new Skin( Gdx.files.internal( "resources/visui/uiskin.json" ));
-
-			SelectBox<String> list = new SelectBox<String>(uiskin);
-
-
-			list.setItems("test", "dk", "konam","ok");
-			list.setSelected("ok");
-			list.pack();
-			stage.addActor(list);
-		}
-		try {
-			Thread.sleep(000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		list = DFServices.getPlayerProfiles(this.game.agent, 0);
-		this.viewPlayers.updatePlayers(list);
-		 */
-
-		/*
-		Timer t = new Timer();
-		t.scheduleAtFixedRate(new TimerTask(){
-			@Override
-			public void run() {
-				System.out.println("oooo");
-				Gdx.app.postRunnable(new Runnable(){
-					@Override
-					public void run() {
-
-
-					}	
-				});
-			}
-		}, 1000, 1000);
-
-
-		 */
 		terrain=new ViewMap((SpriteBatch) stage.getBatch(), ctrlTerrain);
 
-		ViewPlayer player;
-
-		//initPlayers((int) (4+Math.random()*20));
-
 		textureNight = new Texture(Gdx.files.internal("resources/sprites/night.png"));
+
+		textureEndgame = new Texture(Gdx.files.internal("resources/sprites/endgame.png"));
+		
+		list = new List<String>(skin);
+        scrollPane = new ScrollPane(list);
+        scrollPane.setFadeScrollBars(false);
+        scrollPane.setBounds(0,0, 400,800);
+        scrollPane.setPosition(970,300);
+        stage.addActor(scrollPane);
 
 	}
 
@@ -176,13 +108,22 @@ public class ViewInterfaceGame implements Screen{
 		viewPlayers.drawPlayersSleep();
 
 
-
+		
+		
 		if(this.game.getGameInformations()!=null){
-			viewPlayers.updatePlayers(this.game.gameInformations.getProfiles());
+
+			String[] strings = new String[this.game.getGameInformations().getActionLogs().size()];
+			strings = this.game.getGameInformations().getActionLogs().toArray(strings);
+	        list.setItems(strings);
+			if (!this.game.getGameInformations().isEndGame())
+	        scrollPane.scrollTo(0, 0, 0, 0);
+			if (this.game.getGameInformations().isEndGame())
+				stage.getBatch().draw(textureEndgame,0,0);
+			else if (this.game.getGameInformations().getDayState().equals("NIGHT")) 
+				stage.getBatch().draw(textureNight,0,0);
 		}
 		
 		viewPlayers.drawPlayersWake();
-
 
 		if(hover)
 		{
@@ -192,6 +133,9 @@ public class ViewInterfaceGame implements Screen{
 			font.drawMultiLine(stage.getBatch(), viewPlayers.getLabel(mapx, mapy), mapx, mapy);
 		}
 
+		
+		if(this.game.getGameInformations()!=null && this.game.getGameInformations().getProfiles()!=null)
+				viewPlayers.updatePlayers(this.game.gameInformations.getProfiles());
 		//stage.getBatch().draw(style.getBackground(), 0, 0,Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		stage.getBatch().end(); 
 		stage.act(Gdx.graphics.getDeltaTime());

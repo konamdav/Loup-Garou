@@ -8,6 +8,12 @@ public class GameInformations {
 
 	public GameInformations() {
 		super();
+		this.profiles = null;
+		this.dayState = "";
+		this.turn = "";
+		this.actionLogs = new ArrayList<String>();
+		this.currentResults = null;
+		this.endGame = false;
 	}
 
 	private List<PlayerProfile> profiles; 

@@ -126,7 +126,10 @@ public class SynchronousVoteBehaviour extends Behaviour {
 			{
 				ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
 				message.setSender(this.myAgent.getAID());
-				message.addReceiver(agents.get(0));
+				for(AID aid : agents)
+				{
+					message.addReceiver(aid);
+				}
 				message.setConversationId("GLOBAL_VOTE_RESULTS");
 
 				this.myAgent.send(message);
@@ -253,7 +256,10 @@ public class SynchronousVoteBehaviour extends Behaviour {
 				List<AID> agents = DFServices.findGameControllerAgent("ENVIRONMENT", this.myAgent, this.controllerAgent.getGameid());
 				if(!agents.isEmpty())
 				{
-					msg.addReceiver(agents.get(0));
+					for(AID aid : agents)
+					{
+						msg.addReceiver(aid);
+					}
 					this.myAgent.send(msg);
 				}
 
@@ -447,7 +453,10 @@ public class SynchronousVoteBehaviour extends Behaviour {
 				List<AID> agents = DFServices.findGameControllerAgent("ENVIRONMENT", this.myAgent, this.controllerAgent.getGameid());
 				if(!agents.isEmpty())
 				{
-					message.addReceiver(agents.get(0));
+					for(AID aid : agents)
+					{
+						message.addReceiver(aid);
+					}
 					this.myAgent.send(message);
 				}
 			}

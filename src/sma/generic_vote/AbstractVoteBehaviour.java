@@ -87,7 +87,7 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 			ACLMessage message = this.myAgent.receive(mt);
 			if(message != null)
 			{
-				this.agent.doWait((int) (Math.random()*1000));
+				this.agent.doWait((int) (Math.random()*500));
 				Functions.newActionToLog(this.agent.getLocalName()+" réfléchit", this.agent, this.agent.getGameid());
 
 				this.sender = message.getSender();

@@ -18,7 +18,7 @@ public class GameSettings {
 		this.rolesSettings = new HashMap<String, Integer>();
 
 		this.rolesSettings.put(Roles.WEREWOLF, 5);
-		this.rolesSettings.put(Roles.CITIZEN, 3);
+		this.rolesSettings.put(Roles.CITIZEN, 2);
 		this.rolesSettings.put(Roles.CUPID, 0);
 		this.rolesSettings.put(Roles.LITTLE_GIRL, 0);
 		this.rolesSettings.put(Roles.MEDIUM,0);

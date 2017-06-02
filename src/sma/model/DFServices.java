@@ -281,19 +281,20 @@ public class DFServices {
 		}
 		else
 		{
+				int index = Math.min(tmp.size(),Data.AREA_NEIGHBORS);
 				for(int i = Math.min(tmp.size(),Data.AREA_NEIGHBORS); i< Data.AREA_NEIGHBORS+Math.min(tmp.size(),Data.AREA_NEIGHBORS); ++i)
 				{
-					int index = i;
-					if(index == tmp.size())
+					if(index >= tmp.size())
 					{
 						index = 0;
-						System.err.println("revient à "+tmp.get(index) .getLocalName());
 					}
 					
 					if(!res.contains(tmp.get(index)))
 					{
 						res.add(tmp.get(index));
 					}
+					
+					++index;
 				}
 			
 		}
@@ -343,6 +344,18 @@ public class DFServices {
 		List<AID> tmp = DFServices.findGamePlayerAgent(services2, agent, gameid);
 
 		citizens.addAll(tmp);
+		Collections.sort(citizens, comparator);
+
+		return citizens;
+	}
+	
+
+	/** trouver les voisins **/
+	public static List<AID> findOrderedAllCitizen(Agent agent, int gameid)
+	{
+		String[] services1 = {Roles.CITIZEN};
+
+		List<AID> citizens = DFServices.findGamePlayerAgent(services1, agent, gameid);
 		Collections.sort(citizens, comparator);
 
 		return citizens;
@@ -429,12 +442,12 @@ public class DFServices {
 		HashMap<String, PlayerProfile> tmp = new HashMap<String, PlayerProfile>();
 
 		//get profiles joueurs citizen
-		List<AID> citizens = DFServices.findGamePlayerAgent("CITIZEN", agent, gameid);
+		List<AID> citizens = DFServices.findOrderedAllCitizen(agent, gameid);
 
-		for(AID citizen : citizens)
+		for(int i =0; i<citizens.size(); ++i)
 		{
 			PlayerProfile profile = new PlayerProfile();
-			profile.setName(citizen.getLocalName());
+			profile.setName(citizens.get(i).getLocalName());
 			profile.getRoles().add("CITIZEN");
 			tmp.put(profile.getName(), profile);
 		}
@@ -600,9 +613,9 @@ public class DFServices {
 
 
 		List<PlayerProfile> list = new ArrayList<PlayerProfile>();
-		for(Entry<String, PlayerProfile> entry : tmp.entrySet())
+		for(AID citizen : citizens)
 		{
-			list.add(entry.getValue());
+			list.add(tmp.get(citizen.getLocalName()));
 			//entry.getValue().print();
 		}
 
@@ -611,10 +624,12 @@ public class DFServices {
 	
 	public static void printProfiles(Agent agent, int gameid)
 	{
+		
+		System.err.println(DFServices.findOrderedAllCitizen(agent, gameid));
 		List<PlayerProfile> list = getPlayerProfiles(agent, gameid);
-		for(PlayerProfile p : list)
+		for(int i = 0; i<list.size(); ++i)
 		{
-			p.print();
+			list.get(i).print();
 		}
 	}
 }

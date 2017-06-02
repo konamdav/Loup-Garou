@@ -157,8 +157,6 @@ public class TurnBehaviour extends SimpleBehaviour {
 
 				for(int i = 0; i<neighborsLeft.size();++i)
 				{
-					System.err.println("alert voisin (left)"+neighborsLeft.get(i).getName());
-
 					ACLMessage message = new ACLMessage(ACLMessage.INFORM);
 					message.setSender(this.ctrlAgent.getAID());
 					message.addReceiver(neighborsLeft.get(i));
@@ -170,11 +168,8 @@ public class TurnBehaviour extends SimpleBehaviour {
 
 				for(int i = 0; i<neighborsRight.size();++i)
 				{
-					System.err.println("alert voisin (right) ??? "+neighborsRight.get(i).getName());
 					if(!neighborsLeft.contains(neighborsRight.get(i)))
 					{
-						System.err.println("alert voisin (right)"+neighborsRight.get(i).getName());
-
 						ACLMessage message = new ACLMessage(ACLMessage.INFORM);
 						message.setSender(this.ctrlAgent.getAID());
 						message.addReceiver(neighborsLeft.get(i));

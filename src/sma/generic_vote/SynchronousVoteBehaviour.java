@@ -107,6 +107,7 @@ public class SynchronousVoteBehaviour extends Behaviour {
 
 					this.request = mapper.readValue(message.getContent(), VoteRequest.class);
 					this.request.setLocalVoteResults(this.results);
+					this.results.initWithChoice(this.request.getChoices());
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -175,7 +176,7 @@ public class SynchronousVoteBehaviour extends Behaviour {
 			if(reste >= Data.MAX_SYNCHRONOUS_PLAYERS)
 			{
 				/** hybrid synchronous mode **/
-				this.nbAsynchronousPlayers = (int) (Math.random()*Math.min(Data.MAX_SYNCHRONOUS_PLAYERS, (reste/2)-1))+1;
+				this.nbAsynchronousPlayers = (int) (Math.random()*Math.min(Data.MAX_SYNCHRONOUS_PLAYERS, (reste-1)))+1;
 				System.err.println("HYDBRID ASYNCRHONOUS ENABLED BECAUSE TOO MANY PARTICIPANTS");
 			}
 			else
@@ -267,14 +268,17 @@ public class SynchronousVoteBehaviour extends Behaviour {
 
 				if(this.nbVoters>= this.request.getAIDVoters().size())
 				{
+					System.err.println("SV next step");
 					this.nextStep = STATE_RESULTS;
 				}
 				else if(this.nbAsynchronousPlayers > 0)
 				{
+					System.err.println("SV waiting other");
 					this.nextStep = STATE_RECEIVE_INFORM;
 				}
 				else 
 				{
+					System.err.println("SV send request to other");
 					this.nextStep = STATE_SEND_REQUEST;
 				}
 			}
@@ -413,10 +417,10 @@ public class SynchronousVoteBehaviour extends Behaviour {
 					Collections.shuffle(this.request.getVoters());
 
 					this.results = new VoteResults();
+					this.results.initWithChoice(this.request.getChoices());
 					this.request.setLocalVoteResults(this.results);
 					this.lastResults = this.finalResults;
 					this.nbVoters = 0;
-
 					this.nextStep = STATE_SEND_REQUEST;
 
 				}
@@ -433,7 +437,6 @@ public class SynchronousVoteBehaviour extends Behaviour {
 				System.out.println("RESULTS => "+this.finalResults.get(0));
 			}
 
-
 			//envoi resultat final + maj global vote
 			if(this.request.getRequest().equals("CITIZEN_VOTE"))
 			{
@@ -449,7 +452,7 @@ public class SynchronousVoteBehaviour extends Behaviour {
 				message.setContent(json);
 				message.setSender(this.myAgent.getAID());
 				message.setConversationId("NEW_CITIZEN_VOTE_RESULTS");
-
+				
 				List<AID> agents = DFServices.findGameControllerAgent("ENVIRONMENT", this.myAgent, this.controllerAgent.getGameid());
 				if(!agents.isEmpty())
 				{
@@ -467,7 +470,7 @@ public class SynchronousVoteBehaviour extends Behaviour {
 			message.setConversationId("VOTE_RESULTS");
 			message.setContent(this.finalResults.get(0));
 			this.myAgent.send(message);
-
+			
 			this.nextStep = STATE_INIT;
 		}
 

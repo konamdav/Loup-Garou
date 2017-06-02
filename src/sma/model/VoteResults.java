@@ -28,6 +28,14 @@ public class VoteResults {
 	public Map<String, List<String>> getVoteResults() {
 		return voteResults;
 	}
+	
+	public void initWithChoice(List<String> list)
+	{
+		for(String s : list)
+		{
+			this.voteResults.put(s, new ArrayList<String>());
+		}
+	}
 
 	@JsonIgnore
 	public Map<String, Integer> getSimpleVoteResults() {
@@ -36,7 +44,8 @@ public class VoteResults {
 		{
 			simpleVoteResults.put(entry.getKey(), entry.getValue().size());
 		}
-		return simpleVoteResults;
+		
+		return Functions.sortByValue(simpleVoteResults);
 	}
 
 	public void setVoteResults(Map<String, List<String>> voteResults) {

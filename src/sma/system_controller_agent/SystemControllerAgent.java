@@ -53,7 +53,7 @@ public class SystemControllerAgent extends Agent{
 			e.printStackTrace();
 		}
 		message.setContent(json);
-		//this.send(message);
+		this.send(message);
 		
 		//this.send(message);
 		//this.send(message);

@@ -103,6 +103,8 @@ public class ViewInterfaceGame implements Screen{
 		stage.getBatch().enableBlending();
 		stage.getBatch().begin();
 
+		
+		
 		terrain.update();		
 		viewPlayers.drawPlayersDead();
 		viewPlayers.drawPlayersSleep();
@@ -122,7 +124,7 @@ public class ViewInterfaceGame implements Screen{
 			else if (this.game.getGameInformations().getDayState().equals("NIGHT")) 
 				stage.getBatch().draw(textureNight,0,0);
 		}
-		
+			
 		viewPlayers.drawPlayersWake();
 
 		if(hover)
@@ -142,7 +144,7 @@ public class ViewInterfaceGame implements Screen{
 		stage.draw();
 		stage.getBatch().disableBlending();
 
-
+		
 	}
 
 

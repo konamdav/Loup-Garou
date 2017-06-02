@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Stack;
 
 import jade.core.Agent;
+import jade.core.behaviours.ParallelBehaviour;
 import sma.model.DFServices;
 import sma.model.HumanVoteRequest;
 import sma.model.VoteResults;
@@ -72,8 +73,10 @@ public class EnvironmentAgent extends Agent{
 		System.err.println("REGISTER ENV");
 		DFServices.registerGameControllerAgent("ENVIRONMENT",this,  this.gameid);
 		
-		this.addBehaviour(new CycleSendBehaviour(this));
-		this.addBehaviour(new CycleReceiveBehaviour(this));
+		ParallelBehaviour parallelBehaviour = new ParallelBehaviour(ParallelBehaviour.WHEN_ALL); 
+		parallelBehaviour.addSubBehaviour(new CycleSendBehaviour(this));
+		parallelBehaviour.addSubBehaviour(new CycleReceiveBehaviour(this));
+		this.addBehaviour(parallelBehaviour);
 		
 	}
 	public Stack<HumanVoteRequest> getStackRequest() {

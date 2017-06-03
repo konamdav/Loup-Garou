@@ -64,7 +64,7 @@ public class ViewRoles {
 
 	public String getAllRolesLabel()
 	{
-		String s ="\n";
+		String s ="";
 		for(ViewRole role : this.roles)
 		{
 			s+="\n"+role.getName();

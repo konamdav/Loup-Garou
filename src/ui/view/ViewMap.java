@@ -14,7 +14,8 @@ import ui.model.Const;
 public class ViewMap {
 
 	private SpriteBatch batch;    
-	private Texture case_constructible;
+	private Texture case1;
+	private Texture case2;
 	
 	private MapController ctrlTerrain;
 
@@ -22,7 +23,8 @@ public class ViewMap {
 	{
 		this.ctrlTerrain=ctrlTerrain;
 		this.batch=batch;
-		this.case_constructible = new Texture(Gdx.files.internal("resources/sprites/case_constructible.png"));	
+		this.case1 = new Texture(Gdx.files.internal("resources/sprites/case_constructible.png"));	
+		this.case2 = new Texture(Gdx.files.internal("resources/sprites/case_tree.png"));	
 	}
 
 
@@ -32,9 +34,13 @@ public class ViewMap {
 		{
 			for(int j = 0 ; j<Const.COLONNE ; j++)
 			{
-				if(ctrlTerrain.getSonTerrain().getMap()[i][j] instanceof Case)
+				if(ctrlTerrain.getSonTerrain().getMap()[i][j].getT() == 0)
 				{
-					batch.draw(this.case_constructible,j*64,i*64);  
+					batch.draw(this.case1,j*64,i*64);  
+				}  
+				else if (ctrlTerrain.getSonTerrain().getMap()[i][j].getT() == 1)
+				{
+					batch.draw(this.case2,j*64,i*64);  
 				}  
 			}
 

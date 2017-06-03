@@ -35,10 +35,10 @@ public class ViewInterfaceGame implements Screen{
 	private ViewPlayers viewPlayers;
 	private Texture textureNight;
 	private Texture textureEndgame;
-    List<String> list_log;
-    ScrollPane scrollpane_log;
-    List<String> list_vote;
-    ScrollPane scrollpane_vote;
+	List<String> list_log;
+	ScrollPane scrollpane_log;
+	List<String> list_vote;
+	ScrollPane scrollpane_vote;
 	boolean hover;
 
 	private int mapx; 
@@ -81,22 +81,22 @@ public class ViewInterfaceGame implements Screen{
 		textureNight = new Texture(Gdx.files.internal("resources/sprites/night.png"));
 
 		textureEndgame = new Texture(Gdx.files.internal("resources/sprites/endgame.png"));
-		
+
 		list_log = new List<String>(skin);
-        scrollpane_log = new ScrollPane(list_log);
-        scrollpane_log.setFadeScrollBars(false);
-        scrollpane_log.setBounds(0,0, 400,200);
-        scrollpane_log.setPosition(970,300);
-        
+		scrollpane_log = new ScrollPane(list_log);
+		scrollpane_log.setFadeScrollBars(false);
+		scrollpane_log.setBounds(0,0, 400,200);
+		scrollpane_log.setPosition(970,300);
+
 
 		list_vote = new List<String>(skin);
-        scrollpane_vote = new ScrollPane(list_vote);
-        scrollpane_vote.setFadeScrollBars(false);
-        scrollpane_vote.setBounds(0,0, 400,200);
-        scrollpane_vote.setPosition(970,0);
-        
-        stage.addActor(scrollpane_log);
-        stage.addActor(scrollpane_vote);
+		scrollpane_vote = new ScrollPane(list_vote);
+		scrollpane_vote.setFadeScrollBars(false);
+		scrollpane_vote.setBounds(0,0, 400,200);
+		scrollpane_vote.setPosition(970,0);
+
+		stage.addActor(scrollpane_log);
+		stage.addActor(scrollpane_vote);
 
 	}
 
@@ -116,44 +116,44 @@ public class ViewInterfaceGame implements Screen{
 		stage.getBatch().enableBlending();
 		stage.getBatch().begin();
 
-		
-		
+
+
 		terrain.update();		
 		viewPlayers.drawPlayersDead();
 		viewPlayers.drawPlayersSleep();
 
 
-		
-		
+
+
 		if(this.game.getGameInformations()!=null){
 
 			// Set Iog
 			String[] strings = new String[this.game.getGameInformations().getActionLogs().size()];
 			strings = this.game.getGameInformations().getActionLogs().toArray(strings);
-	        list_log.setItems(strings);
-	        
-	        // Set Vote
-	        if (this.game.getGameInformations().getCurrentResults() != null){
-	        	Map<String, Integer> map_tmp = this.game.getGameInformations().getCurrentResults().getSimpleVoteResults();
+			list_log.setItems(strings);
+
+			// Set Vote
+			if (this.game.getGameInformations().getCurrentResults() != null){
+				Map<String, Integer> map_tmp = this.game.getGameInformations().getCurrentResults().getSimpleVoteResults();
 
 				String[] strings_vote = new String[map_tmp.size()];
 				int i = 0;
-	        	for(Entry<String, Integer> entry : map_tmp.entrySet())
-	    		{
-	        		strings_vote[i] = entry.getKey() + "  : " + entry.getValue();
-	        		i++;
-	    		}
+				for(Entry<String, Integer> entry : map_tmp.entrySet())
+				{
+					strings_vote[i] = entry.getKey() + "  : " + entry.getValue();
+					i++;
+				}
 
-		        list_vote.setItems(strings_vote);
-	        }
+				list_vote.setItems(strings_vote);
+			}
 			if (!this.game.getGameInformations().isEndGame())
-	        scrollpane_log.scrollTo(0, 0, 0, 0);
+				scrollpane_log.scrollTo(0, 0, 0, 0);
 			if (this.game.getGameInformations().isEndGame())
 				stage.getBatch().draw(textureEndgame,0,0);
 			else if (this.game.getGameInformations().getDayState().equals("NIGHT")) 
 				stage.getBatch().draw(textureNight,0,0);
 		}
-			
+
 		viewPlayers.drawPlayersWake();
 
 		if(hover)
@@ -161,19 +161,28 @@ public class ViewInterfaceGame implements Screen{
 			BitmapFont  font = new BitmapFont();
 			font.setColor(Color.WHITE);
 			font.setScale(1.5f);
-			font.drawMultiLine(stage.getBatch(), viewPlayers.getLabel(mapx, mapy), mapx, mapy);
+
+			String label = viewPlayers.getLabel(mapx, mapy);
+			if(!label.isEmpty())
+			{
+				float width = font.getMultiLineBounds(label).width;
+				float height = font.getMultiLineBounds(label).height;
+
+				stage.getBatch().draw(textureNight, mapx-10, mapy-height-10, width+20, height+20);//draw(textureNight,mapx,mapy);
+				font.drawMultiLine(stage.getBatch(), label, mapx, mapy);
+			}
 		}
 
-		
+
 		if(this.game.getGameInformations()!=null && this.game.getGameInformations().getProfiles()!=null)
-				viewPlayers.updatePlayers(this.game.gameInformations.getProfiles());
+			viewPlayers.updatePlayers(this.game.gameInformations.getProfiles());
 		//stage.getBatch().draw(style.getBackground(), 0, 0,Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		stage.getBatch().end(); 
 		stage.act(Gdx.graphics.getDeltaTime());
 		stage.draw();
 		stage.getBatch().disableBlending();
 
-		
+
 	}
 
 

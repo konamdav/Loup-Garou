@@ -30,9 +30,9 @@ public class Map{
 			{
 				for(int j=0; j<Const.COLONNE;j++)
 				{
-					map[i][j]=new Case(i, j);	
+					int t = (j==0 || j== Const.COLONNE-1 || i == 0 || i == Const.LIGNE-1) ? 1 : 0;
+					map[i][j]=new Case(i, j, t);	
 				}
-
 			}
 			try {
 				carte.close();

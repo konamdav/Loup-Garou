@@ -13,9 +13,9 @@ import sma.model.TypeIA;
 import sma.player_agent.GetRoleBehaviour;
 import sma.player_agent.PlayerAgent;
 import sma.player_agent.SleepBehaviour;
+import sma.player_agent.VictimStatusBehaviour;
 import sma.player_agent.WakeBehaviour;
 import sma.vote_behaviour.CitizenScoreBehaviour;
-import sma.werewolf_agent.VictimStatusBehaviour;
 
 public class GenericInitBehaviour extends OneShotBehaviour{
 	private PlayerAgent agent;

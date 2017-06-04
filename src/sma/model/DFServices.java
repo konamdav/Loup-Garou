@@ -530,7 +530,7 @@ public class DFServices {
 			profile.getRoles().add(Roles.CUPID);
 			profile.getRoles().remove("CITIZEN");
 		}
-		
+
 		//get profiles joueurs Voleur
 		List<AID> voleurs = DFServices.findGamePlayerAgent(Roles.VOLEUR, agent, gameid);
 		for(AID voleur : voleurs)
@@ -539,6 +539,18 @@ public class DFServices {
 			profile.getRoles().add(Roles.VOLEUR);
 			profile.getRoles().remove("CITIZEN");
 		}
+
+		//get profiles joueurs 
+		List<AID> great_werewolves = DFServices.findGamePlayerAgent(Roles.GREAT_WEREWOLF, agent, gameid);
+		for(AID werewolf : great_werewolves)
+		{
+			PlayerProfile profile = tmp.get(werewolf.getLocalName());
+			profile.getRoles().add(Roles.GREAT_WEREWOLF);
+			profile.getRoles().remove(Roles.WEREWOLF);
+			profile.getRoles().remove(Roles.CITIZEN);
+		}
+
+
 
 
 		//get profiles joueurs lover
@@ -576,6 +588,9 @@ public class DFServices {
 			profile.getRoles().add(Roles.ANCIEN);
 			profile.getRoles().remove(Roles.CITIZEN);
 		}
+
+
+
 
 
 
@@ -643,11 +658,15 @@ public class DFServices {
 								&&!s.equals(Roles.CITIZEN)
 								&&!s.equals(Roles.ANGEL)
 								&&!s.equals(Roles.WITCH)
+								&&!s.equals(Roles.VOLEUR)
 								&&!s.equals(Roles.LITTLE_GIRL)
 								&&!s.equals(Roles.MEDIUM)
 								&&!s.equals(Roles.SCAPEGOAT) 
 								|| (s.equals(Roles.CHARMED) && rolesHuman.contains(Roles.FLUTE_PLAYER) )
-								|| (s.equals(Roles.FLUTE_PLAYER) && rolesHuman.contains(Roles.CHARMED) ))
+								|| (s.equals(Roles.FLUTE_PLAYER) && rolesHuman.contains(Roles.CHARMED) )
+								|| (s.equals(Roles.WEREWOLF) && rolesHuman.contains(Roles.GREAT_WEREWOLF) )
+								|| (s.equals(Roles.WEREWOLF) && rolesHuman.contains(Roles.WHITE_WEREWOLF) )
+								)
 						{
 							roles.add(s);
 						}

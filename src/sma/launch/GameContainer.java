@@ -9,6 +9,7 @@ import sma.cupid_controller.CupidControllerAgent;
 import sma.environment_agent.EnvironmentAgent;
 import sma.family_controller.FamilyControllerAgent;
 import sma.flute_player_controller.FlutePlayerControllerAgent;
+import sma.great_werewolf_controller_agent.GreatWerewolfControllerAgent;
 import sma.medium_controller.MediumControllerAgent;
 import sma.model.GameSettings;
 import sma.model.Roles;
@@ -71,6 +72,14 @@ public class GameContainer {
 			{
 				ac = container.createNewAgent(
 						"WEREWOLF_CONTROLLER_AGENT_"+gameid, "sma.werewolf_controller_agent.WerewolfControllerAgent", objects);
+				ac.start();
+			}
+			
+			//selection role great werewolf
+			if(this.gameSettings.isRoleRegistered(Roles.GREAT_WEREWOLF))
+			{
+				ac = container.createNewAgent(
+						"GREAT_WEREWOLF_CONTROLLER_AGENT_"+gameid, GreatWerewolfControllerAgent.class.getName(), objects);
 				ac.start();
 			}
 			

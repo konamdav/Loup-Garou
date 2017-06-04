@@ -1,11 +1,10 @@
-package sma.werewolf_agent;
+package sma.player_agent;
 
 import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import sma.model.DFServices;
 import sma.model.Status;
-import sma.player_agent.PlayerAgent;
 
 public class VictimStatusBehaviour extends SimpleBehaviour{
 	private PlayerAgent playerAgent ;

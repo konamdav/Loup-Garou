@@ -8,6 +8,7 @@ import jade.lang.acl.MessageTemplate;
 import sma.generic_death.IDeathBehaviour;
 import sma.generic_death.IPreDeathBehaviour;
 import sma.model.DFServices;
+import sma.model.Roles;
 import sma.player_agent.PlayerAgent;
 import sma.vote_behaviour.IVoteBehaviour;
 
@@ -30,6 +31,13 @@ public class DeleteRoleBehaviour extends CyclicBehaviour {
 			String role = message.getContent();
 			System.err.println("["+this.agent.getName()+"] DELETE ROLE "+role);
 			DFServices.deregisterPlayerAgent(role, agent, this.agent.getGameid());
+			
+			//si on supprime loup blanc ou méchant loup, il faut enlever le role werewolf aussi
+			if(role.equals(Roles.GREAT_WEREWOLF) || role.equals(Roles.WHITE_WEREWOLF))
+			{
+				DFServices.deregisterPlayerAgent(Roles.WEREWOLF, agent, this.agent.getGameid());
+			}
+			
 			List<Behaviour> behaviours = this.agent.getMap_role_behaviours().get(role);
 			for(Behaviour bhv : behaviours)
 			{

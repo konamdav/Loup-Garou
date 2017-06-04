@@ -12,6 +12,7 @@ import sma.cupid.CupidInitBehaviour;
 import sma.family.FamilyInitBehaviour;
 import sma.flute_player.CharmedInitBehaviour;
 import sma.flute_player.FlutePlayerInitBehaviour;
+import sma.great_werewolf_agent.GreatWerewolfInitBehaviour;
 import sma.littlegirl.LittleGirlInitBehaviour;
 import sma.lover_behaviour.LoverInitBehaviour;
 import sma.medium_behaviour.MediumInitBehaviour;
@@ -110,6 +111,9 @@ public class FactoryInitBehaviour extends CyclicBehaviour{
 					break;
 				case Roles.VOLEUR:
 					this.agent.addBehaviour(new VoleurInitBehaviour(this.agent, this.agent.getAID()));
+					break;
+				case Roles.GREAT_WEREWOLF:
+					this.agent.addBehaviour(new GreatWerewolfInitBehaviour(this.agent, this.agent.getAID()));
 					break;
 				default:
 					System.err.print("Erreur role not valid" );

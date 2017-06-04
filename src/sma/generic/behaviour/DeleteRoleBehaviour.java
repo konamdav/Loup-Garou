@@ -19,8 +19,6 @@ public class DeleteRoleBehaviour extends CyclicBehaviour {
 		this.agent = agent;
 	}
 
-	//TODO David Shaman relou, beahviour to keep
-
 	public void action() {
 		MessageTemplate mt = MessageTemplate.and(
 				MessageTemplate.MatchPerformative(ACLMessage.CANCEL),
@@ -61,6 +59,12 @@ public class DeleteRoleBehaviour extends CyclicBehaviour {
 				this.agent.removeBehaviour(bhv);
 			}
 
+			if (this.agent.getMain_role().equals(role)){
+				System.err.println("CHANGE MAIN ROLLE " +this.agent.getMain_role());
+				this.agent.setMain_role(""); //TODO Cedric test this one
+				System.out.println("After MAIN ROLLE " +this.agent.getMain_role() + " is empty " + this.agent.getMain_role().isEmpty());
+
+			}
 			this.agent.getMap_role_behaviours().remove(role);
 
 			ACLMessage messageRequest = new ACLMessage(ACLMessage.CONFIRM);

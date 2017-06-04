@@ -28,7 +28,8 @@ public class GameSettings {
 		this.rolesSettings.put(Roles.FLUTE_PLAYER,0);
 		this.rolesSettings.put(Roles.ANCIEN,0); 
 		this.rolesSettings.put(Roles.WITCH,0); 
-		
+		this.rolesSettings.put(Roles.VOLEUR,1); 
+
 		//Si problème, demander à David il est chef de projet <3
 
 

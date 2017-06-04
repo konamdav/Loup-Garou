@@ -13,6 +13,7 @@ public class Roles {
 	public static final String ANGEL = "ANGEL";
 	public static final String GREAT_WEREWOLF = "GREAT_WEREWOLF";
 	public static final String HUNTER = "HUNTER";
+	public static final String VOLEUR = "VOLEUR";
 
 	public static final String FOOL = "FOOL";
 	public static final String FLUTE_PLAYER = "FLUTE_PLAYER";

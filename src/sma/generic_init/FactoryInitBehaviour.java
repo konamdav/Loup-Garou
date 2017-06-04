@@ -19,6 +19,7 @@ import sma.model.Roles;
 import sma.player_agent.MayorInitBehaviour;
 import sma.player_agent.PlayerAgent;
 import sma.scapegoat.ScapegoatInitBehaviour;
+import sma.voleur.VoleurInitBehaviour;
 import sma.werewolf_agent.WerewolfInitBehaviour;
 
 public class FactoryInitBehaviour extends CyclicBehaviour{
@@ -106,6 +107,9 @@ public class FactoryInitBehaviour extends CyclicBehaviour{
 					break;
 				case Roles.FAMILY:
 					this.agent.addBehaviour(new FamilyInitBehaviour(this.agent, this.agent.getAID()));
+					break;
+				case Roles.VOLEUR:
+					this.agent.addBehaviour(new VoleurInitBehaviour(this.agent, this.agent.getAID()));
 					break;
 				default:
 					System.err.print("Erreur role not valid" );

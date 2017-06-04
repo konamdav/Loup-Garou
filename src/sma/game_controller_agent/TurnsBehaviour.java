@@ -30,6 +30,9 @@ public class TurnsBehaviour extends SimpleBehaviour {
 	private final String STATE_CHECK_ENDGAME_REQUEST = "STATE_CHECK_ENDGAME_REQUEST";
 	private final String STATE_CHECK_ENDGAME_RECEIVE = "STATE_CHECK_ENDGAME_RECEIVE";
 
+	private final String STATE_START_VOLEUR_TURN = "START_VOLEUR_TURN";
+	private final String STATE_STOP_VOLEUR_TURN = "STOP_VOLEUR_TURN";
+
 	private final String STATE_START_WEREWOLF_TURN = "START_WEREWOLF_TURN";
 	private final String STATE_STOP_WEREWOLF_TURN = "STOP_WEREWOLF_TURN";
 	
@@ -54,7 +57,8 @@ public class TurnsBehaviour extends SimpleBehaviour {
 	private boolean flag_done;
 
 	private boolean flag_cupid; 
-	
+	private boolean flag_voleur; 
+
 	private String step;
 	private String nextStep;
 
@@ -64,6 +68,7 @@ public class TurnsBehaviour extends SimpleBehaviour {
 		this.step = STATE_PREINIT;
 		this.nextStep = "";
 		this.flag_cupid = false;
+		this.flag_voleur = false;
 		this.flag_done = false;
 		this.controllerAgent = controllerAgent;	
 	}
@@ -134,7 +139,60 @@ public class TurnsBehaviour extends SimpleBehaviour {
 				System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
 				System.err.println("DAY "+this.controllerAgent.getNum_turn());
 				Functions.sendNumTurn(this.controllerAgent.getNum_turn(), this.controllerAgent, this.controllerAgent.getGameid());
+				//this.nextStep = STATE_START_CUPID_TURN;
+				this.nextStep = STATE_START_VOLEUR_TURN;
+				
+			}
+		}
+		else if (this.step.equals(STATE_START_VOLEUR_TURN))
+		{
+			
+			List<AID> agents = DFServices.findGameControllerAgent(Roles.VOLEUR, this.myAgent, this.controllerAgent.getGameid());
+			if(!agents.isEmpty())
+			{		
+				String [] args = {Roles.VOLEUR, Status.SLEEP};
+				List<AID> cupids = DFServices.findGamePlayerAgent(args, this.controllerAgent, this.controllerAgent.getGameid());				
+				int nbPlayers = cupids.size();
+
+				if(nbPlayers > 0 && !this.flag_voleur)
+				{
+					Functions.updateTurn(Roles.VOLEUR, controllerAgent, controllerAgent.getGameid());
+					
+					ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
+					message.setConversationId("START_TURN");
+					message.setSender(this.getAgent().getAID());
+					message.addReceiver(agents.get(0));
+					this.getAgent().send(message);
+
+					this.flag_voleur = true;
+					this.nextStep = STATE_STOP_VOLEUR_TURN;
+				}
+				else
+				{
+					this.nextStep = STATE_START_CUPID_TURN;
+				}
+			}
+			else
+			{
 				this.nextStep = STATE_START_CUPID_TURN;
+			}
+		}
+		else if (this.step.equals(STATE_STOP_VOLEUR_TURN))
+		{
+			MessageTemplate mt = MessageTemplate.and(
+					MessageTemplate.MatchPerformative(ACLMessage.INFORM),
+					MessageTemplate.MatchConversationId("END_TURN"));
+
+			ACLMessage message = this.myAgent.receive(mt);
+			if(message != null)
+			{
+				this.controllerAgent.doWait(1000);
+				this.nextStep = STATE_START_CUPID_TURN;
+			}
+			else
+			{
+				this.nextStep = STATE_STOP_VOLEUR_TURN;
+				block();
 			}
 		}
 		else if (this.step.equals(STATE_START_CUPID_TURN))

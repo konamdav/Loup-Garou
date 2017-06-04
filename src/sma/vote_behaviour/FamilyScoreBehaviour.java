@@ -175,7 +175,8 @@ public class FamilyScoreBehaviour extends Behaviour implements IVoteBehaviour{
 						diff+= localResults.getDifferenceVote(player.getName(), fluteplayer.getName());
 					}
 					
-					diff = diff/Math.max(fluteplayers.size(),1);
+					//diff = diff/Math.max(fluteplayers.size(),1);
+					diff = diff/Math.max(family.size(),1);
 					score+= diff * ScoreFactor.SCORE_FACTOR_DIFFERENCE_LOCAL_VOTE;
 				}
 				else

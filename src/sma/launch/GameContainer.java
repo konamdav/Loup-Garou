@@ -12,6 +12,7 @@ import sma.flute_player_controller.FlutePlayerControllerAgent;
 import sma.medium_controller.MediumControllerAgent;
 import sma.model.GameSettings;
 import sma.model.Roles;
+import sma.voleur_controller.VoleurControllerAgent;
 import sma.witch_controller.WitchControllerAgent;
 
 //Conteneur de jeu
@@ -113,7 +114,14 @@ public class GameContainer {
 				ac = container.createNewAgent(
 						"FLUTE_PLAYER_CONTROLLER_AGENT_"+gameid, FlutePlayerControllerAgent.class.getName(), objects);
 				ac.start();
-
+			}
+			
+			//selection role voleur player
+			if(this.gameSettings.isRoleRegistered(Roles.VOLEUR))
+			{
+				ac = container.createNewAgent(
+						"VOLEUR_CONTROLLER_AGENT_"+gameid, VoleurControllerAgent.class.getName(), objects);
+				ac.start();
 			}
 		}
 		catch(Exception e) {

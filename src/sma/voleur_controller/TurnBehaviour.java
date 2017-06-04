@@ -120,7 +120,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 				this.nextStep = STATE_RECEIVE_WAKE_ONE;
 			}
 			else {
-				System.err.println("Fin du tour voleur TODO CEDRIC");
+				System.err.println("Fin du tour voleur");
 				this.nextStep = STATE_END_TURN;
 
 			}
@@ -313,6 +313,8 @@ public class TurnBehaviour extends SimpleBehaviour {
 			messageRequest.setConversationId("ATTRIBUTION_ROLE");
 			messageRequest.setContent(Roles.CITIZEN);
 			this.myAgent.send(messageRequest);
+			//DFServices.registerPlayerAgent(Roles.CITIZEN, this.aidChosen, this.ctrlAgent.getGameid()); //Have to register him
+
 
 			ACLMessage messageRequest2 = new ACLMessage(ACLMessage.REQUEST);
 			messageRequest2.setSender(this.ctrlAgent.getAID());
@@ -320,6 +322,9 @@ public class TurnBehaviour extends SimpleBehaviour {
 			messageRequest2.setConversationId("ATTRIBUTION_ROLE");
 			messageRequest2.setContent(this.new_role);
 			this.myAgent.send(messageRequest2);
+			
+			//if(this.new_role.equals(Roles.CITIZEN))
+			//	DFServices.registerPlayerAgent(Roles.CITIZEN, this.myAgent, this.ctrlAgent.getGameid()); //Have to register him
 			
 			this.cpt_vol = 0; //Init this cpt for next states
 			
@@ -348,6 +353,52 @@ public class TurnBehaviour extends SimpleBehaviour {
 				}				
 			}
 		}
+
+		/*else if(this.step.equals(STATE_SEND_SLEEP_ONE))
+		{
+			ACLMessage messageRequest = new ACLMessage(ACLMessage.REQUEST);
+			messageRequest.setSender(this.ctrlAgent.getAID());
+			messageRequest.addReceiver(this.current_volleur);
+			messageRequest.setConversationId("SLEEP_PLAYER");
+			this.myAgent.send(messageRequest);
+			
+			ACLMessage messageRequest2 = new ACLMessage(ACLMessage.REQUEST);
+			messageRequest2.setSender(this.ctrlAgent.getAID());
+			messageRequest2.addReceiver(this.aidChosen);
+			messageRequest2.setConversationId("SLEEP_PLAYER");
+			this.myAgent.send(messageRequest2);
+
+			this.cpt_vol = 0;
+
+			this.nextStep = STATE_RECEIVE_SLEEP_ONE;
+		}
+		else if(this.step.equals(STATE_RECEIVE_SLEEP_ONE))
+		{
+			if (this.cpt_vol == 2 ){
+				//Init all variables
+				this.cpt_vol = 0;
+				this.current_volleur = null;
+				this.aidChosen = null;
+				
+				this.nextStep = STATE_SEND_WAKE_ONE; //Return at the begin, to check if other voleur
+			}
+			else {
+				MessageTemplate mt = MessageTemplate.and(
+						MessageTemplate.MatchPerformative(ACLMessage.CONFIRM),
+						MessageTemplate.MatchConversationId("SLEEP_PLAYER"));
+
+				ACLMessage message = this.myAgent.receive(mt);
+				if(message != null)
+				{
+					this.cpt_vol++;
+				}
+				else
+				{
+					block();
+				}
+			}
+
+		}*/
 		/** etat envoi une requ�te de sommeil **/
 		else if(this.step.equals(STATE_SEND_SLEEP_ONE))
 		{

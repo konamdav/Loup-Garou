@@ -521,6 +521,7 @@ public class TurnsBehaviour extends SimpleBehaviour {
 		else if (this.step.equals(STATE_END))
 		{
 			ObjectMapper mapper = new ObjectMapper();
+			System.err.println("TEST CEDRIC print profiles of " + this.myAgent.getName()); 
 			DFServices.printProfiles(this.myAgent, this.controllerAgent.getGameid());
 
 

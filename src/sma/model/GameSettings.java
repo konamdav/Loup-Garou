@@ -19,16 +19,16 @@ public class GameSettings {
 		//Liste role par d�faut
 		this.rolesSettings = new HashMap<String, Integer>();
 
-		this.rolesSettings.put(Roles.WEREWOLF, 3);
-		this.rolesSettings.put(Roles.CITIZEN, 2);
-		this.rolesSettings.put(Roles.CUPID, 0);
+		this.rolesSettings.put(Roles.WEREWOLF, 1);
+		this.rolesSettings.put(Roles.CITIZEN, 3);
+		this.rolesSettings.put(Roles.CUPID, 2);
 		this.rolesSettings.put(Roles.LITTLE_GIRL, 0);
-		this.rolesSettings.put(Roles.MEDIUM,0);
+		this.rolesSettings.put(Roles.MEDIUM,2);
 		this.rolesSettings.put(Roles.ANGEL,0);
 		this.rolesSettings.put(Roles.FLUTE_PLAYER,0);
-		this.rolesSettings.put(Roles.ANCIEN,0); 
+		this.rolesSettings.put(Roles.ANCIEN,1); 
 		this.rolesSettings.put(Roles.WITCH,0); 
-		this.rolesSettings.put(Roles.VOLEUR,1); 
+		this.rolesSettings.put(Roles.VOLEUR,2); 
 
 		//Si problème, demander à David il est chef de projet <3
 

@@ -2,10 +2,13 @@ package sma.citizen_agent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+
 import jade.core.AID;
 import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
+import sma.model.DFServices;
 import sma.model.Roles;
 import sma.model.TypeIA;
 import sma.player_agent.PlayerAgent;
@@ -44,10 +47,20 @@ public class CitizenInitBehaviour extends OneShotBehaviour{
 		this.agent.addBehaviour(citizenSuspicionListener);
 		this.agent.getVotingBehaviours().add(citizenSuspicionBehaviour.getName_behaviour());
 		
-		
 		//Handle attributes
 		map_behaviour.put(Roles.CITIZEN, list_behav);
 
+		//TEST
+		boolean have_to_regist = true;
+		List<AID> agents = DFServices.findGamePlayerAgent( Roles.CITIZEN , this.agent, this.agent.getGameid());
+		for (AID agent : agents) {
+			if (agent == this.agent.getAID())
+				have_to_regist = false;		
+		}
+		System.out.println("HAVE TO REGISTER CITIZEN "+this.agent.getName() + "  " + have_to_regist);
+		if (have_to_regist)
+			DFServices.registerPlayerAgent(Roles.CITIZEN, this.agent, this.agent.getGameid());
+	
 		this.agent.getTypeVotingBehaviours().put(citizenSuspicionBehaviour.getName_behaviour(), TypeIA.SUSPICIOUS);
 		
 		//Envoie message fin d'initialisation

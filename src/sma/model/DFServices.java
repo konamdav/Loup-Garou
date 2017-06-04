@@ -530,7 +530,15 @@ public class DFServices {
 			profile.getRoles().add(Roles.CUPID);
 			profile.getRoles().remove("CITIZEN");
 		}
-
+		
+		//get profiles joueurs Voleur
+		List<AID> voleurs = DFServices.findGamePlayerAgent(Roles.VOLEUR, agent, gameid);
+		for(AID voleur : voleurs)
+		{
+			PlayerProfile profile = tmp.get(voleur.getLocalName());
+			profile.getRoles().add(Roles.VOLEUR);
+			profile.getRoles().remove("CITIZEN");
+		}
 
 
 		//get profiles joueurs lover
@@ -593,6 +601,7 @@ public class DFServices {
 		for(AID sleep : sleeps)
 		{
 			PlayerProfile profile = tmp.get(sleep.getLocalName());
+			System.out.println("Juste befoure error " + sleep.getLocalName() + "   " + sleep.getName());
 			profile.setStatus("SLEEP");
 		}
 

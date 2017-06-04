@@ -60,10 +60,9 @@ public class DeleteRoleBehaviour extends CyclicBehaviour {
 			}
 
 			if (this.agent.getMain_role().equals(role)){
-				System.err.println("CHANGE MAIN ROLLE " +this.agent.getMain_role());
+				//System.err.println("CHANGE MAIN ROLLE " +this.agent.getMain_role());
 				this.agent.setMain_role(""); //TODO Cedric test this one
-				System.out.println("After MAIN ROLLE " +this.agent.getMain_role() + " is empty " + this.agent.getMain_role().isEmpty());
-
+				//System.out.println("After MAIN ROLLE " +this.agent.getMain_role() + " is empty " + this.agent.getMain_role().isEmpty());
 			}
 			this.agent.getMap_role_behaviours().remove(role);
 

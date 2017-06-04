@@ -9,6 +9,7 @@ import sma.citizen_agent.AngelInitBehaviour;
 import sma.citizen_agent.CitizenInitBehaviour;
 import sma.citizen_agent.WitchInitBehaviour;
 import sma.cupid.CupidInitBehaviour;
+import sma.family.FamilyInitBehaviour;
 import sma.flute_player.CharmedInitBehaviour;
 import sma.flute_player.FlutePlayerInitBehaviour;
 import sma.littlegirl.LittleGirlInitBehaviour;
@@ -102,6 +103,9 @@ public class FactoryInitBehaviour extends CyclicBehaviour{
 					break;
 				case Roles.WITCH:
 					this.agent.addBehaviour(new WitchInitBehaviour(this.agent, this.agent.getAID()));
+					break;
+				case Roles.FAMILY:
+					this.agent.addBehaviour(new FamilyInitBehaviour(this.agent, this.agent.getAID()));
 					break;
 				default:
 					System.err.print("Erreur role not valid" );

@@ -42,6 +42,9 @@ public class TurnsBehaviour extends SimpleBehaviour {
 	private final String STATE_START_MEDIUM_TURN = "START_MEDIUM_TURN";
 	private final String STATE_STOP_MEDIUM_TURN = "STOP_MEDIUM_TURN";
 	
+	private final String STATE_START_FAMILY_TURN = "START_FAMILY_TURN";
+	private final String STATE_STOP_FAMILY_TURN = "STOP_FAMILY_TURN";
+	
 	private final String STATE_START_WITCH_TURN = "START_WITCH_TURN";
 	private final String STATE_STOP_WITCH_TURN = "STOP_WITCH_TURN";
 
@@ -267,12 +270,12 @@ public class TurnsBehaviour extends SimpleBehaviour {
 				}
 				else
 				{
-					this.nextStep = STATE_START_WEREWOLF_TURN;
+					this.nextStep = STATE_START_FAMILY_TURN;
 				}
 			}
 			else
 			{
-				this.nextStep = STATE_START_WEREWOLF_TURN;
+				this.nextStep = STATE_START_FAMILY_TURN;
 			}
 
 		}
@@ -286,7 +289,7 @@ public class TurnsBehaviour extends SimpleBehaviour {
 			if(message != null)
 			{
 				this.controllerAgent.doWait(1000);
-				this.nextStep = STATE_START_WEREWOLF_TURN;
+				this.nextStep = STATE_START_FAMILY_TURN;
 			}
 			else
 			{
@@ -295,6 +298,57 @@ public class TurnsBehaviour extends SimpleBehaviour {
 			}
 
 		}
+		else if (this.step.equals(STATE_START_FAMILY_TURN))
+		{
+			List<AID> agents = DFServices.findGameControllerAgent(Roles.FAMILY, this.myAgent, this.controllerAgent.getGameid());
+			if(!agents.isEmpty())
+			{		
+				String [] args = {Roles.FAMILY, Status.SLEEP};
+				List<AID> family = DFServices.findGamePlayerAgent(args, this.controllerAgent, this.controllerAgent.getGameid());				
+				int nbPlayers = family.size();
+
+				if(nbPlayers > 0)
+				{
+					Functions.updateTurn(Roles.FAMILY, controllerAgent, controllerAgent.getGameid());
+					
+					ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
+					message.setConversationId("START_TURN");
+					message.setSender(this.getAgent().getAID());
+					message.addReceiver(agents.get(0));
+					this.getAgent().send(message);
+
+					this.nextStep = STATE_STOP_FAMILY_TURN;
+				}
+				else
+				{
+					this.nextStep = STATE_START_WEREWOLF_TURN;
+				}
+			}
+			else
+			{
+				this.nextStep = STATE_START_WEREWOLF_TURN;
+			}
+
+		}
+		else if (this.step.equals(STATE_STOP_FAMILY_TURN))
+		{
+			MessageTemplate mt = MessageTemplate.and(
+					MessageTemplate.MatchPerformative(ACLMessage.INFORM),
+					MessageTemplate.MatchConversationId("END_TURN"));
+
+			ACLMessage message = this.myAgent.receive(mt);
+			if(message != null)
+			{
+				this.controllerAgent.doWait(1000);
+				this.nextStep = STATE_START_WEREWOLF_TURN;
+			}
+			else
+			{
+				this.nextStep = STATE_STOP_FAMILY_TURN;
+				block();
+			}
+
+		}		
 		else if (this.step.equals(STATE_START_CITIZEN_TURN))
 		{
 			List<AID> agents = DFServices.findGameControllerAgent("CITIZEN", this.myAgent, this.controllerAgent.getGameid());
@@ -311,7 +365,6 @@ public class TurnsBehaviour extends SimpleBehaviour {
 
 				this.nextStep = STATE_STOP_CITIZEN_TURN;
 			}
-
 		}
 		else if (this.step.equals(STATE_STOP_CITIZEN_TURN))
 		{
@@ -348,12 +401,9 @@ public class TurnsBehaviour extends SimpleBehaviour {
 				
 				this.nextStep = STATE_STOP_WEREWOLF_TURN;
 			}
-			
-
 		}
 		else if (this.step.equals(STATE_STOP_WEREWOLF_TURN))
 		{
-
 			MessageTemplate mt = MessageTemplate.and(
 					MessageTemplate.MatchPerformative(ACLMessage.INFORM),
 					MessageTemplate.MatchConversationId("END_TURN"));
@@ -369,7 +419,6 @@ public class TurnsBehaviour extends SimpleBehaviour {
 				this.nextStep = STATE_STOP_WEREWOLF_TURN;
 				block();
 			}
-
 		}
 		else if (this.step.equals(STATE_START_WITCH_TURN))
 		{
@@ -390,8 +439,6 @@ public class TurnsBehaviour extends SimpleBehaviour {
 			{
 				this.nextStep = STATE_START_CITIZEN_TURN;
 			}
-			
-
 		}
 		else if (this.step.equals(STATE_STOP_WITCH_TURN))
 		{

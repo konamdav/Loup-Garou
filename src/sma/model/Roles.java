@@ -13,14 +13,15 @@ public class Roles {
 	public static final String ANGEL = "ANGEL";
 	public static final String GREAT_WEREWOLF = "GREAT_WEREWOLF";
 	public static final String HUNTER = "HUNTER";
-	public static final String BROTHER = "BROTHER";
-	public static final String SISTER = "SISTER";
+
 	public static final String FOOL = "FOOL";
 	public static final String FLUTE_PLAYER = "FLUTE_PLAYER";
 	public static final String CHARMED = "CHARMED";
 	public static final String  SCAPEGOAT= "SCAPEGOAT";
 	public static final String GENERIC = "GENERIC";
 	public static final String ANCIEN = "ANCIEN";
+	
+	public static final String FAMILY = "FAMILY";
 
 	
 	

@@ -491,8 +491,12 @@ public class TurnsBehaviour extends SimpleBehaviour {
 				String [] args = {Roles.GREAT_WEREWOLF, Status.SLEEP};
 				List<AID> werewolves = DFServices.findGamePlayerAgent(args, this.controllerAgent, this.controllerAgent.getGameid());				
 				int nbPlayers = werewolves.size();
+				
+				String [] args2 = {Roles.WEREWOLF, Status.DEAD};
+				List<AID> werewolvesDead = DFServices.findGamePlayerAgent(args, this.controllerAgent, this.controllerAgent.getGameid());				
+				int nbPlayersDead = werewolves.size();
 
-				if(nbPlayers > 0)
+				if(nbPlayersDead == 0 && nbPlayers > 0  )
 				{
 					Functions.updateTurn(Roles.GREAT_WEREWOLF, controllerAgent, controllerAgent.getGameid());
 
@@ -581,15 +585,12 @@ public class TurnsBehaviour extends SimpleBehaviour {
 				this.nextStep = STATE_STOP_WITCH_TURN;
 				block();
 			}
-
 		}
-
 		else if (this.step.equals(STATE_END))
 		{
 			ObjectMapper mapper = new ObjectMapper();
 			System.err.println("TEST CEDRIC print profiles of " + this.myAgent.getName()); 
 			DFServices.printProfiles(this.myAgent, this.controllerAgent.getGameid());
-
 
 			this.nextStep = STATE_INIT;
 		}

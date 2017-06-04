@@ -25,7 +25,7 @@ public class VoleurControllerAgent extends Agent implements IController {
 		Object[] args = this.getArguments();
 		this.gameid = (Integer) args[0];
 		
-		DFServices.registerGameControllerAgent(Roles.VOLEUR, this, this.gameid);		
+		DFServices.registerGameControllerAgent(Roles.THIEF, this, this.gameid);		
 		this.addBehaviour(new SynchronousVoteBehaviour(this)); 
 		this.addBehaviour(new TurnBehaviour(this));
 		

@@ -26,9 +26,9 @@ public class GameSettings {
 		this.rolesSettings.put(Roles.MEDIUM,2);
 		this.rolesSettings.put(Roles.ANGEL,0);
 		this.rolesSettings.put(Roles.FLUTE_PLAYER,0);
-		this.rolesSettings.put(Roles.ANCIEN,0); 
+		this.rolesSettings.put(Roles.ANCIENT,0); 
 		this.rolesSettings.put(Roles.WITCH,0); 
-		this.rolesSettings.put(Roles.VOLEUR,2); 
+		this.rolesSettings.put(Roles.THIEF,2); 
 
 		//Si problème, demander à David il est chef de projet <3
 

@@ -54,10 +54,10 @@ public class VoleurInitBehaviour extends OneShotBehaviour{
 		this.agent.getVotingBehaviours().add(citizenScoreBehaviour.getName_behaviour());
 		
 		
-		map_behaviour.put(Roles.VOLEUR, list_behav);
+		map_behaviour.put(Roles.THIEF, list_behav);
 		
-		System.out.println("[ "+this.agent.getName()+" ] REGISTER "+Roles.VOLEUR);
-		DFServices.registerPlayerAgent(Roles.VOLEUR, this.myAgent, this.agent.getGameid());
+		System.out.println("[ "+this.agent.getName()+" ] REGISTER "+Roles.THIEF);
+		DFServices.registerPlayerAgent(Roles.THIEF, this.myAgent, this.agent.getGameid());
 		
 		this.agent.getTypeVotingBehaviours().put(citizenScoreBehaviour.getName_behaviour(), TypeIA.STRATEGIC);
 

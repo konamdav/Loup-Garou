@@ -532,11 +532,11 @@ public class DFServices {
 		}
 
 		//get profiles joueurs Voleur
-		List<AID> voleurs = DFServices.findGamePlayerAgent(Roles.VOLEUR, agent, gameid);
+		List<AID> voleurs = DFServices.findGamePlayerAgent(Roles.THIEF, agent, gameid);
 		for(AID voleur : voleurs)
 		{
 			PlayerProfile profile = tmp.get(voleur.getLocalName());
-			profile.getRoles().add(Roles.VOLEUR);
+			profile.getRoles().add(Roles.THIEF);
 			profile.getRoles().remove("CITIZEN");
 		}
 
@@ -580,12 +580,12 @@ public class DFServices {
 		}
 
 		//get profiles joueurs ancien
-		List<AID> anciens = DFServices.findGamePlayerAgent(Roles.ANCIEN, agent, gameid);
+		List<AID> anciens = DFServices.findGamePlayerAgent(Roles.ANCIENT, agent, gameid);
 
 		for(AID ancien : anciens)
 		{
 			PlayerProfile profile = tmp.get(ancien.getLocalName());
-			profile.getRoles().add(Roles.ANCIEN);
+			profile.getRoles().add(Roles.ANCIENT);
 			profile.getRoles().remove(Roles.CITIZEN);
 		}
 
@@ -658,7 +658,7 @@ public class DFServices {
 								&&!s.equals(Roles.CITIZEN)
 								&&!s.equals(Roles.ANGEL)
 								&&!s.equals(Roles.WITCH)
-								&&!s.equals(Roles.VOLEUR)
+								&&!s.equals(Roles.THIEF)
 								&&!s.equals(Roles.LITTLE_GIRL)
 								&&!s.equals(Roles.MEDIUM)
 								&&!s.equals(Roles.SCAPEGOAT) 

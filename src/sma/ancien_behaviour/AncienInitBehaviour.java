@@ -31,8 +31,8 @@ public class AncienInitBehaviour extends OneShotBehaviour{
 		ArrayList<Behaviour> list_behav = new ArrayList<Behaviour>();
 		HashMap<String, ArrayList<Behaviour>> map_behaviour = this.agent.getMap_role_behaviours();
 	
-		System.out.println("[ "+this.agent.getName()+" ] REGISTER "+Roles.ANCIEN);
-		DFServices.registerPlayerAgent(Roles.ANCIEN, this.myAgent, this.agent.getGameid());
+		System.out.println("[ "+this.agent.getName()+" ] REGISTER "+Roles.ANCIENT);
+		DFServices.registerPlayerAgent(Roles.ANCIENT, this.myAgent, this.agent.getGameid());
 
 		/** TODO Look for score and vote to implement
 		 * LoverScoreBehaviour loverScoreBehaviour = new LoverScoreBehaviour(this.agent); 
@@ -65,7 +65,7 @@ public class AncienInitBehaviour extends OneShotBehaviour{
 		this.agent.addBehaviour(ancienPreDeathBehaviour);
 		this.agent.getPreDeathBehaviours().add(ancienPreDeathBehaviour.getName_behaviour());
 		
-		map_behaviour.put(Roles.ANCIEN, list_behav);
+		map_behaviour.put(Roles.ANCIENT, list_behav);
 		
 		//Envoie message fin d'initialisation		
 		ACLMessage messageRequest = new ACLMessage(ACLMessage.AGREE);

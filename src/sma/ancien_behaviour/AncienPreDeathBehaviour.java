@@ -23,7 +23,7 @@ public class AncienPreDeathBehaviour extends SimpleBehaviour implements IPreDeat
 	public AncienPreDeathBehaviour(PlayerAgent playerAgent) {
 		super();
 		this.playerAgent = playerAgent;
-		this.nameBehaviour ="ANCIEN";
+		this.nameBehaviour ="ANCIENT";
 		this.nb_life = 1;
 	}
 

@@ -126,7 +126,7 @@ public class GameContainer {
 			}
 			
 			//selection role voleur player
-			if(this.gameSettings.isRoleRegistered(Roles.VOLEUR))
+			if(this.gameSettings.isRoleRegistered(Roles.THIEF))
 			{
 				ac = container.createNewAgent(
 						"VOLEUR_CONTROLLER_AGENT_"+gameid, VoleurControllerAgent.class.getName(), objects);

@@ -100,7 +100,7 @@ public class FactoryInitBehaviour extends CyclicBehaviour{
 				case Roles.LITTLE_GIRL:
 					this.agent.addBehaviour(new LittleGirlInitBehaviour(this.agent, this.agent.getAID()));
 					break;
-				case Roles.ANCIEN:
+				case Roles.ANCIENT:
 					this.agent.addBehaviour(new AncienInitBehaviour(this.agent, this.agent.getAID()));
 					break;
 				case Roles.WITCH:
@@ -109,7 +109,7 @@ public class FactoryInitBehaviour extends CyclicBehaviour{
 				case Roles.FAMILY:
 					this.agent.addBehaviour(new FamilyInitBehaviour(this.agent, this.agent.getAID()));
 					break;
-				case Roles.VOLEUR:
+				case Roles.THIEF:
 					this.agent.addBehaviour(new VoleurInitBehaviour(this.agent, this.agent.getAID()));
 					break;
 				case Roles.GREAT_WEREWOLF:

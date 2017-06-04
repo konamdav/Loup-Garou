@@ -151,16 +151,16 @@ public class TurnsBehaviour extends SimpleBehaviour {
 		else if (this.step.equals(STATE_START_VOLEUR_TURN))
 		{
 
-			List<AID> agents = DFServices.findGameControllerAgent(Roles.VOLEUR, this.myAgent, this.controllerAgent.getGameid());
+			List<AID> agents = DFServices.findGameControllerAgent(Roles.THIEF, this.myAgent, this.controllerAgent.getGameid());
 			if(!agents.isEmpty())
 			{		
-				String [] args = {Roles.VOLEUR, Status.SLEEP};
+				String [] args = {Roles.THIEF, Status.SLEEP};
 				List<AID> cupids = DFServices.findGamePlayerAgent(args, this.controllerAgent, this.controllerAgent.getGameid());				
 				int nbPlayers = cupids.size();
 
 				if(nbPlayers > 0 && !this.flag_voleur)
 				{
-					Functions.updateTurn(Roles.VOLEUR, controllerAgent, controllerAgent.getGameid());
+					Functions.updateTurn(Roles.THIEF, controllerAgent, controllerAgent.getGameid());
 
 					ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
 					message.setConversationId("START_TURN");

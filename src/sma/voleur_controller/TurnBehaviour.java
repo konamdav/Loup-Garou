@@ -103,7 +103,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 		/** etat envoi des requ�tes de reveil pour un joueur **/
 		else if(this.step.equals(STATE_SEND_WAKE_ONE))
 		{
-			String[] args ={Status.SLEEP, Roles.VOLEUR};
+			String[] args ={Status.SLEEP, Roles.THIEF};
 			List<AID> agents = DFServices.findGamePlayerAgent( args , this.ctrlAgent, this.ctrlAgent.getGameid());
 
 			//this.nbPlayers = agents.size(); TODO CEDRIC
@@ -258,7 +258,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 			ACLMessage messageRequest2 = new ACLMessage(ACLMessage.CANCEL);
 			messageRequest2.setSender(this.ctrlAgent.getAID());
 			messageRequest2.addReceiver(this.current_volleur);
-			messageRequest2.setContent(Roles.VOLEUR); //Delete the role of the voleur
+			messageRequest2.setContent(Roles.THIEF); //Delete the role of the voleur
 			messageRequest2.setConversationId("DELETE_ROLE");
 			this.myAgent.send(messageRequest2);
 
@@ -276,7 +276,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 				/*** reception role supprimé du voleur**/
 				MessageTemplate mt = MessageTemplate.and(
 						MessageTemplate.MatchPerformative(ACLMessage.CONFIRM),
-						MessageTemplate.MatchConversationId("DELETE_ROLE"+Roles.VOLEUR));
+						MessageTemplate.MatchConversationId("DELETE_ROLE"+Roles.THIEF));
 
 				ACLMessage message = this.myAgent.receive(mt);
 				if(message != null)

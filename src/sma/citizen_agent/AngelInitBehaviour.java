@@ -11,6 +11,7 @@ import sma.model.DFServices;
 import sma.model.Roles;
 import sma.model.TypeIA;
 import sma.player_agent.PlayerAgent;
+import sma.vote_behaviour.AngelSimpleSuspicionBehaviour;
 import sma.vote_behaviour.CitizenSimpleSuspicionBehaviour;
 import sma.vote_behaviour.CitizenSuspicionListener;
 import sma.vote_behaviour.CitizenSuspicionBehaviour;
@@ -40,17 +41,14 @@ public class AngelInitBehaviour extends OneShotBehaviour{
 		CitizenSuspicionListener citizenSuspicionListener = new CitizenSuspicionListener(this.agent);
 		list_behav.add(citizenSuspicionListener);
 
-		CitizenSimpleSuspicionBehaviour citizenSimpleSuspicionBehaviour = new CitizenSimpleSuspicionBehaviour(this.agent);
-		list_behav.add(citizenSimpleSuspicionBehaviour);
-		//CitizenSimpleSuspicionBehaviour NOt generic car this one is for finding werewolf
+		AngelSimpleSuspicionBehaviour angelSimpleSuspicionBehaviour = new AngelSimpleSuspicionBehaviour(this.agent);
+		list_behav.add(angelSimpleSuspicionBehaviour);
 
-		this.agent.addBehaviour(citizenSimpleSuspicionBehaviour);
+
+		this.agent.addBehaviour(angelSimpleSuspicionBehaviour);
 		this.agent.addBehaviour(citizenSuspicionBehaviour);
 		this.agent.addBehaviour(citizenSuspicionListener);
 		this.agent.getVotingBehaviours().add(citizenSuspicionBehaviour.getName_behaviour());
-		
-		//No death behaviour
-		//this.agent.getDeathBehaviours().add(genericSuspicionBehaviour.getName_behaviour());
 		
 		//Handle attributes
 		map_behaviour.put(Roles.ANGEL, list_behav);
@@ -60,7 +58,6 @@ public class AngelInitBehaviour extends OneShotBehaviour{
 		
 		System.out.println("[ "+this.agent.getName()+" ] REGISTER "+Roles.ANGEL);
 		DFServices.registerPlayerAgent(Roles.ANGEL, agent, this.agent.getGameid());
-		
 		
 		//Envoie message fin d'initialisation
 		ACLMessage messageRequest = new ACLMessage(ACLMessage.AGREE);

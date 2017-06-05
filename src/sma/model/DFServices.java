@@ -666,6 +666,7 @@ public class DFServices {
 								&&!s.equals(Roles.ANGEL)
 								&&!s.equals(Roles.WITCH)
 								&&!s.equals(Roles.THIEF)
+								&&!s.equals(Roles.HUNTER)
 								&&!s.equals(Roles.LITTLE_GIRL)
 								&&!s.equals(Roles.MEDIUM)
 								&&!s.equals(Roles.SCAPEGOAT) 

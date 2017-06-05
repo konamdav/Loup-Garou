@@ -623,7 +623,7 @@ public class DFServices {
 		for(AID sleep : sleeps)
 		{
 			PlayerProfile profile = tmp.get(sleep.getLocalName());
-			System.out.println("Juste befoure error " + sleep.getLocalName() + "   " + sleep.getName());
+			//System.out.println("Juste befoure error " + sleep.getLocalName() + "   " + sleep.getName());
 			profile.setStatus("SLEEP");
 		}
 

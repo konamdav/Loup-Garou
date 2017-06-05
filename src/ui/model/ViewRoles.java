@@ -125,6 +125,9 @@ public class ViewRoles {
 
 		}
 
+		curX = x;
+		curY = y;
+		
 		if(flag)
 		{
 			this.roles.remove(index);

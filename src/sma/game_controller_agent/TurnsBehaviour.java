@@ -39,7 +39,9 @@ public class TurnsBehaviour extends SimpleBehaviour {
 	private final String STATE_START_GREAT_WEREWOLF_TURN = "START_GREAT_WEREWOLF_TURN";
 	private final String STATE_STOP_GREAT_WEREWOLF_TURN = "STOP_GREAT_WEREWOLF_TURN";
 
-
+	private final String STATE_START_WHITE_WEREWOLF_TURN = "START_WHITE_WEREWOLF_TURN";
+	private final String STATE_STOP_WHITE_WEREWOLF_TURN = "STOP_WHITE_WEREWOLF_TURN";
+	
 	private final String STATE_START_FLUTE_PLAYER_TURN = "START_FLUTE_PLAYER_TURN";
 	private final String STATE_STOP_FLUTE_PLAYER_TURN = "STOP_FLUTE_PLAYER_TURN";
 
@@ -62,6 +64,7 @@ public class TurnsBehaviour extends SimpleBehaviour {
 
 	private boolean flag_cupid; 
 	private boolean flag_voleur; 
+	private boolean flag_white_werewolf; //1 turn on two 
 
 	private String step;
 	private String nextStep;
@@ -74,6 +77,8 @@ public class TurnsBehaviour extends SimpleBehaviour {
 		this.flag_cupid = false;
 		this.flag_voleur = false;
 		this.flag_done = false;
+		this.flag_white_werewolf = true; //Start by allowed this turn
+ 
 		this.controllerAgent = controllerAgent;	
 	}
 
@@ -493,8 +498,8 @@ public class TurnsBehaviour extends SimpleBehaviour {
 				int nbPlayers = werewolves.size();
 				
 				String [] args2 = {Roles.WEREWOLF, Status.DEAD};
-				List<AID> werewolvesDead = DFServices.findGamePlayerAgent(args, this.controllerAgent, this.controllerAgent.getGameid());				
-				int nbPlayersDead = werewolves.size();
+				List<AID> werewolvesDead = DFServices.findGamePlayerAgent(args2, this.controllerAgent, this.controllerAgent.getGameid()); //David encore une erreur --'				
+				int nbPlayersDead = werewolvesDead.size();
 
 				if(nbPlayersDead == 0 && nbPlayers > 0  )
 				{
@@ -510,15 +515,74 @@ public class TurnsBehaviour extends SimpleBehaviour {
 				}
 				else
 				{
-					this.nextStep = STATE_START_WITCH_TURN;
+					this.nextStep = STATE_START_WHITE_WEREWOLF_TURN;
 				}
 			}
 			else
 			{
-				this.nextStep = STATE_START_WITCH_TURN;
+				this.nextStep = STATE_START_WHITE_WEREWOLF_TURN;
 			}
 		}
 		else if (this.step.equals(STATE_STOP_GREAT_WEREWOLF_TURN))
+		{
+			MessageTemplate mt = MessageTemplate.and(
+					MessageTemplate.MatchPerformative(ACLMessage.INFORM),
+					MessageTemplate.MatchConversationId("END_TURN"));
+
+			ACLMessage message = this.myAgent.receive(mt);
+			if(message != null)
+			{
+				this.controllerAgent.doWait(1000);
+				this.nextStep = STATE_START_WHITE_WEREWOLF_TURN;
+			}
+			else
+			{
+				this.nextStep = STATE_STOP_GREAT_WEREWOLF_TURN;
+				block();
+			}
+		}
+		else if (this.step.equals(STATE_START_WHITE_WEREWOLF_TURN))
+		{
+			System.err.println("Debut du " + STATE_START_WHITE_WEREWOLF_TURN + " flag  " +flag_white_werewolf );
+			if (this.flag_white_werewolf == true){
+				//Lance tour, et le fera pas au prochain tour
+				this.flag_white_werewolf = false;
+				List<AID> agents = DFServices.findGameControllerAgent(Roles.WHITE_WEREWOLF, this.myAgent, this.controllerAgent.getGameid());
+				if(!agents.isEmpty())
+				{	
+					String [] args = {Roles.WHITE_WEREWOLF, Status.SLEEP};
+					List<AID> werewolves = DFServices.findGamePlayerAgent(args, this.controllerAgent, this.controllerAgent.getGameid());				
+					int nbPlayers = werewolves.size();
+
+					if( nbPlayers > 0  )
+					{
+						Functions.updateTurn(Roles.WHITE_WEREWOLF, controllerAgent, controllerAgent.getGameid());
+
+						ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
+						message.setConversationId("START_TURN");
+						message.setSender(this.getAgent().getAID());
+						message.addReceiver(agents.get(0));
+						this.getAgent().send(message);
+
+						this.nextStep = STATE_STOP_WHITE_WEREWOLF_TURN;
+					}
+					else
+					{
+						this.nextStep = STATE_START_WITCH_TURN;
+					}
+				}
+				else
+				{
+					this.nextStep = STATE_START_WITCH_TURN;
+				}
+			}
+			else {
+				//Ne lance pas tour, et le fera au prochain tour
+				this.flag_white_werewolf = true;
+				this.nextStep = STATE_START_WITCH_TURN;
+			}
+		}
+		else if (this.step.equals(STATE_STOP_WHITE_WEREWOLF_TURN))
 		{
 			MessageTemplate mt = MessageTemplate.and(
 					MessageTemplate.MatchPerformative(ACLMessage.INFORM),
@@ -532,7 +596,7 @@ public class TurnsBehaviour extends SimpleBehaviour {
 			}
 			else
 			{
-				this.nextStep = STATE_STOP_GREAT_WEREWOLF_TURN;
+				this.nextStep = STATE_STOP_WHITE_WEREWOLF_TURN;
 				block();
 			}
 		}
@@ -589,7 +653,6 @@ public class TurnsBehaviour extends SimpleBehaviour {
 		else if (this.step.equals(STATE_END))
 		{
 			ObjectMapper mapper = new ObjectMapper();
-			System.err.println("TEST CEDRIC print profiles of " + this.myAgent.getName()); 
 			DFServices.printProfiles(this.myAgent, this.controllerAgent.getGameid());
 
 			this.nextStep = STATE_INIT;

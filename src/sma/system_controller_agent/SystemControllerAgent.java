@@ -53,8 +53,8 @@ public class SystemControllerAgent extends Agent{
 			e.printStackTrace();
 		}
 		message.setContent(json);
-		this.send(message);
-		
+		this.send(message); //DECOMMENT THIS ONE FOR NO LOG 
+
 		//this.send(message);
 		//this.send(message);
 

@@ -1,4 +1,4 @@
-package sma.werewolf_controller_agent;
+package sma.werewolf_white_controller_agent;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,8 +15,8 @@ import sma.model.Status;
 import sma.model.VoteRequest;
 
 /***
- * Behaviour de gestion du tour des citizens
- * @author Davy
+ * Behaviour de gestion du tour des Loups Garoup Blancs
+ * @author Cedric
  *
  */
 public class TurnBehaviour extends SimpleBehaviour {
@@ -48,14 +48,14 @@ public class TurnBehaviour extends SimpleBehaviour {
 	private int cptWerewolves;
 	private int cptLittleGirl;
 
-	private WerewolfControllerAgent ctrlAgent;
+	private WerewolfWhiteControllerAgent ctrlAgent;
 	private int nbPlayers;
 	private AID aidVictim;
 
-	public TurnBehaviour(WerewolfControllerAgent werewolfControllerAgent) {
-		super(werewolfControllerAgent);
+	public TurnBehaviour(WerewolfWhiteControllerAgent WerewolfControllerAgent) {
+		super(WerewolfControllerAgent);
 
-		this.ctrlAgent = werewolfControllerAgent;
+		this.ctrlAgent = WerewolfControllerAgent;
 		this.step = STATE_INIT;
 		this.nextStep ="";
 	}
@@ -98,9 +98,8 @@ public class TurnBehaviour extends SimpleBehaviour {
 		/** etat envoi des requ�tes de reveil pour tout les joueurs**/
 		else if(this.step.equals(STATE_SEND_WAKE_ALL))
 		{
-			String[] args ={Status.SLEEP, Roles.WEREWOLF};
+			String[] args ={Status.SLEEP, Roles.WHITE_WEREWOLF};
 			List<AID> agents = DFServices.findGamePlayerAgent( args , this.ctrlAgent, this.ctrlAgent.getGameid());
-
 			this.nbPlayers = agents.size();
 			for(AID aid : agents)
 			{			
@@ -145,7 +144,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 		{
 			System.err.println("move werewolf");
 
-			String[] args = {Roles.WEREWOLF, Status.WAKE};
+			String[] args = {Roles.WHITE_WEREWOLF, Status.WAKE};
 			List<AID> werewolves = DFServices.findGamePlayerAgent(args, this.ctrlAgent, this.ctrlAgent.getGameid());
 
 			for(AID werewolf : werewolves)
@@ -290,7 +289,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 
 			System.err.println("---------> INFORM LITTLE GIRL");
 
-			String [] args = {Roles.WEREWOLF, Status.WAKE};
+			String [] args = {Roles.WHITE_WEREWOLF, Status.WAKE};
 			List<AID> werewolves = DFServices.findGamePlayerAgent(args, this.ctrlAgent, this.ctrlAgent.getGameid());
 
 			this.nbPlayers = werewolves.size();
@@ -364,29 +363,37 @@ public class TurnBehaviour extends SimpleBehaviour {
 			List<String> choices = new ArrayList<String>();
 			List<String> voters = new ArrayList<String>();
 
-			String [] args = {Roles.WEREWOLF, Status.WAKE};
-			List<AID> werewolves = DFServices.findGamePlayerAgent(args, this.ctrlAgent, this.ctrlAgent.getGameid());
+			String [] args = {Roles.WHITE_WEREWOLF, Status.WAKE};
+			List<AID> whitewerewolves = DFServices.findGamePlayerAgent(args, this.ctrlAgent, this.ctrlAgent.getGameid());
 
-			this.nbPlayers = werewolves.size();
+			this.nbPlayers = whitewerewolves.size();
 
-			String [] args2 = {Roles.CITIZEN, Status.SLEEP};
-			List<AID> citizens = DFServices.findGamePlayerAgent(args2, this.ctrlAgent, this.ctrlAgent.getGameid());
+			String [] args2 = {Roles.WEREWOLF, Status.SLEEP};
+			List<AID> werewolves = DFServices.findGamePlayerAgent(args2, this.ctrlAgent, this.ctrlAgent.getGameid());
 
+			String [] args3 = {Status.VICTIM};
+			List<AID> victims = DFServices.findGamePlayerAgent(args3, this.ctrlAgent, this.ctrlAgent.getGameid());
+			werewolves.removeAll(victims);
+			werewolves.removeAll(whitewerewolves);
 
+			if(werewolves.isEmpty())
+			{
+				werewolves.addAll(victims);
+			}
 
-			for(AID aid : citizens)
+			for(AID aid : werewolves)
 			{
 				choices.add(aid.getName());
 			}
 
-			for(AID aid : werewolves)
+			for(AID aid : whitewerewolves)
 			{
 				voters.add(aid.getName());
 			}
 
 			VoteRequest request = new VoteRequest();
 			request.setVoteAgainst(true);
-			request.setRequest("WEREWOLF_VOTE");
+			request.setRequest("WEREWOLF_WHITE_VOTE");
 			request.setChoices(choices);
 			request.setVoters(voters);
 			request.setCanBeFake(false);
@@ -424,7 +431,6 @@ public class TurnBehaviour extends SimpleBehaviour {
 				String victim = message.getContent();
 				aidVictim = new AID(victim);
 
-
 				this.nextStep = STATE_SEND_ADD_VICTIM;
 			}
 			else
@@ -452,7 +458,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 		/** etat envoi des requ�tes de sommeil **/
 		else if(this.step.equals(STATE_SEND_SLEEP_ALL))
 		{
-			String [] args = {Roles.WEREWOLF, Status.WAKE};
+			String [] args = {Roles.WHITE_WEREWOLF, Status.WAKE};
 			List<AID> agents = DFServices.findGamePlayerAgent( args , this.ctrlAgent, this.ctrlAgent.getGameid());
 			this.nbPlayers = agents.size();
 

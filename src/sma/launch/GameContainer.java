@@ -7,6 +7,7 @@ import jade.wrapper.AgentContainer;
 import jade.wrapper.AgentController;
 import sma.cupid_controller.CupidControllerAgent;
 import sma.flute_player_controller.FlutePlayerControllerAgent;
+import sma.hunter_controller.HunterControllerAgent;
 import sma.medium_controller.MediumControllerAgent;
 import sma.model.GameSettings;
 import sma.model.Roles;
@@ -88,6 +89,12 @@ public class GameContainer {
 						"FLUTE_PLAYER_CONTROLLER_AGENT_"+gameid, FlutePlayerControllerAgent.class.getName(), objects);
 				ac.start();
 
+			}
+			if(this.gameSettings.isRoleRegistered(Roles.HUNTER))
+			{
+				ac = container.createNewAgent(
+						"HUNTER_CONTROLLER_AGENT_"+gameid, HunterControllerAgent.class.getName(), objects);
+				ac.start();
 			}
 		}
 		catch(Exception e) {

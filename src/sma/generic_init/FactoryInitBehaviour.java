@@ -10,6 +10,9 @@ import sma.cupid.CupidInitBehaviour;
 import sma.flute_player.CharmedInitBehaviour;
 import sma.flute_player.FlutePlayerInitBehaviour;
 import sma.littlegirl.LittleGirlInitBehaviour;
+
+import sma.generic_vote.AbstractVoteBehaviour;
+import sma.hunter.HunterInitBehaviour;
 import sma.lover_behaviour.LoverInitBehaviour;
 import sma.medium_behaviour.MediumInitBehaviour;
 import sma.model.Roles;
@@ -95,6 +98,8 @@ public class FactoryInitBehaviour extends CyclicBehaviour{
 				case Roles.LITTLE_GIRL:
 					this.agent.addBehaviour(new LittleGirlInitBehaviour(this.agent, this.agent.getAID()));
 					break;
+				case Roles.HUNTER:
+					this.agent.addBehaviour(new HunterInitBehaviour(this.agent, this.agent.getAID()));
 				default:
 					System.err.print("Erreur role not valid" );
 						//throw new Exception();

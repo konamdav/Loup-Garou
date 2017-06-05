@@ -31,8 +31,7 @@ public class GreatWerewolfInitBehaviour extends OneShotBehaviour{
 		System.out.println("WerewolfInitBehaviour THIS PLAYER "+this.agent.getName());
 		ArrayList<Behaviour> list_behav = new ArrayList<Behaviour>();
 		HashMap<String, ArrayList<Behaviour>> map_behaviour = this.agent.getMap_role_behaviours();
-		//TODO CEDRIC vote behaviour
-		// in your map + addBehaviour
+
 		
 		GreatWerewolfScoreBehaviour greatWolfScoreBehaviour = new GreatWerewolfScoreBehaviour(this.agent);
 		list_behav.add(greatWolfScoreBehaviour);

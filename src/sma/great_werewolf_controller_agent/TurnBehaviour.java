@@ -375,6 +375,10 @@ public class TurnBehaviour extends SimpleBehaviour {
 			String [] args3 = {Status.VICTIM};
 			List<AID> victims = DFServices.findGamePlayerAgent(args3, this.ctrlAgent, this.ctrlAgent.getGameid());
 			citizens.removeAll(victims);
+			
+			String [] args4 = {Roles.WEREWOLF, Status.SLEEP};
+			List<AID> werewolvesSleep = DFServices.findGamePlayerAgent(args4, this.ctrlAgent, this.ctrlAgent.getGameid());
+			citizens.removeAll(werewolvesSleep);
 
 			if(citizens.isEmpty())
 			{

@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
@@ -35,6 +36,15 @@ public class ViewInterfaceGame implements Screen{
 	private ViewPlayers viewPlayers;
 	private Texture textureNight;
 	private Texture textureEndgame;
+
+	Sprite spriteDay = new Sprite(new Texture("resources/sprites/daysprite.png"));
+	Sprite spriteNight = new Sprite(new Texture("resources/sprites/nightsprite.png"));
+	Sprite spriteCitizenTurn = new Sprite(new Texture("resources/sprites/citizensprite.png"));
+	Sprite spriteWerewolfTurn = new Sprite(new Texture("resources/sprites/werewolfsprite.png"));
+	Sprite spriteBackgroundLog = new Sprite(new Texture("resources/sprites/logsprite.png"));
+	Sprite spriteBackgroundVote = new Sprite(new Texture("resources/sprites/votesprite.png"));
+
+
 	List<String> list_log;
 	ScrollPane scrollpane_log;
 	List<String> list_vote;
@@ -95,6 +105,25 @@ public class ViewInterfaceGame implements Screen{
 		scrollpane_vote.setBounds(0,0, 400,200);
 		scrollpane_vote.setPosition(970,0);
 
+		spriteDay.setX(0);
+		spriteDay.setY(510);
+		spriteNight.setX(0);
+		spriteNight.setY(510);
+
+
+		spriteCitizenTurn.setX(287);
+		spriteCitizenTurn.setY(510);
+		spriteWerewolfTurn.setX(287);
+		spriteWerewolfTurn.setY(510);
+
+
+		spriteBackgroundLog.setX(960);
+		spriteBackgroundLog.setY(280);
+
+
+		spriteBackgroundVote.setX(960);
+		spriteBackgroundVote.setY(0);
+
 		stage.addActor(scrollpane_log);
 		stage.addActor(scrollpane_vote);
 
@@ -127,6 +156,20 @@ public class ViewInterfaceGame implements Screen{
 
 		if(this.game.getGameInformations()!=null){
 
+
+			if (this.game.getGameInformations().getDayState().equals("NIGHT"))
+				spriteNight.draw(stage.getBatch());
+			else
+				spriteDay.draw(stage.getBatch());
+
+			if (this.game.getGameInformations().getTurn().equals("WEREWOLF"))
+				spriteWerewolfTurn.draw(stage.getBatch());
+			else
+				spriteCitizenTurn.draw(stage.getBatch());
+			
+			spriteBackgroundLog.draw(stage.getBatch());
+			spriteBackgroundVote.draw(stage.getBatch());
+
 			// Set Iog
 			String[] strings = new String[this.game.getGameInformations().getActionLogs().size()];
 			strings = this.game.getGameInformations().getActionLogs().toArray(strings);
@@ -140,7 +183,8 @@ public class ViewInterfaceGame implements Screen{
 				int i = 0;
 				for(Entry<String, Integer> entry : map_tmp.entrySet())
 				{
-					strings_vote[i] = entry.getKey() + "  : " + entry.getValue();
+					String[] parts = entry.getKey().split("@");
+					strings_vote[i] = parts[0] + "  : " + entry.getValue();
 					i++;
 				}
 
@@ -153,6 +197,8 @@ public class ViewInterfaceGame implements Screen{
 			else if (this.game.getGameInformations().getDayState().equals("NIGHT")) 
 				stage.getBatch().draw(textureNight,0,0);
 		}
+
+
 
 		viewPlayers.drawPlayersWake();
 

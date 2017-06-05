@@ -72,7 +72,7 @@ public class ScoreResults {
 			}
 		}
 		
-		System.err.println("FINAL RES "+finalResults.get(0)+" "+m);
+		//System.err.println("FINAL RES "+finalResults.get(0)+" "+m);
 		return finalResults;
 	}
 	

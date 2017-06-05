@@ -67,7 +67,7 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 	@Override
 	public void action() {
 
-		//System.err.println("AV STATE = "+this.step);
+		//System.err.println("AV STATE = "+this.step+" for "+this.agent.getLocalName());
 
 		if(this.step.equals(STATE_INIT))
 		{
@@ -87,7 +87,8 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 			ACLMessage message = this.myAgent.receive(mt);
 			if(message != null)
 			{
-				this.agent.doWait((int) (Math.random()*500));
+				//System.err.println("AV receive rqst");
+				//this.agent.doWait((int) (Math.random()*500));
 				Functions.newActionToLog(this.agent.getLocalName()+" réfléchit", this.agent, this.agent.getGameid());
 
 				this.sender = message.getSender();
@@ -117,6 +118,7 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 			ACLMessage message = this.myAgent.receive(mt);
 			if(message != null)
 			{
+				//System.err.println("AV receive force rqst");
 				ObjectMapper mapper = new ObjectMapper();
 				ForceVoteRequest forceVoteRequest = new ForceVoteRequest();
 				try {
@@ -134,7 +136,6 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 			else
 			{
 				this.nextStep = STATE_RECEIVE_REQUEST;
-				block();
 			}
 		}
 		else if(this.step.equals(STATE_SEND_REQUEST))

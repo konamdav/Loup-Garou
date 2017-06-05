@@ -176,8 +176,8 @@ public class SynchronousVoteBehaviour extends Behaviour {
 			if(reste >= Data.MAX_SYNCHRONOUS_PLAYERS)
 			{
 				/** hybrid synchronous mode **/
-				this.nbAsynchronousPlayers = (int) (Math.random()*Math.min(Data.MAX_SYNCHRONOUS_PLAYERS, (reste-1)))+1;
-				System.err.println("HYDBRID ASYNCRHONOUS ENABLED BECAUSE TOO MANY PARTICIPANTS");
+				this.nbAsynchronousPlayers = (int) (Math.random()*Math.min(Data.MAX_SYNCHRONOUS_PLAYERS-1, (reste-1)))+1;
+				System.err.println("HYDBRID ASYNCRHONOUS ENABLED BECAUSE TOO MANY PARTICIPANTS "+this.nbAsynchronousPlayers+" in //");
 			}
 			else
 			{
@@ -198,6 +198,7 @@ public class SynchronousVoteBehaviour extends Behaviour {
 			messageRequest.setContent(json);
 			for(int i = 0; i<this.nbAsynchronousPlayers; ++i)
 			{
+				//System.err.println("DK ENVOI REQUEST "+this.request.getAIDVoters().get(this.nbVoters+i).getLocalName());
 				messageRequest.addReceiver(this.request.getAIDVoters().get(this.nbVoters+i));	
 			}
 

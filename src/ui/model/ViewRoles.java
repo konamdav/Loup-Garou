@@ -108,7 +108,10 @@ public class ViewRoles {
 
 				this.roles.get(cpt).setX(x);
 				this.roles.get(cpt).setY(y);
-
+				
+				curX = xx;
+				curY = yy;
+				
 				x = xx;
 				y = yy;
 			}
@@ -122,11 +125,7 @@ public class ViewRoles {
 			}
 
 			++cpt;
-
 		}
-
-		curX = x;
-		curY = y;
 		
 		if(flag)
 		{

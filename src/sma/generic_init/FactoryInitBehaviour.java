@@ -14,6 +14,9 @@ import sma.flute_player.CharmedInitBehaviour;
 import sma.flute_player.FlutePlayerInitBehaviour;
 import sma.great_werewolf_agent.GreatWerewolfInitBehaviour;
 import sma.littlegirl.LittleGirlInitBehaviour;
+
+import sma.generic_vote.AbstractVoteBehaviour;
+import sma.hunter.HunterInitBehaviour;
 import sma.lover_behaviour.LoverInitBehaviour;
 import sma.medium_behaviour.MediumInitBehaviour;
 import sma.model.Roles;
@@ -116,6 +119,9 @@ public class FactoryInitBehaviour extends CyclicBehaviour{
 				case Roles.GREAT_WEREWOLF:
 					this.agent.addBehaviour(new GreatWerewolfInitBehaviour(this.agent, this.agent.getAID()));
 					break;
+				case Roles.HUNTER:
+					this.agent.addBehaviour(new HunterInitBehaviour(this.agent, this.agent.getAID()));
+
 				case Roles.WHITE_WEREWOLF:
 					this.agent.addBehaviour(new WerewolfWhiteInitBehaviour(this.agent, this.agent.getAID()));
 					break;

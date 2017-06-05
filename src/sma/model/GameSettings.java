@@ -29,12 +29,10 @@ public class GameSettings {
 		this.rolesSettings.put(Roles.ANCIENT,0); 
 		this.rolesSettings.put(Roles.WITCH,0); 
 		this.rolesSettings.put(Roles.THIEF,0); 
-		this.rolesSettings.put(Roles.WHITE_WEREWOLF,0); 
-		this.rolesSettings.put(Roles.GREAT_WEREWOLF,2); 
+		this.rolesSettings.put(Roles.WHITE_WEREWOLF,2); 
+		this.rolesSettings.put(Roles.GREAT_WEREWOLF,0); 
 
-
-		//Si problème, demander à David il est chef de projet <3
-
+		
 		
 
 	}

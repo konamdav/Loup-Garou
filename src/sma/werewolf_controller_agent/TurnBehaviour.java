@@ -374,6 +374,8 @@ public class TurnBehaviour extends SimpleBehaviour {
 
 
 
+			System.err.println("DK IL YA "+this.nbPlayers+" WEREWOLVES");
+			
 			for(AID aid : citizens)
 			{
 				choices.add(aid.getName());

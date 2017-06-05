@@ -28,7 +28,7 @@ public class WaitStartBehaviour extends WakerBehaviour {
 	private GameControllerAgent gameControllerAgent;	
 	
 	public WaitStartBehaviour(GameControllerAgent gameControllerAgent) {
-		super(gameControllerAgent, 3000);
+		super(gameControllerAgent, 7000);
 		this.gameControllerAgent = gameControllerAgent;
 
 	}

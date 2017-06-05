@@ -18,7 +18,6 @@ public class GameSettings {
 		
 		//Liste role par d�faut
 		this.rolesSettings = new HashMap<String, Integer>();
-
 		this.rolesSettings.put(Roles.WEREWOLF, 2);
 		this.rolesSettings.put(Roles.CITIZEN, 3);
 		this.rolesSettings.put(Roles.CUPID, 0);
@@ -43,7 +42,8 @@ public class GameSettings {
 		this.game_mode = game_mode;
 	}
 
-	public GameSettings(int werewolf, int citizen, int cupid, int little_girl, int medium) {
+	
+	public GameSettings(int werewolf, int citizen, int cupid, int little_girl, int hunter) {
 		super();
 		//nb
 
@@ -54,7 +54,7 @@ public class GameSettings {
 		this.rolesSettings.put(Roles.CITIZEN, citizen);
 		this.rolesSettings.put(Roles.CUPID, cupid);
 		this.rolesSettings.put(Roles.LITTLE_GIRL, little_girl);
-		this.rolesSettings.put(Roles.MEDIUM, medium);
+		this.rolesSettings.put(Roles.HUNTER, hunter);
 
 	}
 

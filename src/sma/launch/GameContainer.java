@@ -10,6 +10,7 @@ import sma.environment_agent.EnvironmentAgent;
 import sma.family_controller.FamilyControllerAgent;
 import sma.flute_player_controller.FlutePlayerControllerAgent;
 import sma.great_werewolf_controller_agent.GreatWerewolfControllerAgent;
+import sma.hunter_controller.HunterControllerAgent;
 import sma.medium_controller.MediumControllerAgent;
 import sma.model.GameSettings;
 import sma.model.Roles;
@@ -130,6 +131,12 @@ public class GameContainer {
 			{
 				ac = container.createNewAgent(
 						"VOLEUR_CONTROLLER_AGENT_"+gameid, VoleurControllerAgent.class.getName(), objects);
+				ac.start();
+			}
+			if(this.gameSettings.isRoleRegistered(Roles.HUNTER))
+			{
+				ac = container.createNewAgent(
+						"HUNTER_CONTROLLER_AGENT_"+gameid, HunterControllerAgent.class.getName(), objects);
 				ac.start();
 			}
 		}

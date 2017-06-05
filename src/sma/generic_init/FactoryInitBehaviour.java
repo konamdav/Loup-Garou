@@ -121,7 +121,7 @@ public class FactoryInitBehaviour extends CyclicBehaviour{
 					break;
 				case Roles.HUNTER:
 					this.agent.addBehaviour(new HunterInitBehaviour(this.agent, this.agent.getAID()));
-
+					break;
 				case Roles.WHITE_WEREWOLF:
 					this.agent.addBehaviour(new WerewolfWhiteInitBehaviour(this.agent, this.agent.getAID()));
 					break;

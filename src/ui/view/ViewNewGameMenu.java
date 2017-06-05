@@ -1,6 +1,7 @@
 package ui.view;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
@@ -34,6 +35,7 @@ public class ViewNewGameMenu implements Screen {
     TextField medium_textField;
     TextField little_girl_textField;
     
+    private HashMap<String, TextField> textfields;
     
 	ViewNewGameMenu(App a){
 		app = a;
@@ -43,6 +45,9 @@ public class ViewNewGameMenu implements Screen {
         Gdx.input.setInputProcessor(stage);
         skin = new Skin( Gdx.files.internal( "resources/visui/uiskin.json" ));
 		
+        textfields = new HashMap<String, TextField>();
+        
+        
 		Table table=new Table();
 //        table.setSize(800,500);
   

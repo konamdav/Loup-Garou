@@ -551,10 +551,15 @@ public class TurnsBehaviour extends SimpleBehaviour {
 				if(!agents.isEmpty())
 				{	
 					String [] args = {Roles.WHITE_WEREWOLF, Status.SLEEP};
-					List<AID> werewolves = DFServices.findGamePlayerAgent(args, this.controllerAgent, this.controllerAgent.getGameid());				
-					int nbPlayers = werewolves.size();
+					List<AID> whitewerewolves = DFServices.findGamePlayerAgent(args, this.controllerAgent, this.controllerAgent.getGameid());				
+					int nbWhiteWerewolves = whitewerewolves.size();
+					
+					String [] args2 = {Roles.WEREWOLF, Status.SLEEP};
+					List<AID> werewolves = DFServices.findGamePlayerAgent(args2, this.controllerAgent, this.controllerAgent.getGameid());				
+					int nbWerewolves = werewolves.size();
 
-					if( nbPlayers > 0  )
+
+					if( nbWhiteWerewolves > 0  && nbWerewolves > nbWhiteWerewolves)
 					{
 						Functions.updateTurn(Roles.WHITE_WEREWOLF, controllerAgent, controllerAgent.getGameid());
 

@@ -35,6 +35,7 @@ public class GameSettings {
 
 		//Si problème, demander à David il est chef de projet <3
 
+		
 
 	}
 	

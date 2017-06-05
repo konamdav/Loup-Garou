@@ -35,6 +35,7 @@ public class DeleteRoleBehaviour extends CyclicBehaviour {
 			//si on supprime loup blanc ou méchant loup, il faut enlever le role werewolf aussi
 			if(role.equals(Roles.GREAT_WEREWOLF) || role.equals(Roles.WHITE_WEREWOLF))
 			{
+				System.err.println("JE SUIS UN LOUP SPECIAL QUI DISPARAIT");
 				DFServices.deregisterPlayerAgent(Roles.WEREWOLF, agent, this.agent.getGameid());
 			}
 			

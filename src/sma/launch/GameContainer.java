@@ -14,6 +14,7 @@ import sma.medium_controller.MediumControllerAgent;
 import sma.model.GameSettings;
 import sma.model.Roles;
 import sma.voleur_controller.VoleurControllerAgent;
+import sma.werewolf_white_controller_agent.WerewolfWhiteControllerAgent;
 import sma.witch_controller.WitchControllerAgent;
 
 //Conteneur de jeu
@@ -80,6 +81,14 @@ public class GameContainer {
 			{
 				ac = container.createNewAgent(
 						"GREAT_WEREWOLF_CONTROLLER_AGENT_"+gameid, GreatWerewolfControllerAgent.class.getName(), objects);
+				ac.start();
+			}
+			
+			//selection role white werewolf
+			if(this.gameSettings.isRoleRegistered(Roles.WHITE_WEREWOLF))
+			{
+				ac = container.createNewAgent(
+						"WHITE_WEREWOLF_CONTROLLER_AGENT_"+gameid, WerewolfWhiteControllerAgent.class.getName(), objects);
 				ac.start();
 			}
 			

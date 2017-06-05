@@ -1,4 +1,4 @@
-package sma.great_werewolf_agent;
+package sma.werewolf_white;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,17 +10,17 @@ import sma.model.DFServices;
 import sma.model.Roles;
 import sma.model.TypeIA;
 import sma.player_agent.PlayerAgent;
-import sma.vote_behaviour.GreatWerewolfScoreBehaviour;
 import sma.vote_behaviour.WerewolfScoreBehaviour;
 import sma.vote_behaviour.WerewolfSimpleSuspicionBehaviour;
 import sma.vote_behaviour.WerewolfSuspicionBehaviour;
 import sma.vote_behaviour.WerewolfSuspicionListener;
+import sma.vote_behaviour.WerewolfWhiteScoreBehaviour;
 
-public class GreatWerewolfInitBehaviour extends OneShotBehaviour{
+public class WerewolfWhiteInitBehaviour extends OneShotBehaviour{
 	private PlayerAgent agent;
 	private AID receiver;
 
-	public GreatWerewolfInitBehaviour(PlayerAgent agent, AID receiver) {
+	public WerewolfWhiteInitBehaviour(PlayerAgent agent, AID receiver) {
 		super();
 		this.agent = agent;
 		this.receiver = receiver;
@@ -31,10 +31,9 @@ public class GreatWerewolfInitBehaviour extends OneShotBehaviour{
 		System.out.println("WerewolfInitBehaviour THIS PLAYER "+this.agent.getName());
 		ArrayList<Behaviour> list_behav = new ArrayList<Behaviour>();
 		HashMap<String, ArrayList<Behaviour>> map_behaviour = this.agent.getMap_role_behaviours();
-
 		
-		GreatWerewolfScoreBehaviour greatWolfScoreBehaviour = new GreatWerewolfScoreBehaviour(this.agent);
-		list_behav.add(greatWolfScoreBehaviour);
+		WerewolfWhiteScoreBehaviour whiteWolfScoreBehaviour = new WerewolfWhiteScoreBehaviour(this.agent);
+		list_behav.add(whiteWolfScoreBehaviour);
 		
 		WerewolfScoreBehaviour werewolfScoreBehaviour = new WerewolfScoreBehaviour(this.agent);
 		list_behav.add(werewolfScoreBehaviour);
@@ -50,8 +49,8 @@ public class GreatWerewolfInitBehaviour extends OneShotBehaviour{
 
 		//ScoreBehvaiour is for Vote	
 		
-		this.agent.addBehaviour(greatWolfScoreBehaviour);
-		list_behav.add(greatWolfScoreBehaviour);
+		this.agent.addBehaviour(whiteWolfScoreBehaviour);
+		list_behav.add(whiteWolfScoreBehaviour);
 		
 		this.agent.addBehaviour(werewolfScoreBehaviour);
 		list_behav.add(werewolfScoreBehaviour);
@@ -64,19 +63,19 @@ public class GreatWerewolfInitBehaviour extends OneShotBehaviour{
 		
 		this.agent.getVotingBehaviours().add(werewolfScoreBehaviour.getName_behaviour());
 		this.agent.getVotingBehaviours().add(werewolfSuspicionBehaviour.getName_behaviour());
-		this.agent.getVotingBehaviours().add(greatWolfScoreBehaviour.getName_behaviour());
+		this.agent.getVotingBehaviours().add(whiteWolfScoreBehaviour.getName_behaviour());
 		
 		this.agent.getTypeVotingBehaviours().put(werewolfSuspicionBehaviour.getName_behaviour(), TypeIA.SUSPICIOUS);
 		this.agent.getTypeVotingBehaviours().put(werewolfScoreBehaviour.getName_behaviour(), TypeIA.STRATEGIC);
-		this.agent.getTypeVotingBehaviours().put(greatWolfScoreBehaviour.getName_behaviour(), TypeIA.STRATEGIC);
+		this.agent.getTypeVotingBehaviours().put(whiteWolfScoreBehaviour.getName_behaviour(), TypeIA.STRATEGIC);
 		
 		//Handle attributes
-		map_behaviour.put(Roles.GREAT_WEREWOLF, list_behav);
+		map_behaviour.put(Roles.WHITE_WEREWOLF, list_behav);
 		
 		//enregirstrement
-		System.out.println("[ "+this.agent.getName()+" ] REGISTER "+Roles.GREAT_WEREWOLF);
+		System.out.println("[ "+this.agent.getName()+" ] REGISTER "+Roles.WHITE_WEREWOLF);
 		DFServices.registerPlayerAgent(Roles.WEREWOLF, this.myAgent, this.agent.getGameid()); //simple werewolf
-		DFServices.registerPlayerAgent(Roles.GREAT_WEREWOLF, this.myAgent, this.agent.getGameid());//great werewolf
+		DFServices.registerPlayerAgent(Roles.WHITE_WEREWOLF, this.myAgent, this.agent.getGameid());//great werewolf
 		
 		//Envoie message fin d'initialisation
 		ACLMessage messageRequest = new ACLMessage(ACLMessage.AGREE);

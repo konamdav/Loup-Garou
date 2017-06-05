@@ -75,7 +75,8 @@ public class CheckEndGameBehaviour extends CyclicBehaviour {
 			List<AID> werewolves = DFServices.findGamePlayerAgent(services1, this.gameControllerAgent, this.gameControllerAgent.getGameid());
 			String[] services11 = {Roles.WEREWOLF, Status.SLEEP};
 			werewolves.addAll(DFServices.findGamePlayerAgent(services11, this.gameControllerAgent, this.gameControllerAgent.getGameid()));
-
+			
+			
 			String[] services2 = {Roles.CITIZEN, Status.WAKE};
 			List<AID> citizens = DFServices.findGamePlayerAgent(services2, this.gameControllerAgent, this.gameControllerAgent.getGameid());
 			String[] services22 = {Roles.CITIZEN, Status.SLEEP};
@@ -100,6 +101,10 @@ public class CheckEndGameBehaviour extends CyclicBehaviour {
 			String[] services6 = {Roles.ANGEL, Status.DEAD};
 			List<AID> angel = DFServices.findGamePlayerAgent(services6, this.gameControllerAgent, this.gameControllerAgent.getGameid());
 			
+			String[] services7 = {Roles.WHITE_WEREWOLF, Status.WAKE};
+			List<AID> whitewerewolves = DFServices.findGamePlayerAgent(services7, this.gameControllerAgent, this.gameControllerAgent.getGameid());
+			String[] services77 = {Roles.WHITE_WEREWOLF, Status.SLEEP};
+			whitewerewolves.addAll(DFServices.findGamePlayerAgent(services77, this.gameControllerAgent, this.gameControllerAgent.getGameid()));
 			
 			
 			
@@ -121,15 +126,23 @@ public class CheckEndGameBehaviour extends CyclicBehaviour {
 				this.nextStep = STATE_NOTIFY_END_GAME;
 				
 			}
+			/** plus que des loups garous blancs **/
+			else if(whitewerewolves.size() == citizens.size() && whitewerewolves.size() == werewolves.size()&& citizens.size()!=0) 
+			{
+				System.err.println("Only werwolfBlanc ");
+				this.gameControllerAgent.setCheckEndGame(true);
+				message.setConversationId("END_GAME");
+				this.nextStep = STATE_NOTIFY_END_GAME;
+			}
+			else if ( werewolves.size() == citizens.size() && citizens.size()!=0)
 			/** plus de de villeagois **/
-			else if(werewolves.size() == citizens.size() && citizens.size()!=0) 
 			{
 				System.err.println("No simple citizen");
 				this.gameControllerAgent.setCheckEndGame(true);
 				message.setConversationId("END_GAME");
 				this.nextStep = STATE_NOTIFY_END_GAME;
 			}
-			/** egalité **/
+			/** egalitï¿½ **/
 			else if(0 == citizens.size()) 
 			{
 				System.err.println("equality - all people are dead");
@@ -137,7 +150,7 @@ public class CheckEndGameBehaviour extends CyclicBehaviour {
 				message.setConversationId("END_GAME");
 				this.nextStep = STATE_NOTIFY_END_GAME;
 			}
-			/** angel tué au premier tour **/
+			/** angel tuï¿½ au premier tour **/
 			else if(this.gameControllerAgent.getNum_turn() == 1 
 					&& this.gameControllerAgent.getGameSettings().isRoleRegistered(Roles.ANGEL)
 					&& !angel.isEmpty() ) 
@@ -147,16 +160,16 @@ public class CheckEndGameBehaviour extends CyclicBehaviour {
 				message.setConversationId("END_GAME");
 				this.nextStep = STATE_NOTIFY_END_GAME;
 			}
-			/** le joueur de flute a charmé tout le monde **/
+			/** le joueur de flute a charmï¿½ tout le monde **/
 			else if(this.gameControllerAgent.getGameSettings().isRoleRegistered(Roles.FLUTE_PLAYER)
 					&& (charmed.size()+flutePlayers.size() == citizens.size())) 
 			{
-				System.err.println("flute player won²");
+				System.err.println("flute player wonï¿½");
 				this.gameControllerAgent.setCheckEndGame(true);
 				message.setConversationId("END_GAME");
 				this.nextStep = STATE_NOTIFY_END_GAME;
 			}
-			/** les amoureux ont survécus **/
+			/** les amoureux ont survï¿½cus **/
 			else if(lovers.size() == citizens.size()) 
 			{
 				System.err.println("just lovers");

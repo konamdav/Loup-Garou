@@ -52,6 +52,7 @@ public class SynchronousVoteBehaviour extends Behaviour {
 
 	private VoteRequest request;
 	private IController controllerAgent;
+	private long currentTime;
 
 	public SynchronousVoteBehaviour(IController controllerAgent) {		
 		this.controllerAgent = controllerAgent;
@@ -72,7 +73,7 @@ public class SynchronousVoteBehaviour extends Behaviour {
 	@Override
 	public void action() {
 
-		System.out.println("STATE SV = "+this.step);
+		//System.out.println("STATE SV = "+this.step);
 
 		if(this.step.equals(STATE_INIT))
 		{
@@ -81,7 +82,7 @@ public class SynchronousVoteBehaviour extends Behaviour {
 			this.globalResults = new VoteResults();
 			this.agentSender = null;
 			this.request = null;
-
+			this.currentTime = -1;
 			this.results = new VoteResults();
 			this.nextStep = STATE_RECEIVE_REQUEST;
 
@@ -173,7 +174,7 @@ public class SynchronousVoteBehaviour extends Behaviour {
 			messageRequest.setConversationId("VOTE_REQUEST");
 
 			int reste = this.request.getAIDVoters().size()-this.nbVoters;
-			if(reste >= Data.MAX_SYNCHRONOUS_PLAYERS)
+			if(false )// reste >= Data.MAX_SYNCHRONOUS_PLAYERS)
 			{
 				/** hybrid synchronous mode **/
 				this.nbAsynchronousPlayers = (int) (Math.random()*Math.min(Data.MAX_SYNCHRONOUS_PLAYERS-1, (reste-1)))+1;
@@ -208,6 +209,28 @@ public class SynchronousVoteBehaviour extends Behaviour {
 		}
 		else if(this.step.equals(STATE_RECEIVE_INFORM))
 		{
+			if(this.currentTime == -1)
+			{
+				this.currentTime = System.currentTimeMillis();
+			}
+
+			if(System.currentTimeMillis() - this.currentTime > 3000)
+			{
+				this.currentTime = -1;
+				ACLMessage wakeup = new ACLMessage(ACLMessage.UNKNOWN);
+				wakeup.setSender(this.myAgent.getAID());
+				if(nbVoters < this.request.getVoters().size())
+				{
+					wakeup.addReceiver(this.request.getAIDVoters().get(nbVoters));
+					wakeup.setConversationId("WAKEUP");
+					this.myAgent.send(wakeup);
+					
+					System.out.println("Relance du joueur "+this.request.getAIDVoters().get(nbVoters).getLocalName()+" ...");
+				}
+
+				
+			}
+
 			MessageTemplate mt = MessageTemplate.and(
 					MessageTemplate.MatchPerformative(ACLMessage.INFORM),
 					MessageTemplate.MatchConversationId("VOTE_INFORM"));
@@ -215,6 +238,7 @@ public class SynchronousVoteBehaviour extends Behaviour {
 			ACLMessage message = this.myAgent.receive(mt);
 			if(message!=null)
 			{
+				this.currentTime = -1;
 				++this.nbVoters;
 				--this.nbAsynchronousPlayers;
 
@@ -267,8 +291,9 @@ public class SynchronousVoteBehaviour extends Behaviour {
 
 				System.err.println("\nSV : "+this.nbVoters+"/"+this.request.getAIDVoters().size());
 
-				if(this.nbVoters>= this.request.getAIDVoters().size())
+				if(this.nbVoters >= this.request.getAIDVoters().size())
 				{
+					this.nbVoters = 0;
 					System.err.println("SV next step");
 					this.nextStep = STATE_RESULTS;
 				}
@@ -285,7 +310,7 @@ public class SynchronousVoteBehaviour extends Behaviour {
 			}
 			else
 			{
-				block();
+				block(1000);	
 			}
 		}
 
@@ -453,7 +478,7 @@ public class SynchronousVoteBehaviour extends Behaviour {
 				message.setContent(json);
 				message.setSender(this.myAgent.getAID());
 				message.setConversationId("NEW_CITIZEN_VOTE_RESULTS");
-				
+
 				List<AID> agents = DFServices.findGameControllerAgent("ENVIRONMENT", this.myAgent, this.controllerAgent.getGameid());
 				if(!agents.isEmpty())
 				{
@@ -471,7 +496,7 @@ public class SynchronousVoteBehaviour extends Behaviour {
 			message.setConversationId("VOTE_RESULTS");
 			message.setContent(this.finalResults.get(0));
 			this.myAgent.send(message);
-			
+
 			this.nextStep = STATE_INIT;
 		}
 

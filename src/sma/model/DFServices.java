@@ -447,7 +447,7 @@ public class DFServices {
 
 		//get profiles joueurs citizen
 		List<AID> citizens = DFServices.findOrderedAllCitizen(agent, gameid);
-
+		System.out.println(citizens);
 		for(int i =0; i<citizens.size(); ++i)
 		{
 			PlayerProfile profile = new PlayerProfile();

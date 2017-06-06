@@ -80,6 +80,7 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 		}
 		else if(this.step.equals(STATE_RECEIVE_REQUEST))
 		{
+			//System.err.println("AV receive rqst");
 			MessageTemplate mt = MessageTemplate.and(
 					MessageTemplate.MatchPerformative(ACLMessage.REQUEST),
 					MessageTemplate.MatchConversationId("VOTE_REQUEST"));
@@ -88,7 +89,7 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 			if(message != null)
 			{
 				//System.err.println("AV receive rqst");
-				//this.agent.doWait((int) (Math.random()*500));
+				this.agent.doWait((int) (Math.random()*500));
 				Functions.newActionToLog(this.agent.getLocalName()+" réfléchit", this.agent, this.agent.getGameid());
 
 				this.sender = message.getSender();
@@ -111,6 +112,7 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 		}
 		else if(this.step.equals(STATE_RECEIVE_FORCE_VOTE))
 		{
+			//System.err.println("AV receive force ?");
 			MessageTemplate mt = MessageTemplate.and(
 					MessageTemplate.MatchPerformative(ACLMessage.REQUEST),
 					MessageTemplate.MatchConversationId("FORCE_VOTE"));

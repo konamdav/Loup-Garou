@@ -22,16 +22,16 @@ public class GameSettings {
 
 		this.rolesSettings.put(Roles.WEREWOLF, 1);
 		this.rolesSettings.put(Roles.HUNTER, 2);
-		this.rolesSettings.put(Roles.CITIZEN, 5);
-		this.rolesSettings.put(Roles.CUPID, 1);
+		this.rolesSettings.put(Roles.CITIZEN, 2);
+		this.rolesSettings.put(Roles.CUPID, 0);
 		this.rolesSettings.put(Roles.LITTLE_GIRL, 0);
 		this.rolesSettings.put(Roles.MEDIUM,0);
 		this.rolesSettings.put(Roles.ANGEL,0);
 		this.rolesSettings.put(Roles.FLUTE_PLAYER,0);
 		this.rolesSettings.put(Roles.ANCIENT,0); 
-		this.rolesSettings.put(Roles.WITCH,1);
+		this.rolesSettings.put(Roles.WITCH,0);
 		this.rolesSettings.put(Roles.THIEF,0); 
-		this.rolesSettings.put(Roles.WHITE_WEREWOLF,2); 
+		this.rolesSettings.put(Roles.WHITE_WEREWOLF,0); 
 		this.rolesSettings.put(Roles.GREAT_WEREWOLF,0); 
 
 		

@@ -127,7 +127,7 @@ public class TurnsBehaviour extends SimpleBehaviour {
 				else
 				{
 					this.nextStep = STATE_CHECK_ENDGAME_RECEIVE;
-					block();
+					block(1000);
 				}
 			}
 		}
@@ -202,7 +202,7 @@ public class TurnsBehaviour extends SimpleBehaviour {
 			else
 			{
 				this.nextStep = STATE_STOP_VOLEUR_TURN;
-				block();
+				block(1000);
 			}
 		}
 		else if (this.step.equals(STATE_START_CUPID_TURN))
@@ -256,7 +256,7 @@ public class TurnsBehaviour extends SimpleBehaviour {
 			else
 			{
 				this.nextStep = STATE_STOP_CUPID_TURN;
-				block();
+				block(1000);
 			}
 
 		}
@@ -312,7 +312,7 @@ public class TurnsBehaviour extends SimpleBehaviour {
 			else
 			{
 				this.nextStep = STATE_STOP_FLUTE_PLAYER_TURN;
-				block();
+				block(1000);
 			}
 
 		}
@@ -365,7 +365,7 @@ public class TurnsBehaviour extends SimpleBehaviour {
 			else
 			{
 				this.nextStep = STATE_STOP_MEDIUM_TURN;
-				block();
+				block(1000);
 			}
 
 		}
@@ -417,7 +417,7 @@ public class TurnsBehaviour extends SimpleBehaviour {
 			else
 			{
 				this.nextStep = STATE_STOP_FAMILY_TURN;
-				block();
+				block(1000);
 			}
 
 		}		
@@ -454,7 +454,7 @@ public class TurnsBehaviour extends SimpleBehaviour {
 			else
 			{
 				this.nextStep = STATE_STOP_CITIZEN_TURN;
-				block();
+				block(1000);
 			}
 
 		}
@@ -491,7 +491,7 @@ public class TurnsBehaviour extends SimpleBehaviour {
 			else
 			{
 				this.nextStep = STATE_STOP_WEREWOLF_TURN;
-				block();
+				block(1000);
 			}
 		}
 		else if (this.step.equals(STATE_START_GREAT_WEREWOLF_TURN))
@@ -546,7 +546,7 @@ public class TurnsBehaviour extends SimpleBehaviour {
 			else
 			{
 				this.nextStep = STATE_STOP_GREAT_WEREWOLF_TURN;
-				block();
+				block(1000);
 			}
 		}
 		else if (this.step.equals(STATE_START_WHITE_WEREWOLF_TURN))
@@ -611,7 +611,7 @@ public class TurnsBehaviour extends SimpleBehaviour {
 			else
 			{
 				this.nextStep = STATE_STOP_WHITE_WEREWOLF_TURN;
-				block();
+				block(1000);
 			}
 		}
 
@@ -662,7 +662,7 @@ public class TurnsBehaviour extends SimpleBehaviour {
 			else
 			{
 				this.nextStep = STATE_STOP_WITCH_TURN;
-				block();
+				block(1000);
 			}
 		}
 		else if (this.step.equals(STATE_END))

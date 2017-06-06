@@ -69,7 +69,7 @@ public class WerewolfSuspicionListener extends Behaviour{
 			}
 			else
 			{
-				block();
+				block(1000);
 			}		
 		}
 		else if(step.equals(STATE_SUSPICION_LITTLE_GIRL))

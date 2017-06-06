@@ -39,7 +39,7 @@ public class InitAsHumanBehaviour extends SimpleBehaviour{
 		}
 		else
 		{
-			block();
+			block(1000);
 		}
 	}
 

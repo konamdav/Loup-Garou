@@ -60,7 +60,7 @@ public class FlutePlayerDeathBehaviour extends SimpleBehaviour implements IDeath
 			this.myAgent.send(reply);
 		}
 		else{
-			block();
+			block(1000);
 		}
 	}
 

@@ -28,7 +28,7 @@ public class CycleReceiveBehaviour extends CyclicBehaviour{
 		}
 		else
 		{
-			block();
+			block(1000);
 		}
 				
 	}

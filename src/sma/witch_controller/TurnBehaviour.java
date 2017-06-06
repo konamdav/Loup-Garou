@@ -122,7 +122,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 			else
 			{
 				this.nextStep = STATE_WAITING_START;
-				block();
+				block(1000);
 			}
 
 		}
@@ -153,7 +153,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 			else
 			{
 				this.nextStep = STATE_RECEIVE_WAKE_ONE_WITCH;
-				block();
+				block(1000);
 			}
 		}
 		else if(this.step.equals(STATE_SEND_VOTE_ASK_LIFE_REQUEST))
@@ -290,7 +290,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 			else
 			{
 				this.nextStep = STATE_RECEIVE_VOTE_ASK_LIFE_REQUEST;
-				block();
+				block(1000);
 			}
 		}
 
@@ -319,7 +319,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 			else
 			{
 				this.nextStep = STATE_RECEIVE_VOTE_ASK_DEATH_REQUEST;
-				block();
+				block(1000);
 			}
 		}
 		else if(this.step.equals(STATE_SEND_VOTE_DEATH_REQUEST))
@@ -439,7 +439,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 			else
 			{
 				this.nextStep = STATE_RECEIVE_VOTE_LIFE_REQUEST;
-				block();
+				block(1000);
 			}
 		}
 
@@ -475,7 +475,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 			else
 			{
 				this.nextStep = STATE_RECEIVE_VOTE_DEATH_REQUEST;
-				block();
+				block(1000);
 			}
 		}
 
@@ -515,7 +515,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 			else
 			{
 				this.nextStep = STATE_RECEIVE_SLEEP_ONE_WITCH;
-				block();
+				block(1000);
 			}
 		}
 		/** etat fin de tour **/

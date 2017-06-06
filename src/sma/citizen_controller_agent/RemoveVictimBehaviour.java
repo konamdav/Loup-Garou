@@ -60,7 +60,7 @@ public class RemoveVictimBehaviour extends CyclicBehaviour{
 		}
 		else
 		{
-			block();
+			block(1000);
 		}		
 	}
 

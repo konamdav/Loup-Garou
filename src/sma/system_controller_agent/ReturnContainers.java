@@ -45,7 +45,7 @@ public class ReturnContainers extends CyclicBehaviour {
 		}
 		else
 		{
-			block();
+			block(1000);
 		}
 	}
 }

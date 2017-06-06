@@ -118,7 +118,7 @@ public class SynchronousVoteBehaviour extends Behaviour {
 			}
 			else
 			{
-				block();
+				block(1000);
 			}
 
 		}
@@ -165,7 +165,7 @@ public class SynchronousVoteBehaviour extends Behaviour {
 			}
 			else
 			{
-				block();
+				block(1000);
 			}
 		}		
 		else if(this.step.equals(STATE_SEND_REQUEST))
@@ -383,7 +383,7 @@ public class SynchronousVoteBehaviour extends Behaviour {
 			else
 			{
 				this.nextStep = STATE_ADD_SIMPLE_SUSPICION;
-				block();
+				block(1000);
 			}
 		}
 
@@ -498,10 +498,8 @@ public class SynchronousVoteBehaviour extends Behaviour {
 			message.setContent(this.finalResults.get(0));
 			
 			Functions.newActionToLog("Décision du vote : "+this.finalResults.get(0), this.getAgent(), this.controllerAgent.getGameid());
-
 			
-			this.myAgent.send(message);
-			
+			this.myAgent.send(message);	
 			this.nextStep = STATE_INIT;
 		}
 

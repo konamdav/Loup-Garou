@@ -105,7 +105,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 			else
 			{
 				this.nextStep = STATE_WAITING_START;
-				block();
+				block(1000);
 			}
 
 		}
@@ -136,7 +136,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 			else
 			{
 				this.nextStep = STATE_RECEIVE_WAKE_ONE_MEDIUM;
-				block();
+				block(1000);
 			}
 		}
 
@@ -235,7 +235,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 			else
 			{
 				this.nextStep = STATE_RECEIVE_VOTE_REQUEST;
-				block();
+				block(1000);
 			}
 		}
 		/** etat reception du vote **/
@@ -295,7 +295,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 			else
 			{
 				this.nextStep = STATE_GET_ROLE_RECEIVE;
-				block();
+				block(1000);
 			}
 		}	
 
@@ -334,7 +334,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 			else
 			{
 				this.nextStep = STATE_RECEIVE_SLEEP_ONE_MEDIUM;
-				block();
+				block(1000);
 			}
 		}
 		/** etat fin de tour **/

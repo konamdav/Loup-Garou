@@ -113,7 +113,7 @@ public class AsyncrhonousVoteBehaviour extends Behaviour {
 			}
 			else
 			{
-				block();
+				block(1000);
 			}
 
 		}
@@ -174,7 +174,7 @@ public class AsyncrhonousVoteBehaviour extends Behaviour {
 			}
 			else
 			{
-				block();
+				block(1000);
 			}
 		}
 		else if(this.step.equals(STATE_RESULTS))

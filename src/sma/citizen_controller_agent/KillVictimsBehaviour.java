@@ -117,7 +117,7 @@ public class KillVictimsBehaviour extends SimpleBehaviour
 					}
 					else {
 						this.nextStep = STATE_RECEIVE_KILL;
-						block();
+						block(1000);
 					}
 
 				}

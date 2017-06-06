@@ -64,7 +64,7 @@ public class InitBehaviour extends Behaviour {
 					Object[] args = {gameid};
 					for(int i = 0; i<nb; ++i)
 					{
-						String playerName = "PLAYER_"+gameid+""+i;
+						String playerName = "PLAYER_"+i+"_"+gameid;
 						AgentController ac = this.gameControllerAgent.getContainerController().createNewAgent(
 								playerName, "sma.player_agent.PlayerAgent", args);
 						ac.start();
@@ -102,7 +102,7 @@ public class InitBehaviour extends Behaviour {
 			else
 			{
 				this.nextStep = STATE_RECEIVE_INIT;
-				block();
+				block(1000);
 			}
 		}
 
@@ -154,7 +154,7 @@ public class InitBehaviour extends Behaviour {
 			else
 			{
 				this.nextStep = STATE_RECEIVE_HUMAN_ATTR;
-				block();
+				block(1000);
 			}
 		}
 		else if(step.equals(STATE_SEND_ATTR))
@@ -216,7 +216,7 @@ public class InitBehaviour extends Behaviour {
 			else
 			{
 				this.nextStep = STATE_RECEIVE_ATTR;
-				block();
+				block(1000);
 			}
 		}
 		else if(step.equals(STATE_START_GAME))

@@ -64,7 +64,7 @@ public class LittleGirlSuspicionListener extends Behaviour{
 			else
 			{
 				this.nextStep = STATE_RECEIVE_INFORM;
-				block();
+				block(1000);
 			}		
 		}
 		else if(step.equals(STATE_UPDATE))

@@ -44,7 +44,7 @@ public class CreateGameBehaviour extends CyclicBehaviour {
 		}
 		else
 		{
-			block();
+			block(1000);
 		}
 	}
 }

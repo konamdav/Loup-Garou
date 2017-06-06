@@ -81,7 +81,7 @@ public class uiAgent extends Agent  {
 
 					flag = true; 
 				}
-				else block();
+				else block(1000);
 			}
 
 		}
@@ -148,7 +148,7 @@ public class uiAgent extends Agent  {
 					}
 
 				}
-				else block();
+				else block(1000);
 
 			}
 		}

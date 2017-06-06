@@ -82,7 +82,7 @@ public class DeleteRoleBehaviour extends CyclicBehaviour {
 			this.agent.send(messageRequest);
 		}
 		else {
-			block();
+			block(1000);
 		}
 	}	
 }

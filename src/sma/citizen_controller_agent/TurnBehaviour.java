@@ -90,7 +90,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 			}
 			else
 			{
-				block();
+				block(1000);
 			}
 
 		}else if(this.step.equals(STATE_DAY))
@@ -137,12 +137,12 @@ public class TurnBehaviour extends SimpleBehaviour {
 				else
 				{
 					this.nextStep = STATE_RECEIVE_WAKE_ALL;
-					block();
+					block(1000);
 				}
 			}
 			else
 			{
-				block();
+				block(1000);
 			}
 		}
 		/** etat envoi requete pour tuer les  victimes d�sign�es durant la nuit **/
@@ -223,7 +223,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 				}
 				else
 				{
-					block();
+					block(1000);
 				}
 			}
 		}
@@ -302,7 +302,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 			}
 			else
 			{
-				block();
+				block(1000);
 			}
 		}
 		/** etat envoi requete demande de vote **/
@@ -369,7 +369,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 			}
 			else
 			{
-				block();
+				block(1000);
 			}
 		}
 		/** etat envoi des requ�tes de sommeil **/
@@ -416,7 +416,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 			}
 			else
 			{
-				block();
+				block(1000);
 			}
 		}
 		/** etat fin de tour **/

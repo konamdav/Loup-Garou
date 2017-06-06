@@ -82,7 +82,7 @@ public class MediumSuspicionListener extends Behaviour{
 				{
 
 					this.nextStep = STATE_RECEIVE_INFORM;
-					block();
+					block(1000);
 					
 				}
 			}		

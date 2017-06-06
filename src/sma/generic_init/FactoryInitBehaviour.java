@@ -136,7 +136,7 @@ public class FactoryInitBehaviour extends CyclicBehaviour{
 			else
 			{
 				this.nextStep = "";
-				block();
+				block(1000);
 			}
 		}
 		else if(step.equals(STATE_ANSWER_INIT_ROLE))
@@ -164,7 +164,7 @@ public class FactoryInitBehaviour extends CyclicBehaviour{
 			else
 			{
 				this.nextStep = "";
-				block();
+				block(1000);
 			}
 
 		}

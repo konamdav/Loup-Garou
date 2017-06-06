@@ -204,9 +204,6 @@ public class ViewPlayers {
 		{
 			for(PlayerProfile p : profiles)
 			{
-
-				System.out.println("PROFILE : " + p.getName());
-
 				ViewPlayer viewPlayer = this.viewPlayers.get(p.getName());
 				if(p.getStatus() != null & viewPlayer != null){
 					viewPlayer.setStatus(p.getStatus());

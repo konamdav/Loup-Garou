@@ -45,6 +45,14 @@ public class ViewInterfaceGame implements Screen{
 	Sprite spriteNight = new Sprite(new Texture("resources/sprites/nightsprite.png"));
 	Sprite spriteCitizenTurn = new Sprite(new Texture("resources/sprites/citizensprite.png"));
 	Sprite spriteWerewolfTurn = new Sprite(new Texture("resources/sprites/werewolfsprite.png"));
+	Sprite spriteWhitewerewolfTurn = new Sprite(new Texture("resources/sprites/whitewerewolfsprite.png"));
+	Sprite spriteGreatwerewolfTurn = new Sprite(new Texture("resources/sprites/greatwerewolfsprite.png"));
+	Sprite spriteCupidTurn = new Sprite(new Texture("resources/sprites/cupidsprite.png"));
+	Sprite spriteHunterTurn = new Sprite(new Texture("resources/sprites/huntersprite.png"));
+	Sprite spriteFamilyTurn = new Sprite(new Texture("resources/sprites/familysprite.png"));
+	Sprite spriteWitchTurn = new Sprite(new Texture("resources/sprites/witchsprite.png"));
+	Sprite spriteLittlegirlTurn = new Sprite(new Texture("resources/sprites/littlegirlsprite.png"));
+	Sprite spriteMediumTurn = new Sprite(new Texture("resources/sprites/mediumsprite.png"));
 	Sprite spriteBackgroundLog = new Sprite(new Texture("resources/sprites/logsprite.png"));
 	Sprite spriteBackgroundVote = new Sprite(new Texture("resources/sprites/votesprite.png"));
 	
@@ -134,8 +142,23 @@ public class ViewInterfaceGame implements Screen{
 		spriteCitizenTurn.setY(510);
 		spriteWerewolfTurn.setX(287);
 		spriteWerewolfTurn.setY(510);
-
-
+		spriteWhitewerewolfTurn.setX(287);
+		spriteWhitewerewolfTurn.setY(510);
+		spriteGreatwerewolfTurn.setX(287);
+		spriteGreatwerewolfTurn.setY(510);
+		spriteCupidTurn.setX(287);
+		spriteCupidTurn.setY(510);
+		spriteFamilyTurn.setX(287);
+		spriteFamilyTurn.setY(510);
+		spriteWitchTurn.setX(287);
+		spriteWitchTurn.setY(510);
+		spriteMediumTurn.setX(287);
+		spriteMediumTurn.setY(510);
+		spriteHunterTurn.setX(287);
+		spriteHunterTurn.setY(510);
+		spriteLittlegirlTurn.setX(287);
+		spriteLittlegirlTurn.setY(510);
+		
 		spriteBackgroundLog.setX(960);
 		spriteBackgroundLog.setY(280);
 
@@ -194,6 +217,22 @@ public class ViewInterfaceGame implements Screen{
 
 			if (this.game.getGameInformations().getTurn().equals("WEREWOLF"))
 				spriteWerewolfTurn.draw(stage.getBatch());
+			else if (this.game.getGameInformations().getTurn().equals("GREAT_WEREWOLF"))
+				spriteGreatwerewolfTurn.draw(stage.getBatch());
+			else if (this.game.getGameInformations().getTurn().equals("WHITE_WEREWOLF"))
+				spriteWhitewerewolfTurn.draw(stage.getBatch());
+			else if (this.game.getGameInformations().getTurn().equals("HUNTER"))
+				spriteHunterTurn.draw(stage.getBatch());
+			else if (this.game.getGameInformations().getTurn().equals("FAMILY"))
+				spriteFamilyTurn.draw(stage.getBatch());
+			else if (this.game.getGameInformations().getTurn().equals("MEDIUM"))
+				spriteMediumTurn.draw(stage.getBatch());
+			else if (this.game.getGameInformations().getTurn().equals("WITCH"))
+				spriteWitchTurn.draw(stage.getBatch());
+			else if (this.game.getGameInformations().getTurn().equals("LITTLE_GIRL"))
+				spriteLittlegirlTurn.draw(stage.getBatch());
+			else if (this.game.getGameInformations().getTurn().equals("CUPID"))
+				spriteCupidTurn.draw(stage.getBatch());
 			else
 				spriteCitizenTurn.draw(stage.getBatch());
 			

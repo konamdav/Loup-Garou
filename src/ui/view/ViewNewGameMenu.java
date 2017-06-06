@@ -63,6 +63,7 @@ public class ViewNewGameMenu implements Screen {
   
 		 table.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 	       table.center();
+	       
         
         
         Label all_werewolf_label =new Label("Werewolf",skin);
@@ -74,7 +75,6 @@ public class ViewNewGameMenu implements Screen {
         werewolf_textField = new TextField("0",skin);
         werewolf_textField.setTextFieldFilter(new TextFieldFilter.DigitsOnlyFilter());
         table.add(werewolf_textField);
-        table.row(); 
         
         Label great_werewolf_label =new Label("Great",skin);
         table.add(great_werewolf_label);
@@ -91,10 +91,10 @@ public class ViewNewGameMenu implements Screen {
         table.add(white_werewolf_textField);
         table.row();
         table.row();
-        
+
         
         Label all_citizen_label =new Label("Citizen",skin);
-        table.add(all_citizen_label);
+        table.add(all_citizen_label).padTop(20);
         table.row();
         
         Label citizen_label =new Label("Normal",skin);
@@ -102,7 +102,6 @@ public class ViewNewGameMenu implements Screen {
         citizen_textField = new TextField("0",skin);
         citizen_textField.setTextFieldFilter(new TextFieldFilter.DigitsOnlyFilter());
         table.add(citizen_textField);
-        table.row();
         
         Label lover_label =new Label("Lover",skin);
         table.add(lover_label);
@@ -117,7 +116,6 @@ public class ViewNewGameMenu implements Screen {
         family_textField = new TextField("0",skin);
         family_textField.setTextFieldFilter(new TextFieldFilter.DigitsOnlyFilter());
         table.add(family_textField);
-        table.row();
         
         Label medium_label =new Label("Medium",skin);
         table.add(medium_label);
@@ -131,7 +129,6 @@ public class ViewNewGameMenu implements Screen {
         little_girl_textField = new TextField("0",skin);
         little_girl_textField.setTextFieldFilter(new TextFieldFilter.DigitsOnlyFilter());
         table.add(little_girl_textField);
-        table.row();
         
         Label hunter_label =new Label("Hunter",skin);
         table.add(hunter_label);
@@ -145,7 +142,6 @@ public class ViewNewGameMenu implements Screen {
         angel_textField = new TextField("0",skin);
         angel_textField.setTextFieldFilter(new TextFieldFilter.DigitsOnlyFilter());
         table.add(angel_textField);
-        table.row();
         
         Label flute_label =new Label("Flutist",skin);
         table.add(flute_label);
@@ -159,7 +155,6 @@ public class ViewNewGameMenu implements Screen {
         ancient_textField = new TextField("0",skin);
         ancient_textField.setTextFieldFilter(new TextFieldFilter.DigitsOnlyFilter());
         table.add(ancient_textField);
-        table.row();
         
         
         Label witch_label =new Label("Witch",skin);
@@ -176,21 +171,26 @@ public class ViewNewGameMenu implements Screen {
         table.add(thief_textField);
         table.row();
         
-        
+
         Label human_label =new Label("Joueurs humains",skin);
-        table.add(human_label);
+        table.add(human_label).padTop(20);
+        table.row();        
+
+        Label humannb_label =new Label("Nombre : ",skin);
+        table.add(humannb_label);
         human_textField = new TextField("0",skin);
         human_textField.setTextFieldFilter(new TextFieldFilter.DigitsOnlyFilter());
         table.add(human_textField);
         table.row();
         
+        
 
         CheckBox box=new CheckBox("  Cacher les roles",skin);	
-        table.add(box);
+        table.add(box).padTop(20);
         table.row();
         
         TextButton creer_button = new TextButton("Créer partie",skin);
-        table.add(creer_button);
+        table.add(creer_button).padTop(20);
         table.row();
         
         creer_button.addListener(new ClickListener(){

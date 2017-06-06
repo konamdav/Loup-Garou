@@ -103,7 +103,7 @@ public class ViewNewGameMenu implements Screen {
         citizen_textField.setTextFieldFilter(new TextFieldFilter.DigitsOnlyFilter());
         table.add(citizen_textField);
         
-        Label lover_label =new Label("Lover",skin);
+        Label lover_label =new Label("Cupid",skin);
         table.add(lover_label);
         lover_textField = new TextField("0",skin);
         lover_textField.setTextFieldFilter(new TextFieldFilter.DigitsOnlyFilter());
@@ -193,6 +193,11 @@ public class ViewNewGameMenu implements Screen {
         table.add(creer_button).padTop(20);
         table.row();
         
+        TextButton retour_button = new TextButton("Retour",skin);
+		table.add(retour_button);
+		table.row();
+
+        
         creer_button.addListener(new ClickListener(){
 			@Override
             public void clicked(InputEvent event, float x, float y) {
@@ -236,6 +241,13 @@ public class ViewNewGameMenu implements Screen {
         		app.setScreen(new ViewJoinMenu(app));
             }
         });
+
+		retour_button.addListener(new ClickListener(){
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				app.setScreen(new ViewJoinMenu(app));
+			}
+		});
         
          stage.addActor(table);
         

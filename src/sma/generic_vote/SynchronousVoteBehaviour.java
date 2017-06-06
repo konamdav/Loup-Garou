@@ -213,17 +213,22 @@ public class SynchronousVoteBehaviour extends Behaviour {
 			{
 				this.currentTime = System.currentTimeMillis();
 			}
-			
+
 			if(System.currentTimeMillis() - this.currentTime > 3000)
 			{
 				this.currentTime = -1;
 				ACLMessage wakeup = new ACLMessage(ACLMessage.UNKNOWN);
 				wakeup.setSender(this.myAgent.getAID());
-				wakeup.addReceiver(this.request.getAIDVoters().get(nbVoters));
-				wakeup.setConversationId("WAKEUP");
-				this.myAgent.send(wakeup);
+				if(nbVoters < this.request.getVoters().size())
+				{
+					wakeup.addReceiver(this.request.getAIDVoters().get(nbVoters));
+					wakeup.setConversationId("WAKEUP");
+					this.myAgent.send(wakeup);
+					
+					System.out.println("Relance du joueur "+this.request.getAIDVoters().get(nbVoters).getLocalName()+" ...");
+				}
+
 				
-				System.out.println("Relance ...");
 			}
 
 			MessageTemplate mt = MessageTemplate.and(
@@ -286,8 +291,9 @@ public class SynchronousVoteBehaviour extends Behaviour {
 
 				System.err.println("\nSV : "+this.nbVoters+"/"+this.request.getAIDVoters().size());
 
-				if(this.nbVoters>= this.request.getAIDVoters().size())
+				if(this.nbVoters >= this.request.getAIDVoters().size())
 				{
+					this.nbVoters = 0;
 					System.err.println("SV next step");
 					this.nextStep = STATE_RESULTS;
 				}
@@ -304,7 +310,7 @@ public class SynchronousVoteBehaviour extends Behaviour {
 			}
 			else
 			{
-				block(1000);
+				block(1000);	
 			}
 		}
 
@@ -472,7 +478,7 @@ public class SynchronousVoteBehaviour extends Behaviour {
 				message.setContent(json);
 				message.setSender(this.myAgent.getAID());
 				message.setConversationId("NEW_CITIZEN_VOTE_RESULTS");
-				
+
 				List<AID> agents = DFServices.findGameControllerAgent("ENVIRONMENT", this.myAgent, this.controllerAgent.getGameid());
 				if(!agents.isEmpty())
 				{
@@ -490,7 +496,7 @@ public class SynchronousVoteBehaviour extends Behaviour {
 			message.setConversationId("VOTE_RESULTS");
 			message.setContent(this.finalResults.get(0));
 			this.myAgent.send(message);
-			
+
 			this.nextStep = STATE_INIT;
 		}
 

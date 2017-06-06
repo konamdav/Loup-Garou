@@ -75,9 +75,45 @@ public class ViewRoles {
 
 	public void update()
 	{
-		for(ViewRole role : this.roles)
+		int x = 0, y =0;
+		if(!this.roles.isEmpty())
 		{
-			role.update();
+			x = this.roles.get(0).getX();
+			y = this.roles.get(0).getY();
+			
+			this.roles.get(0).update();
+		}
+
+		for(int i = 1; i<this.roles.size(); ++i)
+		{			
+			if(this.getPlayer().getDirection().equals("UP"))
+			{
+				x = x;
+				y = y-40;
+			}
+			else if(this.getPlayer().getDirection().equals("DOWN"))
+			{
+				x = x;
+				y = y+40;
+				
+			}
+
+			else if(this.getPlayer().getDirection().equals("RIGHT"))
+			{
+				x = x-40;
+				y = y;
+				
+			}
+			else if(this.getPlayer().getDirection().equals("LEFT"))
+			{
+				x = x+40;
+				y = y;
+				
+			}
+			
+			this.roles.get(i).setX(x);
+			this.roles.get(i).setY(y);
+			this.roles.get(i).update();
 		}
 	}
 
@@ -108,10 +144,10 @@ public class ViewRoles {
 
 				this.roles.get(cpt).setX(x);
 				this.roles.get(cpt).setY(y);
-				
+
 				curX = xx;
 				curY = yy;
-				
+
 				x = xx;
 				y = yy;
 			}
@@ -126,7 +162,7 @@ public class ViewRoles {
 
 			++cpt;
 		}
-		
+
 		if(flag)
 		{
 			this.roles.remove(index);

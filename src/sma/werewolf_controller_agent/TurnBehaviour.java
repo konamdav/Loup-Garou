@@ -512,7 +512,6 @@ public class TurnBehaviour extends SimpleBehaviour {
 			this.nextStep = STATE_INIT;
 		}
 
-
 		if(!this.nextStep.isEmpty())
 		{
 			this.step = this.nextStep;

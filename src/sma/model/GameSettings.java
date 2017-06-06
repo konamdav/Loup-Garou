@@ -13,8 +13,8 @@ public class GameSettings {
 	public GameSettings() {
 		super();
 
-		this.game_mode = false;
-		this.nbHumans = 0;
+		this.game_mode = true;
+		this.nbHumans = 1;
 		
 		//Liste role par d�faut
 		this.rolesSettings = new HashMap<String, Integer>();

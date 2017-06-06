@@ -55,7 +55,7 @@ public class ViewInterfaceGame implements Screen{
 	Sprite spriteMediumTurn = new Sprite(new Texture("resources/sprites/mediumsprite.png"));
 	Sprite spriteBackgroundLog = new Sprite(new Texture("resources/sprites/logsprite.png"));
 	Sprite spriteBackgroundVote = new Sprite(new Texture("resources/sprites/votesprite.png"));
-	
+
 	SelectBox<String> selectBox ;
 	TextButton okButton;
 	TextButton backButton;
@@ -99,16 +99,16 @@ public class ViewInterfaceGame implements Screen{
 		skin = new Skin( Gdx.files.internal( "resources/visui/uiskin.json" ));
 
 		Table table=new Table();
-        table.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
-        table.top().right();
-        
-        selectBox = new SelectBox<String>(skin);
-        okButton=new TextButton("Vote",skin);
-        backButton=new TextButton("Retour",skin);
-        table.add(selectBox).width(230).height(60).padRight(5);
-        table.add(okButton).width(60).height(60).padRight(5);
-        table.add(backButton).width(230).height(60);
-        
+		table.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+		table.top().right();
+
+		selectBox = new SelectBox<String>(skin);
+		okButton=new TextButton("Vote",skin);
+		backButton=new TextButton("Retour",skin);
+		table.add(selectBox).width(230).height(60).padRight(5);
+		table.add(okButton).width(60).height(60).padRight(5);
+		table.add(backButton).width(230).height(60);
+
 		Gdx.input.setInputProcessor(stage);
 		skin = new Skin( Gdx.files.internal( "resources/visui/uiskin.json" ));
 		viewPlayers=new ViewPlayers(((SpriteBatch)stage.getBatch()));
@@ -158,7 +158,7 @@ public class ViewInterfaceGame implements Screen{
 		spriteHunterTurn.setY(510);
 		spriteLittlegirlTurn.setX(287);
 		spriteLittlegirlTurn.setY(510);
-		
+
 		spriteBackgroundLog.setX(960);
 		spriteBackgroundLog.setY(280);
 
@@ -168,17 +168,28 @@ public class ViewInterfaceGame implements Screen{
 
 		stage.addActor(scrollpane_log);
 		stage.addActor(scrollpane_vote);
-		
+
 		stage.addActor(table);
+
 		
+		
+		okButton.addListener(new ClickListener() {
+
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				game.agent.addSendVote(game.getGameInformations().getVote().getAIDPlayer(), selectBox.getSelected()) ;
+			}
+		});
+
 		backButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-            	game.agent.setFollow(false);
-            	game.clean();
+
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				game.agent.setFollow(false);
+				game.clean();
 				game.setScreen(new ViewJoinMenu(game));
-            }
-        });
+			}
+		});
 
 	}
 
@@ -235,7 +246,7 @@ public class ViewInterfaceGame implements Screen{
 				spriteCupidTurn.draw(stage.getBatch());
 			else
 				spriteCitizenTurn.draw(stage.getBatch());
-			
+
 			spriteBackgroundLog.draw(stage.getBatch());
 			spriteBackgroundVote.draw(stage.getBatch());
 
@@ -245,9 +256,9 @@ public class ViewInterfaceGame implements Screen{
 				String[] strings = new String[this.game.getGameInformations().getVote().getRequest().getChoices().size()];
 				strings = this.game.getGameInformations().getVote().getRequest().getChoices().toArray(strings);
 				selectBox.setItems(strings);
-			
+
 			}
-			
+
 			// Set Iog
 			String[] strings = new String[this.game.getGameInformations().getActionLogs().size()];
 			strings = this.game.getGameInformations().getActionLogs().toArray(strings);

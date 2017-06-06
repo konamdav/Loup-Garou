@@ -11,6 +11,7 @@ import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.CyclicBehaviour;
+import jade.core.behaviours.OneShotBehaviour;
 import jade.core.behaviours.TickerBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
@@ -23,7 +24,7 @@ import ui.view.App;
 public class uiAgent extends Agent  {
 
 	public App app = null;
-	
+
 	public boolean follow = false;
 
 
@@ -93,7 +94,7 @@ public class uiAgent extends Agent  {
 
 	}
 
-	
+
 	class QueryGameInformationsNoTick extends Behaviour{
 
 		private static final long serialVersionUID = 1L;
@@ -108,17 +109,17 @@ public class uiAgent extends Agent  {
 			step = 0;
 
 		}
-		
-			
+
+
 		protected void onTick() {
-			
+
 
 		}
 		@Override
 		public void action() {
 			switch (step){
 			case 0:
-				
+
 				ACLMessage m = new ACLMessage(ACLMessage.REQUEST);
 				System.out.println("tick");
 				m.setConversationId("GAME_INFORMATIONS" + gameid);
@@ -148,7 +149,7 @@ public class uiAgent extends Agent  {
 
 				}
 				else block();
-		
+
 			}
 		}
 		@Override
@@ -158,16 +159,44 @@ public class uiAgent extends Agent  {
 		}
 
 	}
-	
-	
-	
-	
+
+	class SendVote extends OneShotBehaviour{
+		int n_agent; 
+		uiAgent agent;
+		AID aid;
+		String content;
+
+		public SendVote(uiAgent a, AID id, String c)
+		{
+			this.agent = a;
+			this.aid = id;
+			this.content = c;
+		}
+
+		@Override
+		public void action() {
+			ACLMessage m = new ACLMessage(ACLMessage.INFORM);
+
+			m.setContent(content);
+			m.setConversationId("VOTE_INFORM");
+			m.setSender(this.agent.getAID());
+			m.addReceiver(aid);
+			getAgent().send(m);
+		}
+	}
+
 
 	public void addQuery()
 	{
 		addBehaviour(new QueryContainers(this));
 	}
 	
+
+	public void addSendVote(AID id, String c)
+	{
+		addBehaviour(new SendVote(this, id, c));
+	}
+
 	public void getInformations(int id)
 	{
 		//addBehaviour(new QueryGameInformations(this, id, 600));

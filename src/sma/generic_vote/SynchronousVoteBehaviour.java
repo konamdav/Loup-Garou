@@ -174,7 +174,7 @@ public class SynchronousVoteBehaviour extends Behaviour {
 			messageRequest.setConversationId("VOTE_REQUEST");
 
 			int reste = this.request.getAIDVoters().size()-this.nbVoters;
-			if(reste >= Data.MAX_SYNCHRONOUS_PLAYERS)
+			if(false )// reste >= Data.MAX_SYNCHRONOUS_PLAYERS)
 			{
 				/** hybrid synchronous mode **/
 				this.nbAsynchronousPlayers = (int) (Math.random()*Math.min(Data.MAX_SYNCHRONOUS_PLAYERS-1, (reste-1)))+1;

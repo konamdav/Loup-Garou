@@ -13,11 +13,15 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import sma.model.DFServices;
 import sma.model.PlayerProfile;
@@ -43,8 +47,10 @@ public class ViewInterfaceGame implements Screen{
 	Sprite spriteWerewolfTurn = new Sprite(new Texture("resources/sprites/werewolfsprite.png"));
 	Sprite spriteBackgroundLog = new Sprite(new Texture("resources/sprites/logsprite.png"));
 	Sprite spriteBackgroundVote = new Sprite(new Texture("resources/sprites/votesprite.png"));
-
-
+	
+	SelectBox<String> selectBox ;
+	TextButton okButton;
+	TextButton backButton;
 	List<String> list_log;
 	ScrollPane scrollpane_log;
 	List<String> list_vote;
@@ -62,6 +68,7 @@ public class ViewInterfaceGame implements Screen{
 		mapx = 0;
 		mapy = 0;
 		this.game = game;
+		this.game.clean();
 	}
 
 
@@ -81,7 +88,19 @@ public class ViewInterfaceGame implements Screen{
 				return true;
 			}
 		};
+		skin = new Skin( Gdx.files.internal( "resources/visui/uiskin.json" ));
 
+		Table table=new Table();
+        table.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+        table.top().right();
+        
+        selectBox = new SelectBox<String>(skin);
+        okButton=new TextButton("Vote",skin);
+        backButton=new TextButton("Retour",skin);
+        table.add(selectBox).width(230).height(60).padRight(5);
+        table.add(okButton).width(60).height(60).padRight(5);
+        table.add(backButton).width(230).height(60);
+        
 		Gdx.input.setInputProcessor(stage);
 		skin = new Skin( Gdx.files.internal( "resources/visui/uiskin.json" ));
 		viewPlayers=new ViewPlayers(((SpriteBatch)stage.getBatch()));
@@ -126,6 +145,17 @@ public class ViewInterfaceGame implements Screen{
 
 		stage.addActor(scrollpane_log);
 		stage.addActor(scrollpane_vote);
+		
+		stage.addActor(table);
+		
+		backButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+            	game.agent.setFollow(false);
+            	game.clean();
+				game.setScreen(new ViewJoinMenu(game));
+            }
+        });
 
 	}
 
@@ -140,7 +170,7 @@ public class ViewInterfaceGame implements Screen{
 
 		//System.gc();
 		//Pour actualiser l'interface
-		Gdx.gl.glClearColor(0.7f,0.7f,0.7f, 1);
+		Gdx.gl.glClearColor(0,0,0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);       
 		stage.getBatch().enableBlending();
 		stage.getBatch().begin();
@@ -170,6 +200,15 @@ public class ViewInterfaceGame implements Screen{
 			spriteBackgroundLog.draw(stage.getBatch());
 			spriteBackgroundVote.draw(stage.getBatch());
 
+			if(this.game.getGameInformations().getVote() != null)
+			{
+
+				String[] strings = new String[this.game.getGameInformations().getVote().getRequest().getChoices().size()];
+				strings = this.game.getGameInformations().getVote().getRequest().getChoices().toArray(strings);
+				selectBox.setItems(strings);
+			
+			}
+			
 			// Set Iog
 			String[] strings = new String[this.game.getGameInformations().getActionLogs().size()];
 			strings = this.game.getGameInformations().getActionLogs().toArray(strings);

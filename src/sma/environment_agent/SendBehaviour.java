@@ -62,8 +62,10 @@ public class SendBehaviour extends OneShotBehaviour {
 				e.printStackTrace();
 			}
 		}
-		else if(message.getConversationId().equals("GAME_INFORMATIONS"))
+		else if(message.getConversationId().equals("GAME_INFORMATIONS" + envAgent.getGameid()))
 		{
+			System.out.println("SEND GAMEINFORMATIONS");
+
 			GameInformations gi = new GameInformations();
 			gi.setActionLogs(envAgent.getActionLogs());
 			gi.setCurrentResults(envAgent.getCurrentResults());
@@ -72,6 +74,7 @@ public class SendBehaviour extends OneShotBehaviour {
 			gi.setProfiles(DFServices.getPlayerProfiles(this.envAgent.isGame_mode(), this.envAgent.getCptHuman(), envAgent, envAgent.getGameid()));
 			gi.setTurn(envAgent.getTurn());
 			gi.setNum_turn(envAgent.getNum_turn());
+			gi.setVote(envAgent.getHumanVoteRequest());
 			
 			try {
 				contentString = mapper.writeValueAsString(gi);

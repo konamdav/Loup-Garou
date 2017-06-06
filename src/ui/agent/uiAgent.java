@@ -22,9 +22,9 @@ import ui.view.App;
 
 public class uiAgent extends Agent  {
 
-	public String test = "test";
-
 	public App app = null;
+	
+	public boolean follow = false;
 
 
 
@@ -42,7 +42,6 @@ public class uiAgent extends Agent  {
 		int n_agent; 
 		int step;
 		uiAgent agent;
-		private final ObjectMapper mapper = new ObjectMapper();
 
 		public QueryContainers(uiAgent a)
 		{
@@ -94,42 +93,6 @@ public class uiAgent extends Agent  {
 
 	}
 
-	class QueryGameInformations extends TickerBehaviour{
-
-
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
-		uiAgent agent;
-		int gameid;
-
-		public QueryGameInformations(uiAgent a, int id, long period) {
-			super(a, period);
-			agent = a;
-			gameid = id;
-
-		}
-
-		@Override
-		protected void onTick() {
-			ACLMessage m = new ACLMessage(ACLMessage.REQUEST);
-			System.out.println("tick");
-			m.setConversationId("GAME_INFORMATIONS");
-			m.setSender(this.agent.getAID());
-			List<AID> aids =DFServices.findGameControllerAgent("ENVIRONMENT", agent, gameid);
-			Collections.shuffle(aids);
-			if (!aids.isEmpty())
-			{
-				m.addReceiver(aids.get(0));
-				getAgent().send(m);
-			}
-
-		}
-
-	}
-
-	
 	
 	class QueryGameInformationsNoTick extends Behaviour{
 
@@ -158,7 +121,7 @@ public class uiAgent extends Agent  {
 				
 				ACLMessage m = new ACLMessage(ACLMessage.REQUEST);
 				System.out.println("tick");
-				m.setConversationId("GAME_INFORMATIONS");
+				m.setConversationId("GAME_INFORMATIONS" + gameid);
 				m.setSender(this.agent.getAID());
 				List<AID> aids =DFServices.findGameControllerAgent("ENVIRONMENT", agent, gameid);
 				Collections.shuffle(aids);
@@ -191,7 +154,7 @@ public class uiAgent extends Agent  {
 		@Override
 		public boolean done() {
 
-			return agent.app.gameInformations != null && agent.app.gameInformations.isEndGame()  ;
+			return agent.app.gameInformations != null && agent.app.gameInformations.isEndGame() || !follow ;
 		}
 
 	}
@@ -208,7 +171,16 @@ public class uiAgent extends Agent  {
 	public void getInformations(int id)
 	{
 		//addBehaviour(new QueryGameInformations(this, id, 600));
+		this.setFollow(true);
 		addBehaviour(new QueryGameInformationsNoTick(this, id));
+	}
+
+	public boolean isFollow() {
+		return follow;
+	}
+
+	public void setFollow(boolean follow) {
+		this.follow = follow;
 	}
 
 

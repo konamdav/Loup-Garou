@@ -97,4 +97,9 @@ public class App extends Game {
 		agent = a; 
 	}
 	
+	public void clean(){
+
+		//containers = null;
+		gameInformations = new GameInformations();
+	}
 }

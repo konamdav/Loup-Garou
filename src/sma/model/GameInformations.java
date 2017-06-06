@@ -19,6 +19,9 @@ public class GameInformations {
 
 	private List<PlayerProfile> profiles; 
 	
+
+	private HumanVoteRequest vote;
+	
 	public List<PlayerProfile> getProfiles() {
 		return profiles;
 	}
@@ -85,6 +88,14 @@ public class GameInformations {
 
 	public void setNum_turn(int num_turn) {
 		this.num_turn = num_turn;
+	}
+
+	public HumanVoteRequest getVote() {
+		return vote;
+	}
+
+	public void setVote(HumanVoteRequest vote) {
+		this.vote = vote;
 	}
 	
 }

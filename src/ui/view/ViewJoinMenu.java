@@ -29,11 +29,14 @@ public class ViewJoinMenu implements Screen{
 	int i =0;
 
 	public ViewJoinMenu(App a){
+
 		app = a;
+
 		stage=new Stage();
 		Gdx.input.setInputProcessor(stage);
 		skin = new Skin( Gdx.files.internal( "resources/visui/uiskin.json" ));
 
+		
 		app.agent.addQuery();
 
 		Table table=new Table();
@@ -60,9 +63,16 @@ public class ViewJoinMenu implements Screen{
 				join_button.addListener(new ClickListener(){
 					@Override
 					public void clicked(InputEvent event, float x, float y) {
-						//System.out.println(i);
+						System.out.println("DEBOGAGE : " + i + "  --  " + app.getContainers().get(id) );
 						app.agent.getInformations(app.getContainers().get(id));
-						
+						/*
+						try {
+							TimeUnit.SECONDS.sleep(1);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						*/
 						app.setScreen(new ViewInterfaceGame(app));
 					}
 				});

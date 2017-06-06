@@ -121,10 +121,10 @@ public class ViewPlayers {
 		{
 			int nb = profiles.size();
 			int cpt = 0;
-			
+
 			int n_rows = 0;
 			int n_cols = 0 ;
-		
+
 			n_rows  = nb % 4;
 			n_cols = nb / 4;
 
@@ -176,19 +176,19 @@ public class ViewPlayers {
 						player = newPlayer(profiles.get(cpt).getName(),profiles.get(cpt).getStatus(), "LEFT", ind_x+1+ret+n_cols/2, ind_y-i );
 						++cpt;
 					}
-					
+
 					if(nb >= 4){
 						int reste = nb - (n_cols+2*n_rows);
 						for(int i = 0; i<reste; ++i)
 						{
 							player = newPlayer(profiles.get(cpt).getName(),profiles.get(cpt).getStatus(), "UP", ind_x+1+(n_cols-1-i)-n_cols/2, ind_y-1-n_rows/2);
 							++cpt;
-							
+
 						}
 					}
 				}
 			}
-			
+
 			for(PlayerProfile p : profiles)
 			{
 				for(String role : p.getRoles())
@@ -196,7 +196,7 @@ public class ViewPlayers {
 					this.viewPlayers.get(p.getName()).getRoles().addNewRole(role);
 				}
 			}
-			
+
 			this.init = true;
 
 		}
@@ -204,21 +204,26 @@ public class ViewPlayers {
 		{
 			for(PlayerProfile p : profiles)
 			{
+
+				System.out.println("PROFILE : " + p.getName());
+
 				ViewPlayer viewPlayer = this.viewPlayers.get(p.getName());
-				viewPlayer.setStatus(p.getStatus());
-				List<String> alreadyRoles = this.viewPlayers.get(p.getName()).getRoles().getListRole();
-				
-				for(String role : p.getRoles())
-				{
-					if(!alreadyRoles.contains(role)){
-						this.viewPlayers.get(p.getName()).getRoles().addNewRole(role);
+				if(p.getStatus() != null & viewPlayer != null){
+					viewPlayer.setStatus(p.getStatus());
+					List<String> alreadyRoles = this.viewPlayers.get(p.getName()).getRoles().getListRole();
+
+					for(String role : p.getRoles())
+					{
+						if(!alreadyRoles.contains(role)){
+							this.viewPlayers.get(p.getName()).getRoles().addNewRole(role);
+						}
 					}
-				}
-				
-				for(String role : alreadyRoles)
-				{
-					if(!p.getRoles().contains(role)){
-						this.viewPlayers.get(p.getName()).getRoles().deleteRole(role);
+
+					for(String role : alreadyRoles)
+					{
+						if(!p.getRoles().contains(role)){
+							this.viewPlayers.get(p.getName()).getRoles().deleteRole(role);
+						}
 					}
 				}
 			}

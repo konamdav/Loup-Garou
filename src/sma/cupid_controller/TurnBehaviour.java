@@ -94,7 +94,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 			}
 			else
 			{
-				block();
+				block(1000);
 			}
 
 		}
@@ -139,7 +139,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 			}
 			else
 			{
-				block();
+				block(1000);
 			}
 		}
 
@@ -213,7 +213,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 			}
 			else
 			{
-				block();
+				block(1000);
 			}
 		}
 		/** etat envoi requete demande de vote **/
@@ -288,7 +288,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 			}
 			else
 			{
-				block();
+				block(1000);
 			}
 		}
 		else if(this.step.equals(STATE_SEND_WAKE_LOVER))
@@ -327,7 +327,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 			}
 			else
 			{
-				block();
+				block(1000);
 			}
 		}
 
@@ -367,7 +367,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 			}
 			else
 			{
-				block();
+				block(1000);
 			}
 		}
 
@@ -410,7 +410,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 			}
 			else
 			{
-				block();
+				block(1000);
 			}
 		}
 		/** etat envoi des requ�tes de sommeil **/
@@ -457,7 +457,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 			}
 			else
 			{
-				block();
+				block(1000);
 			}
 		}
 		/** etat fin de tour **/

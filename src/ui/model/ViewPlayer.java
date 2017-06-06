@@ -302,8 +302,8 @@ public class ViewPlayer extends ViewEntity{
 	
 	public void updateDead()
 	{
-		//System.out.println("Dead");
 		Animation animation_courante;
+		
 		if(direction.equals(LEFT))
 		{
 			animation_courante=animationLeftDead;

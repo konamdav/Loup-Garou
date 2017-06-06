@@ -80,7 +80,7 @@ public class HunterDeathBehaviour extends SimpleBehaviour implements IDeathBehav
 			else
 			{
 				//blocage du behaviour en attendant nouveau msg
-				block();
+				block(1000);
 			}
 
 		}

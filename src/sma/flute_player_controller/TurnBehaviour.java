@@ -86,7 +86,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 			}
 			else
 			{
-				block();
+				block(1000);
 			}
 
 		}
@@ -131,7 +131,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 			}
 			else
 			{
-				block();
+				block(1000);
 			}
 		}
 
@@ -209,7 +209,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 			}
 			else
 			{
-				block();
+				block(1000);
 			}
 		}
 
@@ -238,7 +238,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 			}
 			else
 			{
-				block();
+				block(1000);
 			}
 		}
 
@@ -267,7 +267,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 			}
 			else
 			{
-				block();
+				block(1000);
 			}
 		}
 
@@ -298,7 +298,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 			}
 			else
 			{
-				block();
+				block(1000);
 			}
 		}
 		/** etat envoi des requ�tes de sommeil **/
@@ -343,7 +343,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 			}
 			else
 			{
-				block();
+				block(1000);
 			}
 		}
 		/** etat fin de tour **/

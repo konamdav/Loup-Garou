@@ -83,7 +83,7 @@ public class CharmedScoreBehaviour extends Behaviour implements IVoteBehaviour{
 			else
 			{
 				this.nextStep = STATE_RECEIVE_REQUEST;
-				block();
+				block(1000);
 			}		
 		}
 		else if(step.equals(STATE_SCORE))

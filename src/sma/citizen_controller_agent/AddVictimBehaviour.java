@@ -52,7 +52,7 @@ public class AddVictimBehaviour extends CyclicBehaviour{
 		}
 		else
 		{
-			block();
+			block(1000);
 		}		
 	}
 

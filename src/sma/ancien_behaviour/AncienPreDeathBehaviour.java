@@ -62,7 +62,7 @@ public class AncienPreDeathBehaviour extends SimpleBehaviour implements IPreDeat
 			this.myAgent.send(reply);
 		}
 		else{
-			block();
+			block(1000);
 		}
 	}
 

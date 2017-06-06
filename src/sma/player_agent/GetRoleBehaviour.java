@@ -32,7 +32,7 @@ public class GetRoleBehaviour extends SimpleBehaviour{
 				this.myAgent.send(reply);
 			}
 			else{
-				block();
+				block(1000);
 			}		
 		}
 

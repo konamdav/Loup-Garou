@@ -39,7 +39,7 @@ public class VictimStatusBehaviour extends SimpleBehaviour{
 			}
 			else
 			{
-				block();
+				block(1000);
 			}		
 		}
 	}

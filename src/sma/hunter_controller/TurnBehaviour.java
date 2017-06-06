@@ -88,7 +88,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 				this.step = STATE_RECEIVE_VOTE_REQUEST;
 				
 			} else {
-				block();
+				block(1000);
 			}
 		}
 		/** etat reception du vote **/
@@ -104,7 +104,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 				
 				this.step = STATE_SEND_ADD_VICTIM;
 			} else {
-				 block();
+				 block(1000);
 			}
 		}
 		/** etat envoi des requ�tes de sommeil **/

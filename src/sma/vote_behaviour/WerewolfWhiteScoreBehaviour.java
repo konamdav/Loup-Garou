@@ -85,7 +85,7 @@ public class WerewolfWhiteScoreBehaviour extends Behaviour implements IVoteBehav
 			else
 			{
 				this.nextStep = STATE_RECEIVE_REQUEST;
-				block();
+				block(1000);
 			}		
 		}
 		else if(step.equals(STATE_SCORE))

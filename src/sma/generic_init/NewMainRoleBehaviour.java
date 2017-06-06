@@ -101,7 +101,7 @@ public class NewMainRoleBehaviour extends CyclicBehaviour{
 			else
 			{
 				this.nextStep = "";
-				block();
+				block(1000);
 			}
 		}
 
@@ -131,7 +131,7 @@ public class NewMainRoleBehaviour extends CyclicBehaviour{
 			else
 			{
 				this.nextStep = "";
-				block();
+				block(1000);
 			}
 
 		}

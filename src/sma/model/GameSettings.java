@@ -13,12 +13,11 @@ public class GameSettings {
 	public GameSettings() {
 		super();
 
-		this.game_mode = true;
-		this.nbHumans = 1;
+		this.game_mode = false;
+		this.nbHumans = 0;
 		
 		//Liste role par d�faut
 		this.rolesSettings = new HashMap<String, Integer>();
-
 
 		this.rolesSettings.put(Roles.WEREWOLF, 1);
 		this.rolesSettings.put(Roles.HUNTER, 2);

@@ -62,7 +62,7 @@ public class CheckEndGameBehaviour extends CyclicBehaviour {
 			}
 			else
 			{
-				block();
+				block(1000);
 			}
 		}
 		else if(this.step.equals(STATE_SEND_ANSWER))
@@ -191,11 +191,12 @@ public class CheckEndGameBehaviour extends CyclicBehaviour {
 				this.nextStep = STATE_END;
 			}
 			
-			Functions.newActionImportantToLog("Fin", this.getAgent(), this.gameControllerAgent.getGameid());
-			this.gameControllerAgent.send(message);
+						this.gameControllerAgent.send(message);
 		}
 		else if(this.step.equals(STATE_NOTIFY_END_GAME))
 		{
+			Functions.newActionImportantToLog("Fin", this.getAgent(), this.gameControllerAgent.getGameid());
+
 			//maj environment
 			Functions.setEndGame(this.gameControllerAgent, this.gameControllerAgent.getGameid());
 			this.nextStep = STATE_END;

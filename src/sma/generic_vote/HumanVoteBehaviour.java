@@ -130,7 +130,7 @@ public class HumanVoteBehaviour extends SimpleBehaviour{
 			else
 			{
 				this.nextStep = STATE_RECEIVE_REQUEST;
-				block();
+				block(1000);
 			}
 		}
 		else if(this.step.equals(STATE_SEND_REQUEST))
@@ -222,7 +222,7 @@ public class HumanVoteBehaviour extends SimpleBehaviour{
 			}
 			else
 			{
-				block();
+				block(1000);
 			}
 		}
 		else if(this.step.equals(STATE_RESULTS))

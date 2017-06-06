@@ -86,7 +86,7 @@ public class AbstractDeathBehaviour extends CyclicBehaviour{
 			else
 			{
 				this.nextStep = "";
-				block();
+				block(1000);
 			}
 		}
 		else if (this.step.equals(STATE_SEND_PRE_DEATH_ROLES)){
@@ -156,7 +156,7 @@ public class AbstractDeathBehaviour extends CyclicBehaviour{
 					this.nextStep = "";
 				//Check if has to wait message
 				if (this.roles_pre_death_answer != null && this.roles_pre_death_answer.isEmpty() == false)
-					block();
+					block(1000);
 			}
 		}
 		else if (this.step.equals(STATE_SEND_DEATH_ROLES)){
@@ -207,7 +207,7 @@ public class AbstractDeathBehaviour extends CyclicBehaviour{
 				this.nextStep = "";
 				//Check if has to wait message
 				if (this.roles_death_answer != null && this.roles_death_answer.isEmpty() == false)
-					block();
+					block(1000);
 			}
 		}
 		else if (this.step.equals(STATE_DELETE_ALL_BEHAVIOUR))
@@ -264,7 +264,7 @@ public class AbstractDeathBehaviour extends CyclicBehaviour{
 				this.nextStep = "";
 				//Check if has to wait message
 				if (this.roles_behaviour_answer != null && this.roles_behaviour_answer.isEmpty() == false)
-					block();
+					block(1000);
 			}
 		}
 		else if (this.step.equals(STATE_ANSWER_DEATH_ROLES))

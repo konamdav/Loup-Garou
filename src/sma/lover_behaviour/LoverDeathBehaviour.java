@@ -69,7 +69,7 @@ public class LoverDeathBehaviour extends SimpleBehaviour implements IDeathBehavi
 			this.myAgent.send(reply);
 		}
 		else{
-			block();
+			block(1000);
 		}
 	}
 

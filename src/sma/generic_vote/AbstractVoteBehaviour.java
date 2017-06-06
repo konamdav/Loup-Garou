@@ -235,7 +235,7 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 			}
 			else
 			{
-				block();
+				block(1000);
 			}
 		}
 		else if(this.step.equals(STATE_RESULTS))

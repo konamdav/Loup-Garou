@@ -80,6 +80,7 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 		}
 		else if(this.step.equals(STATE_RECEIVE_REQUEST))
 		{
+			//System.err.println("AV receive rqst");
 			MessageTemplate mt = MessageTemplate.and(
 					MessageTemplate.MatchPerformative(ACLMessage.REQUEST),
 					MessageTemplate.MatchConversationId("VOTE_REQUEST"));
@@ -111,6 +112,7 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 		}
 		else if(this.step.equals(STATE_RECEIVE_FORCE_VOTE))
 		{
+			//System.err.println("AV receive force ?");
 			MessageTemplate mt = MessageTemplate.and(
 					MessageTemplate.MatchPerformative(ACLMessage.REQUEST),
 					MessageTemplate.MatchConversationId("FORCE_VOTE"));

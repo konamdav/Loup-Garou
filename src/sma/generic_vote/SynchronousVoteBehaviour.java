@@ -52,6 +52,7 @@ public class SynchronousVoteBehaviour extends Behaviour {
 
 	private VoteRequest request;
 	private IController controllerAgent;
+	private long currentTime;
 
 	public SynchronousVoteBehaviour(IController controllerAgent) {		
 		this.controllerAgent = controllerAgent;
@@ -81,7 +82,7 @@ public class SynchronousVoteBehaviour extends Behaviour {
 			this.globalResults = new VoteResults();
 			this.agentSender = null;
 			this.request = null;
-
+			this.currentTime = -1;
 			this.results = new VoteResults();
 			this.nextStep = STATE_RECEIVE_REQUEST;
 
@@ -208,6 +209,23 @@ public class SynchronousVoteBehaviour extends Behaviour {
 		}
 		else if(this.step.equals(STATE_RECEIVE_INFORM))
 		{
+			if(this.currentTime == -1)
+			{
+				this.currentTime = System.currentTimeMillis();
+			}
+			
+			if(System.currentTimeMillis() - this.currentTime > 3000)
+			{
+				this.currentTime = -1;
+				ACLMessage wakeup = new ACLMessage(ACLMessage.UNKNOWN);
+				wakeup.setSender(this.myAgent.getAID());
+				wakeup.addReceiver(this.request.getAIDVoters().get(nbVoters));
+				wakeup.setConversationId("WAKEUP");
+				this.myAgent.send(wakeup);
+				
+				System.out.println("Relance ...");
+			}
+
 			MessageTemplate mt = MessageTemplate.and(
 					MessageTemplate.MatchPerformative(ACLMessage.INFORM),
 					MessageTemplate.MatchConversationId("VOTE_INFORM"));
@@ -215,6 +233,7 @@ public class SynchronousVoteBehaviour extends Behaviour {
 			ACLMessage message = this.myAgent.receive(mt);
 			if(message!=null)
 			{
+				this.currentTime = -1;
 				++this.nbVoters;
 				--this.nbAsynchronousPlayers;
 
@@ -285,7 +304,7 @@ public class SynchronousVoteBehaviour extends Behaviour {
 			}
 			else
 			{
-				block();
+				//block();
 			}
 		}
 

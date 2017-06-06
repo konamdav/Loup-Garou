@@ -166,6 +166,7 @@ public class TurnsBehaviour extends SimpleBehaviour {
 				if(nbPlayers > 0 && !this.flag_voleur)
 				{
 					Functions.updateTurn(Roles.THIEF, controllerAgent, controllerAgent.getGameid());
+					Functions.newActionImportantToLog("Tour des voleurs", this.getAgent(), this.controllerAgent.getGameid());
 
 					ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
 					message.setConversationId("START_TURN");
@@ -217,6 +218,7 @@ public class TurnsBehaviour extends SimpleBehaviour {
 				if(nbPlayers > 0 && !this.flag_cupid)
 				{
 					Functions.updateTurn(Roles.CUPID, controllerAgent, controllerAgent.getGameid());
+					Functions.newActionImportantToLog("Tour des cupidons", this.getAgent(), this.controllerAgent.getGameid());
 
 					ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
 					message.setConversationId("START_TURN");
@@ -272,6 +274,7 @@ public class TurnsBehaviour extends SimpleBehaviour {
 				if(nbPlayers > 0)
 				{
 					Functions.updateTurn(Roles.FLUTE_PLAYER, controllerAgent, controllerAgent.getGameid());
+					Functions.newActionImportantToLog("Tour des joueurs de flute", this.getAgent(), this.controllerAgent.getGameid());
 
 
 					ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
@@ -326,6 +329,7 @@ public class TurnsBehaviour extends SimpleBehaviour {
 				if(nbPlayers > 0)
 				{
 					Functions.updateTurn(Roles.MEDIUM, controllerAgent, controllerAgent.getGameid());
+					Functions.newActionImportantToLog("Tour des mediums", this.getAgent(), this.controllerAgent.getGameid());
 
 					ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
 					message.setConversationId("START_TURN");
@@ -377,6 +381,7 @@ public class TurnsBehaviour extends SimpleBehaviour {
 				if(nbPlayers > 0)
 				{
 					Functions.updateTurn(Roles.FAMILY, controllerAgent, controllerAgent.getGameid());
+					Functions.newActionImportantToLog("Tour de la famille", this.getAgent(), this.controllerAgent.getGameid());
 
 					ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
 					message.setConversationId("START_TURN");
@@ -422,6 +427,7 @@ public class TurnsBehaviour extends SimpleBehaviour {
 			if(!agents.isEmpty())
 			{				
 				Functions.updateTurn(Roles.CITIZEN, controllerAgent, controllerAgent.getGameid());
+				Functions.newActionImportantToLog("Tour des villageois", this.getAgent(), this.controllerAgent.getGameid());
 
 
 				ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
@@ -459,6 +465,7 @@ public class TurnsBehaviour extends SimpleBehaviour {
 			if(!agents.isEmpty())
 			{			
 				Functions.updateTurn(Roles.WEREWOLF, controllerAgent, controllerAgent.getGameid());
+				Functions.newActionImportantToLog("Tour des loups", this.getAgent(), this.controllerAgent.getGameid());
 
 				ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
 				message.setConversationId("START_TURN");
@@ -504,6 +511,7 @@ public class TurnsBehaviour extends SimpleBehaviour {
 				if(nbPlayersDead == 0 && nbPlayers > 0  )
 				{
 					Functions.updateTurn(Roles.GREAT_WEREWOLF, controllerAgent, controllerAgent.getGameid());
+					Functions.newActionImportantToLog("Tour du méchant loup", this.getAgent(), this.controllerAgent.getGameid());
 
 					ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
 					message.setConversationId("START_TURN");
@@ -562,6 +570,7 @@ public class TurnsBehaviour extends SimpleBehaviour {
 					if( nbWhiteWerewolves > 0  && nbWerewolves > nbWhiteWerewolves)
 					{
 						Functions.updateTurn(Roles.WHITE_WEREWOLF, controllerAgent, controllerAgent.getGameid());
+						Functions.newActionImportantToLog("Tour des loups blancs", this.getAgent(), this.controllerAgent.getGameid());
 
 						ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
 						message.setConversationId("START_TURN");
@@ -618,6 +627,7 @@ public class TurnsBehaviour extends SimpleBehaviour {
 				if(nbPlayers > 0)
 				{
 					Functions.updateTurn(Roles.WITCH, controllerAgent, controllerAgent.getGameid());
+					Functions.newActionImportantToLog("Tour des sorcières", this.getAgent(), this.controllerAgent.getGameid());
 
 					ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
 					message.setConversationId("START_TURN");

@@ -185,7 +185,6 @@ public class AsyncrhonousVoteBehaviour extends Behaviour {
 			if(this.finalResults.size() == 1)
 			{
 				this.nextStep = STATE_SEND_RESULTS;
-
 			}
 			else
 			{

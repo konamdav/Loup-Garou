@@ -13,6 +13,7 @@ import jade.lang.acl.MessageTemplate;
 import sma.data.Data;
 import sma.generic.interfaces.IController;
 import sma.model.DFServices;
+import sma.model.Functions;
 import sma.model.Roles;
 import sma.model.SuspicionScore;
 import sma.model.VoteRequest;
@@ -495,8 +496,12 @@ public class SynchronousVoteBehaviour extends Behaviour {
 			message.addReceiver(this.agentSender);
 			message.setConversationId("VOTE_RESULTS");
 			message.setContent(this.finalResults.get(0));
-			this.myAgent.send(message);
+			
+			Functions.newActionToLog("Décision du vote : "+this.finalResults.get(0), this.getAgent(), this.controllerAgent.getGameid());
 
+			
+			this.myAgent.send(message);
+			
 			this.nextStep = STATE_INIT;
 		}
 

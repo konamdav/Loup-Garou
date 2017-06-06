@@ -30,12 +30,12 @@ public class TurnBehaviour extends SimpleBehaviour {
 	private final String STATE_RECEIVE_VOTE_REQUEST = "RECEIVE_VOTE_REQUEST";
 	private final String STATE_SEND_SLEEP_ALL = "SEND_SLEEP_ALL";
 	private final String STATE_RECEIVE_SLEEP_ALL = "RECEIVE_SLEEP_ALL";
-	private static final String STATE_SEND_ADD_CHARMED = "ADD_CHARMED";
-	private static final String STATE_SEND_WAKE_CHARMED = "SEND_WAKE_CHARMED";
-	private static final String STATE_RECEIVE_WAKE_CHARMED = "RECEIVE_WAKE_CHARMED";
-	private static final String STATE_SEND_SLEEP_CHARMED = "SEND_SLEEP_CHARMED";
-	private static final String STATE_RECEIVE_WAIT_CHARMED = "RECEIVE_WAIT_CHARMED";
-	private static final String STATE_RECEIVE_SLEEP_CHARMED = "RECEIVE_SLEEP_CHARMED";
+	private  final String STATE_SEND_ADD_CHARMED = "ADD_CHARMED";
+	private  final String STATE_SEND_WAKE_CHARMED = "SEND_WAKE_CHARMED";
+	private  final  String STATE_RECEIVE_WAKE_CHARMED = "RECEIVE_WAKE_CHARMED";
+	private  final String STATE_SEND_SLEEP_CHARMED = "SEND_SLEEP_CHARMED";
+	private  final String STATE_RECEIVE_WAIT_CHARMED = "RECEIVE_WAIT_CHARMED";
+	private  final String STATE_RECEIVE_SLEEP_CHARMED = "RECEIVE_SLEEP_CHARMED";
 
 	private String step;
 	private String nextStep;
@@ -45,7 +45,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 	private FlutePlayerControllerAgent ctrlAgent;
 	private int nbPlayers;
 	private AID aidChosen;
-	
+
 	public TurnBehaviour(FlutePlayerControllerAgent FlutePlayerControllerAgent) {
 		super(FlutePlayerControllerAgent);
 
@@ -56,7 +56,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 
 	@Override
 	public void action() {
-			
+
 		/** etat initial **/
 		if(this.step.equals(STATE_INIT))
 		{
@@ -66,8 +66,8 @@ public class TurnBehaviour extends SimpleBehaviour {
 			System.out.println("*******************************************");
 			System.out.println("*******************************************");
 			this.nbPlayers = 0;
-			
-			
+
+
 			cptFlutePlayers = 0;
 
 			this.nextStep = STATE_WAITING_START;
@@ -134,13 +134,13 @@ public class TurnBehaviour extends SimpleBehaviour {
 				block();
 			}
 		}
-		
+
 		/** etat envoi requete demande de vote **/
 		else if(this.step.equals(STATE_SEND_VOTE_REQUEST))
 		{
 			List<String> choices = new ArrayList<String>();
 			List<String> voters = new ArrayList<String>();
-			
+
 			String [] args = {Roles.FLUTE_PLAYER, Status.WAKE};
 			List<AID> werewolves = DFServices.findGamePlayerAgent(args, this.ctrlAgent, this.ctrlAgent.getGameid());
 
@@ -148,14 +148,13 @@ public class TurnBehaviour extends SimpleBehaviour {
 
 			String [] args2 = {Roles.CITIZEN, Status.SLEEP};
 			List<AID> citizens = DFServices.findGamePlayerAgent(args2, this.ctrlAgent, this.ctrlAgent.getGameid());
-			
-		
-			
+
+
 			for(AID aid : citizens)
 			{
 				choices.add(aid.getName());
 			}
-			
+
 			for(AID aid : werewolves)
 			{
 				voters.add(aid.getName());
@@ -186,7 +185,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 
 			this.nextStep = STATE_RECEIVE_VOTE_REQUEST;
 		}
-		
+
 		/** etat reception du vote **/
 		else if(this.step.equals(STATE_RECEIVE_VOTE_REQUEST))
 		{
@@ -209,7 +208,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 				block();
 			}
 		}
-		
+
 		else if(this.step.equals(STATE_SEND_WAKE_CHARMED))
 		{
 			ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
@@ -218,7 +217,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 			message.addReceiver(aidChosen);
 			//message.setContent(Roles.CHARMED);
 			this.ctrlAgent.send(message);
-			
+
 			this.nextStep = STATE_RECEIVE_WAKE_CHARMED;
 		}
 		else if(this.step.equals(STATE_RECEIVE_WAKE_CHARMED))
@@ -238,7 +237,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 				block();
 			}
 		}
-		
+
 		else if(this.step.equals(STATE_SEND_SLEEP_CHARMED))
 		{
 			ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
@@ -247,7 +246,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 			message.addReceiver(aidChosen);
 			//message.setContent(Roles.CHARMED);
 			this.ctrlAgent.send(message);
-			
+
 			this.nextStep = STATE_RECEIVE_SLEEP_CHARMED;
 		}
 		else if(this.step.equals(STATE_RECEIVE_SLEEP_CHARMED))
@@ -267,18 +266,18 @@ public class TurnBehaviour extends SimpleBehaviour {
 				block();
 			}
 		}
-		
+
 		/** etat envoi des requ�tes de sommeil **/
 		else if(this.step.equals(STATE_SEND_ADD_CHARMED))
 		{
 			ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
-			
+
 			message.setConversationId("ATTRIBUTION_ROLE");
 			message.setSender(this.ctrlAgent.getAID());
 			message.addReceiver(aidChosen);
 			message.setContent(Roles.CHARMED);
 			this.ctrlAgent.send(message);
-			
+
 			this.nextStep = STATE_RECEIVE_WAIT_CHARMED;
 		}
 		else if(this.step.equals(STATE_RECEIVE_WAIT_CHARMED))
@@ -355,7 +354,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 				message.addReceiver(agents.get(0));
 				this.ctrlAgent.send(message);
 			}
-			
+
 			this.nextStep = STATE_INIT;
 		}
 

@@ -104,9 +104,7 @@ public class CheckEndGameBehaviour extends CyclicBehaviour {
 			String[] services7 = {Roles.WHITE_WEREWOLF, Status.WAKE};
 			List<AID> whitewerewolves = DFServices.findGamePlayerAgent(services7, this.gameControllerAgent, this.gameControllerAgent.getGameid());
 			String[] services77 = {Roles.WHITE_WEREWOLF, Status.SLEEP};
-			whitewerewolves.addAll(DFServices.findGamePlayerAgent(services77, this.gameControllerAgent, this.gameControllerAgent.getGameid()));
-			
-			
+			whitewerewolves.addAll(DFServices.findGamePlayerAgent(services77, this.gameControllerAgent, this.gameControllerAgent.getGameid()));			
 			
 			System.err.println("W Size = "+werewolves.size());
 			System.err.println("C Size = "+citizens.size());
@@ -118,8 +116,9 @@ public class CheckEndGameBehaviour extends CyclicBehaviour {
 			System.err.println("MAYOR Size = "+DFServices.findGamePlayerAgent("MAYOR", this.gameControllerAgent, this.gameControllerAgent.getGameid()).size());
 			
 			/** plus de loups garous **/
-			if( werewolves.isEmpty()) 
+			if(werewolves.isEmpty()) 
 			{
+				Functions.newActionImportantToLog("Plus de loups", this.getAgent(), this.gameControllerAgent.getGameid());
 				System.err.println("No werewolf");
 				this.gameControllerAgent.setCheckEndGame(true);
 				message.setConversationId("END_GAME");
@@ -129,6 +128,8 @@ public class CheckEndGameBehaviour extends CyclicBehaviour {
 			/** plus que des loups garous blancs **/
 			else if(whitewerewolves.size() == citizens.size() && whitewerewolves.size() == werewolves.size()&& citizens.size()!=0) 
 			{
+				Functions.newActionImportantToLog("Les loups blancs ont survécus", this.getAgent(), this.gameControllerAgent.getGameid());
+
 				System.err.println("Only werwolfBlanc ");
 				this.gameControllerAgent.setCheckEndGame(true);
 				message.setConversationId("END_GAME");
@@ -137,6 +138,7 @@ public class CheckEndGameBehaviour extends CyclicBehaviour {
 			else if ( werewolves.size() == citizens.size() && citizens.size()!=0)
 			/** plus de de villeagois **/
 			{
+				Functions.newActionImportantToLog("Plus de villageois", this.getAgent(), this.gameControllerAgent.getGameid());
 				System.err.println("No simple citizen");
 				this.gameControllerAgent.setCheckEndGame(true);
 				message.setConversationId("END_GAME");
@@ -145,6 +147,7 @@ public class CheckEndGameBehaviour extends CyclicBehaviour {
 			/** egalitï¿½ **/
 			else if(0 == citizens.size()) 
 			{
+				Functions.newActionImportantToLog("Tout le monde est mort !", this.getAgent(), this.gameControllerAgent.getGameid());
 				System.err.println("equality - all people are dead");
 				this.gameControllerAgent.setCheckEndGame(true);
 				message.setConversationId("END_GAME");
@@ -155,6 +158,7 @@ public class CheckEndGameBehaviour extends CyclicBehaviour {
 					&& this.gameControllerAgent.getGameSettings().isRoleRegistered(Roles.ANGEL)
 					&& !angel.isEmpty() ) 
 			{
+				Functions.newActionImportantToLog("Un ange est mort au premier tour", this.getAgent(), this.gameControllerAgent.getGameid());
 				System.err.println("an angel died during the first turn");
 				this.gameControllerAgent.setCheckEndGame(true);
 				message.setConversationId("END_GAME");
@@ -164,6 +168,8 @@ public class CheckEndGameBehaviour extends CyclicBehaviour {
 			else if(this.gameControllerAgent.getGameSettings().isRoleRegistered(Roles.FLUTE_PLAYER)
 					&& (charmed.size()+flutePlayers.size() == citizens.size())) 
 			{
+				Functions.newActionImportantToLog("Le joueur de flute a charmé tout le monde", this.getAgent(), this.gameControllerAgent.getGameid());
+
 				System.err.println("flute player wonï¿½");
 				this.gameControllerAgent.setCheckEndGame(true);
 				message.setConversationId("END_GAME");
@@ -172,6 +178,7 @@ public class CheckEndGameBehaviour extends CyclicBehaviour {
 			/** les amoureux ont survï¿½cus **/
 			else if(lovers.size() == citizens.size()) 
 			{
+				Functions.newActionImportantToLog("Les amoureux sont seuls", this.getAgent(), this.gameControllerAgent.getGameid());
 				System.err.println("just lovers");
 				this.gameControllerAgent.setCheckEndGame(true);
 				message.setConversationId("END_GAME");
@@ -184,6 +191,7 @@ public class CheckEndGameBehaviour extends CyclicBehaviour {
 				this.nextStep = STATE_END;
 			}
 			
+			Functions.newActionImportantToLog("Fin", this.getAgent(), this.gameControllerAgent.getGameid());
 			this.gameControllerAgent.send(message);
 		}
 		else if(this.step.equals(STATE_NOTIFY_END_GAME))

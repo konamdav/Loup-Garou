@@ -34,6 +34,28 @@ public class Functions {
 		}
 	}
 	
+	public static void  newActionImportantToLog(String action, Agent a, int gameid)
+	{
+		ACLMessage msg = new ACLMessage(ACLMessage.AGREE);
+		msg.setSender(a.getAID());
+		msg.setConversationId("ACTION_LOG_IMPORTANT");
+		msg.setContent(action);
+		
+		System.err.println(action);
+		
+		List<AID> agents = DFServices.findGameControllerAgent("ENVIRONMENT", a, gameid);
+		if(!agents.isEmpty())
+		{
+			
+			for(AID aid : agents)
+			{
+				msg.addReceiver(aid);
+			}
+			
+			a.send(msg);
+		}
+	}
+	
 	public static void  updateDayState(String state, Agent a, int gameid)
 	{
 		ACLMessage msg = new ACLMessage(ACLMessage.AGREE);

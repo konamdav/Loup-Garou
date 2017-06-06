@@ -73,7 +73,7 @@ public class SynchronousVoteBehaviour extends Behaviour {
 	@Override
 	public void action() {
 
-		System.out.println("STATE SV = "+this.step);
+		//System.out.println("STATE SV = "+this.step);
 
 		if(this.step.equals(STATE_INIT))
 		{
@@ -304,7 +304,7 @@ public class SynchronousVoteBehaviour extends Behaviour {
 			}
 			else
 			{
-				//block();
+				block(1000);
 			}
 		}
 

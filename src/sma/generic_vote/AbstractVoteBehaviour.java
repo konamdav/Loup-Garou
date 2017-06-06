@@ -89,7 +89,7 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 			if(message != null)
 			{
 				//System.err.println("AV receive rqst");
-				//this.agent.doWait((int) (Math.random()*500));
+				this.agent.doWait((int) (Math.random()*500));
 				Functions.newActionToLog(this.agent.getLocalName()+" réfléchit", this.agent, this.agent.getGameid());
 
 				this.sender = message.getSender();

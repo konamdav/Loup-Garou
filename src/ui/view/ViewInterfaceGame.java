@@ -177,7 +177,8 @@ public class ViewInterfaceGame implements Screen{
 
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				game.agent.addSendVote(game.getGameInformations().getVote().getAIDPlayer(), selectBox.getSelected()) ;
+				if(selectBox.getSelected() != null)
+					game.agent.addSendVote(game.getGameInformations().getVote().getAIDPlayer(), selectBox.getSelected()) ;
 			}
 		});
 

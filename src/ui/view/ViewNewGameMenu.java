@@ -10,6 +10,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -21,6 +22,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import jade.lang.acl.ACLMessage;
 import sma.model.DFServices;
 import sma.model.GameSettings;
+import sma.model.Roles;
 
 public class ViewNewGameMenu implements Screen {
 
@@ -34,8 +36,17 @@ public class ViewNewGameMenu implements Screen {
     TextField family_textField;
     TextField medium_textField;
     TextField little_girl_textField;
-    
+    TextField human_textField;
+
     private HashMap<String, TextField> textfields;
+	private TextField great_werewolf_textField;
+	private TextField white_werewolf_textField;
+	private TextField hunter_textField;
+	private TextField angel_textField;
+	private TextField flute_textField;
+	private TextField ancient_textField;
+	private TextField thief_textField;
+	private TextField witch_textField;
     
 	ViewNewGameMenu(App a){
 		app = a;
@@ -44,7 +55,6 @@ public class ViewNewGameMenu implements Screen {
 		stage = new Stage();
         Gdx.input.setInputProcessor(stage);
         skin = new Skin( Gdx.files.internal( "resources/visui/uiskin.json" ));
-		
         textfields = new HashMap<String, TextField>();
         
         
@@ -64,6 +74,21 @@ public class ViewNewGameMenu implements Screen {
         werewolf_textField = new TextField("0",skin);
         werewolf_textField.setTextFieldFilter(new TextFieldFilter.DigitsOnlyFilter());
         table.add(werewolf_textField);
+        table.row(); 
+        
+        Label great_werewolf_label =new Label("Great",skin);
+        table.add(great_werewolf_label);
+        great_werewolf_textField = new TextField("0",skin);
+        great_werewolf_textField.setTextFieldFilter(new TextFieldFilter.DigitsOnlyFilter());
+        table.add(great_werewolf_textField);
+        table.row();
+        
+        
+        Label white_werewolf_label =new Label("White",skin);
+        table.add(white_werewolf_label);
+        white_werewolf_textField = new TextField("0",skin);
+        white_werewolf_textField.setTextFieldFilter(new TextFieldFilter.DigitsOnlyFilter());
+        table.add(white_werewolf_textField);
         table.row();
         table.row();
         
@@ -108,26 +133,94 @@ public class ViewNewGameMenu implements Screen {
         table.add(little_girl_textField);
         table.row();
         
+        Label hunter_label =new Label("Hunter",skin);
+        table.add(hunter_label);
+        hunter_textField = new TextField("0",skin);
+        hunter_textField.setTextFieldFilter(new TextFieldFilter.DigitsOnlyFilter());
+        table.add(hunter_textField);
+        table.row();
+        
+        Label angel_label =new Label("Angel",skin);
+        table.add(angel_label);
+        angel_textField = new TextField("0",skin);
+        angel_textField.setTextFieldFilter(new TextFieldFilter.DigitsOnlyFilter());
+        table.add(angel_textField);
+        table.row();
+        
+        Label flute_label =new Label("Flutist",skin);
+        table.add(flute_label);
+        flute_textField = new TextField("0",skin);
+        flute_textField.setTextFieldFilter(new TextFieldFilter.DigitsOnlyFilter());
+        table.add(flute_textField);
+        table.row();
+        
+        Label ancient_label =new Label("Ancient",skin);
+        table.add(ancient_label);
+        ancient_textField = new TextField("0",skin);
+        ancient_textField.setTextFieldFilter(new TextFieldFilter.DigitsOnlyFilter());
+        table.add(ancient_textField);
+        table.row();
+        
+        
+        Label witch_label =new Label("Witch",skin);
+        table.add(witch_label);
+        witch_textField = new TextField("0",skin);
+        witch_textField.setTextFieldFilter(new TextFieldFilter.DigitsOnlyFilter());
+        table.add(witch_textField);
+        table.row();
+        
+        Label thief_label =new Label("Thief",skin);
+        table.add(thief_label);
+        thief_textField = new TextField("0",skin);
+        thief_textField.setTextFieldFilter(new TextFieldFilter.DigitsOnlyFilter());
+        table.add(thief_textField);
+        table.row();
+        
+        
+        Label human_label =new Label("Joueurs humains",skin);
+        table.add(human_label);
+        human_textField = new TextField("0",skin);
+        human_textField.setTextFieldFilter(new TextFieldFilter.DigitsOnlyFilter());
+        table.add(human_textField);
+        table.row();
+        
+
+        CheckBox box=new CheckBox("  Cacher les roles",skin);	
+        table.add(box);
+        table.row();
+        
         TextButton creer_button = new TextButton("Créer partie",skin);
         table.add(creer_button);
         table.row();
         
         creer_button.addListener(new ClickListener(){
-            @Override
+			@Override
             public void clicked(InputEvent event, float x, float y) {
-            	
+				
+			    HashMap<String, Integer> players = new HashMap<String, Integer>();
             	ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
         		message.setConversationId("CREATE_GAME_REQUEST");
         		message.setSender(app.agent.getAID());
         		message.addReceiver(DFServices.getSystemController(app.agent));
-        		GameSettings gameSettings = 
-        				new GameSettings(
-        						Integer.parseInt(werewolf_textField.getText()),
-        						Integer.parseInt(citizen_textField.getText()),
-        						Integer.parseInt(lover_textField.getText()),
-        						Integer.parseInt(medium_textField.getText()),
-        						Integer.parseInt(little_girl_textField.getText())
-        						);
+
+        		players.put(Roles.WEREWOLF, Integer.parseInt(werewolf_textField.getText()));
+        		players.put(Roles.WHITE_WEREWOLF,Integer.parseInt(white_werewolf_textField.getText())); 
+        		players.put(Roles.GREAT_WEREWOLF,Integer.parseInt(great_werewolf_textField.getText())); 
+        		players.put(Roles.HUNTER, Integer.parseInt(hunter_textField.getText()));
+        		players.put(Roles.FAMILY, Integer.parseInt(family_textField.getText()));
+        		players.put(Roles.CITIZEN, Integer.parseInt(citizen_textField.getText()));
+        		players.put(Roles.CUPID, Integer.parseInt(lover_textField.getText()));
+        		players.put(Roles.LITTLE_GIRL, Integer.parseInt(little_girl_textField.getText()));
+        		players.put(Roles.MEDIUM,Integer.parseInt(medium_textField.getText()));
+        		players.put(Roles.ANGEL,Integer.parseInt(angel_textField.getText()));
+        		players.put(Roles.FLUTE_PLAYER,Integer.parseInt(flute_textField.getText()));
+        		players.put(Roles.ANCIENT,Integer.parseInt(ancient_textField.getText())); 
+        		players.put(Roles.WITCH,Integer.parseInt(witch_textField.getText()));
+        		players.put(Roles.THIEF,Integer.parseInt(thief_textField.getText())); 
+        		
+        		
+        		
+        		GameSettings gameSettings = new GameSettings(players, Integer.parseInt(human_textField.getText()), box.isChecked());
         		ObjectMapper mapper = new ObjectMapper();
         		String json ="";
         		try {

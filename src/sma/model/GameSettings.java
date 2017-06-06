@@ -63,6 +63,15 @@ public class GameSettings {
 
 	}
 
+	public GameSettings(HashMap<String, Integer> players, int human, boolean gm ) {
+		super();
+		
+		this.nbHumans = human;
+		this.game_mode = gm;
+		this.rolesSettings = players;
+
+	}
+	
 	public int getNbHumans() {
 		return nbHumans;
 	}

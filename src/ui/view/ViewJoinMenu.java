@@ -48,10 +48,7 @@ public class ViewJoinMenu implements Screen{
 		table.row();
 		
 		if (app.getContainers()!= null){
-			//System.out.println("OK4");
 			for (i = 0; i < app.getContainers().size(); i++){
-
-				//System.out.println("OK5");
 				Label game_label =new Label("Partie " + (i +1) ,skin);
 				table.add(game_label);
 
@@ -65,21 +62,13 @@ public class ViewJoinMenu implements Screen{
 					public void clicked(InputEvent event, float x, float y) {
 						System.out.println("DEBOGAGE : " + i + "  --  " + app.getContainers().get(id) );
 						app.agent.getInformations(app.getContainers().get(id));
-						/*
-						try {
-							TimeUnit.SECONDS.sleep(1);
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						*/
 						app.setScreen(new ViewInterfaceGame(app));
 					}
 				});
 			}
 		}
 
-
+		
 		TextButton creer_button = new TextButton("Nouvelle partie",skin);
 		table.add(creer_button);
 		table.row();
@@ -94,20 +83,6 @@ public class ViewJoinMenu implements Screen{
 		creer_button.addListener(new ClickListener(){
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				/*
-            	TextButton bbu = new TextButton("Créer"+i,skin);
-            	bbu.addListener(new ClickListener(){
-                    @Override
-                    public void clicked(InputEvent event, float x, float y) {
-                    	TextButton bbu = new TextButton("ok"+this.getButton(),skin);
-                        table.add(bbu);
-                        table.row();
-                    }
-                });
-                table.add(bbu);
-                table.row();
-                i++;*/
-
 				app.setScreen(new ViewNewGameMenu(app));
 			}
 		});

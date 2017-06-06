@@ -149,7 +149,11 @@ public class TurnBehaviour extends SimpleBehaviour {
 			String [] args2 = {Roles.CITIZEN, Status.SLEEP};
 			List<AID> citizens = DFServices.findGamePlayerAgent(args2, this.ctrlAgent, this.ctrlAgent.getGameid());
 
-
+			
+			String [] args3 = {Roles.CHARMED, Status.SLEEP};
+			List<AID> charmed = DFServices.findGamePlayerAgent(args3, this.ctrlAgent, this.ctrlAgent.getGameid());
+			citizens.removeAll(charmed); //David be carefull --'
+			
 			for(AID aid : citizens)
 			{
 				choices.add(aid.getName());

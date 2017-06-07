@@ -64,7 +64,7 @@ public class InitBehaviour extends Behaviour {
 					Object[] args = {gameid};
 					for(int i = 0; i<nb; ++i)
 					{
-						String playerName = "PLAYER_"+i+"_"+gameid;
+						String playerName = "PLAYER_"+gameid+"_"+((char)(i+65));
 						AgentController ac = this.gameControllerAgent.getContainerController().createNewAgent(
 								playerName, "sma.player_agent.PlayerAgent", args);
 						ac.start();

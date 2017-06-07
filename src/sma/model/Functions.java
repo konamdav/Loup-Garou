@@ -58,6 +58,15 @@ public class Functions {
 	
 	public static void  updateDayState(String state, Agent a, int gameid)
 	{
+		if(state.equals("NIGHT"))
+		{
+			Functions.newActionImportantToLog("La nuit tombe", a, gameid);
+		}
+		else
+		{
+			Functions.newActionImportantToLog("Le jour se lève", a, gameid);
+		}
+
 		ACLMessage msg = new ACLMessage(ACLMessage.AGREE);
 		msg.setSender(a.getAID());
 		msg.setConversationId("DAY_STATE");

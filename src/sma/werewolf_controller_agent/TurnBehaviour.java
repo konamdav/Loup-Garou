@@ -10,6 +10,7 @@ import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import sma.model.DFServices;
+import sma.model.Functions;
 import sma.model.Roles;
 import sma.model.Status;
 import sma.model.VoteRequest;
@@ -148,6 +149,8 @@ public class TurnBehaviour extends SimpleBehaviour {
 			String[] args = {Roles.WEREWOLF, Status.WAKE};
 			List<AID> werewolves = DFServices.findGamePlayerAgent(args, this.ctrlAgent, this.ctrlAgent.getGameid());
 
+			Functions.newActionImportantToLog("Les loups font du bruit", ctrlAgent, ctrlAgent.getGameid());
+
 			for(AID werewolf : werewolves)
 			{
 				List<AID> neighborsLeft = DFServices.findNeighborsBySide2("LEFT", werewolf, this.ctrlAgent, this.ctrlAgent.getGameid());
@@ -246,6 +249,8 @@ public class TurnBehaviour extends SimpleBehaviour {
 
 			System.err.println("---------> MOVE LITTLE");
 
+			Functions.newActionImportantToLog("Les petites files font du bruit", ctrlAgent, ctrlAgent.getGameid());
+
 			for(AID littlegirl : littlegirls)
 			{
 				List<AID> neighborsLeft = DFServices.findNeighborsBySide2("LEFT", littlegirl, this.ctrlAgent, this.ctrlAgent.getGameid());
@@ -290,6 +295,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 
 			System.err.println("---------> INFORM LITTLE GIRL");
 
+			
 			String [] args = {Roles.WEREWOLF, Status.WAKE};
 			List<AID> werewolves = DFServices.findGamePlayerAgent(args, this.ctrlAgent, this.ctrlAgent.getGameid());
 
@@ -298,7 +304,11 @@ public class TurnBehaviour extends SimpleBehaviour {
 
 			String [] args2 = {Roles.LITTLE_GIRL, Status.WAKE};
 			List<AID> littlegirls = DFServices.findGamePlayerAgent(args2, this.ctrlAgent, this.ctrlAgent.getGameid());
-
+			
+			if(!littlegirls.isEmpty())
+			{
+				Functions.newActionImportantToLog("Les petites filles aperçoivent "+werewolf.getName(), ctrlAgent, ctrlAgent.getGameid());
+			}
 
 			ACLMessage messageRequest = new ACLMessage(ACLMessage.INFORM);
 			messageRequest.setSender(this.ctrlAgent.getAID());

@@ -148,6 +148,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 		/** etat envoi requete pour tuer les  victimes d�sign�es durant la nuit **/
 		else if(this.step.equals(STATE_SEND_KILL_VICTIMS_REQUEST))
 		{
+			Functions.newActionImportantToLog("Mort des victimes", ctrlAgent, ctrlAgent.getGameid());
 			this.ctrlAgent.addBehaviour(new KillVictimsBehaviour(this.ctrlAgent));
 			this.nextStep = STATE_RECEIVE_KILL_VICTIMS_REQUEST;
 		}

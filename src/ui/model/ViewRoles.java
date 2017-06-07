@@ -114,6 +114,12 @@ public class ViewRoles {
 			this.roles.get(i).setX(x);
 			this.roles.get(i).setY(y);
 			this.roles.get(i).update();
+			
+			if(i == this.roles.size()-1)
+			{
+				curX = x;
+				curY = y;
+			}
 		}
 	}
 

@@ -34,6 +34,7 @@ public class SystemControllerAgent extends Agent{
 		this.addBehaviour(new CreateGameBehaviour(this));
 		this.addBehaviour(new GetGamesBehaviour(this));
 		this.addBehaviour(new ReturnContainers(this));
+		this.addBehaviour(new RemoveGameBehaviour(this));
 
 		//test init 
 		//send msg

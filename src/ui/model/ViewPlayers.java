@@ -151,15 +151,19 @@ public class ViewPlayers {
 			ViewPlayer player;
 			for(int i = 0; i<n_rows; ++i)
 			{
-				player = newPlayer(profiles.get(cpt).getName(),profiles.get(cpt).getStatus(), "RIGHT", ind_x-n_cols/2, ind_y-(n_rows-1-i) );
-				++cpt;
+				if(cpt < profiles.size()){
+					player = newPlayer(profiles.get(cpt).getName(),profiles.get(cpt).getStatus(), "RIGHT", ind_x-n_cols/2, ind_y-(n_rows-1-i) );
+					++cpt;
+				}
 			}
 
 			if(nb >= 2) {
 				for(int i = 0; i<n_cols; ++i)
 				{
-					player = newPlayer(profiles.get(cpt).getName(),profiles.get(cpt).getStatus(), "DOWN", ind_x+1+i-n_cols/2, ind_y+1);
-					++cpt;
+					if(cpt < profiles.size()){
+						player = newPlayer(profiles.get(cpt).getName(),profiles.get(cpt).getStatus(), "DOWN", ind_x+1+i-n_cols/2, ind_y+1);
+						++cpt;
+					}
 
 				}
 
@@ -173,16 +177,20 @@ public class ViewPlayers {
 
 					for(int i = 0; i<n_rows; ++i)
 					{
-						player = newPlayer(profiles.get(cpt).getName(),profiles.get(cpt).getStatus(), "LEFT", ind_x+1+ret+n_cols/2, ind_y-i );
-						++cpt;
+						if(cpt < profiles.size()){
+							player = newPlayer(profiles.get(cpt).getName(),profiles.get(cpt).getStatus(), "LEFT", ind_x+1+ret+n_cols/2, ind_y-i );
+							++cpt;
+						}
 					}
 
 					if(nb >= 4){
 						int reste = nb - (n_cols+2*n_rows);
 						for(int i = 0; i<reste; ++i)
 						{
-							player = newPlayer(profiles.get(cpt).getName(),profiles.get(cpt).getStatus(), "UP", ind_x+1+(n_cols-1-i)-n_cols/2, ind_y-1-n_rows/2);
-							++cpt;
+							if(cpt < profiles.size()){
+								player = newPlayer(profiles.get(cpt).getName(),profiles.get(cpt).getStatus(), "UP", ind_x+1+(n_cols-1-i)-n_cols/2, ind_y-1-n_rows/2);
+								++cpt;
+							}
 
 						}
 					}
@@ -193,7 +201,10 @@ public class ViewPlayers {
 			{
 				for(String role : p.getRoles())
 				{
-					this.viewPlayers.get(p.getName()).getRoles().addNewRole(role);
+					if(this.viewPlayers.get(p.getName())!=null)
+					{
+						this.viewPlayers.get(p.getName()).getRoles().addNewRole(role);
+					}
 				}
 			}
 

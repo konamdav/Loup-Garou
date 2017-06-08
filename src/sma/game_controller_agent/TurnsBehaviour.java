@@ -675,8 +675,11 @@ public class TurnsBehaviour extends SimpleBehaviour {
 		else if (this.step.equals(STATE_POSTEND))
 		{
 			Functions.updateTurn("", controllerAgent, controllerAgent.getGameid());
-			System.err.println("FINISH TURNS");
+			System.err.println("FINISH GAME");
 			this.flag_done = true;
+			
+			this.controllerAgent.addBehaviour(new DeleteGameBehaviour(this.controllerAgent));
+			
 		}
 
 		if(!this.nextStep.isEmpty())

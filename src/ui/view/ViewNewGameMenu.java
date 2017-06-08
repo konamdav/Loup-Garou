@@ -185,11 +185,11 @@ public class ViewNewGameMenu implements Screen {
         
         
 
-        CheckBox box=new CheckBox("  Cacher les roles",skin);	
+        final CheckBox box=new CheckBox("  Cacher les roles",skin);	 //Added this to fix
         table.add(box).padTop(20);
         table.row();
         
-        TextButton creer_button = new TextButton("Créer partie",skin);
+        TextButton creer_button = new TextButton("Crï¿½er partie",skin);
         table.add(creer_button).padTop(20);
         table.row();
         

@@ -17,6 +17,7 @@ public class Roles {
 	public static final String GREAT_WEREWOLF = "GREAT_WEREWOLF";
 	public static final String HUNTER = "HUNTER";
 	public static final String THIEF = "THIEF";
+	public static final String EXORCIST = "EXORCIST";
 
 	public static final String FOOL = "FOOL";
 	public static final String FLUTE_PLAYER = "FLUTE_PLAYER";

@@ -50,6 +50,8 @@ public class DeleteBehavioursFromRoleBehaviour extends CyclicBehaviour {
 					System.out.println("After remove Death Behaviour " +this.agent.getDeathBehaviours());
 				}
 				if (bhv instanceof IVoteBehaviour){
+					System.out.println("Find a behaviour vote, not delete it "+this.agent.getName()+" behaviour  "+bhv.getBehaviourName());
+
 					//Security, to not delete the vote behaviour which has been had (False, delete it in the init in the map)
 				}	
 				else {

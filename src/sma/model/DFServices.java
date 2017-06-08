@@ -531,6 +531,24 @@ public class DFServices {
 			profile.getRoles().remove("CITIZEN");
 		}
 
+		//get profiles joueurs familiy
+		List<AID> familys = DFServices.findGamePlayerAgent(Roles.FAMILY, agent, gameid);
+		for(AID family : familys)
+		{
+			PlayerProfile profile = tmp.get(family.getLocalName());
+			profile.getRoles().add(Roles.FAMILY);
+			profile.getRoles().remove("CITIZEN");
+		}
+
+		//get profiles joueurs exorcists
+		List<AID> exorcists = DFServices.findGamePlayerAgent(Roles.EXORCIST, agent, gameid);
+		for(AID exorcist : exorcists)
+		{
+			PlayerProfile profile = tmp.get(exorcist.getLocalName());
+			profile.getRoles().add(Roles.EXORCIST);
+			profile.getRoles().remove("CITIZEN");
+		}
+
 		//get profiles joueurs Voleur
 		List<AID> voleurs = DFServices.findGamePlayerAgent(Roles.THIEF, agent, gameid);
 		for(AID voleur : voleurs)
@@ -595,12 +613,6 @@ public class DFServices {
 			profile.getRoles().add(Roles.ANCIENT);
 			profile.getRoles().remove(Roles.CITIZEN);
 		}
-
-
-
-
-
-
 
 		//get profiles joueurs wake
 		List<AID> wakes = DFServices.findGamePlayerAgent("WAKE", agent, gameid);

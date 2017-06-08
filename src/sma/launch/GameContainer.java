@@ -7,6 +7,7 @@ import jade.wrapper.AgentContainer;
 import jade.wrapper.AgentController;
 import sma.cupid_controller.CupidControllerAgent;
 import sma.environment_agent.EnvironmentAgent;
+import sma.exorcist_controller.ExorcistControllerAgent;
 import sma.family_controller.FamilyControllerAgent;
 import sma.flute_player_controller.FlutePlayerControllerAgent;
 import sma.great_werewolf_controller_agent.GreatWerewolfControllerAgent;
@@ -107,6 +108,14 @@ public class GameContainer {
 			{
 				ac = container.createNewAgent(
 						"FAMILY_CONTROLLER_AGENT_"+gameid, FamilyControllerAgent.class.getName(), objects);
+				ac.start();
+			}
+			
+			//selection role Exorcist
+			if(this.gameSettings.isRoleRegistered(Roles.EXORCIST))
+			{
+				ac = container.createNewAgent(
+						"EXORCIST_CONTROLLER_AGENT_"+gameid, ExorcistControllerAgent.class.getName(), objects);
 				ac.start();
 			}
 			

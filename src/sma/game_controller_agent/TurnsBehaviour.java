@@ -54,6 +54,9 @@ public class TurnsBehaviour extends SimpleBehaviour {
 	private final String STATE_START_FAMILY_TURN = "START_FAMILY_TURN";
 	private final String STATE_STOP_FAMILY_TURN = "STOP_FAMILY_TURN";
 
+	private final String STATE_START_EXORCIST_TURN = "START_EXORCIST_TURN";
+	private final String STATE_STOP_EXORCIST_TURN = "STOP_EXORCIST_TURN";
+
 	private final String STATE_START_WITCH_TURN = "START_WITCH_TURN";
 	private final String STATE_STOP_WITCH_TURN = "STOP_WITCH_TURN";
 
@@ -393,12 +396,12 @@ public class TurnsBehaviour extends SimpleBehaviour {
 				}
 				else
 				{
-					this.nextStep = STATE_START_WEREWOLF_TURN;
+					this.nextStep = STATE_START_EXORCIST_TURN;
 				}
 			}
 			else
 			{
-				this.nextStep = STATE_START_WEREWOLF_TURN;
+				this.nextStep = STATE_START_EXORCIST_TURN;
 			}
 
 		}
@@ -412,7 +415,7 @@ public class TurnsBehaviour extends SimpleBehaviour {
 			if(message != null)
 			{
 				this.controllerAgent.doWait(1000);
-				this.nextStep = STATE_START_WEREWOLF_TURN;
+				this.nextStep = STATE_START_EXORCIST_TURN;
 			}
 			else
 			{
@@ -420,26 +423,46 @@ public class TurnsBehaviour extends SimpleBehaviour {
 				block(1000);
 			}
 
-		}		
-		else if (this.step.equals(STATE_START_CITIZEN_TURN))
-		{
-			List<AID> agents = DFServices.findGameControllerAgent("CITIZEN", this.myAgent, this.controllerAgent.getGameid());
-			if(!agents.isEmpty())
-			{				
-				Functions.updateTurn(Roles.CITIZEN, controllerAgent, controllerAgent.getGameid());
-				Functions.newActionImportantToLog("Tour des villageois", this.getAgent(), this.controllerAgent.getGameid());
-
-
-				ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
-				message.setConversationId("START_TURN");
-				message.setSender(this.getAgent().getAID());
-				message.addReceiver(agents.get(0));
-				this.getAgent().send(message);
-
-				this.nextStep = STATE_STOP_CITIZEN_TURN;
-			}
 		}
-		else if (this.step.equals(STATE_STOP_CITIZEN_TURN))
+		else if (this.step.equals(STATE_START_EXORCIST_TURN))
+		{
+			System.err.println("Check exorcists");
+			List<AID> agents = DFServices.findGameControllerAgent(Roles.EXORCIST, this.myAgent, this.controllerAgent.getGameid());
+			System.err.println("Check exorcists " + agents);
+
+			if(!agents.isEmpty())
+			{		
+				String [] args = {Roles.EXORCIST, Status.SLEEP};
+				System.err.println("Tour des exorcists");
+				
+				List<AID> family = DFServices.findGamePlayerAgent(args, this.controllerAgent, this.controllerAgent.getGameid());				
+				int nbPlayers = family.size();
+
+				if(nbPlayers > 0)
+				{
+					Functions.updateTurn(Roles.EXORCIST, controllerAgent, controllerAgent.getGameid());
+					Functions.newActionImportantToLog("Tour des exorcists", this.getAgent(), this.controllerAgent.getGameid());
+
+					ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
+					message.setConversationId("START_TURN");
+					message.setSender(this.getAgent().getAID());
+					message.addReceiver(agents.get(0));
+					this.getAgent().send(message);
+
+					this.nextStep = STATE_STOP_EXORCIST_TURN;
+				}
+				else
+				{
+					this.nextStep = STATE_START_WEREWOLF_TURN;
+				}
+			}
+			else
+			{
+				this.nextStep = STATE_START_WEREWOLF_TURN;
+			}
+
+		}
+		else if (this.step.equals(STATE_STOP_EXORCIST_TURN))
 		{
 			MessageTemplate mt = MessageTemplate.and(
 					MessageTemplate.MatchPerformative(ACLMessage.INFORM),
@@ -449,14 +472,13 @@ public class TurnsBehaviour extends SimpleBehaviour {
 			if(message != null)
 			{
 				this.controllerAgent.doWait(1000);
-				this.nextStep = STATE_END;
+				this.nextStep = STATE_START_WEREWOLF_TURN;
 			}
 			else
 			{
-				this.nextStep = STATE_STOP_CITIZEN_TURN;
+				this.nextStep = STATE_STOP_EXORCIST_TURN;
 				block(1000);
 			}
-
 		}
 		else if (this.step.equals(STATE_START_WEREWOLF_TURN))
 		{
@@ -511,7 +533,7 @@ public class TurnsBehaviour extends SimpleBehaviour {
 				if(nbPlayersDead == 0 && nbPlayers > 0  )
 				{
 					Functions.updateTurn(Roles.GREAT_WEREWOLF, controllerAgent, controllerAgent.getGameid());
-					Functions.newActionImportantToLog("Tour du méchant loup", this.getAgent(), this.controllerAgent.getGameid());
+					Functions.newActionImportantToLog("Tour du mï¿½chant loup", this.getAgent(), this.controllerAgent.getGameid());
 
 					ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
 					message.setConversationId("START_TURN");
@@ -627,7 +649,7 @@ public class TurnsBehaviour extends SimpleBehaviour {
 				if(nbPlayers > 0)
 				{
 					Functions.updateTurn(Roles.WITCH, controllerAgent, controllerAgent.getGameid());
-					Functions.newActionImportantToLog("Tour des sorcières", this.getAgent(), this.controllerAgent.getGameid());
+					Functions.newActionImportantToLog("Tour des sorciï¿½res", this.getAgent(), this.controllerAgent.getGameid());
 
 					ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
 					message.setConversationId("START_TURN");
@@ -664,6 +686,43 @@ public class TurnsBehaviour extends SimpleBehaviour {
 				this.nextStep = STATE_STOP_WITCH_TURN;
 				block(1000);
 			}
+		}
+		else if (this.step.equals(STATE_START_CITIZEN_TURN))
+		{
+			List<AID> agents = DFServices.findGameControllerAgent("CITIZEN", this.myAgent, this.controllerAgent.getGameid());
+			if(!agents.isEmpty())
+			{				
+				Functions.updateTurn(Roles.CITIZEN, controllerAgent, controllerAgent.getGameid());
+				Functions.newActionImportantToLog("Tour des villageois", this.getAgent(), this.controllerAgent.getGameid());
+
+
+				ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
+				message.setConversationId("START_TURN");
+				message.setSender(this.getAgent().getAID());
+				message.addReceiver(agents.get(0));
+				this.getAgent().send(message);
+
+				this.nextStep = STATE_STOP_CITIZEN_TURN;
+			}
+		}
+		else if (this.step.equals(STATE_STOP_CITIZEN_TURN))
+		{
+			MessageTemplate mt = MessageTemplate.and(
+					MessageTemplate.MatchPerformative(ACLMessage.INFORM),
+					MessageTemplate.MatchConversationId("END_TURN"));
+
+			ACLMessage message = this.myAgent.receive(mt);
+			if(message != null)
+			{
+				this.controllerAgent.doWait(1000);
+				this.nextStep = STATE_END;
+			}
+			else
+			{
+				this.nextStep = STATE_STOP_CITIZEN_TURN;
+				block();
+			}
+
 		}
 		else if (this.step.equals(STATE_END))
 		{

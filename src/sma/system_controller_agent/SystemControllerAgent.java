@@ -20,7 +20,8 @@ import sma.model.GameSettings;
  */
 public class SystemControllerAgent extends Agent{
 	private List<GameContainer> containers;
-
+	public static int id = 0;
+	
 	public SystemControllerAgent() {
 		super();
 		containers = new ArrayList<GameContainer>();

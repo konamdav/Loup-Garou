@@ -17,9 +17,10 @@ import sma.model.GameSettings;
  */
 public class CreateGameBehaviour extends CyclicBehaviour {
 	private SystemControllerAgent systemControllerAgent;
-
+	private int ii;
 	public CreateGameBehaviour(SystemControllerAgent systemControllerAgent) {
 		super();
+		this.ii = 0;
 		this.systemControllerAgent = systemControllerAgent;
 	}
 
@@ -39,7 +40,7 @@ public class CreateGameBehaviour extends CyclicBehaviour {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			int gameid = this.systemControllerAgent.getContainers().size();
+			int gameid = ii++;//SystemControllerAgent.id++;
 			this.systemControllerAgent.getContainers().add(new GameContainer(gameid, gameSettings));
 		}
 		else

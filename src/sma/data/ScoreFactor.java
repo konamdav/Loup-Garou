@@ -6,17 +6,17 @@ package sma.data;
  *
  */
 public class ScoreFactor {
-	public static final int SCORE_FACTOR_WEREWOLF_VOTE = 0;
-	public static final int SCORE_FACTOR_LOVER_VOTE = 0;
-	public static final int SCORE_FACTOR_GLOBAL_NB_VOTE = 0;
+	public static final int SCORE_FACTOR_WEREWOLF_VOTE = 1;
+	public static final int SCORE_FACTOR_LOVER_VOTE = 1;
+	public static final int SCORE_FACTOR_GLOBAL_NB_VOTE = 1;
 	
 	public static int SCORE_MIN = -10000000;
 	public static int SCORE_MAX = 10000000;
 	
-	public static int SCORE_FACTOR_GLOBAL_VOTE = 0;
-	public static int SCORE_FACTOR_DIFFERENCE_GLOBAL_VOTE = 0;
-	public static int SCORE_FACTOR_LOCAL_VOTE = 0;
-	public static int SCORE_FACTOR_DIFFERENCE_LOCAL_VOTE = 0;
+	public static int SCORE_FACTOR_GLOBAL_VOTE = 1;
+	public static int SCORE_FACTOR_DIFFERENCE_GLOBAL_VOTE = 1;
+	public static int SCORE_FACTOR_LOCAL_VOTE = 1;
+	public static int SCORE_FACTOR_DIFFERENCE_LOCAL_VOTE = 1;
 	
 	public static int SCORE_FACTOR_LOCAL_NB_VOTE =0;
 	

@@ -20,6 +20,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import jade.lang.acl.ACLMessage;
 import sma.model.DFServices;
 import sma.model.GameSettings;
+import ui.agent.uiAgent;
 
 public class ViewJoinMenu implements Screen{
 
@@ -27,16 +28,17 @@ public class ViewJoinMenu implements Screen{
 	Stage stage;
 	Skin skin;
 	int i =0;
+	private long time;
 
 	public ViewJoinMenu(App a){
 
 		app = a;
-
+		this.time = 0;
 		stage=new Stage();
 		Gdx.input.setInputProcessor(stage);
 		skin = new Skin( Gdx.files.internal( "resources/visui/uiskin.json" ));
 
-		
+
 		app.agent.addQuery();
 
 		Table table=new Table();
@@ -46,21 +48,21 @@ public class ViewJoinMenu implements Screen{
 		Label list_game_label =new Label("Partie en cours",skin);
 		table.add(list_game_label);
 		table.row();
-		
+
 		if (app.getContainers()!= null){
-			for (i = 0; i < app.getContainers().size(); i++){
-				Label game_label =new Label("Partie " + (i +1) ,skin);
+			for (int c : app.getContainers()){
+				Label game_label =new Label("Partie " + c ,skin);
 				table.add(game_label);
 
 				TextButton join_button = new TextButton("Rejoindre",skin);
 				table.add(join_button);
 				table.row();
-				
-				final int id = i;
+
+				final int id = c;
 				join_button.addListener(new ClickListener(){
 					@Override
 					public void clicked(InputEvent event, float x, float y) {
-						System.out.println("DEBOGAGE : " + i + "  --  " + app.getContainers().get(id) );
+						//System.out.println("DEBOGAGE : " + i + "  --  " + app.getContainers().get(id) );
 						app.agent.getInformations(app.getContainers().get(id));
 						app.setScreen(new ViewInterfaceGame(app));
 					}
@@ -68,7 +70,7 @@ public class ViewJoinMenu implements Screen{
 			}
 		}
 
-		
+
 		TextButton creer_button = new TextButton("Nouvelle partie",skin);
 		table.add(creer_button);
 		table.row();
@@ -103,6 +105,17 @@ public class ViewJoinMenu implements Screen{
 		Gdx.gl.glClearColor(0,0,0,1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+		if(this.time == 0){
+			this.time = System.currentTimeMillis();
+		}
+
+		
+		if(System.currentTimeMillis() - this.time > 3000)
+		{
+			app.agent.addQuery();
+			app.setScreen(new ViewJoinMenu(app));
+			this.time = 0;
+		}
 		stage.act(delta);
 		stage.draw();
 	}

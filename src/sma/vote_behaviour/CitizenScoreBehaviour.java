@@ -147,8 +147,7 @@ public class CitizenScoreBehaviour extends Behaviour implements IVoteBehaviour{
 				// regles de scoring
 				score+= globalResults.getVoteCount(player.getName(), this.playerAgent.getPlayerName()) * ScoreFactor.SCORE_FACTOR_GLOBAL_VOTE;
 				score+= globalResults.getVoteCount(player.getName()) * ScoreFactor.SCORE_FACTOR_GLOBAL_NB_VOTE; 
-
-				score+= localResults.getVoteCount(player.getName()) * ScoreFactor.SCORE_FACTOR_LOCAL_NB_VOTE; 
+				//score+= localResults.getVoteCount(player.getName()) * ScoreFactor.SCORE_FACTOR_LOCAL_NB_VOTE; 
 				score+= localResults.getDifferenceVote(player.getName(), this.playerAgent.getPlayerName()) * ScoreFactor.SCORE_FACTOR_DIFFERENCE_LOCAL_VOTE; 
 
 			}
@@ -158,7 +157,7 @@ public class CitizenScoreBehaviour extends Behaviour implements IVoteBehaviour{
 			// joueur analys� = joueur 
 			if(player.getName().equals(this.playerAgent.getPlayerName()))
 			{
-				if(request.getRequest().equals("WITCH_SAVE_VOTE"))
+				if(request.getRequest().equals("LIFE_VOTE"))
 				{
 					score = ScoreFactor.SCORE_MAX;
 				}
@@ -172,7 +171,7 @@ public class CitizenScoreBehaviour extends Behaviour implements IVoteBehaviour{
 				// ici global  =  resultat global du vote d'�limination ("contre")
 				// local = vote "pour" en cours
 				score+= globalResults.getVoteCount(player.getName(), this.playerAgent.getPlayerName()) * ScoreFactor.SCORE_FACTOR_GLOBAL_VOTE *-1; 
-				score+= localResults.getVoteCount(player.getName()) * ScoreFactor.SCORE_FACTOR_LOCAL_NB_VOTE;  
+				//score+= localResults.getVoteCount(player.getName()) * ScoreFactor.SCORE_FACTOR_LOCAL_NB_VOTE;  
 
 			}
 		}

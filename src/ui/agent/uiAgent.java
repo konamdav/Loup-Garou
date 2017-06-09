@@ -72,11 +72,11 @@ public class uiAgent extends Agent  {
 					ObjectMapper mapper = new ObjectMapper();
 					try {
 						List<Integer> containers = mapper.readValue(message1.getContent(),  mapper.getTypeFactory().constructCollectionType(List.class, Integer.class));
-						if (!containers.isEmpty())
-						{
-							app.setContainers(containers);
-						}
+
+						app.setContainers(containers);
+
 					}catch(Exception e) {
+						
 					}
 
 					flag = true; 
@@ -190,7 +190,7 @@ public class uiAgent extends Agent  {
 	{
 		addBehaviour(new QueryContainers(this));
 	}
-	
+
 
 	public void addSendVote(AID id, String c)
 	{

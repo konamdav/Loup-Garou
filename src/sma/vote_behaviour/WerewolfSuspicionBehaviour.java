@@ -160,7 +160,7 @@ public class WerewolfSuspicionBehaviour extends Behaviour implements IVoteBehavi
 		}
 		else
 		{
-			score = collectiveSuspicion.getScore(player.getName())+this.suspicionScore.getScore(player.getName());
+			score = 100*collectiveSuspicion.getScore(player.getName())+this.suspicionScore.getScore(player.getName());
 			if(!request.isVoteAgainst())
 			{
 				score = score * -1;

@@ -90,7 +90,7 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 			{
 				//System.err.println("AV receive rqst");
 				this.agent.doWait((int) (Math.random()*500));
-				Functions.newActionToLog(this.agent.getLocalName()+" réfléchit", this.agent, this.agent.getGameid());
+				Functions.newActionToLog(this.agent.getLocalName()+" rï¿½flï¿½chit", this.agent, this.agent.getGameid());
 
 				this.sender = message.getSender();
 				ObjectMapper mapper = new ObjectMapper();
@@ -109,7 +109,8 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 			{
 				this.nextStep = STATE_RECEIVE_FORCE_VOTE;
 			}
-		}
+		}//TODO CEDRIC DO THIS IN ORDER TO FORCE CITIZEN VOTE
+		
 		else if(this.step.equals(STATE_RECEIVE_FORCE_VOTE))
 		{
 			//System.err.println("AV receive force ?");
@@ -208,7 +209,7 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 					e.printStackTrace();
 				}
 
-				/** pondération  **/
+				/** pondï¿½ration  **/
 				String sender = res.getSender();
 				if(!sender.isEmpty())
 				{

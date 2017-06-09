@@ -11,6 +11,7 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import sma.model.DFServices;
 import sma.model.ForceVoteRequest;
+import sma.model.Functions;
 import sma.model.Roles;
 import sma.model.Status;
 import sma.model.VoteRequest;
@@ -226,6 +227,8 @@ public class TurnBehaviour extends SimpleBehaviour {
 			rqst.setVoteRequest("CITIZEN_VOTE");
 			rqst.setVoteResult(this.aidChosen.getLocalName());
 
+			Functions.newActionToLog("Les morts ont désignés "+this.aidChosen.getLocalName(), this.ctrlAgent, this.ctrlAgent.getGameid());
+			
 			ObjectMapper mapper  = new ObjectMapper();
 			for(AID aid : agents)
 			{

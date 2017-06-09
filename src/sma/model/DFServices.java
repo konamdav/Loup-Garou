@@ -567,7 +567,7 @@ public class DFServices {
 			profile.getRoles().remove(Roles.WEREWOLF);
 			profile.getRoles().remove(Roles.CITIZEN);
 		}
-		
+
 		//get profiles joueurs loup blanc
 		List<AID> white_werewolves = DFServices.findGamePlayerAgent(Roles.WHITE_WEREWOLF, agent, gameid);
 		for(AID werewolf : white_werewolves)
@@ -677,6 +677,7 @@ public class DFServices {
 								&&!s.equals(Roles.CITIZEN)
 								&&!s.equals(Roles.ANGEL)
 								&&!s.equals(Roles.WITCH)
+								&&!s.equals(Roles.SALVATOR)
 								&&!s.equals(Roles.THIEF)
 								&&!s.equals(Roles.HUNTER)
 								&&!s.equals(Roles.LITTLE_GIRL)
@@ -710,10 +711,12 @@ public class DFServices {
 		//get profiles joueurs victims
 		List<AID> victims = DFServices.findGamePlayerAgent("VICTIM", agent, gameid);
 
-		for(AID victim : victims)
-		{
-			PlayerProfile profile = tmp.get(victim.getLocalName());
-			profile.getRoles().add("VICTIM");
+		if(!game_mode || (game_mode && cptHuman > 0) ){
+			for(AID victim : victims)
+			{
+				PlayerProfile profile = tmp.get(victim.getLocalName());
+				profile.getRoles().add("VICTIM");
+			}
 		}
 
 

@@ -47,6 +47,9 @@ public class ViewNewGameMenu implements Screen {
 	private TextField ancient_textField;
 	private TextField thief_textField;
 	private TextField witch_textField;
+	
+	private TextField exorcist_textField;
+	private TextField salvator_textField;
     
 	ViewNewGameMenu(App a){
 		app = a;
@@ -110,6 +113,19 @@ public class ViewNewGameMenu implements Screen {
         table.add(lover_textField);
         table.row();
         
+        Label salvator_label =new Label("Salvator",skin);
+        table.add(salvator_label);
+        salvator_textField = new TextField("0",skin);
+        salvator_textField.setTextFieldFilter(new TextFieldFilter.DigitsOnlyFilter());
+        table.add(salvator_textField);
+        //table.row();
+        
+        Label exorcist_label =new Label("Exorcist",skin);
+        table.add(exorcist_label);
+        exorcist_textField = new TextField("0",skin);
+        exorcist_textField.setTextFieldFilter(new TextFieldFilter.DigitsOnlyFilter());
+        table.add(exorcist_textField);
+        table.row();
         
         Label family_label =new Label("Family",skin);
         table.add(family_label);
@@ -171,6 +187,10 @@ public class ViewNewGameMenu implements Screen {
         table.add(thief_textField);
         table.row();
         
+   
+        
+     
+        
 
         Label human_label =new Label("Joueurs humains",skin);
         table.add(human_label).padTop(20);
@@ -222,8 +242,8 @@ public class ViewNewGameMenu implements Screen {
         		players.put(Roles.ANCIENT,Integer.parseInt(ancient_textField.getText())); 
         		players.put(Roles.WITCH,Integer.parseInt(witch_textField.getText()));
         		players.put(Roles.THIEF,Integer.parseInt(thief_textField.getText())); 
-        		
-        		
+        		players.put(Roles.SALVATOR,Integer.parseInt(salvator_textField.getText())); 
+        		players.put(Roles.EXORCIST,Integer.parseInt(exorcist_textField.getText())); 
         		
         		GameSettings gameSettings = new GameSettings(players, Integer.parseInt(human_textField.getText()), box.isChecked());
         		ObjectMapper mapper = new ObjectMapper();

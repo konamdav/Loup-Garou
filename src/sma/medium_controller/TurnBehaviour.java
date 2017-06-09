@@ -11,6 +11,7 @@ import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import sma.model.DFServices;
+import sma.model.Functions;
 import sma.model.Roles;
 import sma.model.Status;
 import sma.model.VoteRequest;
@@ -266,6 +267,9 @@ public class TurnBehaviour extends SimpleBehaviour {
 				String role = message.getContent();
 				if(role.equals(Roles.WEREWOLF))
 				{
+
+					Functions.newActionToLog(""+this.playerChosen.getLocalName()+" est un loup !", this.ctrlAgent, this.ctrlAgent.getGameid());
+					
 					System.err.println(this.playerChosen.getName()+" is a werewolf");
 					message = new ACLMessage(ACLMessage.INFORM);
 					message.setConversationId("IS_WEREWOLF");
@@ -278,6 +282,8 @@ public class TurnBehaviour extends SimpleBehaviour {
 				}
 				else
 				{
+					Functions.newActionToLog(""+this.playerChosen.getLocalName()+" n'est pas un loup.", this.ctrlAgent, this.ctrlAgent.getGameid());
+					
 					System.err.println(this.playerChosen.getName()+" is a citizen");
 					message = new ACLMessage(ACLMessage.INFORM);
 					message.setConversationId("IS_CITIZEN");

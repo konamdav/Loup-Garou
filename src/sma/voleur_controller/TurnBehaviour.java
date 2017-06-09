@@ -108,6 +108,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 
 			//this.nbPlayers = agents.size(); TODO CEDRIC
 			if (agents.isEmpty() == false){
+				
 				this.cpt_vol = 0 ; //Cpt to know if role init or delete of the volé et le voleur
 				this.current_volleur = agents.get(0);
 				System.err.println("Launch voleur turn for " + this.current_volleur);

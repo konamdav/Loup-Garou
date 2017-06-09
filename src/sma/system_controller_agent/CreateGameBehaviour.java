@@ -40,7 +40,8 @@ public class CreateGameBehaviour extends CyclicBehaviour {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			int gameid = ii++;//SystemControllerAgent.id++;
+			int gameid = ii;//SystemControllerAgent.id++;
+			ii++;
 			this.systemControllerAgent.getContainers().add(new GameContainer(gameid, gameSettings));
 		}
 		else

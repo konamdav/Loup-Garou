@@ -63,7 +63,7 @@ public class ViewJoinMenu implements Screen{
 					@Override
 					public void clicked(InputEvent event, float x, float y) {
 						//System.out.println("DEBOGAGE : " + i + "  --  " + app.getContainers().get(id) );
-						app.agent.getInformations(app.getContainers().get(id));
+						app.agent.getInformations(id);
 						app.setScreen(new ViewInterfaceGame(app));
 					}
 				});

@@ -686,10 +686,21 @@ public class DFServices {
 								|| (s.equals(Roles.CHARMED) && rolesHuman.contains(Roles.FLUTE_PLAYER) )
 								|| (s.equals(Roles.FLUTE_PLAYER) && rolesHuman.contains(Roles.CHARMED) )
 								|| (s.equals(Roles.WEREWOLF) && rolesHuman.contains(Roles.GREAT_WEREWOLF) )
-								|| (s.equals(Roles.WEREWOLF) && rolesHuman.contains(Roles.WHITE_WEREWOLF) )
-								)
+								|| (s.equals(Roles.WEREWOLF) && rolesHuman.contains(Roles.WHITE_WEREWOLF)) 
+								|| (s.equals(Roles.WHITE_WEREWOLF) && rolesHuman.contains(Roles.WEREWOLF))
+								|| (s.equals(Roles.GREAT_WEREWOLF) && rolesHuman.contains(Roles.WEREWOLF)))
+
 						{
-							roles.add(s);
+							if((s.equals(Roles.WHITE_WEREWOLF) && rolesHuman.contains(Roles.WEREWOLF))||
+									(s.equals(Roles.GREAT_WEREWOLF) && rolesHuman.contains(Roles.WEREWOLF))){
+								
+								roles.add(Roles.WEREWOLF);
+							
+							}
+							else
+							{
+								roles.add(s);
+							}
 						}
 					}
 					tmp.get(citizen.getLocalName()).setRoles(roles);

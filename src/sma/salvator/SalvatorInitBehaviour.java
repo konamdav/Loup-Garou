@@ -52,7 +52,7 @@ public class SalvatorInitBehaviour extends OneShotBehaviour {
 		this.agent.getVotingBehaviours().add(citizenSuspicionBehaviour.getName_behaviour());
 		//Handle attributes
 		map_behaviour.put(Roles.SALVATOR, list_behav);
-
+		this.agent.getTypeVotingBehaviours().put(citizenSuspicionBehaviour.getName_behaviour(), TypeIA.SUSPICIOUS);
 		//enregirstrement
 		System.out.println("[ "+this.agent.getName()+" ] REGISTER "+Roles.SALVATOR);
 		DFServices.registerPlayerAgent(Roles.SALVATOR, this.myAgent, this.agent.getGameid());

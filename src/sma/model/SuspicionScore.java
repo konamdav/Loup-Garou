@@ -42,8 +42,6 @@ public class SuspicionScore
 		}
 	}
 
-
-
 	@JsonIgnore
 	public void addSuspicionScoreGrid(String name, SuspicionScore scoreGrid)
 	{

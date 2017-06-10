@@ -23,6 +23,7 @@ import sma.medium_behaviour.MediumInitBehaviour;
 import sma.model.Roles;
 import sma.player_agent.MayorInitBehaviour;
 import sma.player_agent.PlayerAgent;
+import sma.salvator.SalvatorInitBehaviour;
 import sma.scapegoat.ScapegoatInitBehaviour;
 import sma.voleur.VoleurInitBehaviour;
 import sma.werewolf_agent.WerewolfInitBehaviour;
@@ -128,6 +129,9 @@ public class FactoryInitBehaviour extends CyclicBehaviour{
 					break;
 				case Roles.EXORCIST:
 					this.agent.addBehaviour(new ExorcistInitBehaviour(this.agent, this.agent.getAID()));
+					break;
+				case Roles.SALVATOR:
+					this.agent.addBehaviour(new SalvatorInitBehaviour(this.agent, this.agent.getAID()));
 					break;
 				default:
 					System.err.print("Erreur role not valid" );

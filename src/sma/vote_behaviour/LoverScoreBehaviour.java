@@ -178,7 +178,7 @@ public class LoverScoreBehaviour extends Behaviour implements IVoteBehaviour{
 						score+= globalResults.getVoteCount(player.getName(), lover.getName()) * ScoreFactor.SCORE_FACTOR_GLOBAL_VOTE; 
 						score+= localResults.getVoteCount(player.getName(), lover.getName()) * ScoreFactor.SCORE_FACTOR_LOCAL_VOTE; 
 						score+= localResults.getVoteCount(player.getName()) * ScoreFactor.SCORE_FACTOR_LOCAL_NB_VOTE; 
-						score+= localResults.getDifferenceVote(player.getName(),lover.getName()) * ScoreFactor.SCORE_FACTOR_DIFFERENCE_LOCAL_VOTE; 
+						score+= localResults.getDifferenceVote(player.getName(),lover.getName()) * ScoreFactor.SCORE_FACTOR_DIFFERENCE_LOCAL_VOTE;
 
 					}
 									}

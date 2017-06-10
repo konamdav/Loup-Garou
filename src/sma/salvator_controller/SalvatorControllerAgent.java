@@ -29,6 +29,7 @@ public class SalvatorControllerAgent extends Agent implements IController {
 		
 		DFServices.registerGameControllerAgent(Roles.SALVATOR, this, this.gameid);		
 		this.addBehaviour(new SynchronousVoteBehaviour(this));
+		this.addBehaviour(new TurnBehaviour(this));
 	
 		
 	}

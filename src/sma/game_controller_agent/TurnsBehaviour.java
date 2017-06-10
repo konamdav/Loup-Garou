@@ -59,6 +59,9 @@ public class TurnsBehaviour extends SimpleBehaviour {
 
 	private final String STATE_START_WITCH_TURN = "START_WITCH_TURN";
 	private final String STATE_STOP_WITCH_TURN = "STOP_WITCH_TURN";
+	
+	private final String STATE_START_SALVATOR_TURN = "START_SALVATOR_TURN";
+	private final String STATE_STOP_SALVATOR_TURN = "STOP_SALVATOR_TURN";
 
 	private final String STATE_END = "END";
 
@@ -679,7 +682,7 @@ public class TurnsBehaviour extends SimpleBehaviour {
 			if(message != null)
 			{
 				this.controllerAgent.doWait(1000);
-				this.nextStep = STATE_START_CITIZEN_TURN;
+				this.nextStep = STATE_START_SALVATOR_TURN;
 			}
 			else
 			{
@@ -723,6 +726,55 @@ public class TurnsBehaviour extends SimpleBehaviour {
 				block();
 			}
 
+		}
+		else if (this.step.equals(STATE_START_SALVATOR_TURN))
+		{
+			List<AID> agents = DFServices.findGameControllerAgent("SALVATOR", this.myAgent, this.controllerAgent.getGameid());
+			if(!agents.isEmpty())
+			{	
+				String [] args = {Roles.SALVATOR, Status.SLEEP};
+				List<AID> witches = DFServices.findGamePlayerAgent(args, this.controllerAgent, this.controllerAgent.getGameid());				
+				int nbPlayers = witches.size();
+
+				if(nbPlayers > 0)
+				{
+					Functions.updateTurn(Roles.SALVATOR, controllerAgent, controllerAgent.getGameid());
+
+					ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
+					message.setConversationId("START_TURN");
+					message.setSender(this.getAgent().getAID());
+					message.addReceiver(agents.get(0));
+					this.getAgent().send(message);
+
+					this.nextStep = STATE_STOP_SALVATOR_TURN;
+				}
+				else
+				{
+					this.nextStep = STATE_START_CITIZEN_TURN;
+				}
+			}
+			else
+			{
+				this.nextStep = STATE_START_CITIZEN_TURN;
+			}
+		}
+		else if (this.step.equals(STATE_STOP_SALVATOR_TURN))
+		{
+			MessageTemplate mt = MessageTemplate.and(
+					MessageTemplate.MatchPerformative(ACLMessage.INFORM),
+					MessageTemplate.MatchConversationId("END_TURN"));
+
+			ACLMessage message = this.myAgent.receive(mt);
+			if(message != null)
+			{
+				this.controllerAgent.doWait(1000);
+				this.nextStep = STATE_START_CITIZEN_TURN;
+			}
+			else
+			{
+				this.nextStep = STATE_STOP_SALVATOR_TURN;
+				block();
+			}
 		}
 		else if (this.step.equals(STATE_END))
 		{

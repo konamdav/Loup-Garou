@@ -81,7 +81,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 			}
 			else
 			{
-				block();
+				block(1000);
 			}
 
 		}
@@ -125,7 +125,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 			}
 			else
 			{
-				block();
+				block(1000);
 			}
 		}
 
@@ -207,12 +207,12 @@ public class TurnBehaviour extends SimpleBehaviour {
 				String saved = message.getContent();
 				aidSavedOne = new AID(saved);
 
-				Functions.newActionToLog("Les salvateurs protègent "+this.aidSavedOne.getLocalName(), this.getAgent(), this.ctrlAgent.getGameid());
+				Functions.newActionToLog("Les salvateurs protï¿½gent "+this.aidSavedOne.getLocalName(), this.getAgent(), this.ctrlAgent.getGameid());
 				this.nextStep = STATE_SEND_SAVE_SOMEONE;
 			}
 			else
 			{
-				block();
+				block(1000);
 			}
 		}
 		/** etat envoi des requï¿½tes de sommeil **/
@@ -230,7 +230,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 				if(!agents.isEmpty())
 				{
 					
-					Functions.newActionToLog("Les salvateurs protègent "+this.aidSavedOne.getLocalName(), this.getAgent(), this.ctrlAgent.getGameid());
+					Functions.newActionToLog("Les salvateurs protï¿½gent "+this.aidSavedOne.getLocalName(), this.getAgent(), this.ctrlAgent.getGameid());
 					message.addReceiver(agents.get(0));
 					this.ctrlAgent.send(message);
 
@@ -281,7 +281,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 			}
 			else
 			{
-				block();
+				block(1000);
 			}
 		}
 		/** etat fin de tour **/

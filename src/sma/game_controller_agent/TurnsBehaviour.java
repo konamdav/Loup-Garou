@@ -725,7 +725,7 @@ public class TurnsBehaviour extends SimpleBehaviour
 			else
 			{
 				this.nextStep = STATE_STOP_CITIZEN_TURN;
-				block();
+				block(1000);
 			}
 
 		}
@@ -776,7 +776,7 @@ public class TurnsBehaviour extends SimpleBehaviour
 			else
 			{
 				this.nextStep = STATE_STOP_SALVATOR_TURN;
-				block();
+				block(1000);
 			}
 		}
 		else if (this.step.equals(STATE_END))

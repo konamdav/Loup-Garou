@@ -604,6 +604,16 @@ public class DFServices {
 			profile.getRoles().remove(Roles.CITIZEN);
 		}
 
+		//get profiles joueurs salvators
+		List<AID> salvators = DFServices.findGamePlayerAgent(Roles.SALVATOR, agent, gameid);
+
+		for(AID salvator : salvators)
+		{
+			PlayerProfile profile = tmp.get(salvator.getLocalName());
+			profile.getRoles().add(Roles.SALVATOR);
+			profile.getRoles().remove(Roles.CITIZEN);
+		}
+
 		//get profiles joueurs ancien
 		List<AID> anciens = DFServices.findGamePlayerAgent(Roles.ANCIENT, agent, gameid);
 
@@ -693,9 +703,9 @@ public class DFServices {
 						{
 							if((s.equals(Roles.WHITE_WEREWOLF) && rolesHuman.contains(Roles.WEREWOLF))||
 									(s.equals(Roles.GREAT_WEREWOLF) && rolesHuman.contains(Roles.WEREWOLF))){
-								
+
 								roles.add(Roles.WEREWOLF);
-							
+
 							}
 							else
 							{

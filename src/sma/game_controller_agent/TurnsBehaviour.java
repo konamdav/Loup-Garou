@@ -19,8 +19,10 @@ import sma.model.Status;
  * @author Davy
  *
  */
-public class TurnsBehaviour extends SimpleBehaviour {
+public class TurnsBehaviour extends SimpleBehaviour 
+{
 	private GameControllerAgent controllerAgent;
+	
 	private final String STATE_INIT = "INIT";
 	private final String STATE_WAITING = "WAITING";
 	private final String STATE_START_CITIZEN_TURN = "START_CITIZEN_TURN";
@@ -65,7 +67,7 @@ public class TurnsBehaviour extends SimpleBehaviour {
 
 	private final String STATE_END = "END";
 
-	private static final String STATE_POSTEND = "POSTEND";
+	private  final String STATE_POSTEND = "POSTEND";
 	private boolean flag_done;
 
 	private boolean flag_cupid; 
@@ -664,12 +666,12 @@ public class TurnsBehaviour extends SimpleBehaviour {
 				}
 				else
 				{
-					this.nextStep = STATE_START_CITIZEN_TURN;
+					this.nextStep = STATE_START_SALVATOR_TURN;
 				}
 			}
 			else
 			{
-				this.nextStep = STATE_START_CITIZEN_TURN;
+				this.nextStep = STATE_START_SALVATOR_TURN;
 			}
 		}
 		else if (this.step.equals(STATE_STOP_WITCH_TURN))
@@ -729,16 +731,17 @@ public class TurnsBehaviour extends SimpleBehaviour {
 		}
 		else if (this.step.equals(STATE_START_SALVATOR_TURN))
 		{
-			List<AID> agents = DFServices.findGameControllerAgent("SALVATOR", this.myAgent, this.controllerAgent.getGameid());
+			List<AID> agents = DFServices.findGameControllerAgent(Roles.SALVATOR, this.myAgent, this.controllerAgent.getGameid());
 			if(!agents.isEmpty())
 			{	
 				String [] args = {Roles.SALVATOR, Status.SLEEP};
-				List<AID> witches = DFServices.findGamePlayerAgent(args, this.controllerAgent, this.controllerAgent.getGameid());				
-				int nbPlayers = witches.size();
+				List<AID> salvators = DFServices.findGamePlayerAgent(args, this.controllerAgent, this.controllerAgent.getGameid());				
+				int nbPlayers = salvators.size();
 
 				if(nbPlayers > 0)
 				{
 					Functions.updateTurn(Roles.SALVATOR, controllerAgent, controllerAgent.getGameid());
+					Functions.newActionImportantToLog("Tour des salvateurs", this.getAgent(), this.controllerAgent.getGameid());
 
 					ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
 					message.setConversationId("START_TURN");

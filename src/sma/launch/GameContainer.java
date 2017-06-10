@@ -15,6 +15,7 @@ import sma.hunter_controller.HunterControllerAgent;
 import sma.medium_controller.MediumControllerAgent;
 import sma.model.GameSettings;
 import sma.model.Roles;
+import sma.salvator_controller.SalvatorControllerAgent;
 import sma.voleur_controller.VoleurControllerAgent;
 import sma.werewolf_white_controller_agent.WerewolfWhiteControllerAgent;
 import sma.witch_controller.WitchControllerAgent;
@@ -83,6 +84,15 @@ public class GameContainer {
 			{
 				ac = container.createNewAgent(
 						"GREAT_WEREWOLF_CONTROLLER_AGENT_"+gameid, GreatWerewolfControllerAgent.class.getName(), objects);
+				ac.start();
+			}
+			
+			
+			//selection role SALVATOR
+			if(this.gameSettings.isRoleRegistered(Roles.SALVATOR))
+			{
+				ac = container.createNewAgent(
+						"SALVATOR_CONTROLLER_AGENT_"+gameid, SalvatorControllerAgent.class.getName(), objects);
 				ac.start();
 			}
 			

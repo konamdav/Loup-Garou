@@ -10,6 +10,7 @@ import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import sma.model.DFServices;
+import sma.model.Functions;
 import sma.model.Roles;
 import sma.model.Status;
 import sma.model.VoteRequest;
@@ -47,6 +48,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 		this.ctrlAgent = salvatorControllerAgent;
 		this.step = STATE_INIT;
 		this.nextStep ="";
+		this.aidSavedOne = null;
 	}
 
 	@Override
@@ -60,7 +62,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 			System.out.println("*******************************************");
 			System.out.println("*******************************************");
 			this.nbPlayers = 0;
-			this.aidSavedOne = null;
+			//this.aidSavedOne = null;
 
 			cptSalvator = 0;
 			this.nextStep = STATE_WAITING_START;
@@ -128,7 +130,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 		}
 
 		/** etat reception des confirmations de reveil **/
-	
+
 		/** etat envoi requete demande de vote **/
 		else if(this.step.equals(STATE_SEND_VOTE_REQUEST))
 		{
@@ -140,13 +142,17 @@ public class TurnBehaviour extends SimpleBehaviour {
 
 			this.nbPlayers = salvators.size();
 
-			String [] args3 = {Status.SLEEP};
+			String [] args3 = {Roles.CITIZEN, Status.SLEEP};
 			List<AID> possibleSaved = DFServices.findGamePlayerAgent(args3, this.ctrlAgent, this.ctrlAgent.getGameid());
-			
+			possibleSaved.addAll(salvators);
 
 			for(AID aid : possibleSaved)
 			{
 				choices.add(aid.getName());
+			}
+			
+			if(this.aidSavedOne!=null){
+				choices.remove(this.aidSavedOne.getName());
 			}
 
 			for(AID aid : salvators)
@@ -154,6 +160,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 				voters.add(aid.getName());
 			}
 
+			if(!choices.isEmpty()){
 			VoteRequest request = new VoteRequest();
 			request.setVoteAgainst(false);
 			request.setRequest("PROTECT_VOTE");
@@ -178,11 +185,17 @@ public class TurnBehaviour extends SimpleBehaviour {
 			this.ctrlAgent.send(messageRequest);
 
 			this.nextStep = STATE_RECEIVE_VOTE_REQUEST;
+			}
+			else
+			{
+				Functions.newActionToLog("Pas de protection possible ", this.getAgent(), this.ctrlAgent.getGameid());
+				this.aidSavedOne = null;
+				this.nextStep = STATE_SEND_SLEEP_ALL;
+			}
 		}
 		/** etat reception du vote **/
 		else if(this.step.equals(STATE_RECEIVE_VOTE_REQUEST))
 		{
-
 			/*** reception demande de vote **/
 			MessageTemplate mt = MessageTemplate.and(
 					MessageTemplate.MatchPerformative(ACLMessage.INFORM),
@@ -194,6 +207,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 				String saved = message.getContent();
 				aidSavedOne = new AID(saved);
 
+				Functions.newActionToLog("Les salvateurs protègent "+this.aidSavedOne.getLocalName(), this.getAgent(), this.ctrlAgent.getGameid());
 				this.nextStep = STATE_SEND_SAVE_SOMEONE;
 			}
 			else
@@ -208,22 +222,20 @@ public class TurnBehaviour extends SimpleBehaviour {
 			message.setConversationId("REMOVE_VICTIM");
 			message.setContent(this.aidSavedOne.getName());
 			message.setSender(this.ctrlAgent.getAID());
+			
 			List<AID> victims = DFServices.findGamePlayerAgent(Status.VICTIM, this.ctrlAgent, this.ctrlAgent.getGameid());
-			if(!victims.isEmpty()){
-				for(AID aid : victims){
-					if(aid.equals(aidSavedOne)){
-						List<AID> agents = DFServices.findGameControllerAgent("CITIZEN", this.ctrlAgent, this.ctrlAgent.getGameid());
-						if(!agents.isEmpty())
-						{
-							message.addReceiver(agents.get(0));
-							this.ctrlAgent.send(message);
-							break;
-						}
-					}
+			if(victims.contains(this.aidSavedOne))
+			{
+				List<AID> agents = DFServices.findGameControllerAgent("CITIZEN", this.ctrlAgent, this.ctrlAgent.getGameid());
+				if(!agents.isEmpty())
+				{
+					
+					Functions.newActionToLog("Les salvateurs protègent "+this.aidSavedOne.getLocalName(), this.getAgent(), this.ctrlAgent.getGameid());
+					message.addReceiver(agents.get(0));
+					this.ctrlAgent.send(message);
+
 				}
 			}
-
-		
 
 			this.nextStep = STATE_SEND_SLEEP_ALL;
 		}

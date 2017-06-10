@@ -41,10 +41,10 @@ public class TurnBehaviour extends SimpleBehaviour {
 	private int nbPlayers;
 	private AID aidSavedOne;
 
-	public TurnBehaviour(SalvatorControllerAgent WerewolfControllerAgent) {
-		super(WerewolfControllerAgent);
+	public TurnBehaviour(SalvatorControllerAgent salvatorControllerAgent) {
+		super(salvatorControllerAgent);
 
-		this.ctrlAgent = WerewolfControllerAgent;
+		this.ctrlAgent = salvatorControllerAgent;
 		this.step = STATE_INIT;
 		this.nextStep ="";
 	}

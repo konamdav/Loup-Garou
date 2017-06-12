@@ -158,7 +158,7 @@ public class FamilyScoreBehaviour extends Behaviour implements IVoteBehaviour{
 					if(player.getName().equals(aid.getName()))
 					{
 						isFamily = true;
-						score -=100;
+						score -=10;
 					}
 					
 				}
@@ -205,7 +205,7 @@ public class FamilyScoreBehaviour extends Behaviour implements IVoteBehaviour{
 				
 				if(isFamily)
 				{
-					score += 100;
+					score += 10;
 				}
 				
 				// regles de scoring

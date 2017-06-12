@@ -158,7 +158,7 @@ public class CharmedScoreBehaviour extends Behaviour implements IVoteBehaviour{
 					if(player.getName().equals(aid.getName()))
 					{
 						isFlutePlayer = true;
-						score -=100;
+						score -=10;
 					}
 					
 				}
@@ -205,7 +205,7 @@ public class CharmedScoreBehaviour extends Behaviour implements IVoteBehaviour{
 				
 				if(isFlutePlayer)
 				{
-					score += 100;
+					score += 10;
 				}
 				
 				// regles de scoring

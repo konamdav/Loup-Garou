@@ -163,7 +163,7 @@ public class FlutePlayerScoreBehaviour extends Behaviour implements IVoteBehavio
 					if(player.getName().equals(aid.getName()))
 					{
 						isFlutePlayer = true;
-						score -=100;
+						score -=10;
 					}
 					
 				}
@@ -174,7 +174,7 @@ public class FlutePlayerScoreBehaviour extends Behaviour implements IVoteBehavio
 					if(player.getName().equals(aid.getName()))
 					{
 						isCharmed = true;
-						score -=100;
+						score -=10;
 					}
 					
 				}
@@ -229,7 +229,7 @@ public class FlutePlayerScoreBehaviour extends Behaviour implements IVoteBehavio
 				
 				if(isFlutePlayer)
 				{
-					score += 100;
+					score += 10;
 				}
 			
 				boolean isCharmed = false;
@@ -238,14 +238,14 @@ public class FlutePlayerScoreBehaviour extends Behaviour implements IVoteBehavio
 					if(player.getName().equals(aid.getName()))
 					{
 						isCharmed = true;
-						score -=100;
+						score -=10;
 					}
 					
 				}
 				
 				if(isCharmed)
 				{
-					score += 100;
+					score += 10;
 				}
 				
 				// regles de scoring

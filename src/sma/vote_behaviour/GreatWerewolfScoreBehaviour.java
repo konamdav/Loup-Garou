@@ -157,7 +157,7 @@ public class GreatWerewolfScoreBehaviour extends Behaviour implements IVoteBehav
 					if(player.getName().equals(aid.getName()))
 					{
 						isWerewolf = true;
-						score -=100;
+						score -=10;
 					}
 					
 				}
@@ -204,7 +204,7 @@ public class GreatWerewolfScoreBehaviour extends Behaviour implements IVoteBehav
 				
 				if(isWerewolf)
 				{
-					score += 100;
+					score += 10;
 				}
 				
 				// regles de scoring

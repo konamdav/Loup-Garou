@@ -142,9 +142,9 @@ public class TurnBehaviour extends SimpleBehaviour {
 			List<String> voters = new ArrayList<String>();
 
 			String [] args = {Roles.FLUTE_PLAYER, Status.WAKE};
-			List<AID> werewolves = DFServices.findGamePlayerAgent(args, this.ctrlAgent, this.ctrlAgent.getGameid());
+			List<AID> flutists = DFServices.findGamePlayerAgent(args, this.ctrlAgent, this.ctrlAgent.getGameid());
 
-			this.nbPlayers = werewolves.size();
+			this.nbPlayers = flutists.size();
 
 			String [] args2 = {Roles.CITIZEN, Status.SLEEP};
 			List<AID> citizens = DFServices.findGamePlayerAgent(args2, this.ctrlAgent, this.ctrlAgent.getGameid());
@@ -154,12 +154,13 @@ public class TurnBehaviour extends SimpleBehaviour {
 			List<AID> charmed = DFServices.findGamePlayerAgent(args3, this.ctrlAgent, this.ctrlAgent.getGameid());
 			citizens.removeAll(charmed); //David be carefull --'
 			
+			
 			for(AID aid : citizens)
 			{
 				choices.add(aid.getName());
 			}
 
-			for(AID aid : werewolves)
+			for(AID aid : flutists)
 			{
 				voters.add(aid.getName());
 			}

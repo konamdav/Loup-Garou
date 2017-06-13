@@ -22,10 +22,12 @@ public class GameSettings {
 		this.rolesSettings.put(Roles.WEREWOLF, 1);
 		this.rolesSettings.put(Roles.HUNTER, 0);
 		this.rolesSettings.put(Roles.CITIZEN, 1);
-		this.rolesSettings.put(Roles.CUPID, 2);
+		this.rolesSettings.put(Roles.CUPID, 0);
+		this.rolesSettings.put(Roles.LITTLE_GIRL, 2);
+		this.rolesSettings.put(Roles.CUPID, 0);
 		this.rolesSettings.put(Roles.GREAT_WEREWOLF,0); 
-		this.rolesSettings.put(Roles.EXORCIST,3); 
-		this.rolesSettings.put(Roles.SALVATOR, 1);
+		this.rolesSettings.put(Roles.EXORCIST,0); 
+		this.rolesSettings.put(Roles.SALVATOR, 0);
 
 
 	}

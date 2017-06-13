@@ -153,8 +153,8 @@ public class TurnBehaviour extends SimpleBehaviour {
 
 			for(AID werewolf : werewolves)
 			{
-				List<AID> neighborsLeft = DFServices.findNeighborsBySide2("LEFT", werewolf, this.ctrlAgent, this.ctrlAgent.getGameid());
-				List<AID> neighborsRight = DFServices.findNeighborsBySide2("RIGHT", werewolf, this.ctrlAgent, this.ctrlAgent.getGameid());
+				List<AID> neighborsLeft = DFServices.findNeighborsBySide("LEFT", werewolf, this.ctrlAgent, this.ctrlAgent.getGameid());
+				List<AID> neighborsRight = DFServices.findNeighborsBySide("RIGHT", werewolf, this.ctrlAgent, this.ctrlAgent.getGameid());
 
 				System.err.println("move  "+werewolf.getName());
 
@@ -253,14 +253,14 @@ public class TurnBehaviour extends SimpleBehaviour {
 
 			for(AID littlegirl : littlegirls)
 			{
-				List<AID> neighborsLeft = DFServices.findNeighborsBySide2("LEFT", littlegirl, this.ctrlAgent, this.ctrlAgent.getGameid());
-				List<AID> neighborsRight = DFServices.findNeighborsBySide2("RIGHT", littlegirl, this.ctrlAgent, this.ctrlAgent.getGameid());
+				List<AID> neighborsLeft = DFServices.findNeighborsBySide("LEFT", littlegirl, this.ctrlAgent, this.ctrlAgent.getGameid());
+				List<AID> neighborsRight = DFServices.findNeighborsBySide("RIGHT", littlegirl, this.ctrlAgent, this.ctrlAgent.getGameid());
 
 				System.err.println("move  "+littlegirl.getName());
 
 				for(int i = 0; i<neighborsLeft.size();++i)
 				{
-					//System.err.println("alert voisin (left)"+neighborsLeft.get(i).getName());
+					System.err.println("alert voisin (left)"+neighborsLeft.get(i).getName());
 
 					ACLMessage message = new ACLMessage(ACLMessage.INFORM);
 					message.setSender(this.ctrlAgent.getAID());
@@ -275,7 +275,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 				{
 					if(!neighborsLeft.contains(neighborsRight.get(i)))
 					{
-						//System.err.println("alert voisin (right)"+neighborsRight.get(i).getName());
+						System.err.println("alert voisin (right)"+neighborsRight.get(i).getName());
 
 						ACLMessage message = new ACLMessage(ACLMessage.INFORM);
 						message.setSender(this.ctrlAgent.getAID());

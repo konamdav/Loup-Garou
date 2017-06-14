@@ -500,7 +500,11 @@ public class SynchronousVoteBehaviour extends Behaviour {
 			message.setConversationId("VOTE_RESULTS");
 			message.setContent(this.finalResults.get(0));
 			
-			Functions.newActionToLog("Vote : "+this.finalResults.get(0), this.getAgent(), this.controllerAgent.getGameid());
+			String name = this.finalResults.get(0);
+			int index = name.indexOf("@");
+			name = name.substring(0, index);
+			
+			Functions.newActionToLog("Vote : "+name, this.getAgent(), this.controllerAgent.getGameid());
 			
 			this.myAgent.send(message);	
 			this.nextStep = STATE_INIT;

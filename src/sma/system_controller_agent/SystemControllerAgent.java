@@ -13,8 +13,8 @@ import sma.model.DFServices;
 import sma.model.GameSettings;
 
 /***
- * Agent systï¿½me
- * Crï¿½ation des conteneurs de jeu
+ * Agent systéme
+ * Création des conteneurs de jeu
  * @author Davy
  *
  */

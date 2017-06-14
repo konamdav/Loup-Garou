@@ -12,7 +12,7 @@ import sma.model.Roles;
 import sma.model.Status;
 
 /**
- * Behaviour qui prï¿½vient la fin de jeu
+ * Behaviour qui prévient la fin de jeu
  * @author Davy
  *
  */
@@ -144,7 +144,7 @@ public class CheckEndGameBehaviour extends CyclicBehaviour {
 				message.setConversationId("END_GAME");
 				this.nextStep = STATE_NOTIFY_END_GAME;
 			}
-			/** egalitï¿½ **/
+			/** egalité **/
 			else if(0 == citizens.size()) 
 			{
 				Functions.newActionImportantToLog("Tout le monde est mort !", this.getAgent(), this.gameControllerAgent.getGameid());
@@ -153,7 +153,7 @@ public class CheckEndGameBehaviour extends CyclicBehaviour {
 				message.setConversationId("END_GAME");
 				this.nextStep = STATE_NOTIFY_END_GAME;
 			}
-			/** angel tuï¿½ au premier tour **/
+			/** angel tué au premier tour **/
 			else if(this.gameControllerAgent.getNum_turn() == 1 
 					&& this.gameControllerAgent.getGameSettings().isRoleRegistered(Roles.ANGEL)
 					&& !angel.isEmpty() ) 
@@ -164,18 +164,18 @@ public class CheckEndGameBehaviour extends CyclicBehaviour {
 				message.setConversationId("END_GAME");
 				this.nextStep = STATE_NOTIFY_END_GAME;
 			}
-			/** le joueur de flute a charmï¿½ tout le monde **/
+			/** le joueur de flute a charmé tout le monde **/
 			else if(this.gameControllerAgent.getGameSettings().isRoleRegistered(Roles.FLUTE_PLAYER)
 					&& (charmed.size()+flutePlayers.size() == citizens.size())) 
 			{
 				Functions.newActionImportantToLog("Le joueur de flute a charmé tout le monde", this.getAgent(), this.gameControllerAgent.getGameid());
 
-				System.err.println("flute player wonï¿½");
+				System.err.println("flute player woné");
 				this.gameControllerAgent.setCheckEndGame(true);
 				message.setConversationId("END_GAME");
 				this.nextStep = STATE_NOTIFY_END_GAME;
 			}
-			/** les amoureux ont survï¿½cus **/
+			/** les amoureux ont survécus **/
 			else if(lovers.size() == citizens.size()) 
 			{
 				Functions.newActionImportantToLog("Les amoureux sont seuls", this.getAgent(), this.gameControllerAgent.getGameid());

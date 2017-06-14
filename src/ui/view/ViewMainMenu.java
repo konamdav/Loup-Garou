@@ -8,8 +8,10 @@ import org.codehaus.jackson.map.ObjectMapper;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -38,10 +40,14 @@ public class ViewMainMenu implements Screen {
         Gdx.input.setInputProcessor(stage);
         skin = new Skin( Gdx.files.internal( "resources/visui/uiskin.json" ));
 
+       
         Table table=new Table();
         table.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
         table.center();
         
+        Image image = new Image(new Texture("resources/sprites/logo.png"));
+        table.add(image);
+        table.row();
         
         Label creer_label =new Label("Créer serveur de partie",skin);
         table.add(creer_label);

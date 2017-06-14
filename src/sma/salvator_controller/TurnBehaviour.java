@@ -67,7 +67,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 			cptSalvator = 0;
 			this.nextStep = STATE_WAITING_START;
 		}
-		/** etat d'attente de dï¿½but de tour **/
+		/** etat d'attente de début de tour **/
 		else if(this.step.equals(STATE_WAITING_START))
 		{
 			MessageTemplate mt = MessageTemplate.and(
@@ -85,7 +85,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 			}
 
 		}
-		/** etat envoi des requï¿½tes de reveil pour tout les joueurs**/
+		/** etat envoi des requétes de reveil pour tout les joueurs**/
 		else if(this.step.equals(STATE_SEND_WAKE_ALL))
 		{
 			String[] args ={Status.SLEEP, Roles.SALVATOR};
@@ -207,7 +207,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 				String saved = message.getContent();
 				aidSavedOne = new AID(saved);
 
-				Functions.newActionToLog("Les salvateurs protï¿½gent "+this.aidSavedOne.getLocalName(), this.getAgent(), this.ctrlAgent.getGameid());
+				Functions.newActionToLog("Les salvateurs protégent "+this.aidSavedOne.getLocalName(), this.getAgent(), this.ctrlAgent.getGameid());
 				this.nextStep = STATE_SEND_SAVE_SOMEONE;
 			}
 			else
@@ -215,7 +215,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 				block(1000);
 			}
 		}
-		/** etat envoi des requï¿½tes de sommeil **/
+		/** etat envoi des requétes de sommeil **/
 		else if(this.step.equals(STATE_SEND_SAVE_SOMEONE))
 		{
 			ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
@@ -230,7 +230,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 				if(!agents.isEmpty())
 				{
 					
-					Functions.newActionToLog("Les salvateurs protï¿½gent "+this.aidSavedOne.getLocalName(), this.getAgent(), this.ctrlAgent.getGameid());
+					Functions.newActionToLog("Les salvateurs protégent "+this.aidSavedOne.getLocalName(), this.getAgent(), this.ctrlAgent.getGameid());
 					message.addReceiver(agents.get(0));
 					this.ctrlAgent.send(message);
 
@@ -239,7 +239,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 
 			this.nextStep = STATE_SEND_SLEEP_ALL;
 		}
-		/** etat envoi des requï¿½tes de sommeil **/
+		/** etat envoi des requétes de sommeil **/
 		else if(this.step.equals(STATE_SEND_SLEEP_ALL))
 		{
 			String [] args = {Roles.SALVATOR, Status.WAKE};

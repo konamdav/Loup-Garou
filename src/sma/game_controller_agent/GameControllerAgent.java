@@ -7,7 +7,7 @@ import sma.model.GameSettings;
 
 /***
  * Gestionnaire de jeu 
- *** Crï¿½ation des players
+ *** Création des players
  *** Gestion des tours
  * @author Davy
  *

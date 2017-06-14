@@ -82,7 +82,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 
 			this.nextStep = STATE_WAITING_START;
 		}
-		/** etat d'attente de dï¿½but de tour **/
+		/** etat d'attente de début de tour **/
 		else if(this.step.equals(STATE_WAITING_START))
 		{
 			MessageTemplate mt = MessageTemplate.and(
@@ -100,7 +100,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 			}
 
 		}
-		/** etat envoi des requï¿½tes de reveil pour un joueur **/
+		/** etat envoi des requétes de reveil pour un joueur **/
 		else if(this.step.equals(STATE_SEND_WAKE_ONE))
 		{
 			String[] args ={Status.SLEEP, Roles.THIEF};
@@ -400,7 +400,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 			}
 
 		}*/
-		/** etat envoi une requï¿½te de sommeil **/
+		/** etat envoi une requéte de sommeil **/
 		else if(this.step.equals(STATE_SEND_SLEEP_ONE))
 		{
 			ACLMessage messageRequest = new ACLMessage(ACLMessage.REQUEST);

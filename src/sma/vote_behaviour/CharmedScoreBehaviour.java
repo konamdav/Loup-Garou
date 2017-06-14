@@ -187,7 +187,7 @@ public class CharmedScoreBehaviour extends Behaviour implements IVoteBehaviour{
 		}
 		else
 		{
-			// joueur analysï¿½ = joueur 
+			// joueur analysé = joueur 
 			if(player.getName().equals(this.playerAgent.getPlayerName()))
 			{
 				score = 0;

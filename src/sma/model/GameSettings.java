@@ -16,7 +16,7 @@ public class GameSettings {
 		this.game_mode = false;
 		this.nbHumans = 0;
 		
-		//Liste role par dï¿½faut
+		//Liste role par défaut
 		this.rolesSettings = new HashMap<String, Integer>();
 
 		this.rolesSettings.put(Roles.WEREWOLF, 1);

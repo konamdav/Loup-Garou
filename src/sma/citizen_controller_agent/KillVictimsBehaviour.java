@@ -6,7 +6,7 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 
 /**
- * Behaviour tuant les joueurs dï¿½signï¿½s comme victimes
+ * Behaviour tuant les joueurs désignés comme victimes
  * @author Davy
  *
  */

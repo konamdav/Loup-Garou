@@ -126,7 +126,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 			}
 
 		}
-		/** etat envoi des requï¿½tes de reveil pour tout les joueurs**/
+		/** etat envoi des requétes de reveil pour tout les joueurs**/
 		else if(this.step.equals(STATE_SEND_WAKE_ONE_WITCH))
 		{
 			this.currentWitch = this.witches.get(this.cptWitches);		
@@ -480,7 +480,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 		}
 
 
-		/** etat envoi des requï¿½tes de sommeil **/
+		/** etat envoi des requétes de sommeil **/
 		else if(this.step.equals(STATE_SEND_SLEEP_ONE_WITCH))
 		{
 			ACLMessage messageRequest = new ACLMessage(ACLMessage.REQUEST);

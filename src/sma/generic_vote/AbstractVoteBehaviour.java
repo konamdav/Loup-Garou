@@ -21,7 +21,7 @@ import sma.player_agent.PlayerAgent;
 
 /**
  * Interface de vote du player
- * Fait le lien entre l'extï¿½rieur (controlleur) et les behaviours de scoring
+ * Fait le lien entre l'extérieur (controlleur) et les behaviours de scoring
  * @author Davy
  */
 public class AbstractVoteBehaviour extends SimpleBehaviour{
@@ -90,7 +90,7 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 			{
 				//System.err.println("AV receive rqst");
 				this.agent.doWait((int) (Math.random()*500));
-				Functions.newActionToLog(this.agent.getLocalName()+" rï¿½flï¿½chit", this.agent, this.agent.getGameid());
+				Functions.newActionToLog(this.agent.getLocalName()+" réfléchit", this.agent, this.agent.getGameid());
 
 				this.sender = message.getSender();
 				ObjectMapper mapper = new ObjectMapper();
@@ -209,7 +209,7 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 					e.printStackTrace();
 				}
 
-				/** pondï¿½ration  **/
+				/** pondération  **/
 				String sender = res.getSender();
 				if(!sender.isEmpty())
 				{

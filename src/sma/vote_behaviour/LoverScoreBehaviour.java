@@ -158,7 +158,7 @@ public class LoverScoreBehaviour extends Behaviour implements IVoteBehaviour{
 
 		int score = 0;
 		if(request.isVoteAgainst()){
-			// joueur analysï¿½ = joueur 
+			// joueur analysé = joueur 
 			if(player.getName().equals(this.playerAgent.getPlayerName()))
 			{
 				score = ScoreFactor.SCORE_MIN;
@@ -189,7 +189,7 @@ public class LoverScoreBehaviour extends Behaviour implements IVoteBehaviour{
 		else
 		{
 
-			// joueur analysï¿½ = joueur 
+			// joueur analysé = joueur 
 			if(player.getName().equals(this.playerAgent.getPlayerName()))
 			{
 				score = 0;
@@ -218,7 +218,7 @@ public class LoverScoreBehaviour extends Behaviour implements IVoteBehaviour{
 					score += localResults.getVoteCount(player.getName(), lover.getName()) *ScoreFactor.SCORE_FACTOR_LOVER_VOTE; 
 				}
 				// regles de scoring
-				//lover a dï¿½jï¿½ votï¿½ pour lui
+				//lover a déjé voté pour lui
 			}
 		}
 		return score;

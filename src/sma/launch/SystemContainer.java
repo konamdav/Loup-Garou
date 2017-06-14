@@ -10,7 +10,7 @@ import jade.wrapper.StaleProxyException;
 
 /**
  * Serveur de partie
- * Conteneur systï¿½me de la plateforme
+ * Conteneur systéme de la plateforme
  * @author Davy
  *
  */

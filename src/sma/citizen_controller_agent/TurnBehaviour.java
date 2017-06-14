@@ -76,7 +76,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 
 			this.nextStep = STATE_WAITING_START;
 		}
-		/** etat d'attente de dï¿½but de tour **/
+		/** etat d'attente de début de tour **/
 		else if(this.step.equals(STATE_WAITING_START))
 		{
 			MessageTemplate mt = MessageTemplate.and(
@@ -98,7 +98,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 			Functions.updateDayState("DAY", ctrlAgent, ctrlAgent.getGameid());
 			this.nextStep = STATE_SEND_WAKE_ALL;
 		}
-		/** etat envoi des requï¿½tes de reveil pour tout les joueurs**/
+		/** etat envoi des requétes de reveil pour tout les joueurs**/
 		else if(this.step.equals(STATE_SEND_WAKE_ALL))
 		{
 			String[] args ={Status.SLEEP, Roles.CITIZEN};
@@ -145,7 +145,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 				block(1000);
 			}
 		}
-		/** etat envoi requete pour tuer les  victimes dï¿½signï¿½es durant la nuit **/
+		/** etat envoi requete pour tuer les  victimes désignées durant la nuit **/
 		else if(this.step.equals(STATE_SEND_KILL_VICTIMS_REQUEST))
 		{
 			Functions.newActionImportantToLog("Mort des victimes", ctrlAgent, ctrlAgent.getGameid());
@@ -155,7 +155,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 		/** etat pour recevoir la confirmation de la mort des victimes **/
 		else if(this.step.equals(STATE_RECEIVE_KILL_VICTIMS_REQUEST))
 		{
-			/** le behaviour kill victims a terminï¿½ son travail **/
+			/** le behaviour kill victims a terminé son travail **/
 			if(this.ctrlAgent.isFlag_victims() && this.ctrlAgent.getVictims().isEmpty())
 			{
 				this.ctrlAgent.setFlag_victims(false);
@@ -166,7 +166,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 				this.nextStep = STATE_RECEIVE_KILL_VICTIMS_REQUEST;
 			}
 		}
-		/** etat envoi requete pour connaï¿½tre l'etat de jeu **/
+		/** etat envoi requete pour connaétre l'etat de jeu **/
 		else if(this.step.equals(STATE_SEND_CHECK_ENDGAME))
 		{
 			List<AID> agents = DFServices.findGameControllerAgent("GAME", this.ctrlAgent, this.ctrlAgent.getGameid());
@@ -186,7 +186,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 				this.nextStep = STATE_SEND_CHECK_ENDGAME;
 			}
 		}
-		/** etat reception de l'ï¿½tat de jeu **/
+		/** etat reception de l'état de jeu **/
 		else if(this.step.equals(STATE_RECEIVE_CHECK_ENDGAME))
 		{
 			/*** reception demande de vote **/
@@ -287,7 +287,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 			ACLMessage message = this.myAgent.receive(mt);
 			if(message != null)
 			{
-				/** rï¿½cupï¿½ration vote mayor **/		
+				/** récupération vote mayor **/		
 				AID aid = new AID(message.getContent());
 
 				/** msg attribution role **/
@@ -373,7 +373,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 				block(1000);
 			}
 		}
-		/** etat envoi des requï¿½tes de sommeil **/
+		/** etat envoi des requétes de sommeil **/
 		else if(this.step.equals(STATE_SEND_SLEEP_ALL))
 		{
 			String [] args = {Roles.CITIZEN, Status.WAKE};

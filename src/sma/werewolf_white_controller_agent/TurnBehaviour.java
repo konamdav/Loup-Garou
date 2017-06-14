@@ -77,7 +77,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 			cptLittleGirl = 0;
 			this.nextStep = STATE_WAITING_START;
 		}
-		/** etat d'attente de dï¿½but de tour **/
+		/** etat d'attente de début de tour **/
 		else if(this.step.equals(STATE_WAITING_START))
 		{
 			MessageTemplate mt = MessageTemplate.and(
@@ -95,7 +95,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 			}
 
 		}
-		/** etat envoi des requï¿½tes de reveil pour tout les joueurs**/
+		/** etat envoi des requétes de reveil pour tout les joueurs**/
 		else if(this.step.equals(STATE_SEND_WAKE_ALL))
 		{
 			String[] args ={Status.SLEEP, Roles.WHITE_WEREWOLF};
@@ -184,7 +184,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 
 		}
 
-		/** etat envoi des requï¿½tes de reveil pour tout les joueurs**/
+		/** etat envoi des requétes de reveil pour tout les joueurs**/
 		else if(this.step.equals(STATE_SEND_WAKE_LITTLE_GIRL))
 		{
 			String[] args ={Status.SLEEP, Roles.LITTLE_GIRL};
@@ -311,7 +311,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 
 			this.nextStep = STATE_SEND_SLEEP_LITTLE_GIRL;
 		}
-		/** etat envoi des requï¿½tes de sommeil **/
+		/** etat envoi des requétes de sommeil **/
 		else if(this.step.equals(STATE_SEND_SLEEP_LITTLE_GIRL))
 		{
 			String [] args = {Roles.LITTLE_GIRL, Status.WAKE};
@@ -438,7 +438,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 				block(1000);
 			}
 		}
-		/** etat envoi des requï¿½tes de sommeil **/
+		/** etat envoi des requétes de sommeil **/
 		else if(this.step.equals(STATE_SEND_ADD_VICTIM))
 		{
 			ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
@@ -455,7 +455,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 
 			this.nextStep = STATE_SEND_SLEEP_ALL;
 		}
-		/** etat envoi des requï¿½tes de sommeil **/
+		/** etat envoi des requétes de sommeil **/
 		else if(this.step.equals(STATE_SEND_SLEEP_ALL))
 		{
 			String [] args = {Roles.WHITE_WEREWOLF, Status.WAKE};

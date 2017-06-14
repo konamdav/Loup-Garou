@@ -107,7 +107,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 				 block(1000);
 			}
 		}
-		/** etat envoi des requï¿½tes de sommeil **/
+		/** etat envoi des requétes de sommeil **/
 		else if (this.step.equals(STATE_SEND_ADD_VICTIM)) {
 
 			//ajout victime

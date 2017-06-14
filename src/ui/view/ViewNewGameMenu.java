@@ -8,9 +8,11 @@ import org.codehaus.jackson.map.ObjectMapper;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -50,6 +52,7 @@ public class ViewNewGameMenu implements Screen {
 	
 	private TextField exorcist_textField;
 	private TextField salvator_textField;
+	private TextField scapegoat_textField;
     
 	ViewNewGameMenu(App a){
 		app = a;
@@ -63,158 +66,217 @@ public class ViewNewGameMenu implements Screen {
         
 		Table table=new Table();
 //        table.setSize(800,500);
-  
+		table.columnDefaults(6);
+		
 		 table.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
-	       table.center();
+	    // table.center();
 	       
         
-        
+		//table.add(new Label("",skin));
         Label all_werewolf_label =new Label("Werewolf",skin);
-        table.add(all_werewolf_label);
+        table.add(all_werewolf_label).width(100).left();
+        table.add(new Label("",skin));
+        table.add(new Label("",skin));
         table.row();
         
+        Image image = new Image(new Texture("resources/sprites/werewolf.png"));
+        image.setSize(32, 32);
+        table.add(image);
+        
         Label werewolf_label =new Label("Normal",skin);
-        table.add(werewolf_label);
+        table.add(werewolf_label).width(100).left();
         werewolf_textField = new TextField("0",skin);
         werewolf_textField.setTextFieldFilter(new TextFieldFilter.DigitsOnlyFilter());
-        table.add(werewolf_textField);
+        table.add(werewolf_textField).left().padRight(50);
         
+        
+        image = new Image(new Texture("resources/sprites/great_werewolf.png"));
+        image.setSize(32, 32);
+        table.add(image).padRight(50);
         Label great_werewolf_label =new Label("Great",skin);
-        table.add(great_werewolf_label);
+        table.add(great_werewolf_label).width(100).left();
         great_werewolf_textField = new TextField("0",skin);
         great_werewolf_textField.setTextFieldFilter(new TextFieldFilter.DigitsOnlyFilter());
         table.add(great_werewolf_textField);
         table.row();
         
-        
+        image = new Image(new Texture("resources/sprites/white_werewolf.png"));
+        image.setSize(32, 32);
+        table.add(image);
         Label white_werewolf_label =new Label("White",skin);
-        table.add(white_werewolf_label);
+        table.add(white_werewolf_label).width(100).left();
         white_werewolf_textField = new TextField("0",skin);
         white_werewolf_textField.setTextFieldFilter(new TextFieldFilter.DigitsOnlyFilter());
-        table.add(white_werewolf_textField);
+        table.add(white_werewolf_textField).padRight(50);
         table.row();
         table.row();
 
-        
+      //  table.add(new Label("",skin));
         Label all_citizen_label =new Label("Citizen",skin);
-        table.add(all_citizen_label).padTop(20);
+        table.add(all_citizen_label).padTop(20).left();
+        table.add(new Label("",skin));
+        table.add(new Label("",skin));
         table.row();
         
+        image = new Image(new Texture("resources/sprites/citizen.png"));
+        image.setSize(32, 32);
+        table.add(image);
         Label citizen_label =new Label("Normal",skin);
-        table.add(citizen_label);
+        table.add(citizen_label).width(100).left();
         citizen_textField = new TextField("0",skin);
         citizen_textField.setTextFieldFilter(new TextFieldFilter.DigitsOnlyFilter());
-        table.add(citizen_textField);
+        table.add(citizen_textField).padRight(50);
         
+        image = new Image(new Texture("resources/sprites/cupid.png"));
+        image.setSize(32, 32);
+        table.add(image).padRight(50);
         Label lover_label =new Label("Cupid",skin);
-        table.add(lover_label);
+        table.add(lover_label).width(100).left();
         lover_textField = new TextField("0",skin);
         lover_textField.setTextFieldFilter(new TextFieldFilter.DigitsOnlyFilter());
         table.add(lover_textField);
         table.row();
         
+        image = new Image(new Texture("resources/sprites/salvator.png"));
+        image.setSize(32, 32);
+        table.add(image);
         Label salvator_label =new Label("Salvator",skin);
-        table.add(salvator_label);
+        table.add(salvator_label).width(100).left();
         salvator_textField = new TextField("0",skin);
         salvator_textField.setTextFieldFilter(new TextFieldFilter.DigitsOnlyFilter());
-        table.add(salvator_textField);
+        table.add(salvator_textField).padRight(50);
         //table.row();
         
+        image = new Image(new Texture("resources/sprites/exorcist.png"));
+        image.setSize(32, 32);
+        table.add(image).padRight(50);
         Label exorcist_label =new Label("Exorcist",skin);
-        table.add(exorcist_label);
+        table.add(exorcist_label).width(100).left();
         exorcist_textField = new TextField("0",skin);
         exorcist_textField.setTextFieldFilter(new TextFieldFilter.DigitsOnlyFilter());
         table.add(exorcist_textField);
         table.row();
         
+        image = new Image(new Texture("resources/sprites/family.png"));
+        image.setSize(32, 32);
+        table.add(image);
         Label family_label =new Label("Family",skin);
-        table.add(family_label);
+        table.add(family_label).width(100).left();
         family_textField = new TextField("0",skin);
         family_textField.setTextFieldFilter(new TextFieldFilter.DigitsOnlyFilter());
-        table.add(family_textField);
+        table.add(family_textField).padRight(50);
         
+        image = new Image(new Texture("resources/sprites/medium.png"));
+        image.setSize(32, 32);
+        table.add(image).padRight(50);
         Label medium_label =new Label("Medium",skin);
-        table.add(medium_label);
+        table.add(medium_label).width(100).left();
         medium_textField = new TextField("0",skin);
         medium_textField.setTextFieldFilter(new TextFieldFilter.DigitsOnlyFilter());
         table.add(medium_textField);
         table.row();
         
+        image = new Image(new Texture("resources/sprites/little_girl.png"));
+        image.setSize(32, 32);
+        table.add(image);
         Label little_girl_label =new Label("Little girl",skin);
-        table.add(little_girl_label);
+        table.add(little_girl_label).width(100).left();
         little_girl_textField = new TextField("0",skin);
         little_girl_textField.setTextFieldFilter(new TextFieldFilter.DigitsOnlyFilter());
-        table.add(little_girl_textField);
+        table.add(little_girl_textField).padRight(50);
         
+        image = new Image(new Texture("resources/sprites/hunter.png"));
+        image.setSize(32, 32);
+        table.add(image).padRight(50);
         Label hunter_label =new Label("Hunter",skin);
-        table.add(hunter_label);
+        table.add(hunter_label).width(100).left();
         hunter_textField = new TextField("0",skin);
         hunter_textField.setTextFieldFilter(new TextFieldFilter.DigitsOnlyFilter());
         table.add(hunter_textField);
         table.row();
         
+        image = new Image(new Texture("resources/sprites/angel.png"));
+        image.setSize(32, 32);
+        table.add(image);
         Label angel_label =new Label("Angel",skin);
-        table.add(angel_label);
+        table.add(angel_label).width(100).left();
         angel_textField = new TextField("0",skin);
         angel_textField.setTextFieldFilter(new TextFieldFilter.DigitsOnlyFilter());
-        table.add(angel_textField);
+        table.add(angel_textField).padRight(50);
         
+        image = new Image(new Texture("resources/sprites/flute_player.png"));
+        image.setSize(32, 32);
+        table.add(image).padRight(50);
         Label flute_label =new Label("Flutist",skin);
-        table.add(flute_label);
+        table.add(flute_label).width(100).left();
         flute_textField = new TextField("0",skin);
         flute_textField.setTextFieldFilter(new TextFieldFilter.DigitsOnlyFilter());
         table.add(flute_textField);
         table.row();
         
+        image = new Image(new Texture("resources/sprites/ancient.png"));
+        image.setSize(32, 32);
+        table.add(image);
         Label ancient_label =new Label("Ancient",skin);
-        table.add(ancient_label);
+        table.add(ancient_label).width(100).left();
         ancient_textField = new TextField("0",skin);
         ancient_textField.setTextFieldFilter(new TextFieldFilter.DigitsOnlyFilter());
-        table.add(ancient_textField);
+        table.add(ancient_textField).padRight(50);
         
-        
+        image = new Image(new Texture("resources/sprites/witch.png"));
+        image.setSize(32, 32);
+        table.add(image).padRight(50);
         Label witch_label =new Label("Witch",skin);
-        table.add(witch_label);
+        table.add(witch_label).width(100).left();
         witch_textField = new TextField("0",skin);
         witch_textField.setTextFieldFilter(new TextFieldFilter.DigitsOnlyFilter());
         table.add(witch_textField);
         table.row();
         
+        image = new Image(new Texture("resources/sprites/thief.png"));
+        image.setSize(32, 32);
+        table.add(image);
         Label thief_label =new Label("Thief",skin);
-        table.add(thief_label);
+        table.add(thief_label).width(100).left();
         thief_textField = new TextField("0",skin);
         thief_textField.setTextFieldFilter(new TextFieldFilter.DigitsOnlyFilter());
-        table.add(thief_textField);
+        table.add(thief_textField).padRight(50);
+        
+        image = new Image(new Texture("resources/sprites/scapegoat.png"));
+        image.setSize(32, 32);
+        table.add(image).padRight(50);
+        Label scapegoat_label =new Label("Scapegoat",skin);
+        table.add(scapegoat_label).width(100).left();
+        scapegoat_textField = new TextField("0",skin);
+        scapegoat_textField.setTextFieldFilter(new TextFieldFilter.DigitsOnlyFilter());
+        table.add(scapegoat_textField);
+        table.row();
         table.row();
         
    
         
      
         
+        
 
-        Label human_label =new Label("Joueurs humains",skin);
-        table.add(human_label).padTop(20);
-        table.row();        
-
-        Label humannb_label =new Label("Nombre : ",skin);
-        table.add(humannb_label);
+        Label humannb_label =new Label("Nombre de joueurs humains : ",skin);
+        table.add(humannb_label).padTop(20).padRight(50).left();
         human_textField = new TextField("0",skin);
         human_textField.setTextFieldFilter(new TextFieldFilter.DigitsOnlyFilter());
-        table.add(human_textField);
+        table.add(human_textField).padTop(20);
         table.row();
         
         
 
-        final CheckBox box=new CheckBox("  Cacher les roles",skin);	 //Added this to fix
-        table.add(box).padTop(20);
-        table.row();
+        final CheckBox box=new CheckBox("Cacher les roles ? ",skin);	 //Added this to fix
+        table.add(box).padRight(20).padBottom(10).left();
+       // table.row();
         
-        TextButton creer_button = new TextButton("Crï¿½er partie",skin);
-        table.add(creer_button).padTop(20);
-        table.row();
+        TextButton creer_button = new TextButton("Créer partie",skin);
+        table.add(creer_button).padRight(20).right();
         
         TextButton retour_button = new TextButton("Retour",skin);
-		table.add(retour_button);
+		table.add(retour_button).left();
 		table.row();
 
         
@@ -244,6 +306,9 @@ public class ViewNewGameMenu implements Screen {
         		players.put(Roles.THIEF,Integer.parseInt(thief_textField.getText())); 
         		players.put(Roles.SALVATOR,Integer.parseInt(salvator_textField.getText())); 
         		players.put(Roles.EXORCIST,Integer.parseInt(exorcist_textField.getText())); 
+        		players.put(Roles.SCAPEGOAT,Integer.parseInt(scapegoat_textField.getText())); 
+        		
+        		
         		
         		GameSettings gameSettings = new GameSettings(players, Integer.parseInt(human_textField.getText()), box.isChecked());
         		ObjectMapper mapper = new ObjectMapper();
@@ -254,10 +319,7 @@ public class ViewNewGameMenu implements Screen {
         			e.printStackTrace();
         		}
         		message.setContent(json);
-        		app.agent.send(message);
-        		
-            	
-      		
+        		app.agent.send(message);     		
         		app.setScreen(new ViewJoinMenu(app));
             }
         });

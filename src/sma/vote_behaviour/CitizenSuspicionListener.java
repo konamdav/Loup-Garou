@@ -74,7 +74,7 @@ public class CitizenSuspicionListener extends Behaviour{
 		}
 		else if(step.equals(STATE_SEND_SUSPICIONS))
 		{
-			//liste des voisins que l'on soupï¿½onne
+			//liste des voisins que l'on soupéonne
 			List<AID> neighbors = DFServices.findNeighborsBySide(this.side, this.playerAgent.getAID(), playerAgent, this.playerAgent.getGameid());
 			System.err.println(DFServices.findNeighbors(this.getAgent().getAID(), this.myAgent, this.playerAgent.getGameid()));
 			

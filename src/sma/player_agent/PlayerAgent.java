@@ -19,7 +19,7 @@ import jade.lang.acl.ACLMessage;
 
 
 /**
- * Structure gï¿½nï¿½rique du player
+ * Structure générique du player
  * @author Davy
  *
  */
@@ -118,15 +118,15 @@ public class PlayerAgent extends Agent implements IVotingAgent{
 		this.addBehaviour(new InitAsHumanBehaviour(this));
 		this.addBehaviour(new FactoryInitBehaviour(this));
 
-		//enregistrement par dï¿½faut
+		//enregistrement par défaut
 		System.out.println("[ "+this.getName()+" ] REGISTER "+Roles.CITIZEN);
 		DFServices.registerPlayerAgent(Roles.CITIZEN, this, this.gameid);
 		
 		
 		this.setStatutandRegister("SLEEP");
 		
-		//TODO CEDRIC Met ï¿½a dans un Init Behaviour ( a la fin )
-		// prï¿½viens le game controller que le joueur est prï¿½t
+		//TODO CEDRIC Met éa dans un Init Behaviour ( a la fin )
+		// préviens le game controller que le joueur est prét
 		ACLMessage msg = new ACLMessage(ACLMessage.SUBSCRIBE);
 		msg.setConversationId("INIT_PLAYER");
 		msg.setSender(this.getAID());

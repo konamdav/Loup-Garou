@@ -144,7 +144,7 @@ public class WerewolfScoreBehaviour extends Behaviour implements IVoteBehaviour 
 
 		int score = 0;
 		if(request.isVoteAgainst()){
-			// joueur analysï¿½ = joueur 
+			// joueur analysé = joueur 
 			if(player.getName().equals(this.playerAgent.getPlayerName()))
 			{
 				score = ScoreFactor.SCORE_MIN;
@@ -186,7 +186,7 @@ public class WerewolfScoreBehaviour extends Behaviour implements IVoteBehaviour 
 		}
 		else
 		{
-			// joueur analysï¿½ = joueur 
+			// joueur analysé = joueur 
 			if(player.getName().equals(this.playerAgent.getPlayerName()))
 			{
 				score = 0;

@@ -538,7 +538,7 @@ public class TurnsBehaviour extends SimpleBehaviour
 				if(nbPlayersDead == 0 && nbPlayers > 0  )
 				{
 					Functions.updateTurn(Roles.GREAT_WEREWOLF, controllerAgent, controllerAgent.getGameid());
-					Functions.newActionImportantToLog("Tour du mï¿½chant loup", this.getAgent(), this.controllerAgent.getGameid());
+					Functions.newActionImportantToLog("Tour du méchant loup", this.getAgent(), this.controllerAgent.getGameid());
 
 					ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
 					message.setConversationId("START_TURN");
@@ -654,7 +654,7 @@ public class TurnsBehaviour extends SimpleBehaviour
 				if(nbPlayers > 0)
 				{
 					Functions.updateTurn(Roles.WITCH, controllerAgent, controllerAgent.getGameid());
-					Functions.newActionImportantToLog("Tour des sorciï¿½res", this.getAgent(), this.controllerAgent.getGameid());
+					Functions.newActionImportantToLog("Tour des sorciéres", this.getAgent(), this.controllerAgent.getGameid());
 
 					ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
 					message.setConversationId("START_TURN");

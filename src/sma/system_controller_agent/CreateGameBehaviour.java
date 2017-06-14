@@ -11,7 +11,7 @@ import sma.launch.GameContainer;
 import sma.model.GameSettings;
 
 /***
- * Crï¿½ation d'un jeu via une configuration de partie
+ * Création d'un jeu via une configuration de partie
  * @author Davy
  *
  */

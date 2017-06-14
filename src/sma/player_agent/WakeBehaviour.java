@@ -24,7 +24,7 @@ public class WakeBehaviour extends SimpleBehaviour{
 		{
 			this.playerAgent.doWait((int) (Math.random()*2000));
 			this.playerAgent.setStatutandRegister("WAKE");
-			Functions.newActionToLog(this.playerAgent.getLocalName()+" se reveille", this.playerAgent, this.playerAgent.getGameid());
+			//Functions.newActionToLog(this.playerAgent.getLocalName()+" se reveille", this.playerAgent, this.playerAgent.getGameid());
 		
 			if(playerAgent.isHuman()){
 				Functions.incHumans(playerAgent, playerAgent.getGameid());

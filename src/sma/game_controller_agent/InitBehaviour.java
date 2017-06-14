@@ -9,6 +9,9 @@ import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.wrapper.AgentController;
+import jade.wrapper.StaleProxyException;
+import sma.environment_agent.EnvironmentAgent;
+import sma.environmenthuman_agent.EnvironmentHumanAgent;
 import sma.model.DFServices;
 import sma.model.GameSettings;
 
@@ -124,6 +127,26 @@ public class InitBehaviour extends Behaviour {
 					this.getAgent().send(message);
 
 					System.out.println("HUMAN PLAYER "+agents.get(i).getName());
+					
+					if(gameSettings.isGame_mode())
+					{
+						/** creation d'un env spécial human **/
+						
+						Object[] objects = new Object[3];
+						objects[0] = this.gameControllerAgent.getGameid();
+						objects[1] = this.gameControllerAgent.getGameSettings();
+						objects[2] =  agents.get(i);
+						
+						AgentController ac;
+						try {
+							ac = this.myAgent.getContainerController().createNewAgent(
+									"ENVIRONMENT_AGENT_"+agents.get(i).getLocalName(), EnvironmentHumanAgent.class.getName(), objects);
+							ac.start();
+						} catch (StaleProxyException e) {
+							e.printStackTrace();
+						}
+						
+					}
 
 				}
 

@@ -82,7 +82,7 @@ public class CitizenSuspicionListener extends Behaviour{
 			//maj grid
 			for(AID aid : neighbors)
 			{
-				System.err.println(this.playerAgent.getLocalName()+" suspecte "+aid.getLocalName()+" ("+this.side+")");
+				//System.err.println(this.playerAgent.getLocalName()+" suspecte "+aid.getLocalName()+" ("+this.side+")");
 				this.suspicionScore.addScore(aid.getName(), 10);
 			}
 			

@@ -105,7 +105,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 			List<AID> agents = DFServices.findGamePlayerAgent( args , this.ctrlAgent, this.ctrlAgent.getGameid());
 
 			this.nbPlayers = agents.size();
-			System.out.println("nombre de joueurs to wake : "+this.nbPlayers);
+			//System.out.println("nombre de joueurs to wake : "+this.nbPlayers);
 			for(AID aid : agents)
 			{	
 				ACLMessage messageRequest = new ACLMessage(ACLMessage.REQUEST);
@@ -198,7 +198,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 
 			if(message != null)
 			{
-				System.err.println("... receive ...");
+				//System.err.println("... receive ...");
 				if(!this.previousVictims)
 				{
 					this.previousVictims = true;
@@ -219,7 +219,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 
 				if(message != null)
 				{
-					System.err.println("... receive ...");
+					//System.err.println("... receive ...");
 					this.nextStep = STATE_END_TURN;
 				}
 				else

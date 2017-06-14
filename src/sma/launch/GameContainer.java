@@ -54,10 +54,13 @@ public class GameContainer {
 					"ENVIRONMENT_AGENT_1_"+gameid, EnvironmentAgent.class.getName(), objects);
 			ac.start();
 			
-			ac = container.createNewAgent(
-					"ENVIRONMENT_AGENT_2_"+gameid, EnvironmentAgent.class.getName(), objects);
-			ac.start();
-			
+			//desactivation du 2ème env agent quand game mode (agent d'env specifique pour les joueurs)
+			if(!this.gameSettings.isGame_mode())
+			{
+				ac = container.createNewAgent(
+						"ENVIRONMENT_AGENT_2_"+gameid, EnvironmentAgent.class.getName(), objects);
+				ac.start();
+			}
 
 			ac = container.createNewAgent(
 					"GAME_CONTROLLER_AGENT_"+gameid, "sma.game_controller_agent.GameControllerAgent", objects);
@@ -78,7 +81,7 @@ public class GameContainer {
 						"WEREWOLF_CONTROLLER_AGENT_"+gameid, "sma.werewolf_controller_agent.WerewolfControllerAgent", objects);
 				ac.start();
 			}
-			
+
 			//selection role great werewolf
 			if(this.gameSettings.isRoleRegistered(Roles.GREAT_WEREWOLF))
 			{
@@ -86,8 +89,8 @@ public class GameContainer {
 						"GREAT_WEREWOLF_CONTROLLER_AGENT_"+gameid, GreatWerewolfControllerAgent.class.getName(), objects);
 				ac.start();
 			}
-			
-			
+
+
 			//selection role SALVATOR
 			if(this.gameSettings.isRoleRegistered(Roles.SALVATOR))
 			{
@@ -95,7 +98,7 @@ public class GameContainer {
 						"SALVATOR_CONTROLLER_AGENT_"+gameid, SalvatorControllerAgent.class.getName(), objects);
 				ac.start();
 			}
-			
+
 			//selection role white werewolf
 			if(this.gameSettings.isRoleRegistered(Roles.WHITE_WEREWOLF))
 			{
@@ -103,7 +106,7 @@ public class GameContainer {
 						"WHITE_WEREWOLF_CONTROLLER_AGENT_"+gameid, WerewolfWhiteControllerAgent.class.getName(), objects);
 				ac.start();
 			}
-			
+
 
 			//selection role witch
 			if(this.gameSettings.isRoleRegistered(Roles.WITCH))
@@ -112,7 +115,7 @@ public class GameContainer {
 						"WITCH_CONTROLLER_AGENT_"+gameid, WitchControllerAgent.class.getName(), objects);
 				ac.start();
 			}
-			
+
 			//selection role FAMILY
 			if(this.gameSettings.isRoleRegistered(Roles.FAMILY))
 			{
@@ -120,7 +123,7 @@ public class GameContainer {
 						"FAMILY_CONTROLLER_AGENT_"+gameid, FamilyControllerAgent.class.getName(), objects);
 				ac.start();
 			}
-			
+
 			//selection role Exorcist
 			if(this.gameSettings.isRoleRegistered(Roles.EXORCIST))
 			{
@@ -128,7 +131,7 @@ public class GameContainer {
 						"EXORCIST_CONTROLLER_AGENT_"+gameid, ExorcistControllerAgent.class.getName(), objects);
 				ac.start();
 			}
-			
+
 			//selection role CUPID
 			if(this.gameSettings.isRoleRegistered(Roles.CUPID))
 			{
@@ -145,7 +148,7 @@ public class GameContainer {
 				ac.start();
 
 			}
-			
+
 			//selection role flute player
 			if(this.gameSettings.isRoleRegistered(Roles.FLUTE_PLAYER))
 			{
@@ -153,7 +156,7 @@ public class GameContainer {
 						"FLUTE_PLAYER_CONTROLLER_AGENT_"+gameid, FlutePlayerControllerAgent.class.getName(), objects);
 				ac.start();
 			}
-			
+
 			//selection role voleur player
 			if(this.gameSettings.isRoleRegistered(Roles.THIEF))
 			{

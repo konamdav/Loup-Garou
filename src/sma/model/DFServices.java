@@ -436,18 +436,23 @@ public class DFServices {
 		return agents;
 	}
 
-	public static List<PlayerProfile> getPlayerProfiles(Agent agent, int gameid)
+	public static List<PlayerProfile> getPlayerProfiles(Agent agent, String player, int gameid)
 	{
-		return DFServices.getPlayerProfiles(false, 0, agent, gameid);
+		return DFServices.getPlayerProfiles(false, 0, player, agent, gameid);
 	}
 
-	public static List<PlayerProfile> getPlayerProfiles(boolean game_mode, int cptHuman, Agent agent, int gameid)
+	public static List<PlayerProfile> getPlayerProfiles(Agent agent, int gameid)
+	{
+		return DFServices.getPlayerProfiles(false, 0, "", agent, gameid);
+	}
+
+	public static List<PlayerProfile> getPlayerProfiles(boolean game_mode, int cptHuman, String player, Agent agent, int gameid)
 	{
 		HashMap<String, PlayerProfile> tmp = new HashMap<String, PlayerProfile>();
 
 		//get profiles joueurs citizen
 		List<AID> citizens = DFServices.findOrderedAllCitizen(agent, gameid);
-		System.out.println(citizens);
+		//System.out.println(citizens);
 		for(int i =0; i<citizens.size(); ++i)
 		{
 			PlayerProfile profile = new PlayerProfile();
@@ -665,7 +670,9 @@ public class DFServices {
 			List<String> rolesHuman = new ArrayList<String>();
 			for(AID human : humans)
 			{
-				if(!tmp.get(human.getLocalName()).getStatus().equals(Status.DEAD)){
+				if(player.isEmpty() || (!player.isEmpty() && human.getLocalName().equals(player)))
+				{
+
 					for(String s : tmp.get(human.getLocalName()).getRoles())
 					{
 						if(!rolesHuman.contains(s))
@@ -676,10 +683,12 @@ public class DFServices {
 				}
 			}
 
+			//System.out.println(" player h "+player);
+
 			for(AID citizen : citizens)
-			{
+			{				
 				if(!tmp.get(citizen.getLocalName()).getStatus().equals(Status.DEAD) 
-						&& !tmp.get(citizen.getLocalName()).getRoles().contains("HUMAN")){
+						&& ((!player.isEmpty() && !citizen.getLocalName().equals(player))||(player.isEmpty() && !tmp.get(citizen.getLocalName()).getRoles().contains("HUMAN")))){
 					List<String> roles = new ArrayList<String>();
 					for(String s : tmp.get(citizen.getLocalName()).getRoles())
 					{

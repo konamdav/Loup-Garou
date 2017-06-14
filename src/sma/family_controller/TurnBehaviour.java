@@ -58,7 +58,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 	@Override
 	public void action() {
 
-		System.out.println("CC "+this.step);
+		//System.out.println("CC "+this.step);
 
 		/** etat initial **/
 		if(this.step.equals(STATE_INIT))

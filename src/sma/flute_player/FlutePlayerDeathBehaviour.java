@@ -32,7 +32,7 @@ public class FlutePlayerDeathBehaviour extends SimpleBehaviour implements IDeath
 		ACLMessage message = this.myAgent.receive(mt);
 		if (message != null) 
 		{
-			System.err.println("death flute ");
+			//System.err.println("death flute ");
 			String [] args = {Roles.FLUTE_PLAYER, Status.WAKE};
 			List<AID> flutePlayers = DFServices.findGamePlayerAgent(args, this.playerAgent, this.playerAgent.getGameid());
 			if(flutePlayers.size()<2)

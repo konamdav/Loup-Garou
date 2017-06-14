@@ -1,7 +1,6 @@
-package sma.environment_agent;
+package sma.environmenthuman_agent;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
 
@@ -19,8 +18,8 @@ import sma.model.VoteResults;
  * @author Davy
  *
  */
-public class EnvironmentAgent extends Agent{
-	
+public class EnvironmentHumanAgent extends Agent{
+	private AID player;
 	private VoteResults globalResults;
 	private VoteResults currentResults;
 	
@@ -40,18 +39,15 @@ public class EnvironmentAgent extends Agent{
 	/** mode jeu **/
 	private boolean game_mode;
 	private  int cptHuman;
-	
-	private HashMap<AID, AID> affectationGameUI;
 
 	@Override
 	protected void setup() {
 		Object[] args = this.getArguments();
 		gameid = (int) args[0];
 		game_mode = ((GameSettings) (args[1])).isGame_mode();
+		player =  ((AID) (args[2]));
 		cptHuman = 0;
 		num_turn = 0;
-		
-		affectationGameUI = new HashMap<AID, AID>();
 		
 		stackRequest = new Stack<HumanVoteRequest>();
 		globalResults = new VoteResults();
@@ -67,7 +63,7 @@ public class EnvironmentAgent extends Agent{
 		
 		System.err.println("REGISTER ENV");
 		DFServices.registerGameControllerAgent("ENVIRONMENT",this,  this.gameid);
-		DFServices.registerGameControllerAgent("UI_ENVIRONMENT",this,  this.gameid);
+		DFServices.registerGameControllerAgent("ENVIRONMENT_"+this.player.getLocalName(),this,  this.gameid);
 		
 		ParallelBehaviour parallelBehaviour = new ParallelBehaviour(ParallelBehaviour.WHEN_ALL); 
 		parallelBehaviour.addSubBehaviour(new CycleSendBehaviour(this));
@@ -97,6 +93,9 @@ public class EnvironmentAgent extends Agent{
 		return stackRequest;
 	}
 
+	public AID getPlayer() {
+		return player;
+	}
 	public String getTurn() {
 		return turn;
 	}
@@ -129,9 +128,6 @@ public class EnvironmentAgent extends Agent{
 		this.globalResults = globalResults;
 	}
 
-	public HashMap<AID, AID> getAffectationGameUI() {
-		return affectationGameUI;
-	}
 	public void setCurrentResults(VoteResults currentResults) {
 		this.currentResults = currentResults;
 	}

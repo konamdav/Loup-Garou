@@ -27,7 +27,6 @@ public class RemoveVictimBehaviour extends CyclicBehaviour{
 		ACLMessage message = this.myAgent.receive(mt);
 		if(message != null)
 		{
-			System.out.println("KYRION !!");
 			String victim = message.getContent();
 			AID aidVictim = new AID(victim);
 			int index = 0; 
@@ -49,7 +48,7 @@ public class RemoveVictimBehaviour extends CyclicBehaviour{
 			/** annulation de la victime **/
 			if(flag)
 			{
-				System.err.println("ANNULATION VICTIME "+	this.citizenController.getVictims().get(index).getLocalName());
+				//System.err.println("ANNULATION VICTIME "+	this.citizenController.getVictims().get(index).getLocalName());
 				this.citizenController.getVictims().remove(index);
 			}
 			

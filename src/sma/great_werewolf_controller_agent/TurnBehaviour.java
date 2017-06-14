@@ -143,7 +143,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 		/** etat reception des confirmations de reveil **/
 		else if(this.step.equals(STATE_MOVE_WEREWOLF))
 		{
-			System.err.println("move great werewolf");
+			//System.err.println("move great werewolf");
 
 			String[] args = {Roles.GREAT_WEREWOLF, Status.WAKE};
 			List<AID> werewolves = DFServices.findGamePlayerAgent(args, this.ctrlAgent, this.ctrlAgent.getGameid());
@@ -153,7 +153,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 				List<AID> neighborsLeft = DFServices.findNeighborsBySide2("LEFT", werewolf, this.ctrlAgent, this.ctrlAgent.getGameid());
 				List<AID> neighborsRight = DFServices.findNeighborsBySide2("RIGHT", werewolf, this.ctrlAgent, this.ctrlAgent.getGameid());
 
-				System.err.println("move  "+werewolf.getName());
+				//System.err.println("move  "+werewolf.getName());
 
 				for(int i = 0; i<neighborsLeft.size();++i)
 				{
@@ -244,14 +244,14 @@ public class TurnBehaviour extends SimpleBehaviour {
 			String[] args = {Roles.LITTLE_GIRL, Status.WAKE};
 			List<AID> littlegirls = DFServices.findGamePlayerAgent(args, this.ctrlAgent, this.ctrlAgent.getGameid());
 
-			System.err.println("---------> MOVE LITTLE");
+			//System.err.println("---------> MOVE LITTLE");
 
 			for(AID littlegirl : littlegirls)
 			{
 				List<AID> neighborsLeft = DFServices.findNeighborsBySide2("LEFT", littlegirl, this.ctrlAgent, this.ctrlAgent.getGameid());
 				List<AID> neighborsRight = DFServices.findNeighborsBySide2("RIGHT", littlegirl, this.ctrlAgent, this.ctrlAgent.getGameid());
 
-				System.err.println("move  "+littlegirl.getName());
+			//System.err.println("move  "+littlegirl.getName());
 
 				for(int i = 0; i<neighborsLeft.size();++i)
 				{
@@ -288,7 +288,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 		else if(this.step.equals(STATE_INFORM_LITTLE_GIRL))
 		{
 
-			System.err.println("---------> INFORM LITTLE GIRL");
+			///System.err.println("---------> INFORM LITTLE GIRL");
 
 			String [] args = {Roles.GREAT_WEREWOLF, Status.WAKE};
 			List<AID> werewolves = DFServices.findGamePlayerAgent(args, this.ctrlAgent, this.ctrlAgent.getGameid());

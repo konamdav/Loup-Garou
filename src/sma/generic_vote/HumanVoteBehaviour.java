@@ -14,6 +14,7 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import sma.model.DFServices;
 import sma.model.ForceVoteRequest;
+import sma.model.Functions;
 import sma.model.HumanVoteRequest;
 import sma.model.ScoreResults;
 import sma.model.VoteRequest;
@@ -117,7 +118,7 @@ public class HumanVoteBehaviour extends SimpleBehaviour{
 				ForceVoteRequest forceVoteRequest = new ForceVoteRequest();
 				try {
 					forceVoteRequest = mapper.readValue(message.getContent(), ForceVoteRequest.class);
-					System.err.println("FORCE VOTE "+forceVoteRequest.getVoteRequest()+ " "+forceVoteRequest.getVoteResult());
+					//System.err.println("FORCE VOTE "+forceVoteRequest.getVoteRequest()+ " "+forceVoteRequest.getVoteResult());
 					this.forceResults.put(forceVoteRequest.getVoteRequest(), forceVoteRequest.getVoteResult());
 				} 
 				catch (IOException e) 
@@ -135,7 +136,7 @@ public class HumanVoteBehaviour extends SimpleBehaviour{
 		}
 		else if(this.step.equals(STATE_SEND_REQUEST))
 		{
-			System.out.println("[ "+this.agent.getName()+" ] VOTE REQUEST");
+			//System.out.println("[ "+this.agent.getName()+" ] VOTE REQUEST");
 			if(this.forceResults.containsKey(request.getRequest()) && request.getChoices().contains(this.forceResults.get(request.getRequest())))
 			{
 				String voted = this.forceResults.get(request.getRequest());
@@ -150,8 +151,11 @@ public class HumanVoteBehaviour extends SimpleBehaviour{
 			}
 			else
 			{
-				System.err.println("ASK HUMAN REQUEST VOTE "+this.request.getRequest());
-				System.err.println(this.request.getChoices());
+				//System.err.println("ASK HUMAN REQUEST VOTE "+this.request.getRequest());
+				//System.err.println(this.request.getChoices());
+				
+				Functions.newActionToLog("Vote humain : "+this.request.getRequest(),this.myAgent, this.agent.getGameid());
+
 				
 				ACLMessage message = new ACLMessage(ACLMessage.AGREE);
 				message.setSender(this.myAgent.getAID());
@@ -196,8 +200,9 @@ public class HumanVoteBehaviour extends SimpleBehaviour{
 
 			if(message !=null)
 			{
-				System.err.println("RECEIVE HUMAN REQUEST VOTE ===> "+message.getContent());
-				
+				//System.err.println("RECEIVE HUMAN REQUEST VOTE ===> "+message.getContent());
+				Functions.newActionToLog("Réponse reçue",this.myAgent, this.agent.getGameid());
+
 				String player = message.getContent();
 				this.results.getResults().put(player, 1);
 				
@@ -234,7 +239,7 @@ public class HumanVoteBehaviour extends SimpleBehaviour{
 		}
 		else if(this.step.equals(STATE_SEND_RESULTS))
 		{
-			System.err.println("SEND RESULTS");
+			//System.err.println("SEND RESULTS");
 			HashMap<String, List<String>> results = new HashMap<String, List<String>>();
 			VoteResults answer = new VoteResults(results);
 

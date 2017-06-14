@@ -144,7 +144,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 		/** etat reception des confirmations de reveil **/
 		else if(this.step.equals(STATE_MOVE_WEREWOLF))
 		{
-			System.err.println("move werewolf");
+			//System.err.println("move werewolf");
 
 			String[] args = {Roles.WEREWOLF, Status.WAKE};
 			List<AID> werewolves = DFServices.findGamePlayerAgent(args, this.ctrlAgent, this.ctrlAgent.getGameid());
@@ -156,7 +156,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 				List<AID> neighborsLeft = DFServices.findNeighborsBySide("LEFT", werewolf, this.ctrlAgent, this.ctrlAgent.getGameid());
 				List<AID> neighborsRight = DFServices.findNeighborsBySide("RIGHT", werewolf, this.ctrlAgent, this.ctrlAgent.getGameid());
 
-				System.err.println("move  "+werewolf.getName());
+				//System.err.println("move  "+werewolf.getName());
 
 				for(int i = 0; i<neighborsLeft.size();++i)
 				{
@@ -207,7 +207,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 			this.cptLittleGirl = 0;
 			if(this.nbPlayers == 0)
 			{
-				System.err.println("!!!!!!!!!!!!!!!!");
+				//System.err.println("!!!!!!!!!!!!!!!!");
 				this.nextStep = STATE_SEND_VOTE_REQUEST;
 			}
 			else

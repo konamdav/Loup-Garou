@@ -78,7 +78,7 @@ public class AbstractDeathBehaviour extends CyclicBehaviour{
 			ACLMessage message = this.myAgent.receive(mt);
 			if (message != null) 
 			{
-				System.err.println("[ "+this.agent.getName()+" ] DIE Begin ");
+				//System.err.println("[ "+this.agent.getName()+" ] DIE Begin ");
 				this.sender = message.getSender();
 				this.nextStep = STATE_SEND_PRE_DEATH_ROLES;
 				
@@ -111,7 +111,7 @@ public class AbstractDeathBehaviour extends CyclicBehaviour{
 		}
 		else if (this.step.equals(STATE_WAIT_ALL_ANSWERS_PRE_DEATH_ROLES)){
 			if (this.roles_pre_death_answer == null || this.roles_pre_death_answer.isEmpty()){
-				System.out.println("All answer from pre_death beahviour death ");
+				//System.out.println("All answer from pre_death beahviour death ");
 				this.nextStep = STATE_SEND_DEATH_ROLES;
 			}
 			else {
@@ -126,7 +126,7 @@ public class AbstractDeathBehaviour extends CyclicBehaviour{
 					ACLMessage message = this.myAgent.receive(mt);
 					if (message != null) 
 					{
-						System.out.println(" Receive Death Answer CONFIRM "+this.agent.getName()+" " + s);
+						//System.out.println(" Receive Death Answer CONFIRM "+this.agent.getName()+" " + s);
 						this.roles_pre_death_answer.remove(s);
 					}
 					else {
@@ -136,7 +136,7 @@ public class AbstractDeathBehaviour extends CyclicBehaviour{
 						message = this.myAgent.receive(mt);
 						if (message != null) 
 						{
-							System.out.println(" Receive Death Answer CANCEL "+this.agent.getName()+" Return to first state " + s);
+							//System.out.println(" Receive Death Answer CANCEL "+this.agent.getName()+" Return to first state " + s);
 							DFServices.deregisterPlayerAgent("VICTIM", this.myAgent, this.agent.getGameid()); //retire son statut de victime (car il est mort)
 
 							ACLMessage reply = new ACLMessage(ACLMessage.CANCEL);
@@ -161,7 +161,7 @@ public class AbstractDeathBehaviour extends CyclicBehaviour{
 		}
 		else if (this.step.equals(STATE_SEND_DEATH_ROLES)){
 			//Copy this technique from AbstractVoteBehvaiour
-			System.out.println("Send message to all death behaviours " + this.agent.getName() + " DeathBeahav " + this.agent.getDeathBehaviours() + "   " + this.step);
+			//System.out.println("Send message to all death behaviours " + this.agent.getName() + " DeathBeahav " + this.agent.getDeathBehaviours() + "   " + this.step);
 
 			this.roles_death_answer = new ArrayList<String>(this.agent.getDeathBehaviours());
 			//TODO Look if better to pass to oneshotBehaviour
@@ -230,7 +230,7 @@ public class AbstractDeathBehaviour extends CyclicBehaviour{
 		{
 			if (this.roles_behaviour_answer == null || this.roles_behaviour_answer.isEmpty()){
 				//System.out.println("All answer from death beahviour death So destroy last behaviour ");
-				System.out.println(" roles_behaviour_answer empty " + this.agent.getName());
+				//System.out.println(" roles_behaviour_answer empty " + this.agent.getName());
 
 				//TODO Cedric Voir les behaviour à garder avec le beahviour removeBehaviour 
 			
@@ -269,7 +269,7 @@ public class AbstractDeathBehaviour extends CyclicBehaviour{
 		}
 		else if (this.step.equals(STATE_ANSWER_DEATH_ROLES))
 		{
-			System.err.println("[ "+this.agent.getName()+" ] DIE End ");
+			//System.err.println("[ "+this.agent.getName()+" ] DIE End ");
 			//Answer 
 			System.err.println(this.agent.getStatut() + "   AID " + this.agent.getAID());
 			//System.err.println(DFServices.findGamePlayerAgent("DEAD", this.myAgent, this.agent.getGameid()));
@@ -278,7 +278,7 @@ public class AbstractDeathBehaviour extends CyclicBehaviour{
 
 			this.agent.setStatutandRegister(Status.DEAD);			
 			
-			System.err.println(this.agent.getStatut());
+			//System.err.println(this.agent.getStatut());
 
 
 			ACLMessage reply = new ACLMessage(ACLMessage.CONFIRM);

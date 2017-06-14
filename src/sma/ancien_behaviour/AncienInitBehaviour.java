@@ -34,14 +34,6 @@ public class AncienInitBehaviour extends OneShotBehaviour{
 		System.out.println("[ "+this.agent.getName()+" ] REGISTER "+Roles.ANCIENT);
 		DFServices.registerPlayerAgent(Roles.ANCIENT, this.myAgent, this.agent.getGameid());
 
-		/** TODO Look for score and vote to implement
-		 * LoverScoreBehaviour loverScoreBehaviour = new LoverScoreBehaviour(this.agent); 
-		list_behav.add(loverScoreBehaviour);
-		
-		this.agent.addBehaviour(loverScoreBehaviour);
-		this.agent.getVotingBehaviours().add(loverScoreBehaviour.getName_behaviour());		
-		*/ 
-
 		CitizenSuspicionBehaviour citizenSuspicionBehaviour = new CitizenSuspicionBehaviour(this.agent);
 		list_behav.add(citizenSuspicionBehaviour);
 

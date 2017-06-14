@@ -29,7 +29,7 @@ public class DeleteBehavioursFromRoleBehaviour extends CyclicBehaviour {
 		if (message != null) 
 		{
 			String role = message.getContent();
-			System.err.println("["+this.agent.getName()+"] DELETE BEHAVIOURS "+role);
+		//	System.err.println("["+this.agent.getName()+"] DELETE BEHAVIOURS "+role);
 			List<Behaviour> behaviours = this.agent.getMap_role_behaviours().get(role);
 			for(Behaviour bhv : behaviours)
 			{
@@ -37,20 +37,20 @@ public class DeleteBehavioursFromRoleBehaviour extends CyclicBehaviour {
 				if (bhv instanceof IDeathBehaviour){
 					//TODO CEDROC Find a way for the getBehaviourName to getName_behaviour
 					IDeathBehaviour bhv_death = (IDeathBehaviour) bhv;
-					System.out.println("Find a behaviour death to delete "+this.agent.getName()+" behaviour  "+bhv_death.getName_behaviour());
-					System.out.println("Get pRE Death Behaviour " +this.agent.getPreDeathBehaviours());
+					//System.out.println("Find a behaviour death to delete "+this.agent.getName()+" behaviour  "+bhv_death.getName_behaviour());
+					//System.out.println("Get pRE Death Behaviour " +this.agent.getPreDeathBehaviours());
 					this.agent.getDeathBehaviours().remove(bhv_death.getName_behaviour());
-					System.out.println("After remove pRE Death Behaviour " +this.agent.getPreDeathBehaviours());
+					//System.out.println("After remove pRE Death Behaviour " +this.agent.getPreDeathBehaviours());
 				}
 				if (bhv instanceof IPreDeathBehaviour){
 					IPreDeathBehaviour bhv_death = (IPreDeathBehaviour) bhv;
-					System.out.println("Find a behaviour death to delete "+this.agent.getName()+" behaviour  "+bhv_death.getName_behaviour());
-					System.out.println("Get Death Behaviour " +this.agent.getDeathBehaviours());
+			//		System.out.println("Find a behaviour death to delete "+this.agent.getName()+" behaviour  "+bhv_death.getName_behaviour());
+				//	System.out.println("Get Death Behaviour " +this.agent.getDeathBehaviours());
 					this.agent.getPreDeathBehaviours().remove(bhv_death.getName_behaviour());
-					System.out.println("After remove Death Behaviour " +this.agent.getDeathBehaviours());
+					//System.out.println("After remove Death Behaviour " +this.agent.getDeathBehaviours());
 				}
 				if (bhv instanceof IVoteBehaviour){
-					System.out.println("Find a behaviour vote, not delete it "+this.agent.getName()+" behaviour  "+bhv.getBehaviourName());
+					//System.out.println("Find a behaviour vote, not delete it "+this.agent.getName()+" behaviour  "+bhv.getBehaviourName());
 
 					//Security, to not delete the vote behaviour which has been had (False, delete it in the init in the map)
 				}	

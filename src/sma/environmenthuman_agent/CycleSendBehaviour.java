@@ -1,4 +1,4 @@
-package sma.environment_agent;
+package sma.environmenthuman_agent;
 
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
@@ -10,9 +10,9 @@ import jade.lang.acl.MessageTemplate;
  *
  */
 public class CycleSendBehaviour extends CyclicBehaviour{
-	private EnvironmentAgent envAgent;
+	private EnvironmentHumanAgent envAgent;
 	
-	public CycleSendBehaviour(EnvironmentAgent envAgent) {
+	public CycleSendBehaviour(EnvironmentHumanAgent envAgent) {
 		super();
 		this.envAgent = envAgent;
 	}
@@ -23,7 +23,7 @@ public class CycleSendBehaviour extends CyclicBehaviour{
 		ACLMessage message = this.myAgent.receive(mt);
 		if(message != null)
 		{
-			//System.err.println("[ENV] Message rqst "+message.getConversationId());
+			//System.err.println("[ENV "+this.envAgent.getLocalName()+"] Message rqst "+message.getConversationId());
 			this.myAgent.addBehaviour(new SendBehaviour(this.envAgent, message));
 		}
 		else

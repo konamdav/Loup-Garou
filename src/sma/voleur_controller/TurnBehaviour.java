@@ -69,7 +69,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 	@Override
 	public void action() {
 
-		System.out.println("CC "+this.step);
+		//System.out.println("CC "+this.step);
 
 		/** etat initial **/
 		if(this.step.equals(STATE_INIT))
@@ -111,7 +111,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 				
 				this.cpt_vol = 0 ; //Cpt to know if role init or delete of the volé et le voleur
 				this.current_volleur = agents.get(0);
-				System.err.println("Launch voleur turn for " + this.current_volleur);
+//				/System.err.println("Launch voleur turn for " + this.current_volleur);
 
 				ACLMessage messageRequest = new ACLMessage(ACLMessage.REQUEST);
 				messageRequest.setSender(this.ctrlAgent.getAID());
@@ -121,7 +121,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 				this.nextStep = STATE_RECEIVE_WAKE_ONE;
 			}
 			else {
-				System.err.println("Fin du tour voleur");
+				//System.err.println("Fin du tour voleur");
 				this.nextStep = STATE_END_TURN;
 
 			}

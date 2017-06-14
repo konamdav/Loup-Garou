@@ -48,10 +48,10 @@ public class NewMainRoleBehaviour extends CyclicBehaviour{
 				ACLMessage reply = null;
 				//Test if already got a role
 				String main_role = this.agent.getMain_role();
-				System.err.println("CHECK NEW ROLE : "+new_role+ " main_role " + this.agent.getMain_role() + " empty " + this.agent.getMain_role().isEmpty() + " TO THIS PLAYER "+this.agent.getName());				
+				//System.err.println("CHECK NEW ROLE : "+new_role+ " main_role " + this.agent.getMain_role() + " empty " + this.agent.getMain_role().isEmpty() + " TO THIS PLAYER "+this.agent.getName());				
 
 				if (this.agent.getMain_role().isEmpty()){
-					System.err.println("SET NEW ROLE : "+new_role+ " TO THIS PLAYER "+this.agent.getName());				
+					//System.err.println("SET NEW ROLE : "+new_role+ " TO THIS PLAYER "+this.agent.getName());				
 
 					//TODO Look if better place to be				
 					this.agent.addBehaviour(new GenericInitBehaviour(this.agent));
@@ -72,7 +72,7 @@ public class NewMainRoleBehaviour extends CyclicBehaviour{
 
 				}
 				else if (main_role == new_role){
-					System.out.println("Already got this role "+new_role+ "TO THIS PLAYER "+this.agent.getName());
+					//System.out.println("Already got this role "+new_role+ "TO THIS PLAYER "+this.agent.getName());
 
 					reply.setConversationId("NEW_ROLE");
 					reply.setSender(this.myAgent.getAID());
@@ -82,9 +82,9 @@ public class NewMainRoleBehaviour extends CyclicBehaviour{
 
 				}
 				else if (main_role != new_role){
-					System.out.println("Got another role "+main_role+ "TO THIS PLAYER "+this.agent.getName());
+					//System.out.println("Got another role "+main_role+ "TO THIS PLAYER "+this.agent.getName());
 
-					System.out.println("ATTRIBUTION => "+new_role);
+					//System.out.println("ATTRIBUTION => "+new_role);
 					ACLMessage messageRequest = new ACLMessage(ACLMessage.REQUEST);
 					messageRequest.addReceiver(this.agent.getAID());
 					messageRequest.setSender(this.agent.getAID());
@@ -117,7 +117,7 @@ public class NewMainRoleBehaviour extends CyclicBehaviour{
 			ACLMessage message = this.myAgent.receive(mt);
 			if(message != null)
 			{
-				System.out.println("INIT ROLE DONE");
+				//System.out.println("INIT ROLE DONE");
 				ACLMessage messageRequest = new ACLMessage(ACLMessage.INFORM);
 				messageRequest.setSender(this.agent.getAID());
 

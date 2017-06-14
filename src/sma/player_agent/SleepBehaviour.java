@@ -24,7 +24,7 @@ public class SleepBehaviour extends SimpleBehaviour{
 		{
 			this.playerAgent.doWait((int) (Math.random()*1000));
 			this.playerAgent.setStatutandRegister("SLEEP");
-			Functions.newActionToLog(this.playerAgent.getLocalName()+" s'endort", this.playerAgent, this.playerAgent.getGameid());
+			//Functions.newActionToLog(this.playerAgent.getLocalName()+" s'endort", this.playerAgent, this.playerAgent.getGameid());
 
 			if(playerAgent.isHuman()){
 				Functions.decHumans(playerAgent, playerAgent.getGameid());

@@ -40,6 +40,9 @@ public class ViewInterfaceGame implements Screen{
 	private ViewPlayers viewPlayers;
 	private Texture textureNight;
 	private Texture textureEndgame;
+	
+	private BitmapFont  font = new BitmapFont();
+	
 
 	Sprite spriteDay = new Sprite(new Texture("resources/sprites/daysprite.png"));
 	Sprite spriteNight = new Sprite(new Texture("resources/sprites/nightsprite.png"));
@@ -81,6 +84,10 @@ public class ViewInterfaceGame implements Screen{
 
 
 	public void show() {
+		
+		font.setColor(Color.WHITE);
+		font.setScale(1.5f);
+		
 		stage=new Stage(){
 			@Override
 			public boolean mouseMoved(int x, int y) {
@@ -294,10 +301,6 @@ public class ViewInterfaceGame implements Screen{
 
 		if(hover)
 		{
-			BitmapFont  font = new BitmapFont();
-			font.setColor(Color.WHITE);
-			font.setScale(1.5f);
-
 			String label = viewPlayers.getLabel(mapx, mapy);
 			if(!label.isEmpty())
 			{

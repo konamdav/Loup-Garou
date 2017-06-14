@@ -48,7 +48,7 @@ public class KillVictimsBehaviour extends SimpleBehaviour
 			/** pop la victime **/
 			if(this.citizenControllerAgent.getVictims().isEmpty())
 			{
-				System.err.println("KV No more victims");
+				//System.err.println("KV No more victims");
 				this.nextStep =STATE_END;
 			}
 			else
@@ -73,7 +73,7 @@ public class KillVictimsBehaviour extends SimpleBehaviour
 		}
 		else if(this.step.equals(STATE_SEND_KILL))
 		{
-			System.err.println("SEND KILL "+currentVictim.getName());
+			//System.err.println("SEND KILL "+currentVictim.getName());
 			
 			ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
 			msg.setConversationId("KILL_PLAYER");
@@ -100,7 +100,7 @@ public class KillVictimsBehaviour extends SimpleBehaviour
 				ACLMessage message = this.myAgent.receive(mt);
 				if(message != null)
 				{
-					System.err.println("KV Receive confirm");
+					//System.err.println("KV Receive confirm");
 					this.nextStep = STATE_INIT;
 				}
 				else
@@ -112,7 +112,7 @@ public class KillVictimsBehaviour extends SimpleBehaviour
 					message = this.myAgent.receive(mt);
 					if(message != null)
 					{
-						System.err.println("KV Receive CANCEL"); //TODO Cedric TEST IT
+						//System.err.println("KV Receive CANCEL"); //TODO Cedric TEST IT
 						this.nextStep = STATE_INIT;
 					}
 					else {

@@ -134,7 +134,7 @@ public class FactoryInitBehaviour extends CyclicBehaviour{
 					this.agent.addBehaviour(new SalvatorInitBehaviour(this.agent, this.agent.getAID()));
 					break;
 				default:
-					System.err.print("Erreur role not valid" );
+					//System.err.print("Erreur role not valid" );
 						//throw new Exception();
 					//GET OUT, not send message
 					break;

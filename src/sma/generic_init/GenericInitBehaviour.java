@@ -29,7 +29,7 @@ public class GenericInitBehaviour extends OneShotBehaviour{
 	@Override
 	public void action() {
 
-		System.out.println("GenericInitBehaviour THIS PLAYER "+this.agent.getName());
+		//System.out.println("GenericInitBehaviour THIS PLAYER "+this.agent.getName());
 		ArrayList<Behaviour> list_behav = new ArrayList<Behaviour>();
 		HashMap<String, ArrayList<Behaviour>> map_behaviour = this.agent.getMap_role_behaviours();
 
@@ -57,7 +57,7 @@ public class GenericInitBehaviour extends OneShotBehaviour{
 		this.agent.addBehaviour(genericSleepBehaviour);
 		list_behav.add(genericSleepBehaviour);
 
-		System.err.println("...............................GET ROLE...........................");
+		//System.err.println("...............................GET ROLE...........................");
 		GetRoleBehaviour getRoleBehaviour = new GetRoleBehaviour(this.agent);
 		this.agent.addBehaviour(getRoleBehaviour);
 		

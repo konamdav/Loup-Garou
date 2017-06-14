@@ -40,7 +40,7 @@ public class CheckEndGameBehaviour extends CyclicBehaviour {
 	@Override
 	public void action() {
 
-		System.out.println("CHECK | "+this.step);
+		//System.out.println("CHECK | "+this.step);
 		
 		if(this.step.equals(STATE_INIT))
 		{
@@ -209,7 +209,7 @@ public class CheckEndGameBehaviour extends CyclicBehaviour {
 		
 		if(!this.nextStep.isEmpty())
 		{
-			System.out.println("CHECK | next "+this.nextStep);
+			//System.out.println("CHECK | next "+this.nextStep);
 			this.step = this.nextStep;
 			this.nextStep ="";
 		}

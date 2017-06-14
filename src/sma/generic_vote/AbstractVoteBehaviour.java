@@ -126,7 +126,7 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 				ForceVoteRequest forceVoteRequest = new ForceVoteRequest();
 				try {
 					forceVoteRequest = mapper.readValue(message.getContent(), ForceVoteRequest.class);
-					System.err.println("FORCE VOTE "+forceVoteRequest.getVoteRequest()+ " "+forceVoteRequest.getVoteResult());
+					//System.err.println("FORCE VOTE "+forceVoteRequest.getVoteRequest()+ " "+forceVoteRequest.getVoteResult());
 					this.forceResults.put(forceVoteRequest.getVoteRequest(), forceVoteRequest.getVoteResult());
 				} 
 				catch (IOException e) 
@@ -143,7 +143,7 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 		}
 		else if(this.step.equals(STATE_SEND_REQUEST))
 		{
-			System.out.println("[ "+this.agent.getName()+" ] VOTE REQUEST");
+			//System.out.println("[ "+this.agent.getName()+" ] VOTE REQUEST");
 			if(this.forceResults.containsKey(request.getRequest()) && request.getChoices().contains(this.forceResults.get(request.getRequest())))
 			{
 				String voted = this.forceResults.get(request.getRequest());
@@ -160,7 +160,7 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 			{
 				for(String s : this.agent.getVotingBehaviours())
 				{
-					System.out.println("ROLE VOTE : "+s);
+					//System.out.println("ROLE VOTE : "+s);
 
 					ACLMessage messageRequest = new ACLMessage(ACLMessage.REQUEST);
 					messageRequest.setSender(this.myAgent.getAID());
@@ -194,8 +194,8 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 			if(message !=null)
 			{
 				//System.out.println("\n\nDEBUT PLAYER AGENT : "+this.agent.getName());
-				System.err.println(this.agent.getName()+" REQUEST => "+this.request.getRequest());
-				System.err.println("MESSAGE INFORM "+" : "+message.getContent());
+				//System.err.println(this.agent.getName()+" REQUEST => "+this.request.getRequest());
+				//System.err.println("MESSAGE INFORM "+" : "+message.getContent());
 
 				++this.nbVoters;
 

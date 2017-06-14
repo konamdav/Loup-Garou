@@ -146,7 +146,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 			List<AID> dead = DFServices.findGamePlayerAgent(args, this.ctrlAgent, this.ctrlAgent.getGameid());
 
 			this.nbPlayers = dead.size();
-			System.out.println("EXORCIST , DEAD " + this.nbPlayers);
+			//System.out.println("EXORCIST , DEAD " + this.nbPlayers);
 			if (this.nbPlayers > 0){
 				String [] args2 = {Roles.CITIZEN, Status.SLEEP};
 				List<AID> citizens = DFServices.findGamePlayerAgent(args2, this.ctrlAgent, this.ctrlAgent.getGameid());

@@ -61,7 +61,7 @@ public class MediumSuspicionListener extends Behaviour{
 				this.role = Roles.WEREWOLF;
 				this.nextStep = STATE_UPDATE;
 
-				System.err.println("LISTNER RECEIV");
+				//System.err.println("LISTNER RECEIV");
 			}
 			else
 			{
@@ -91,12 +91,12 @@ public class MediumSuspicionListener extends Behaviour{
 		{
 			if(this.role.equals(Roles.WEREWOLF))
 			{
-				System.err.println("[ "+this.playerAgent.getName()+" ] is werewolf");
+				//System.err.println("[ "+this.playerAgent.getName()+" ] is werewolf");
 				this.suspicionScore.addScore(this.player, ScoreFactor.SCORE_MAX);
 			}
 			else
 			{
-				System.err.println("[ "+this.playerAgent.getName()+" ] is not a werewolf");
+				//System.err.println("[ "+this.playerAgent.getName()+" ] is not a werewolf");
 				this.suspicionScore.addScore(this.player, ScoreFactor.SCORE_MIN);
 			}
 			this.nextStep =  STATE_INIT;

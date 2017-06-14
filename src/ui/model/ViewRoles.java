@@ -76,15 +76,21 @@ public class ViewRoles {
 	public void update()
 	{
 		int x = 0, y =0;
-		if(!this.roles.isEmpty())
-		{
-			x = this.roles.get(0).getX();
-			y = this.roles.get(0).getY();
-			
-			this.roles.get(0).update();
-		}
+		x = player.getPosition()[0] + 10;
+		y = player.getPosition()[1];	
 
-		for(int i = 1; i<this.roles.size(); ++i)
+		if(this.getPlayer().getDirection().equals("DOWN"))
+		{
+			x = x;
+			y = y+20;
+		}
+		else if(this.getPlayer().getDirection().equals("LEFT"))
+		{
+			x = x +20;
+			y = y;
+		}
+		
+		for(int i = 0; i<this.roles.size(); ++i)
 		{			
 			if(this.getPlayer().getDirection().equals("UP"))
 			{
@@ -113,14 +119,11 @@ public class ViewRoles {
 			
 			this.roles.get(i).setX(x);
 			this.roles.get(i).setY(y);
-			this.roles.get(i).update();
-			
-			if(i == this.roles.size()-1)
-			{
-				curX = x;
-				curY = y;
-			}
+			this.roles.get(i).update();			
 		}
+		
+		curX = x;
+		curY = y;
 	}
 
 	public List<String> getListRole()

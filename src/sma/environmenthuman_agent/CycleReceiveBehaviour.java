@@ -1,4 +1,4 @@
-package sma.environment_agent;
+package sma.environmenthuman_agent;
 
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
@@ -10,9 +10,9 @@ import jade.lang.acl.MessageTemplate;
  *
  */
 public class CycleReceiveBehaviour extends CyclicBehaviour{
-	private EnvironmentAgent envAgent;
+	private EnvironmentHumanAgent envAgent;
 	
-	public CycleReceiveBehaviour(EnvironmentAgent envAgent) {
+	public CycleReceiveBehaviour(EnvironmentHumanAgent envAgent) {
 		super();
 		this.envAgent = envAgent;
 	}

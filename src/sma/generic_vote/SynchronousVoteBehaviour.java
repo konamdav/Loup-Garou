@@ -105,11 +105,14 @@ public class SynchronousVoteBehaviour extends Behaviour {
 				ObjectMapper mapper = new ObjectMapper();
 				try {
 
-					System.err.println("[RQST INITIAL] "+message.getContent());
+					//System.err.println("[RQST INITIAL] "+message.getContent());
 
 					this.request = mapper.readValue(message.getContent(), VoteRequest.class);
 					this.request.setLocalVoteResults(this.results);
 					this.results.initWithChoice(this.request.getChoices());
+					
+					Functions.newActionToLog("Début vote "+this.request.getRequest(),this.myAgent, this.controllerAgent.getGameid());
+					
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -151,7 +154,7 @@ public class SynchronousVoteBehaviour extends Behaviour {
 			if(message != null)
 			{
 
-				System.out.println("CTRL Reception de global results");
+				//System.out.println("CTRL Reception de global results");
 				ObjectMapper mapper = new ObjectMapper();
 				try {
 					this.globalResults = mapper.readValue(message.getContent(), VoteResults.class);
@@ -179,7 +182,7 @@ public class SynchronousVoteBehaviour extends Behaviour {
 			{
 				/** hybrid synchronous mode **/
 				this.nbAsynchronousPlayers = (int) (Math.random()*Math.min(Data.MAX_SYNCHRONOUS_PLAYERS-1, (reste-1)))+1;
-				System.err.println("HYDBRID ASYNCRHONOUS ENABLED BECAUSE TOO MANY PARTICIPANTS "+this.nbAsynchronousPlayers+" in //");
+				//System.err.println("HYDBRID ASYNCRHONOUS ENABLED BECAUSE TOO MANY PARTICIPANTS "+this.nbAsynchronousPlayers+" in //");
 			}
 			else
 			{
@@ -290,17 +293,17 @@ public class SynchronousVoteBehaviour extends Behaviour {
 					this.myAgent.send(msg);
 				}
 
-				System.err.println("\nSV : "+this.nbVoters+"/"+this.request.getAIDVoters().size());
+			///	System.err.println("\nSV : "+this.nbVoters+"/"+this.request.getAIDVoters().size());
 
 				if(this.nbVoters >= this.request.getAIDVoters().size())
 				{
 					this.nbVoters = 0;
-					System.err.println("SV next step");
+					//System.err.println("SV next step");
 					this.nextStep = STATE_RESULTS;
 				}
 				else if(this.nbAsynchronousPlayers > 0)
 				{
-					System.err.println("SV waiting other");
+					//System.err.println("SV waiting other");
 					this.nextStep = STATE_RECEIVE_INFORM;
 				}
 				else 
@@ -356,7 +359,7 @@ public class SynchronousVoteBehaviour extends Behaviour {
 				SuspicionScore suspicionScore = new SuspicionScore();
 				try {
 					suspicionScore = mapper.readValue(message.getContent(), SuspicionScore.class);
-					System.err.println("ADD PARTIAL SUSPICION \n"+message.getContent());
+					//System.err.println("ADD PARTIAL SUSPICION \n"+message.getContent());
 				} 
 				catch (IOException e) 
 				{
@@ -426,7 +429,7 @@ public class SynchronousVoteBehaviour extends Behaviour {
 					/** interblocage **/
 					ArrayList<String> tmp = new ArrayList<String>();
 
-					System.err.println("INTERBLOCAGE");
+					//System.err.println("INTERBLOCAGE");
 
 					/** random choice  **/
 					tmp.add(this.finalResults.get((int)Math.random()*this.finalResults.size()));				
@@ -497,7 +500,7 @@ public class SynchronousVoteBehaviour extends Behaviour {
 			message.setConversationId("VOTE_RESULTS");
 			message.setContent(this.finalResults.get(0));
 			
-			Functions.newActionToLog("Décision du vote : "+this.finalResults.get(0), this.getAgent(), this.controllerAgent.getGameid());
+			Functions.newActionToLog("Vote : "+this.finalResults.get(0), this.getAgent(), this.controllerAgent.getGameid());
 			
 			this.myAgent.send(message);	
 			this.nextStep = STATE_INIT;

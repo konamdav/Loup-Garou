@@ -63,7 +63,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 	@Override
 	public void action() {
 
-		System.out.println("CC "+this.step);
+		//System.out.println("CC "+this.step);
 		
 		/** etat initial **/
 		if(this.step.equals(STATE_INIT))
@@ -374,7 +374,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 		/** etat envoi des requ�tes de sommeil **/
 		else if(this.step.equals(STATE_SEND_ADD_LOVER))
 		{
-			System.err.println("LOVER "+aidChosen1.getLocalName()+" "+aidChosen2.getName());
+			//System.err.println("LOVER "+aidChosen1.getLocalName()+" "+aidChosen2.getName());
 			
 			ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
 
@@ -390,7 +390,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 		}
 		else if(this.step.equals(STATE_RECEIVE_WAIT_LOVER))
 		{
-			System.out.println("WAIT LOVER");
+			//System.out.println("WAIT LOVER");
 			MessageTemplate mt = MessageTemplate.and(
 					MessageTemplate.MatchPerformative(ACLMessage.INFORM),
 					MessageTemplate.MatchConversationId("ATTRIBUTION_ROLE"));

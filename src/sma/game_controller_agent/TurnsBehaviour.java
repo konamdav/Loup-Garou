@@ -118,7 +118,7 @@ public class TurnsBehaviour extends SimpleBehaviour
 			ACLMessage message = this.myAgent.receive(mt);
 			if(message != null)
 			{
-				System.err.println("RECEIVE CONTINUE GAME");
+				//System.err.println("RECEIVE CONTINUE GAME");
 				this.nextStep = STATE_INIT;
 			}
 			else
@@ -431,14 +431,14 @@ public class TurnsBehaviour extends SimpleBehaviour
 		}
 		else if (this.step.equals(STATE_START_EXORCIST_TURN))
 		{
-			System.err.println("Check exorcists");
+			//System.err.println("Check exorcists");
 			List<AID> agents = DFServices.findGameControllerAgent(Roles.EXORCIST, this.myAgent, this.controllerAgent.getGameid());
-			System.err.println("Check exorcists " + agents);
+			//System.err.println("Check exorcists " + agents);
 
 			if(!agents.isEmpty())
 			{		
 				String [] args = {Roles.EXORCIST, Status.SLEEP};
-				System.err.println("Tour des exorcists");
+				//System.err.println("Tour des exorcists");
 				
 				List<AID> family = DFServices.findGamePlayerAgent(args, this.controllerAgent, this.controllerAgent.getGameid());				
 				int nbPlayers = family.size();

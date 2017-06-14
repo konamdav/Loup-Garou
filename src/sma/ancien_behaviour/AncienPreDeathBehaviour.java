@@ -42,18 +42,18 @@ public class AncienPreDeathBehaviour extends SimpleBehaviour implements IPreDeat
 		ACLMessage message = this.myAgent.receive(mt);
 		if (message != null) 
 		{
-			System.err.println("Start  pre death ancien " + this.playerAgent.getName() + " nb_life " + nb_life);
+			//System.err.println("Start  pre death ancien " + this.playerAgent.getName() + " nb_life " + nb_life);
 
 			ACLMessage reply;
 			if (nb_life > 0){
-				System.err.println("Ancien pre death " + this.playerAgent.getName() + " nb_life " + nb_life + " not dead anymoe");
+				//System.err.println("Ancien pre death " + this.playerAgent.getName() + " nb_life " + nb_life + " not dead anymoe");
 				--nb_life;
-				System.out.println("Ancien pre death " + this.playerAgent.getName() + " nb_life " + nb_life + " not dead anymoe");
+				//System.out.println("Ancien pre death " + this.playerAgent.getName() + " nb_life " + nb_life + " not dead anymoe");
 				reply = new ACLMessage(ACLMessage.CANCEL);
 			}
 			else
 			{
-				System.err.println("Ancien pre death " + this.playerAgent.getName() + " nb_life " + nb_life + " HAVE to DIED");
+				//System.err.println("Ancien pre death " + this.playerAgent.getName() + " nb_life " + nb_life + " HAVE to DIED");
 				reply = new ACLMessage(ACLMessage.CONFIRM);		
 			}
 			reply.setConversationId("PRE_DEATH_"+this.nameBehaviour+"_REQUEST");

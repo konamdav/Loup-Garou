@@ -76,7 +76,7 @@ public class uiAgent extends Agent  {
 						app.setContainers(containers);
 
 					}catch(Exception e) {
-						
+
 					}
 
 					flag = true; 
@@ -101,12 +101,14 @@ public class uiAgent extends Agent  {
 		uiAgent agent;
 		int gameid;
 		int step;
+		private AID envAgent;
 
 		public QueryGameInformationsNoTick(uiAgent a, int id) {
 			super(a);
 			agent = a;
 			gameid = id;
 			step = 0;
+			this.envAgent = null;
 
 		}
 
@@ -121,14 +123,24 @@ public class uiAgent extends Agent  {
 			case 0:
 
 				ACLMessage m = new ACLMessage(ACLMessage.REQUEST);
-				System.out.println("tick");
+				//System.out.println("tick");
 				m.setConversationId("GAME_INFORMATIONS" + gameid);
 				m.setSender(this.agent.getAID());
-				List<AID> aids =DFServices.findGameControllerAgent("ENVIRONMENT", agent, gameid);
-				Collections.shuffle(aids);
-				if (!aids.isEmpty())
+
+				if(this.envAgent == null){
+					List<AID> aids =DFServices.findGameControllerAgent("UI_ENVIRONMENT", agent, gameid);
+					Collections.shuffle(aids);
+					if (!aids.isEmpty())
+					{
+						m.addReceiver(aids.get(0));
+						getAgent().send(m);
+					}
+				}
+				else
 				{
-					m.addReceiver(aids.get(0));
+					//System.err.println("ENV "+this.envAgent);
+					
+					m.addReceiver(this.envAgent);
 					getAgent().send(m);
 				}
 				step = 1; 
@@ -138,6 +150,11 @@ public class uiAgent extends Agent  {
 				ACLMessage message = receive(mt);
 
 				if (message != null){
+					
+					if(this.envAgent == null)
+					{
+						this.envAgent = message.getSender();
+					}
 					//System.out.println(message.getContent());
 					ObjectMapper mapper = new ObjectMapper();
 					try {

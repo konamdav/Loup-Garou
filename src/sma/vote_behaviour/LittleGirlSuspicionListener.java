@@ -59,7 +59,7 @@ public class LittleGirlSuspicionListener extends Behaviour{
 				this.player  = message.getContent();
 				this.nextStep = STATE_UPDATE;
 
-				System.err.println("LISTNER RECEIV");
+				//System.err.println("LISTNER RECEIV");
 			}
 			else
 			{
@@ -69,8 +69,8 @@ public class LittleGirlSuspicionListener extends Behaviour{
 		}
 		else if(step.equals(STATE_UPDATE))
 		{
-			System.err.println("-----------------------------------------------------------");
-			System.err.println("LITTLE GIRL [ "+this.playerAgent.getName()+" ] "+this.player+"is werewolf");
+		//	System.err.println("-----------------------------------------------------------");
+			//System.err.println("LITTLE GIRL [ "+this.playerAgent.getName()+" ] "+this.player+"is werewolf");
 			this.suspicionScore.addScore(this.player, ScoreFactor.SCORE_MAX);
 
 			this.nextStep =  STATE_INIT;

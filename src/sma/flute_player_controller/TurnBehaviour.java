@@ -287,7 +287,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 		}
 		else if(this.step.equals(STATE_RECEIVE_WAIT_CHARMED))
 		{
-			System.out.println("WAIT CHARMED");
+			//System.out.println("WAIT CHARMED");
 			MessageTemplate mt = MessageTemplate.and(
 					MessageTemplate.MatchPerformative(ACLMessage.INFORM),
 					MessageTemplate.MatchConversationId("ATTRIBUTION_ROLE"));

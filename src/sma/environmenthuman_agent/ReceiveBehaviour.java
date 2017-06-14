@@ -1,4 +1,4 @@
-package sma.environment_agent;
+package sma.environmenthuman_agent;
 
 import java.io.IOException;
 
@@ -11,11 +11,11 @@ import sma.model.VoteResults;
 
 public class ReceiveBehaviour extends OneShotBehaviour {
 
-	private EnvironmentAgent envAgent;
+	private EnvironmentHumanAgent envAgent;
 	private ACLMessage message;
 
 
-	public ReceiveBehaviour(EnvironmentAgent envAgent, ACLMessage message) {
+	public ReceiveBehaviour(EnvironmentHumanAgent envAgent, ACLMessage message) {
 		super();
 		this.envAgent = envAgent;
 		this.message = message;
@@ -37,7 +37,7 @@ public class ReceiveBehaviour extends OneShotBehaviour {
 				this.envAgent.setCurrentResults(newVoteResults);
 				this.envAgent.getGlobalResults().add(newVoteResults);
 
-				//System.out.println("ENV AGENT | MAJ RESULTS ");
+//				System.out.println("ENV AGENT | MAJ RESULTS ");
 
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -89,15 +89,22 @@ public class ReceiveBehaviour extends OneShotBehaviour {
 		}
 		else if(message.getConversationId().equals("INC_HUMANS"))
 		{
-			this.envAgent.setCptHuman(this.envAgent.getCptHuman()+1);
+			if(message.getSender().equals(this.envAgent.getPlayer()))
+			{
+				this.envAgent.setCptHuman(this.envAgent.getCptHuman()+1);
+			}
 		}
 		else if(message.getConversationId().equals("DEC_HUMANS"))
 		{
-			this.envAgent.setCptHuman(this.envAgent.getCptHuman()-1);
+			if(message.getSender().equals(this.envAgent.getPlayer()))
+			{
+				this.envAgent.setCptHuman(this.envAgent.getCptHuman()-1);
+			}
 		}
 		else if(message.getConversationId().equals("HUMAN_VOTE_REQUEST"))
 		{
-			if(!this.envAgent.isGame_mode()){
+			if(message.getSender().equals(this.envAgent.getPlayer()))
+			{
 				try {
 					HumanVoteRequest req = mapper.readValue(message.getContent(), HumanVoteRequest.class);
 					if(req == null )
@@ -120,8 +127,6 @@ public class ReceiveBehaviour extends OneShotBehaviour {
 						{
 							this.envAgent.getStackRequest().push(req);
 						}
-
-
 					}
 
 				} catch (IOException e) {

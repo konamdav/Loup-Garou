@@ -31,9 +31,9 @@ public class ReturnContainers extends CyclicBehaviour {
 		{
 			ObjectMapper mapper = new ObjectMapper();
 			try {
-				System.out.println("ok1");
+				//System.out.println("ok1");
 				String jsonInString = mapper.writeValueAsString(this.systemControllerAgent.getIdContainers());
-				System.out.println("ok2");
+				//System.out.println("ok2");
 				ACLMessage reply = message.createReply();
 				reply.setPerformative(ACLMessage.INFORM);
 				reply.setContent(jsonInString);

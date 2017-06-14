@@ -46,23 +46,23 @@ public class DeleteRoleBehaviour extends CyclicBehaviour {
 				if (bhv instanceof IPreDeathBehaviour){
 					IPreDeathBehaviour bhv_death = (IPreDeathBehaviour) bhv;
 					//System.out.println("Find a behaviour death to delete "+this.agent.getName()+" behaviour  "+bhv_death.getName_behaviour());
-					System.out.println("Get pRE Death Behaviour " +this.agent.getDeathBehaviours());
+					//System.out.println("Get pRE Death Behaviour " +this.agent.getDeathBehaviours());
 					this.agent.getPreDeathBehaviours().remove(bhv_death.getName_behaviour());
-					System.out.println("After remove pRE Death Behaviour " +this.agent.getDeathBehaviours());
+					//System.out.println("After remove pRE Death Behaviour " +this.agent.getDeathBehaviours());
 				}
 				else if (bhv instanceof IDeathBehaviour){
 					IDeathBehaviour bhv_death = (IDeathBehaviour) bhv;
 					//System.out.println("Find a behaviour death to delete "+this.agent.getName()+" behaviour  "+bhv_death.getName_behaviour());
-					System.out.println("Get Death Behaviour " +this.agent.getDeathBehaviours());
+					//System.out.println("Get Death Behaviour " +this.agent.getDeathBehaviours());
 					this.agent.getDeathBehaviours().remove(bhv_death.getName_behaviour());
-					System.out.println("After remove Death Behaviour " +this.agent.getDeathBehaviours());
+					//System.out.println("After remove Death Behaviour " +this.agent.getDeathBehaviours());
 				}
 				else if (bhv instanceof IVoteBehaviour){
 					IVoteBehaviour bhv_Vote = (IVoteBehaviour) bhv;
 					//System.out.println("Find a behaviour vote to delete "+this.agent.getName()+" behaviour  "+bhv_Vote.getName_behaviour());
-					System.out.println("Get Vote Behaviour " +this.agent.getVotingBehaviours());
+					//System.out.println("Get Vote Behaviour " +this.agent.getVotingBehaviours());
 					this.agent.getVotingBehaviours().remove(bhv_Vote.getName_behaviour());
-					System.out.println("After remove Vote Behaviour " +this.agent.getVotingBehaviours());
+					//System.out.println("After remove Vote Behaviour " +this.agent.getVotingBehaviours());
 				}
 				//stop behaviour
 				this.agent.removeBehaviour(bhv);

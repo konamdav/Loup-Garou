@@ -110,6 +110,7 @@ public class ViewInterfaceGame implements Screen{
 		table.top().right();
 
 		selectBox = new SelectBox<String>(skin);
+	
 		okButton=new TextButton("Vote",skin);
 		backButton=new TextButton("Retour",skin);
 		table.add(selectBox).width(230).height(60).padRight(5);

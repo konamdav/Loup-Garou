@@ -35,6 +35,8 @@ public class EnvironmentHumanAgent extends Agent{
 	
 	private int gameid;
 	private int num_turn;
+	
+	private boolean filter;
 
 	/** mode jeu **/
 	private boolean game_mode;
@@ -48,7 +50,7 @@ public class EnvironmentHumanAgent extends Agent{
 		player =  ((AID) (args[2]));
 		cptHuman = 0;
 		num_turn = 0;
-		
+		filter = true;
 		stackRequest = new Stack<HumanVoteRequest>();
 		globalResults = new VoteResults();
 		currentResults = new VoteResults();
@@ -151,5 +153,19 @@ public class EnvironmentHumanAgent extends Agent{
 	public void setGameid(int gameid) {
 		this.gameid = gameid;
 	}
+	public boolean isFilter() {
+		return filter;
+	}
+	public void setFilter(boolean filter) {
+		this.filter = filter;
+		if(this.filter == false)
+		{
+			this.game_mode = false;
+			this.cptHuman = 100;
+		}
+	}
 
+	
+	
+	
 }

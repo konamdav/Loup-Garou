@@ -1,12 +1,15 @@
 package sma.environmenthuman_agent;
 
 import java.io.IOException;
+import java.util.List;
 
 import sma.model.DFServices;
 import sma.model.GameInformations;
+import sma.model.Status;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
+import jade.core.AID;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 
@@ -64,8 +67,14 @@ public class SendBehaviour extends OneShotBehaviour {
 		}
 		else if(message.getConversationId().equals("GAME_INFORMATIONS" + envAgent.getGameid()))
 		{
-			System.out.println("SEND GAMEINFORMATIONS");
+			//System.out.println("SEND GAMEINFORMATIONS");
 
+			//check if player is dead
+			List<AID> dead = DFServices.findGamePlayerAgent(Status.DEAD, this.envAgent, this.envAgent.getGameid());
+			this.envAgent.setFilter(!dead.contains(this.envAgent.getPlayer()));
+			
+			
+			
 			GameInformations gi = new GameInformations();
 			gi.setActionLogs(envAgent.getActionLogs());
 			gi.setCurrentResults(envAgent.getCurrentResults());

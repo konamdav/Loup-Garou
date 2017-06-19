@@ -110,9 +110,9 @@ public class SynchronousVoteBehaviour extends Behaviour {
 					this.request = mapper.readValue(message.getContent(), VoteRequest.class);
 					this.request.setLocalVoteResults(this.results);
 					this.results.initWithChoice(this.request.getChoices());
-					
+
 					Functions.newActionToLog("Début vote "+this.request.getRequest(),this.myAgent, this.controllerAgent.getGameid());
-					
+
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -228,11 +228,11 @@ public class SynchronousVoteBehaviour extends Behaviour {
 					wakeup.addReceiver(this.request.getAIDVoters().get(nbVoters));
 					wakeup.setConversationId("WAKEUP");
 					this.myAgent.send(wakeup);
-					
+
 					System.out.println("Relance du joueur "+this.request.getAIDVoters().get(nbVoters).getLocalName()+" ...");
 				}
 
-				
+
 			}
 
 			MessageTemplate mt = MessageTemplate.and(
@@ -293,7 +293,7 @@ public class SynchronousVoteBehaviour extends Behaviour {
 					this.myAgent.send(msg);
 				}
 
-			///	System.err.println("\nSV : "+this.nbVoters+"/"+this.request.getAIDVoters().size());
+				///	System.err.println("\nSV : "+this.nbVoters+"/"+this.request.getAIDVoters().size());
 
 				if(this.nbVoters >= this.request.getAIDVoters().size())
 				{
@@ -499,13 +499,17 @@ public class SynchronousVoteBehaviour extends Behaviour {
 			message.addReceiver(this.agentSender);
 			message.setConversationId("VOTE_RESULTS");
 			message.setContent(this.finalResults.get(0));
-			
+
+
 			String name = this.finalResults.get(0);
-			int index = name.indexOf("@");
-			name = name.substring(0, index);
+
+			if(!this.request.isAskRequest()){
+				int index = name.indexOf("@");
+				name = name.substring(0, index);
+				Functions.newActionToLog("Vote : "+name, this.getAgent(), this.controllerAgent.getGameid());
+			}
 			
-			Functions.newActionToLog("Vote : "+name, this.getAgent(), this.controllerAgent.getGameid());
-			
+
 			this.myAgent.send(message);	
 			this.nextStep = STATE_INIT;
 		}

@@ -265,7 +265,9 @@ public class TurnBehaviour extends SimpleBehaviour {
 			if(message != null)
 			{
 				String role = message.getContent();
-				if(role.equals(Roles.WEREWOLF))
+				if(role.equals(Roles.WEREWOLF)
+						|| (role.equals(Roles.GREAT_WEREWOLF))
+						|| (role.equals(Roles.WHITE_WEREWOLF)))
 				{
 
 					Functions.newActionToLog(""+this.playerChosen.getLocalName()+" est un loup !", this.ctrlAgent, this.ctrlAgent.getGameid());

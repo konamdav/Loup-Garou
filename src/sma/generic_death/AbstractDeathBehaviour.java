@@ -15,6 +15,7 @@ import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import sma.model.DFServices;
+import sma.model.Functions;
 import sma.model.Roles;
 import sma.model.ScoreResults;
 import sma.model.Status;
@@ -278,6 +279,9 @@ public class AbstractDeathBehaviour extends CyclicBehaviour{
 
 			this.agent.setStatutandRegister(Status.DEAD);			
 			
+			if(this.agent.isHuman()){
+				Functions.decHumans(this.agent, this.agent.getGameid());
+			}
 			//System.err.println(this.agent.getStatut());
 
 

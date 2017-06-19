@@ -164,7 +164,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 
 			VoteRequest request = new VoteRequest();
 			request.setVoteAgainst(true);
-			request.setRequest("CUPID_VOTE");
+			request.setRequest("FAMILY_VOTE");
 			request.setChoices(choices);
 			request.setVoters(voters);
 			request.setCanBeFake(false);
@@ -220,7 +220,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 
 			ForceVoteRequest rqst = new ForceVoteRequest();
 			rqst.setVoteRequest("CITIZEN_VOTE");
-			rqst.setVoteResult(this.aidChosen.getLocalName());
+			rqst.setVoteResult(this.aidChosen.getName());
 
 			Functions.newActionToLog("La famille désigne "+this.aidChosen.getLocalName(), this.ctrlAgent, this.ctrlAgent.getGameid());
 			

@@ -290,27 +290,29 @@ public class ViewNewGameMenu implements Screen {
         		message.setSender(app.agent.getAID());
         		message.addReceiver(DFServices.getSystemController(app.agent));
 
-        		players.put(Roles.WEREWOLF, Integer.parseInt(werewolf_textField.getText()));
-        		players.put(Roles.WHITE_WEREWOLF,Integer.parseInt(white_werewolf_textField.getText())); 
-        		players.put(Roles.GREAT_WEREWOLF,Integer.parseInt(great_werewolf_textField.getText())); 
-        		players.put(Roles.HUNTER, Integer.parseInt(hunter_textField.getText()));
-        		players.put(Roles.FAMILY, Integer.parseInt(family_textField.getText()));
-        		players.put(Roles.CITIZEN, Integer.parseInt(citizen_textField.getText()));
-        		players.put(Roles.CUPID, Integer.parseInt(lover_textField.getText()));
-        		players.put(Roles.LITTLE_GIRL, Integer.parseInt(little_girl_textField.getText()));
-        		players.put(Roles.MEDIUM,Integer.parseInt(medium_textField.getText()));
-        		players.put(Roles.ANGEL,Integer.parseInt(angel_textField.getText()));
-        		players.put(Roles.FLUTE_PLAYER,Integer.parseInt(flute_textField.getText()));
-        		players.put(Roles.ANCIENT,Integer.parseInt(ancient_textField.getText())); 
-        		players.put(Roles.WITCH,Integer.parseInt(witch_textField.getText()));
-        		players.put(Roles.THIEF,Integer.parseInt(thief_textField.getText())); 
-        		players.put(Roles.SALVATOR,Integer.parseInt(salvator_textField.getText())); 
-        		players.put(Roles.EXORCIST,Integer.parseInt(exorcist_textField.getText())); 
-        		players.put(Roles.SCAPEGOAT,Integer.parseInt(scapegoat_textField.getText())); 
+        		
+        		
+        		players.put(Roles.WEREWOLF, Integer.parseInt(werewolf_textField.getText().isEmpty()?"0":werewolf_textField.getText()));
+        		players.put(Roles.WHITE_WEREWOLF,Integer.parseInt(white_werewolf_textField.getText().isEmpty()?"0":white_werewolf_textField.getText())); 
+        		players.put(Roles.GREAT_WEREWOLF,Integer.parseInt(great_werewolf_textField.getText().isEmpty()?"0":great_werewolf_textField.getText())); 
+        		players.put(Roles.HUNTER, Integer.parseInt(hunter_textField.getText().isEmpty()?"0":hunter_textField.getText()));
+        		players.put(Roles.FAMILY, Integer.parseInt(family_textField.getText().isEmpty()?"0":family_textField.getText()));
+        		players.put(Roles.CITIZEN, Integer.parseInt(citizen_textField.getText().isEmpty()?"0":citizen_textField.getText()));
+        		players.put(Roles.CUPID, Integer.parseInt(lover_textField.getText().isEmpty()?"0":lover_textField.getText()));
+        		players.put(Roles.LITTLE_GIRL, Integer.parseInt(little_girl_textField.getText().isEmpty()?"0":little_girl_textField.getText()));
+        		players.put(Roles.MEDIUM,Integer.parseInt(medium_textField.getText().isEmpty()?"0":medium_textField.getText()));
+        		players.put(Roles.ANGEL,Integer.parseInt(werewolf_textField.getText().isEmpty()?"0":angel_textField.getText()));
+        		players.put(Roles.FLUTE_PLAYER,Integer.parseInt(flute_textField.getText().isEmpty()?"0":flute_textField.getText()));
+        		players.put(Roles.ANCIENT,Integer.parseInt(ancient_textField.getText().isEmpty()?"0":ancient_textField.getText())); 
+        		players.put(Roles.WITCH,Integer.parseInt(witch_textField.getText().isEmpty()?"0":witch_textField.getText()));
+        		players.put(Roles.THIEF,Integer.parseInt(thief_textField.getText().isEmpty()?"0":thief_textField.getText())); 
+        		players.put(Roles.SALVATOR,Integer.parseInt(salvator_textField.getText().isEmpty()?"0":salvator_textField.getText())); 
+        		players.put(Roles.EXORCIST,Integer.parseInt(exorcist_textField.getText().isEmpty()?"0":exorcist_textField.getText())); 
+        		players.put(Roles.SCAPEGOAT,Integer.parseInt(scapegoat_textField.getText().isEmpty()?"0":scapegoat_textField.getText())); 
         		
         		
         		
-        		GameSettings gameSettings = new GameSettings(players, Integer.parseInt(human_textField.getText()), box.isChecked());
+        		GameSettings gameSettings = new GameSettings(players, Integer.parseInt(human_textField.getText().isEmpty()?"0":human_textField.getText()), box.isChecked());
         		ObjectMapper mapper = new ObjectMapper();
         		String json ="";
         		try {
@@ -319,6 +321,8 @@ public class ViewNewGameMenu implements Screen {
         			e.printStackTrace();
         		}
         		message.setContent(json);
+        		
+        		System.out.println("creation partie");
         		app.agent.send(message);     		
         		app.setScreen(new ViewJoinMenu(app));
             }

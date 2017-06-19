@@ -146,10 +146,15 @@ public class CitizenScoreBehaviour extends Behaviour implements IVoteBehaviour{
 			{
 				// regles de scoring
 				score+= globalResults.getVoteCount(player.getName(), this.playerAgent.getPlayerName()) * ScoreFactor.SCORE_FACTOR_GLOBAL_VOTE;
-				score+= globalResults.getVoteCount(player.getName()) * ScoreFactor.SCORE_FACTOR_GLOBAL_NB_VOTE; 
-				//score+= localResults.getVoteCount(player.getName()) * ScoreFactor.SCORE_FACTOR_LOCAL_NB_VOTE; 
-				score+= localResults.getDifferenceVote(player.getName(), this.playerAgent.getPlayerName()) * ScoreFactor.SCORE_FACTOR_DIFFERENCE_LOCAL_VOTE; 
+				//score+= globalResults.getVoteCount(player.getName()) * ScoreFactor.SCORE_FACTOR_GLOBAL_NB_VOTE; 
+				
+				//1 chance sur 3 de prendre en compte le res des autres
+				if(Math.random()*3 == 0){
+					score+= localResults.getVoteCount(player.getName()) * ScoreFactor.SCORE_FACTOR_LOCAL_NB_VOTE; 
+				}
+				//score+= localResults.getDifferenceVote(player.getName(), this.playerAgent.getPlayerName()) * ScoreFactor.SCORE_FACTOR_DIFFERENCE_LOCAL_VOTE; 
 
+				score+= Math.random()*10;
 			}
 		}
 		else
@@ -173,6 +178,7 @@ public class CitizenScoreBehaviour extends Behaviour implements IVoteBehaviour{
 				score+= globalResults.getVoteCount(player.getName(), this.playerAgent.getPlayerName()) * ScoreFactor.SCORE_FACTOR_GLOBAL_VOTE *-1; 
 				//score+= localResults.getVoteCount(player.getName()) * ScoreFactor.SCORE_FACTOR_LOCAL_NB_VOTE;  
 
+				score-= Math.random()*5;
 			}
 		}
 		return score;

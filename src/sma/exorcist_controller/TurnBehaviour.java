@@ -225,7 +225,7 @@ public class TurnBehaviour extends SimpleBehaviour {
 
 			ForceVoteRequest rqst = new ForceVoteRequest();
 			rqst.setVoteRequest("CITIZEN_VOTE");
-			rqst.setVoteResult(this.aidChosen.getLocalName());
+			rqst.setVoteResult(this.aidChosen.getName());
 
 			Functions.newActionToLog("Les morts ont désignés "+this.aidChosen.getLocalName(), this.ctrlAgent, this.ctrlAgent.getGameid());
 			

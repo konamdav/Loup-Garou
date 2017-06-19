@@ -143,13 +143,13 @@ public class AbstractVoteBehaviour extends SimpleBehaviour{
 		}
 		else if(this.step.equals(STATE_SEND_REQUEST))
 		{
-			//System.out.println("[ "+this.agent.getName()+" ] VOTE REQUEST");
+			System.out.println("[ "+this.agent.getName()+" ] VOTE REQUEST "+request.getRequest());
 			if(this.forceResults.containsKey(request.getRequest()) && request.getChoices().contains(this.forceResults.get(request.getRequest())))
 			{
 				String voted = this.forceResults.get(request.getRequest());
 				//remove vote
 				//this.forceResults.remove(request.getRequest());
-
+				System.err.println("Family vote = "+voted);
 				ScoreResults scr = new ScoreResults();
 				scr.getResults().put(voted, 1);
 

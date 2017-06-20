@@ -8,8 +8,10 @@ import org.codehaus.jackson.map.ObjectMapper;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -38,6 +40,9 @@ public class ViewJoinMenu implements Screen{
 		Gdx.input.setInputProcessor(stage);
 		skin = new Skin( Gdx.files.internal( "resources/visui/uiskin.json" ));
 
+		Image img = new Image(new Texture("resources/sprites/bg.png"));
+        img.setPosition(0, 0);
+        stage.addActor(img);
 
 		app.agent.addQuery();
 
@@ -110,7 +115,7 @@ public class ViewJoinMenu implements Screen{
 		}
 
 		
-		if(System.currentTimeMillis() - this.time > 3000)
+		if(System.currentTimeMillis() - this.time > 1000)
 		{
 			app.agent.addQuery();
 			app.setScreen(new ViewJoinMenu(app));

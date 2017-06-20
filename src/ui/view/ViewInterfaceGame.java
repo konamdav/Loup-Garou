@@ -1,6 +1,7 @@
 
 package ui.view;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -15,6 +16,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
@@ -24,6 +27,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import sma.model.DFServices;
+import sma.model.LiveConfigSettings;
 import sma.model.PlayerProfile;
 import sma.model.Roles;
 import sma.model.Status;
@@ -40,9 +44,10 @@ public class ViewInterfaceGame implements Screen{
 	private ViewPlayers viewPlayers;
 	private Texture textureNight;
 	private Texture textureEndgame;
-	
+
 	private BitmapFont  font = new BitmapFont();
-	
+
+	private HashMap<String, Image> images;
 
 	Sprite spriteDay = new Sprite(new Texture("resources/sprites/daysprite.png"));
 	Sprite spriteNight = new Sprite(new Texture("resources/sprites/nightsprite.png"));
@@ -72,6 +77,9 @@ public class ViewInterfaceGame implements Screen{
 	private int mapy;
 	private App game;
 	private Skin skin;
+	private List<String> list_settings;
+	private ScrollPane scrollpane_settings;
+	private Table tableSettings;
 
 	public ViewInterfaceGame (App game){
 		this.ctrlTerrain = new MapController();
@@ -79,15 +87,22 @@ public class ViewInterfaceGame implements Screen{
 		mapx = 0;
 		mapy = 0;
 		this.game = game;
+		this.images = new HashMap<String, Image>();
+
+		for(String s : Roles.getMainRoles())
+		{
+			images.put(s, new Image(new Texture("resources/sprites/"+s.toLowerCase()+".png")));
+		}
+
 		this.game.clean();
 	}
 
 
 	public void show() {
-		
+
 		font.setColor(Color.WHITE);
 		font.setScale(1.5f);
-		
+
 		stage=new Stage(){
 			@Override
 			public boolean mouseMoved(int x, int y) {
@@ -110,35 +125,42 @@ public class ViewInterfaceGame implements Screen{
 		table.top().right();
 
 		selectBox = new SelectBox<String>(skin);
-	
+
 		okButton=new TextButton("Vote",skin);
 		backButton=new TextButton("Retour",skin);
-		table.add(selectBox).width(230).height(60).padRight(5);
+		table.add(selectBox).width(320).height(60).padRight(5);
 		table.add(okButton).width(60).height(60).padRight(5);
 		table.add(backButton).width(230).height(60);
+
+
 
 		Gdx.input.setInputProcessor(stage);
 		skin = new Skin( Gdx.files.internal( "resources/visui/uiskin.json" ));
 		viewPlayers=new ViewPlayers(((SpriteBatch)stage.getBatch()));
 
-		terrain=new ViewMap((SpriteBatch) stage.getBatch(), ctrlTerrain);
 
+		terrain=new ViewMap((SpriteBatch) stage.getBatch(), ctrlTerrain);
 		textureNight = new Texture(Gdx.files.internal("resources/sprites/night.png"));
 
 		textureEndgame = new Texture(Gdx.files.internal("resources/sprites/endgame.png"));
 
 		list_log = new List<String>(skin);
+		list_log.setWidth(200);
 		scrollpane_log = new ScrollPane(list_log);
 		scrollpane_log.setFadeScrollBars(false);
 		scrollpane_log.setBounds(0,0, 400,200);
 		scrollpane_log.setPosition(970,300);
-
+		scrollpane_log.setWidth(200);
 
 		list_vote = new List<String>(skin);
+		list_vote.setWidth(200);
 		scrollpane_vote = new ScrollPane(list_vote);
 		scrollpane_vote.setFadeScrollBars(false);
+
+
 		scrollpane_vote.setBounds(0,0, 400,200);
 		scrollpane_vote.setPosition(970,0);
+		scrollpane_vote.setWidth(200);
 
 		spriteDay.setX(0);
 		spriteDay.setY(510);
@@ -179,8 +201,25 @@ public class ViewInterfaceGame implements Screen{
 
 		stage.addActor(table);
 
-		
-		
+
+		list_settings = new List<String>(skin);
+		list_settings.setWidth(200);
+
+		tableSettings=new Table(skin);
+		tableSettings.setWidth(100);
+		tableSettings.top();
+		scrollpane_settings = new ScrollPane(tableSettings);
+		scrollpane_settings.setFadeScrollBars(false);
+		scrollpane_settings.setBounds(0,0, 400,200);
+		scrollpane_settings.setPosition(1185,0);
+		scrollpane_settings.setWidth(70);
+		scrollpane_settings.setHeight(514);
+
+		//list_settings.setItems("WEREWOLF : 0", "CITIZEN : 5");
+		stage.addActor(scrollpane_settings);
+
+
+
 		okButton.addListener(new ClickListener() {
 
 			@Override
@@ -291,7 +330,8 @@ public class ViewInterfaceGame implements Screen{
 			if (!this.game.getGameInformations().isEndGame())
 				scrollpane_log.scrollTo(0, 0, 0, 0);
 			if (this.game.getGameInformations().isEndGame())
-				stage.getBatch().draw(textureEndgame,0,0);
+				//stage.getBatch().draw(textureEndgame,0,0);
+				stage.getBatch().draw(textureNight,0,0);
 			else if (this.game.getGameInformations().getDayState().equals("NIGHT")) 
 				stage.getBatch().draw(textureNight,0,0);
 		}
@@ -300,6 +340,9 @@ public class ViewInterfaceGame implements Screen{
 
 		viewPlayers.drawPlayersWake();
 
+		if (this.game.getGameInformations().isEndGame())
+			stage.getBatch().draw(textureEndgame,0,0);
+		
 		if(hover)
 		{
 			String label = viewPlayers.getLabel(mapx, mapy);
@@ -315,7 +358,22 @@ public class ViewInterfaceGame implements Screen{
 
 
 		if(this.game.getGameInformations()!=null && this.game.getGameInformations().getProfiles()!=null)
+		{
+
 			viewPlayers.updatePlayers(this.game.gameInformations.getProfiles());
+			this.tableSettings.clear();
+
+			LiveConfigSettings liveConfig = this.game.gameInformations.getLiveConfig();
+			for(Entry<String, Integer> entry : liveConfig.getConfig().entrySet())
+			{
+				if(images.containsKey(entry.getKey())){
+					this.tableSettings.add(images.get(entry.getKey())).padLeft(10).padRight(10);
+					this.tableSettings.add(""+entry.getValue());
+					this.tableSettings.row();
+				}
+			}
+
+		}
 		//stage.getBatch().draw(style.getBackground(), 0, 0,Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		stage.getBatch().end(); 
 		stage.act(Gdx.graphics.getDeltaTime());

@@ -1,8 +1,10 @@
 package sma.game_controller_agent;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Random;
 
 import jade.core.AID;
 import jade.core.behaviours.Behaviour;
@@ -42,14 +44,51 @@ public class InitBehaviour extends Behaviour {
 	private final String STATE_SEND_ATTR ="STATE_ATTR";
 	private final String STATE_RECEIVE_ATTR ="STATE_RECEIVE_ATTR";
 	private final String STATE_START_GAME ="STATE_START_GAME";
+	private HashMap<String, Integer> names;
 
 	public InitBehaviour(GameControllerAgent gameControllerAgent) {
 		super();
 		this.gameControllerAgent = gameControllerAgent;
 		this.flag = false;
 		this.cpt = 0;
+		
+		
+		this.names = new HashMap<String, Integer>();
+		this.names.put("David", 0);
+		this.names.put("Borey", 0);
+		this.names.put("Bobo", 0);
+		this.names.put("Kyrion", 0);
+		this.names.put("Nexus", 0);
+		this.names.put("Damien", 0);
+		this.names.put("Master", 0);
+		this.names.put("Cédric", 0);
+		this.names.put("Clément", 0);
+		this.names.put("William", 0);
+		this.names.put("Kévin", 0);
+		this.names.put("Alexis", 0);
+		this.names.put("Benjamin", 0);
+		this.names.put("Davy", 0);
+		this.names.put("Sienna", 0);
+		this.names.put("Yorg", 0);
+		this.names.put("Socrate", 0);
+		this.names.put("Goubin", 0);
+		this.names.put("Romain", 0);
+		this.names.put("Mathilde", 0);
+		this.names.put("Carole", 0);
+		this.names.put("Léa", 0);
+		this.names.put("Elise", 0);
+		
+		this.names.put("Penelope", 0);
+		this.names.put("François", 0);
+		this.names.put("Marine", 0);
+		this.names.put("Meluche", 0);
+		this.names.put("Lassalle", 0);
+		this.names.put("Asselineau", 0);
+		this.names.put("Omar", 0);
+		
 		this.step = STATE_INIT;
 		this.nextStep = "";
+	
 	}
 
 	@Override
@@ -65,9 +104,16 @@ public class InitBehaviour extends Behaviour {
 
 
 					Object[] args = {gameid};
+					
+					Object[] keys = this.names.keySet().toArray();
+					Random r = new Random();
 					for(int i = 0; i<nb; ++i)
 					{
-						String playerName = "PLAYER_"+gameid+"_"+((char)(i+65));
+						String randomName =  keys[r.nextInt(this.names.size())].toString();
+						System.err.println("rn "+randomName);
+						this.names.put(randomName, this.names.get(randomName)+1);
+						int id = this.names.get(randomName);
+						String playerName = randomName+"_"+gameid+""+id;
 						AgentController ac = this.gameControllerAgent.getContainerController().createNewAgent(
 								playerName, "sma.player_agent.PlayerAgent", args);
 						ac.start();

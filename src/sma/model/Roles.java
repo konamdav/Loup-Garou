@@ -43,8 +43,12 @@ public class Roles {
 		tmp.add(Roles.ANCIENT);
 		tmp.add(Roles.WITCH);
 		tmp.add(Roles.MEDIUM);
+		tmp.add(Roles.SALVATOR);
 		tmp.add(Roles.ANGEL);
+		tmp.add(Roles.EXORCIST);
+		tmp.add(Roles.HUNTER);
 		tmp.add(Roles.FAMILY);
+		tmp.add(Roles.FLUTE_PLAYER);
 		tmp.add(Roles.CUPID);
 		tmp.add(Roles.HUNTER);
 		tmp.add(Roles.SCAPEGOAT);

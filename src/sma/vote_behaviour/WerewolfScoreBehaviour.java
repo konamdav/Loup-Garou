@@ -174,7 +174,8 @@ public class WerewolfScoreBehaviour extends Behaviour implements IVoteBehaviour 
 						diff+= localResults.getDifferenceVote(player.getName(), wolf.getName());
 					}
 					
-					diff = diff/werewolves.size();
+					
+					diff = diff/Math.max(1,werewolves.size());
 					score+= diff * ScoreFactor.SCORE_FACTOR_DIFFERENCE_LOCAL_VOTE;
 				}
 				else

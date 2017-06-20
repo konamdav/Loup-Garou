@@ -23,7 +23,7 @@ public class DFServices {
 		@Override
 		public int compare(AID a1, AID a2)
 		{
-			return  a1.getLocalName().compareTo(a2.getLocalName());
+			return  a1.getLocalName().hashCode()>a2.getLocalName().hashCode()?0:1;
 		}
 	};
 
@@ -75,17 +75,7 @@ public class DFServices {
 	}
 
 	public static void registerSystemControllerAgent(Agent agent){
-		DFAgentDescription dfad = new DFAgentDescription();
-		dfad.setName(agent.getAID());
-		ServiceDescription sd = new ServiceDescription();
-		sd.setType("SYSTEM");
-		sd.setName("CONTROLLER");
-		dfad.addServices(sd);
-		try {
-			DFService.register(agent, dfad);
-		} catch (FIPAException fe) {
-			fe.printStackTrace();
-		}
+		DFServices.registerSystemAgent("SYSTEM", "CONTROLLER", agent);
 	}
 
 	public static void registerGameControllerAgent(String name, Agent agent,  int gameid){
@@ -194,20 +184,13 @@ public class DFServices {
 	}
 
 	public static AID getSystemController(Agent agent) {
-		AID rec = null;
-		DFAgentDescription template =
-				new DFAgentDescription();
-		ServiceDescription sd = new ServiceDescription();
-		sd.setType("SYSTEM");
-		sd.setName("CONTROLLER");
-		template.addServices(sd);
-		try {
-			DFAgentDescription[] result =
-					DFService.search(agent, template);
-			if (result.length > 0)
-				rec = result[0].getName();
-		} catch(FIPAException fe) {fe.printStackTrace();}
-		return rec;
+		List<AID> list = DFServices.findSystemAgent("SYSTEM", "CONTROLLER", agent);
+		if(list.isEmpty())
+		{
+			return null;
+		}
+		
+		return list.get(0);
 	}
 
 	public static List<AID> findGamePlayerAgent(String name, Agent agent, int gameid){

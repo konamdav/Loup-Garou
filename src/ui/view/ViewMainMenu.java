@@ -40,6 +40,9 @@ public class ViewMainMenu implements Screen {
         Gdx.input.setInputProcessor(stage);
         skin = new Skin( Gdx.files.internal( "resources/visui/uiskin.json" ));
 
+        Image img = new Image(new Texture("resources/sprites/bg.png"));
+        img.setPosition(0, 0);
+        stage.addActor(img);
        
         Table table=new Table();
         table.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());

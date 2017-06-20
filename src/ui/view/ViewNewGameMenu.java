@@ -64,12 +64,16 @@ public class ViewNewGameMenu implements Screen {
         textfields = new HashMap<String, TextField>();
         
         
+        Image img = new Image(new Texture("resources/sprites/bg.png"));
+        img.setPosition(0, 0);
+        stage.addActor(img);
+        
 		Table table=new Table();
 //        table.setSize(800,500);
 		table.columnDefaults(6);
-		
-		 table.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
-	    // table.center();
+		table.setFillParent(true);
+		 //table.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+		 //table.top().left();
 	       
         
 		//table.add(new Label("",skin));

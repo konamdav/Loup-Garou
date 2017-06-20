@@ -81,6 +81,7 @@ public class SendBehaviour extends OneShotBehaviour {
 			gi.setDayState(envAgent.getDayState());
 			gi.setEndGame(envAgent.isEndGame());
 			gi.setProfiles(DFServices.getPlayerProfiles(this.envAgent.isGame_mode(), this.envAgent.getCptHuman(), this.envAgent.getPlayer().getLocalName(), envAgent, envAgent.getGameid()));
+			gi.setSystem_profiles(DFServices.getPlayerProfiles(false, 0, "", envAgent, envAgent.getGameid()));
 			gi.setTurn(envAgent.getTurn());
 			gi.setNum_turn(envAgent.getNum_turn());
 			gi.setVote(envAgent.getHumanVoteRequest());

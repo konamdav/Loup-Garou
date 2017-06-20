@@ -113,10 +113,7 @@ public class uiAgent extends Agent  {
 		}
 
 
-		protected void onTick() {
-
-
-		}
+	
 		@Override
 		public void action() {
 			switch (step){
@@ -228,6 +225,4 @@ public class uiAgent extends Agent  {
 	public void setFollow(boolean follow) {
 		this.follow = follow;
 	}
-
-
 }

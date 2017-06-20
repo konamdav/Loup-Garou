@@ -20,7 +20,7 @@ public class CreateGameBehaviour extends CyclicBehaviour {
 	private int ii;
 	public CreateGameBehaviour(SystemControllerAgent systemControllerAgent) {
 		super();
-		this.ii = 0;
+		this.ii = 1;
 		this.systemControllerAgent = systemControllerAgent;
 	}
 

@@ -3,6 +3,8 @@ package sma.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 public class GameInformations {
 
 
@@ -18,7 +20,15 @@ public class GameInformations {
 	}
 
 	private List<PlayerProfile> profiles; 
-	
+	private List<PlayerProfile> system_profiles; 
+
+	public List<PlayerProfile> getSystem_profiles() {
+		return system_profiles;
+	}
+
+	public void setSystem_profiles(List<PlayerProfile> system_profiles) {
+		this.system_profiles = system_profiles;
+	}
 
 	private HumanVoteRequest vote;
 	
@@ -44,6 +54,12 @@ public class GameInformations {
 
 	public void setTurn(String turn) {
 		this.turn = turn;
+	}
+	
+	@JsonIgnore
+	public LiveConfigSettings getLiveConfig()
+	{
+		return new LiveConfigSettings(this.system_profiles);
 	}
 
 	public List<String> getActionLogs() {
